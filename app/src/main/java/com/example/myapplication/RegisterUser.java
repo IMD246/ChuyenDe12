@@ -122,7 +122,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                             });
                         }
                         else{
-                            Toast.makeText(RegisterUser.this, "Failed to Register1! Try again", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterUser.this, "Failed to Register1 Try again", Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.GONE);
                         }
                     }
