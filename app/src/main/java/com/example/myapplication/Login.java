@@ -45,32 +45,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        register = (TextView) findViewById(R.id.tvRegister);
-        register.setOnClickListener(this);
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        imgProfile = findViewById(R.id.imgProfile);
-        textViewUser = findViewById(R.id.tvUser);
-        loginFacebook = findViewById(R.id.loginFB);
-        loginFacebook.setReadPermissions("email","public_profile");
-        callbackManager = CallbackManager.Factory.create();
-        loginFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                Log.d(TAO,"onSuccess" + loginResult);
-                handleFacebookToken(loginResult.getAccessToken());
-            }
+        setControl();
+        loginFacebookRegister();
+        getDataAndTrackerToken();
+    }
 
-            @Override
-            public void onCancel() {
-                Log.d(TAO,"OnCancel");
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                Log.d(TAO,"OnError" + error);
-            }
-        });
+    private void getDataAndTrackerToken() {
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -94,6 +74,38 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 }
             }
         };
+    }
+
+    private void loginFacebookRegister() {
+        loginFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Log.d(TAO,"onSuccess" + loginResult);
+                handleFacebookToken(loginResult.getAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d(TAO,"OnCancel");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.d(TAO,"OnError" + error);
+            }
+        });
+    }
+
+    private void setControl() {
+        register = (TextView) findViewById(R.id.tvRegister);
+        register.setOnClickListener(this);
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        imgProfile = findViewById(R.id.imgProfile);
+        textViewUser = findViewById(R.id.tvUser);
+        loginFacebook = findViewById(R.id.loginFB);
+        loginFacebook.setReadPermissions("email","public_profile");
+        callbackManager = CallbackManager.Factory.create();
     }
 
     @Override
