@@ -1,8 +1,10 @@
 package com.example.myapplication;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -17,31 +19,25 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterUser extends AppCompatActivity implements View.OnClickListener {
 
-    private TextView banner, registeruser;
-    private EditText edtextFullName, edtextAge, edtextEmail, edtextPassword;
+    private TextView registeruser;
+    private EditText edtextEmail, edtextPassword;
     private ProgressBar progressBar;
     private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register_user);
+        setContentView(R.layout.register_user);
 
         mAuth = FirebaseAuth.getInstance();
-
-        banner = (TextView) findViewById(R.id.tvBanner);
-        banner.setOnClickListener(this);
-
         registeruser = (Button) findViewById(R.id.btnRegister);
         registeruser.setOnClickListener(this);
 
-
-        edtextFullName = (EditText) findViewById(R.id.edtFullName);
-        edtextAge = (EditText) findViewById(R.id.edtAge);
         edtextEmail = (EditText) findViewById(R.id.edtEmail);
         edtextPassword = (EditText) findViewById(R.id.edtPassword);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -51,81 +47,69 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tvBanner:
-                startActivity(new Intent(this, Login.class));
-                break;
             case R.id.btnRegister:
                 registerUser();
                 break;
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(RegisterUser.this, Login.class));
+    }
+
     private void registerUser() {
-        String email = edtextEmail.getText().toString().trim();
-        String password = edtextPassword.getText().toString().trim();
-        String age = edtextAge.getText().toString().trim();
-        String fullName = edtextFullName.getText().toString().trim();
-        if (fullName.isEmpty()) {
-            edtextFullName.setError("FullName is required");
-            edtextFullName.requestFocus();
-            return;
-        }
-        if (age.isEmpty()) {
-            edtextAge.setError("Age is required");
-            edtextAge.requestFocus();
-            return;
-        }
+        Boolean check = true;
+        String email = edtextEmail.getText().toString();
+        String password = edtextPassword.getText().toString();
         if (email.isEmpty()) {
-            edtextEmail.setError("Email is required");
+            edtextEmail.setError("Email là bắt buộc");
             edtextEmail.requestFocus();
             return;
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            edtextEmail.setError("Please provide valid email!");
+            edtextEmail.setError("Làm ơn cung cấp một email đúng!");
             edtextEmail.requestFocus();
             return;
         }
         if (password.isEmpty()) {
-            edtextPassword.setError("Password is required");
+            edtextPassword.setError("Mật khẩu là bắt buộc");
             edtextPassword.requestFocus();
             return;
         }
         if (password.length() < 6) {
-            edtextPassword.setError("Min password length should be 6 characters");
+            edtextPassword.setError("Độ dài nhỏ nhất của mật khẩu là 6");
             edtextPassword.requestFocus();
             return;
         }
         progressBar.setVisibility(View.VISIBLE);
-        mAuth.createUserWithEmailAndPassword(email,password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task)
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (!task.isSuccessful())
+                {
+                    try
                     {
-                        task.isSuccessful();
-                        if (task.isComplete())
-                        {
-                            User us = new User(fullName, age, email);
-                            FirebaseDatabase.getInstance().getReference("users")
-                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                            .setValue(us).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Toast.makeText(RegisterUser.this, "User has been registered successfully", Toast.LENGTH_SHORT).show();
-                                        progressBar.setVisibility(View.VISIBLE);
-                                    }
-                                    else
-                                    {
-                                        Toast.makeText(RegisterUser.this, "Failed to Register! Try again", Toast.LENGTH_SHORT).show();
-                                        progressBar.setVisibility(View.GONE);
-                                    }
-                                }
-                            });
-                        }
-                        else{
-                            Toast.makeText(RegisterUser.this, "Failed to Register1 Try again", Toast.LENGTH_SHORT).show();
-                            progressBar.setVisibility(View.GONE);
-                        }
+                        throw task.getException();
                     }
-                });
+                    catch (FirebaseAuthUserCollisionException existEmail)
+                    {
+                        Toast.makeText(RegisterUser.this, "Email đã tồn tại", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
+                    }
+                    catch (Exception e)
+                    {
+                        Toast.makeText(RegisterUser.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }
+                else
+                {
+                    Toast.makeText(RegisterUser.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
+                    startActivity(new Intent(RegisterUser.this, Login.class));
+                }
+            }
+        });
     }
 }
