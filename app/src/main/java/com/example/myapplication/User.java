@@ -4,7 +4,7 @@ public class User {
     private String fullname,email;
     private int age,expPerDay,authenticate,totalExp,idTypeProceedPerDay;
     private String imageUser;
-    private boolean isActivePrivacy = true;
+    private boolean isActivePrivacy;
 
     public String getFullname() {
         return fullname;
@@ -30,9 +30,6 @@ public class User {
         return expPerDay;
     }
 
-    public int getAuthenticate() {
-        return authenticate;
-    }
 
     public int getTotalExp() {
         return totalExp;
@@ -55,10 +52,6 @@ public class User {
         this.expPerDay = expPerDay;
     }
 
-    public void setAuthenticate(int authenticate) {
-        authenticate = authenticate;
-    }
-
     public void setTotalExp(int totalExp) {
         this.totalExp = totalExp;
     }
@@ -78,12 +71,11 @@ public class User {
     public User() {
     }
 
-    public User(String fullname, String email, int age, int expPerDay, int authenticate, int totalExp, int idTypeProceedPerDay, String imageUser, boolean isActivePrivacy) {
+    public User(String fullname, String email, int age, int expPerDay, int totalExp, int idTypeProceedPerDay, String imageUser, boolean isActivePrivacy) {
         this.fullname = fullname;
         this.email = email;
         this.age = age;
         this.expPerDay = expPerDay;
-        this.authenticate = authenticate;
         this.totalExp = totalExp;
         this.idTypeProceedPerDay = idTypeProceedPerDay;
         this.imageUser = imageUser;

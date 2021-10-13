@@ -9,4 +9,7 @@
     <string name="register">Register</string>
     <string name="enter_your_pass">Enter Your Pass</string>
     <string name="or_register_with">Or Register With</string>
+    <string name="email">Email</string>
+    <string name="qu_n_m_t_kh_u">Quên mật khẩu</string>
+    <string name="send_email">Send Email</string>
 </resources>

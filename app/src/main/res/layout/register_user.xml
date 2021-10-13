@@ -46,7 +46,7 @@
 
         <EditText
             android:id="@+id/edtEmail"
-            android:layout_width="match_parent"
+            android:layout_width="380dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="128dp"
@@ -85,9 +85,6 @@
            />
         />
     </com.google.android.material.textfield.TextInputLayout>
-
-
-
     <Button
         android:id="@+id/btnRegister"
         android:layout_width="380dp"

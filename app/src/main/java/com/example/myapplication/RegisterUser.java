@@ -20,7 +20,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
 
 public class RegisterUser extends AppCompatActivity implements View.OnClickListener {
 
@@ -28,6 +33,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     private EditText edtextEmail, edtextPassword;
     private ProgressBar progressBar;
     private FirebaseAuth mAuth;
+    FirebaseFirestore firestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +65,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     }
 
     private void registerUser() {
+        firestore = FirebaseFirestore.getInstance();
         Boolean check = true;
         String email = edtextEmail.getText().toString();
         String password = edtextPassword.getText().toString();
@@ -68,7 +75,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
             return;
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            edtextEmail.setError("Làm ơn cung cấp một email đúng!");
+            edtextEmail.setError("Làm ơn cung cấp một email hợp lệ!");
             edtextEmail.requestFocus();
             return;
         }
@@ -86,28 +93,39 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if (!task.isSuccessful())
-                {
-                    try
-                    {
+                if (!task.isSuccessful()) {
+                    try {
                         throw task.getException();
-                    }
-                    catch (FirebaseAuthUserCollisionException existEmail)
-                    {
+                    } catch (FirebaseAuthUserCollisionException existEmail) {
                         Toast.makeText(RegisterUser.this, "Email đã tồn tại", Toast.LENGTH_SHORT).show();
                         progressBar.setVisibility(View.GONE);
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         Toast.makeText(RegisterUser.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         progressBar.setVisibility(View.GONE);
                     }
-                }
-                else
-                {
-                    Toast.makeText(RegisterUser.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
-                    progressBar.setVisibility(View.GONE);
-                    startActivity(new Intent(RegisterUser.this, Login.class));
+                } else {
+                    User us = new User("", email, 0, 0, 0, -1, "", true);
+
+                    FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(us)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                        Toast.makeText(RegisterUser.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+                                        DocumentReference df = firestore.collection("users").document(user.getUid());
+                                        HashMap<String,Object> auThenticateUser = new HashMap<>();
+                                        auThenticateUser.put("email",us.getEmail());
+                                        auThenticateUser.put("authenticate",DEFAULTVALUE.User);
+                                        df.set(auThenticateUser);
+                                        progressBar.setVisibility(View.VISIBLE);
+                                        startActivity(new Intent(RegisterUser.this, Login.class));
+                                    } else {
+                                        Toast.makeText(RegisterUser.this, "Đăng ký thất bại , Hãy thử lại", Toast.LENGTH_SHORT).show();
+                                        progressBar.setVisibility(View.GONE);
+                                    }
+                                }
+                            });
                 }
             }
         });

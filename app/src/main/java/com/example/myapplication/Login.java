@@ -20,6 +20,7 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -29,6 +30,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -41,6 +43,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 import androidx.annotation.NonNull;
@@ -48,26 +53,31 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Arrays;
+
 public class Login extends AppCompatActivity implements View.OnClickListener {
 
-    private TextView register;
+    private TextView register, tvForgetPassWord;
     private EditText edtEmail, edtPassWord;
     private CallbackManager callbackManager;
     private FirebaseAuth.AuthStateListener authStateListener;
-    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
     private AccessTokenTracker accessTokenTracker;
     private ImageView imgProfile;
     private Button btnLogin;
+    FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private LoginButton loginFacebook;
     private SignInButton loginGoogle;
     private static final String TAO = "FacebookAuthentication";
+    private static final String EMAIL = "email";
     private GoogleSignInClient mGoogleSignInClient;
-    private DatabaseReference mDatabase;
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private final static int RC_SIGN_IN = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.login);
         setControl();
         loginFacebookRegister();
@@ -131,10 +141,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             }
         });
     }
+
     // Ánh xạ tới các view trong layout
     private void setControl() {
         register = (TextView) findViewById(R.id.tvRegister);
         register.setOnClickListener(this);
+        tvForgetPassWord = findViewById(R.id.tvForgotPass);
+        tvForgetPassWord.setOnClickListener(this);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         edtEmail = findViewById(R.id.edtEmail);
         edtPassWord = findViewById(R.id.edtPassword);
@@ -148,20 +161,20 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 signIn();
             }
         });
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        loginFacebook = findViewById(R.id.loginFB);
-        loginFacebook.setReadPermissions("email", "public_profile");
         callbackManager = CallbackManager.Factory.create();
+        loginFacebook = (LoginButton) findViewById(R.id.loginFB);
+        loginFacebook.setPermissions(Arrays.asList(EMAIL, "public_profile"));
+
     }
+
     // Dùng hàm xử lý nút quay lại của thiết bị
     @Override
     public void onBackPressed() {
         alertDialog();
     }
+
     // Xây dựng một Hộp thoại thông báo
-    public void alertDialog()
-    {
+    public void alertDialog() {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         builder1.setMessage("Bạn có muốn thoát khỏi ứng dụng không?");
         builder1.setCancelable(true);
@@ -185,6 +198,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         AlertDialog alert11 = builder1.create();
         alert11.show();
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         callbackManager.onActivityResult(requestCode, resultCode, data);
@@ -224,7 +238,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
     private void handleFacebookToken(AccessToken accessToken) {
         Log.d(TAO, "handleFacebookToken" + accessToken);
-
         AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
         mFirebaseAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -243,16 +256,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void updateUI(FirebaseUser user) {
-        if (user != null) {
 
-            if (user.getPhotoUrl() != null) {
-//                String photoURL = user.getPhotoUrl().toString();
-//                photoURL = photoURL + "?type=large";
-//                Picasso.get().load(photoURL).into(imgProfile);
-            }
-        } else {
-
-        }
     }
 
     @Override
@@ -264,7 +268,28 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             case R.id.btnLogin:
                 Handlelogin();
                 break;
+            case R.id.tvForgotPass:
+                startActivity(new Intent(this, ForgetPassword.class));
         }
+    }
+    private void checkAuthenticate(String uid)
+    {
+        DocumentReference documentReference = firestore.collection("users").document(uid);
+        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.getString("authenticate").equals(DEFAULTVALUE.Admin))
+                {
+                    startActivity(new Intent(Login.this,AdminInterface.class));
+                    finish();
+                }
+                else if (documentSnapshot.getString("authenticate").equals(DEFAULTVALUE.User))
+                {
+                    startActivity(new Intent(Login.this,UserInterface.class));
+                    finish();
+                }
+            }
+        });
     }
     private void Handlelogin() {
         String email = edtEmail.getText().toString().trim();
@@ -293,23 +318,21 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                    if (user.isEmailVerified()) {
-                        User us = new User("",email,0,0,1,0,-1,"",true);
-                        mDatabase.child("users").child(mFirebaseAuth.getUid()).setValue(us);
-                        startActivity(new Intent(Login.this, UserInterface.class));
+                    FirebaseUser user = mFirebaseAuth.getCurrentUser();
+                    if (user.isEmailVerified())
+                    {
+                        checkAuthenticate(user.getUid());
                     } else {
                         user.sendEmailVerification();
                         Toast.makeText(Login.this, "Hãy xác thực email của bạn!", Toast.LENGTH_SHORT).show();
                     }
-                }
-                else
-                {
+                } else {
                     Toast.makeText(Login.this, "Hãy đăng ký tài khoản!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
+
     @Override
     protected void onStart() {
         super.onStart();
