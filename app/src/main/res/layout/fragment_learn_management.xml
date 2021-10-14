@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Admin.LearnManagementFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <RelativeLayout
+            android:layout_width="150dp"
+            android:layout_height="200dp"
+            android:id="@+id/rlt1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/rlt2"
+            app:layout_constraintBottom_toTopOf="@id/rlt3"
+            android:layout_marginTop="20dp"
+            >
+
+            <ImageView
+                android:layout_width="75dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:foregroundGravity="center"
+                android:src="@drawable/ic_email" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="Cấp độ"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:textColor="#B0DA3333"
+                android:layout_marginBottom="10dp"
+                />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="150dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="20dp"
+            android:id="@+id/rlt2"
+            app:layout_constraintLeft_toRightOf="@id/rlt1"
+            app:layout_constraintBottom_toTopOf="@id/rlt4"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            >
+            <ImageView
+                android:layout_width="75dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:foregroundGravity="center"
+                android:src="@drawable/ic_email" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:text="Loại câu hỏi"
+                android:textColor="#B0DA3333"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="150dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="20dp"
+            android:id="@+id/rlt3"
+            app:layout_constraintTop_toBottomOf="@id/rlt1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/rlt4"
+            app:layout_constraintBottom_toTopOf="@id/rlt5"
+            >
+
+            <ImageView
+                android:layout_width="75dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:foregroundGravity="center"
+                android:src="@drawable/ic_email" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:text="Chủ đề"
+                android:textColor="#B0DA3333"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="150dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="20dp"
+            android:id="@+id/rlt4"
+            app:layout_constraintTop_toBottomOf="@id/rlt2"
+            app:layout_constraintLeft_toRightOf="@id/rlt3"
+            app:layout_constraintBottom_toTopOf="@id/rlt6"
+            app:layout_constraintRight_toRightOf="parent"
+            >
+
+            <ImageView
+                android:layout_width="75dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:foregroundGravity="center"
+                android:src="@drawable/ic_email" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:text="Câu hỏi"
+                android:textColor="#B0DA3333"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="150dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="20dp"
+            android:id="@+id/rlt5"
+            app:layout_constraintTop_toBottomOf="@id/rlt3"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/rlt6"
+            app:layout_constraintBottom_toBottomOf="parent"
+            >
+            <ImageView
+                android:layout_width="75dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:foregroundGravity="center"
+                android:src="@drawable/ic_email" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:text="Câu trả lời"
+                android:textColor="#B0DA3333"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="150dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="20dp"
+            android:id="@+id/rlt6"
+            app:layout_constraintTop_toBottomOf="@id/rlt4"
+            app:layout_constraintLeft_toRightOf="@id/rlt5"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            >
+            <ImageView
+                android:layout_width="75dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:foregroundGravity="center"
+                android:src="@drawable/ic_email" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="Học"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:textColor="#B0DA3333"
+                android:layout_marginBottom="10dp"
+                />
+        </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

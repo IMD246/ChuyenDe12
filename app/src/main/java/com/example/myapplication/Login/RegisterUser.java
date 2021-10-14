@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapplication.DEFAULTVALUE;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -115,7 +116,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                                         DocumentReference df = firestore.collection("users").document(user.getUid());
                                         HashMap<String,Object> auThenticateUser = new HashMap<>();
                                         auThenticateUser.put("email",us.getEmail());
-                                        auThenticateUser.put("authenticate",DEFAULTVALUE.User);
+                                        auThenticateUser.put("authenticate", DEFAULTVALUE.USER);
                                         df.set(auThenticateUser);
                                         progressBar.setVisibility(View.VISIBLE);
                                         startActivity(new Intent(RegisterUser.this, Login.class));

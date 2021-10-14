@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.Admin.AdminInterface;
+import com.example.myapplication.DEFAULTVALUE;
 import com.example.myapplication.R;
 import com.example.myapplication.User.UserInterface;
 import com.facebook.AccessToken;
@@ -275,12 +276,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.getString("authenticate").equals(DEFAULTVALUE.Admin))
+                if (documentSnapshot.getString("authenticate").equals(DEFAULTVALUE.ADMIN))
                 {
                     startActivity(new Intent(Login.this, AdminInterface.class));
                     finish();
                 }
-                else if (documentSnapshot.getString("authenticate").equals(DEFAULTVALUE.User))
+                else if (documentSnapshot.getString("authenticate").equals(DEFAULTVALUE.USER))
                 {
                     startActivity(new Intent(Login.this, UserInterface.class));
                     finish();
