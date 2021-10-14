@@ -13,19 +13,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
         <activity
-            android:name=".AdminInterface"
+            android:name=".Admin.AdminInterface"
             android:exported="false" />
         <activity
-            android:name=".ForgetPassword"
+            android:name=".Login.ForgetPassword"
             android:exported="false" />
         <activity
-            android:name=".UserInterface"
+            android:name=".User.UserInterface"
             android:exported="true" />
         <activity
-            android:name=".RegisterUser"
+            android:name=".Login.RegisterUser"
             android:exported="true" />
         <activity
-            android:name=".Login"
+            android:name=".Login.Login"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

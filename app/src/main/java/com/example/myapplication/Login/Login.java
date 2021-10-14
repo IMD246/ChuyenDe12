@@ -1,12 +1,10 @@
-package com.example.myapplication;
+package com.example.myapplication.Login;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,13 +12,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapplication.Admin.AdminInterface;
+import com.example.myapplication.R;
+import com.example.myapplication.User.UserInterface;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -38,11 +38,8 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -280,12 +277,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.getString("authenticate").equals(DEFAULTVALUE.Admin))
                 {
-                    startActivity(new Intent(Login.this,AdminInterface.class));
+                    startActivity(new Intent(Login.this, AdminInterface.class));
                     finish();
                 }
                 else if (documentSnapshot.getString("authenticate").equals(DEFAULTVALUE.User))
                 {
-                    startActivity(new Intent(Login.this,UserInterface.class));
+                    startActivity(new Intent(Login.this, UserInterface.class));
                     finish();
                 }
             }

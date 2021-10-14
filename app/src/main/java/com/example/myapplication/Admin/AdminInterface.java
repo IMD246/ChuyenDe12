@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.Admin;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.myapplication.Login.Login;
+import com.example.myapplication.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class AdminInterface extends AppCompatActivity {
