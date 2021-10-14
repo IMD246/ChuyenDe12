@@ -6,11 +6,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Admin.AdminInterface">
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tab_layout"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/botnav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabSelectedTextColor="@color/black"
+        app:itemTextColor="@color/black"
+        app:menu="@menu/menu"
         />
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPage"

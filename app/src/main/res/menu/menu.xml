@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/learn"
+        android:icon="@drawable/ic_email"
+        android:title="@string/learn_fragment"
+        />
+    <item android:id="@+id/word"
+        android:icon="@drawable/ic_email"
+        android:title="@string/word_fragment"
+        />
+    <item android:id="@+id/analysic"
+        android:icon="@drawable/ic_email"
+        android:title="@string/analysic_fragment"
+        />
+    <item android:id="@+id/account"
+        android:icon="@drawable/ic_email"
+        android:title="@string/account_fragment"
+        />
+    <item android:id="@+id/profile"
+        android:icon="@drawable/ic_email"
+        android:title="@string/profileAdmin_fragmentt"
+        />
+</menu>
