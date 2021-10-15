@@ -29,22 +29,24 @@ public class LevelManagement extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private LevelAdapter levelAdapter;
+    private List<Level>list;
     private ImageView imgAdd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level_management);
+        list = setData();
         recyclerView = findViewById(R.id.rcvLevel);
         levelAdapter = new LevelAdapter(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(recyclerView.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        levelAdapter.setListLevel(setData());
+        levelAdapter.setListLevel(list);
         recyclerView.setAdapter(levelAdapter);
         levelAdapter.setMyDelegationLevel(new LevelAdapter.MyDelegationLevel() {
             @Override
             public void editItem(Level level) {
-                openDialog(Gravity.CENTER,2,level);
+                openDialog(Gravity.CENTER,2, level);
             }
 
             @Override
@@ -97,11 +99,12 @@ public class LevelManagement extends AppCompatActivity {
         if (choice == 2)
         {
             btnYes.setText("Sửa");
-            edtLevel.setText(level.getNameLevel());
+            edtLevel.setText(String.valueOf(level.getNameLevel()));
             btnYes.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(LevelManagement.this, "Sửa"+level.getNameLevel(), Toast.LENGTH_SHORT).show();
+                    editDataList(level,Integer.parseInt(edtLevel.getText().toString()));
+                    Toast.makeText(LevelManagement.this, "Sửa", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -111,11 +114,41 @@ public class LevelManagement extends AppCompatActivity {
             btnYes.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Level level = new Level(3,Integer.parseInt(edtLevel.getText().toString()));
+                    addDataList(level);
+                    levelAdapter.notifyDataSetChanged();
                     Toast.makeText(LevelManagement.this, "Thêm", Toast.LENGTH_SHORT).show();
                 }
             });
         }
         dialog.show();
+    }
+    private void editDataList(Level level,int nameLevel)
+    {
+        int j=0;
+        for (int i=0;i<list.size();i++)
+        {
+            if (level.getNameLevel() == list.get(i).getNameLevel())
+            {
+                j=i;
+                break;
+            }
+        }
+        list.get(j).setNameLevel(nameLevel);
+        levelAdapter.setListLevel(list);
+        levelAdapter.notifyDataSetChanged();
+    }
+    private void deleteDataList(Level level)
+    {
+        list.remove(level);
+        levelAdapter.setListLevel(list);
+        levelAdapter.notifyDataSetChanged();
+    }
+    private void addDataList(Level level)
+    {
+        list.add(level);
+        levelAdapter.setListLevel(list);
+        levelAdapter.notifyDataSetChanged();
     }
     // Xây dựng một Hộp thoại thông báo
     public void alertDialog(Level level) {
@@ -126,7 +159,8 @@ public class LevelManagement extends AppCompatActivity {
                 "Có",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Toast.makeText(LevelManagement.this, "Xóa"+level.getNameLevel(), Toast.LENGTH_SHORT).show();
+                        deleteDataList(level);
+                        Toast.makeText(LevelManagement.this, "Xóa", Toast.LENGTH_SHORT).show();
                     }
                 });
 

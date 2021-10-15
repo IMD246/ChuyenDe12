@@ -78,9 +78,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.login);
         setControl();
-        loginFacebookRegister();
-        getDataAndTrackerToken();
-        createRequestGoogle();
+//        loginFacebookRegister();
+//        getDataAndTrackerToken();
+//        createRequestGoogle();
     }
 
     private void createRequestGoogle() {
@@ -331,17 +331,17 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mFirebaseAuth.addAuthStateListener(authStateListener);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (authStateListener != null) {
-            mFirebaseAuth.removeAuthStateListener(authStateListener);
-        }
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        mFirebaseAuth.addAuthStateListener(authStateListener);
+//    }
+//
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        if (authStateListener != null) {
+//            mFirebaseAuth.removeAuthStateListener(authStateListener);
+//        }
+//    }
 }

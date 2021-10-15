@@ -30,7 +30,6 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHol
 
     public void setListLevel(List<Level> listLevel) {
         this.listLevel = listLevel;
-        notifyDataSetChanged();
     }
 
     @NonNull
