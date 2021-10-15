@@ -4,17 +4,21 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.example.myapplication.Admin.LearnManagement.LearnItem;
+import com.example.myapplication.Admin.LearnManagement.LevelManagement;
+import com.example.myapplication.DEFAULTVALUE;
 import com.example.myapplication.Login.Login;
 import com.example.myapplication.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class AdminInterface extends AppCompatActivity {
@@ -110,5 +114,17 @@ public class AdminInterface extends AppCompatActivity {
                 });
         AlertDialog alert11 = builder1.create();
         alert11.show();
+    }
+    public void Transaction(LearnItem learnItem)
+    {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        if (learnItem.getName().equals(DEFAULTVALUE.LEVEL))
+        {
+            startActivity(new Intent(AdminInterface.this, LevelManagement.class));
+        }
+        else
+        {
+            Toast.makeText(getApplicationContext(), "Level2", Toast.LENGTH_SHORT).show();
+        }
     }
 }
