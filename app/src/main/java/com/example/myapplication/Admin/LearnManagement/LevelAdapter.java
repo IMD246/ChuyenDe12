@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,12 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHolder> {
+public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHolder> implements Filterable {
 
     private Context context;
     private List<Level>listLevel;
+    private List<Level>listLevelOld;
     private MyDelegationLevel myDelegationLevel;
 
     public void setMyDelegationLevel(MyDelegationLevel myDelegationLevel) {
@@ -30,6 +34,7 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHol
 
     public void setListLevel(List<Level> listLevel) {
         this.listLevel = listLevel;
+        listLevelOld = listLevel;
     }
 
     @NonNull
@@ -70,6 +75,41 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHol
             return listLevel.size();
         }
         return 0;
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String strSearch = constraint.toString();
+                if (strSearch.isEmpty() || strSearch.length() == 0)
+                {
+                    listLevel = listLevelOld;
+                }
+                else
+                {
+                    List<Level> list = new ArrayList<>();
+                    for (Level level : listLevelOld)
+                    {
+                        if (level.getNameLevel() == Integer.parseInt(strSearch))
+                        {
+                            list.add(level);
+                        }
+                    }
+                    listLevel = list;
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = listLevel;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                listLevel = (List<Level>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public static class LevelViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{

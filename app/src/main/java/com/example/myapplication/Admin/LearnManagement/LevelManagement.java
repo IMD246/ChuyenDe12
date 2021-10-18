@@ -2,16 +2,21 @@ package com.example.myapplication.Admin.LearnManagement;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
+import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.renderscript.ScriptGroup;
 import android.text.InputType;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -30,11 +35,13 @@ public class LevelManagement extends AppCompatActivity {
     private RecyclerView recyclerView;
     private LevelAdapter levelAdapter;
     private List<Level>list;
+    SearchView searchView;
     private ImageView imgAdd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level_management);
+        searchView = findViewById(R.id.svLevel);
         list = setData();
         recyclerView = findViewById(R.id.rcvLevel);
         levelAdapter = new LevelAdapter(this);
@@ -61,9 +68,21 @@ public class LevelManagement extends AppCompatActivity {
                 openDialog(Gravity.CENTER,1,null);
             }
         });
-    }
+        searchView.setInputType(InputType.TYPE_CLASS_NUMBER);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
-    private void openDialog(int center,int choice,Level level) {
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                levelAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+    }
+    private void openDialog(int center, int choice, Level level) {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.addeditlevel);
