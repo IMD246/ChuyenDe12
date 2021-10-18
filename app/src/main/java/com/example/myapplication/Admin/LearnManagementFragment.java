@@ -37,7 +37,7 @@ public class LearnManagementFragment extends Fragment implements View.OnClickLis
     {
         learnItemList = new ArrayList<>();
         learnItemList.add(new LearnItem(DEFAULTVALUE.LEVEL,R.drawable.level));
-        learnItemList.add(new LearnItem(DEFAULTVALUE.TYPELEVEL,R.drawable.type));
+        learnItemList.add(new LearnItem(DEFAULTVALUE.TYPEQUESTION,R.drawable.type));
         learnItemList.add(new LearnItem(DEFAULTVALUE.TOPIC,R.drawable.topic));
         learnItemList.add(new LearnItem(DEFAULTVALUE.QUESTION,R.drawable.question));
         learnItemList.add(new LearnItem(DEFAULTVALUE.ANSWER,R.drawable.answer));

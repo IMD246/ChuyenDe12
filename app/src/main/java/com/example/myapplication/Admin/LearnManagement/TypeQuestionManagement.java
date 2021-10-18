@@ -26,35 +26,35 @@ import com.example.myapplication.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LevelManagement extends AppCompatActivity {
+public class TypeQuestionManagement extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private LevelAdapter levelAdapter;
-    private List<Level>list;
+    private TypeQuestionAdapter typeQuestionAdapter;
+    private List<TypeQuestion> list;
     SearchView searchView;
     private ImageView imgAdd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_level_management);
-        searchView = findViewById(R.id.svLevel);
+        setContentView(R.layout.activity_type_question_management);
+        searchView = findViewById(R.id.svTypeQuestion);
         list = setData();
-        recyclerView = findViewById(R.id.rcvLevel);
-        levelAdapter = new LevelAdapter(this);
+        recyclerView = findViewById(R.id.rcvTypeQuestion);
+        typeQuestionAdapter = new TypeQuestionAdapter(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(recyclerView.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        levelAdapter.setListLevel(list);
-        recyclerView.setAdapter(levelAdapter);
-        levelAdapter.setMyDelegationLevel(new LevelAdapter.MyDelegationLevel() {
+        typeQuestionAdapter.setTypeQuestionList(list);
+        recyclerView.setAdapter(typeQuestionAdapter);
+        typeQuestionAdapter.setMyDelegationLevel(new TypeQuestionAdapter.MyDelegationLevel() {
             @Override
-            public void editItem(Level level) {
-                openDialog(Gravity.CENTER,2, level);
+            public void editItem(TypeQuestion typeQuestion) {
+                openDialog(Gravity.CENTER,2, typeQuestion);
             }
 
             @Override
-            public void deleteItem(Level level) {
-                alertDialog(level);
+            public void deleteItem(TypeQuestion typeQuestion) {
+                alertDialog(typeQuestion);
             }
         });
         imgAdd = findViewById(R.id.imgAdd);
@@ -64,7 +64,6 @@ public class LevelManagement extends AppCompatActivity {
                 openDialog(Gravity.CENTER,1,null);
             }
         });
-        searchView.setInputType(InputType.TYPE_CLASS_NUMBER);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -72,12 +71,12 @@ public class LevelManagement extends AppCompatActivity {
             }
             @Override
             public boolean onQueryTextChange(String newText) {
-                levelAdapter.getFilter().filter(newText);
+                typeQuestionAdapter.getFilter().filter(newText);
                 return false;
             }
         });
     }
-    private void openDialog(int center, int choice, Level level) {
+    private void openDialog(int center, int choice, TypeQuestion typeQuestion) {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.addeditlevel);
@@ -101,9 +100,9 @@ public class LevelManagement extends AppCompatActivity {
             dialog.setCancelable(false);
         }
         EditText edtLevel = dialog.findViewById(R.id.edtLevel);
+        edtLevel.setHint("TypeQuestion");
         Button btnYes = dialog.findViewById(R.id.btnYes);
         Button btnNo = dialog.findViewById(R.id.btnNo);
-        edtLevel.setInputType(InputType.TYPE_CLASS_NUMBER);
         btnNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,12 +112,12 @@ public class LevelManagement extends AppCompatActivity {
         if (choice == 2)
         {
             btnYes.setText("Sửa");
-            edtLevel.setText(String.valueOf(level.getNameLevel()));
+            edtLevel.setText(typeQuestion.getTypeQuestionName());
             btnYes.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    editDataList(level,Integer.parseInt(edtLevel.getText().toString()));
-                    Toast.makeText(LevelManagement.this, "Sửa", Toast.LENGTH_SHORT).show();
+                    editDataList(typeQuestion,edtLevel.getText().toString());
+                    Toast.makeText(TypeQuestionManagement.this, "Sửa", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -128,44 +127,43 @@ public class LevelManagement extends AppCompatActivity {
             btnYes.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Level level = new Level(3,Integer.parseInt(edtLevel.getText().toString()));
-                    addDataList(level);
-                    levelAdapter.notifyDataSetChanged();
-                    Toast.makeText(LevelManagement.this, "Thêm", Toast.LENGTH_SHORT).show();
+                    TypeQuestion typeQuestion1 = new TypeQuestion(3,edtLevel.getText().toString());
+                    addDataList(typeQuestion1);
+                    Toast.makeText(TypeQuestionManagement.this, "Thêm", Toast.LENGTH_SHORT).show();
                 }
             });
         }
         dialog.show();
     }
-    private void editDataList(Level level,int nameLevel)
+    private void editDataList(TypeQuestion typeQuestion,String nameLevel)
     {
         int j=0;
         for (int i=0;i<list.size();i++)
         {
-            if (level.getNameLevel() == list.get(i).getNameLevel())
+            if (typeQuestion.getTypeQuestionName() == list.get(i).getTypeQuestionName())
             {
                 j=i;
                 break;
             }
         }
-        list.get(j).setNameLevel(nameLevel);
-        levelAdapter.setListLevel(list);
-        levelAdapter.notifyDataSetChanged();
+        list.get(j).setTypeQuestionName(nameLevel);
+        typeQuestionAdapter.setTypeQuestionList(list);
+        typeQuestionAdapter.notifyDataSetChanged();
     }
-    private void deleteDataList(Level level)
+    private void deleteDataList(TypeQuestion typeQuestion)
     {
-        list.remove(level);
-        levelAdapter.setListLevel(list);
-        levelAdapter.notifyDataSetChanged();
+        list.remove(typeQuestion);
+        typeQuestionAdapter.setTypeQuestionList(list);
+        typeQuestionAdapter.notifyDataSetChanged();
     }
-    private void addDataList(Level level)
+    private void addDataList(TypeQuestion typeQuestion)
     {
-        list.add(level);
-        levelAdapter.setListLevel(list);
-        levelAdapter.notifyDataSetChanged();
+        list.add(typeQuestion);
+        typeQuestionAdapter.setTypeQuestionList(list);
+        typeQuestionAdapter.notifyDataSetChanged();
     }
     // Xây dựng một Hộp thoại thông báo
-    public void alertDialog(Level level) {
+    public void alertDialog(TypeQuestion typeQuestion) {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         builder1.setMessage("Bạn có muốn xóa không?");
         builder1.setCancelable(true);
@@ -173,8 +171,8 @@ public class LevelManagement extends AppCompatActivity {
                 "Có",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        deleteDataList(level);
-                        Toast.makeText(LevelManagement.this, "Xóa", Toast.LENGTH_SHORT).show();
+                        deleteDataList(typeQuestion);
+                        Toast.makeText(TypeQuestionManagement.this, "Xóa", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -185,16 +183,15 @@ public class LevelManagement extends AppCompatActivity {
                         dialog.cancel();
                     }
                 });
-
         AlertDialog alert11 = builder1.create();
         alert11.show();
     }
-    private List<Level> setData() {
-        List<Level>list = new ArrayList<>();
-        Level level = new Level(1,1);
-        Level level1 = new Level(2,2);
-        list.add(level);
-        list.add(level1);
+    private List<TypeQuestion> setData() {
+        List<TypeQuestion>list = new ArrayList<>();
+        TypeQuestion typeQuestion1 = new TypeQuestion(1,"Viết");
+        TypeQuestion typeQuestion2 = new TypeQuestion(2,"Đọc");
+        list.add(typeQuestion1);
+        list.add(typeQuestion2);
         return list;
     }
 }

@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.myapplication.Admin.LearnManagement.LearnItem;
 import com.example.myapplication.Admin.LearnManagement.LevelManagement;
+import com.example.myapplication.Admin.LearnManagement.TypeQuestionManagement;
 import com.example.myapplication.DEFAULTVALUE;
 import com.example.myapplication.Login.Login;
 import com.example.myapplication.R;
@@ -122,9 +123,9 @@ public class AdminInterface extends AppCompatActivity {
         {
             startActivity(new Intent(AdminInterface.this, LevelManagement.class));
         }
-        else
+        else if (learnItem.getName().equals(DEFAULTVALUE.TYPEQUESTION))
         {
-            Toast.makeText(getApplicationContext(), "Level2", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(AdminInterface.this, TypeQuestionManagement.class));
         }
     }
 }

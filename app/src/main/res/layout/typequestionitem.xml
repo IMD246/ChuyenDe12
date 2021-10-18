@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="3dp"
+    app:cardElevation="3dp"
+    app:cardUseCompatPadding="true">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        >
+        <TextView
+            android:id="@+id/tvNumberTypeQuestion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:textSize="30dp"
+            android:gravity="center"
+            />
+        <TextView
+            android:id="@+id/tvTypeQuestion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toEndOf="@id/tvNumberTypeQuestion"
+            android:layout_toRightOf="@id/tvNumberTypeQuestion"
+            android:gravity="center"
+            android:text="Type Question: Viết"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+        <ImageView
+            android:id="@+id/imgDelete"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginStart="10dp"
+            android:layout_toRightOf="@id/tvTypeQuestion"
+            android:layout_toEndOf="@id/tvTypeQuestion"
+            android:src="@drawable/ic_lock"
+            />
+        <ImageView
+            android:id="@+id/imgEdit"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginStart="10dp"
+            android:layout_toRightOf="@id/imgDelete"
+            android:layout_toEndOf="@id/imgDelete"
+            android:src="@drawable/ic_email"
+            />
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
