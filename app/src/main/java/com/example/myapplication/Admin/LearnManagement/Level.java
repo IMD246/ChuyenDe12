@@ -9,6 +9,9 @@ public class Level {
         this.nameLevel = nameLevel;
     }
 
+    public Level() {
+    }
+
     public int getId() {
         return id;
     }

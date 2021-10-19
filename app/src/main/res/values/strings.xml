@@ -17,6 +17,12 @@
     <string name="analysic_fragment">Phân tích</string>
     <string name="account_fragment">Tài khoản</string>
     <string name="profileAdmin_fragmentt">Cá nhân</string>
+    <array name="listLevel">
+        <item>1</item>
+        <item>2</item>
+    </array>
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

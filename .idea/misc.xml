@@ -18,10 +18,12 @@
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/layout/activity_levelmanagement.xml" value="0.1859375" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/layout/activity_register_user.xml" value="0.12447916666666667" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/layout/activity_topic_management.xml" value="0.13360507246376813" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/layout/activity_topic_management_fragment.xml" value="0.25" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/layout/activity_type_question_management.xml" value="0.11955420466058764" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/layout/activity_user_interface.xml" value="0.25" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/layout/addeditlevel.xml" value="0.11026615969581749" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/layout/addedittopic.xml" value="0.264" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/layout/forget_password.xml" value="0.8" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/layout/fragment_account_user_management.xml" value="0.25" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/layout/fragment_analysic_user.xml" value="0.11828774062816616" />
@@ -30,8 +32,11 @@
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/layout/fragment_topic_management.xml" value="0.25" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/layout/learnitem.xml" value="0.25" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/layout/levelitem.xml" value="0.25" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/layout/listoptionitem.xml" value="0.13360507246376813" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/layout/listoptionitem1.xml" value="0.13360507246376813" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/layout/login.xml" value="0.25" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/layout/register_user.xml" value="0.264" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/layout/topicitem.xml" value="0.264" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/layout/typequestionitem.xml" value="0.11955420466058764" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/menu/menu.xml" value="0.25" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/menu/searchmenu_level.xml" value="0.1" />

@@ -9,4 +9,5 @@ public class DEFAULTVALUE {
     public static String ANSWER = "Câu trả lời";
     public static String LEARNTOPIC = "Học";
     public static String QUESTION = "Câu hỏi";
+    public static String ALL = "All";
 }
