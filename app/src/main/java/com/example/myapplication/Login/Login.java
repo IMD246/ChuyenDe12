@@ -36,6 +36,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
@@ -269,25 +270,23 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 startActivity(new Intent(this, ForgetPassword.class));
         }
     }
-    private void checkAuthenticate(String uid)
-    {
+
+    private void checkAuthenticate(String uid) {
         DocumentReference documentReference = firestore.collection("users").document(uid);
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.getString("authenticate").equals(DEFAULTVALUE.Admin))
-                {
+                if (documentSnapshot.getString("authenticate").equals(DEFAULTVALUE.Admin)) {
                     startActivity(new Intent(Login.this, AdminInterface.class));
                     finish();
-                }
-                else if (documentSnapshot.getString("authenticate").equals(DEFAULTVALUE.User))
-                {
+                } else if (documentSnapshot.getString("authenticate").equals(DEFAULTVALUE.User)) {
                     startActivity(new Intent(Login.this, UserInterface.class));
                     finish();
                 }
             }
         });
     }
+
     private void Handlelogin() {
         String email = edtEmail.getText().toString().trim();
         String password = edtPassWord.getText().toString().trim();
@@ -316,15 +315,79 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     FirebaseUser user = mFirebaseAuth.getCurrentUser();
-                    if (user.isEmailVerified())
-                    {
+                    if (user.isEmailVerified()) {
                         checkAuthenticate(user.getUid());
                     } else {
                         user.sendEmailVerification();
                         Toast.makeText(Login.this, "Hãy xác thực email của bạn!", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(Login.this, "Hãy đăng ký tài khoản!", Toast.LENGTH_SHORT).show();
+                    String errorCode = ((FirebaseAuthException) task.getException()).getErrorCode();
+                    switch (errorCode) {
+                        case "ERROR_INVALID_CUSTOM_TOKEN":
+                            Toast.makeText(Login.this, "The custom token format is incorrect. Please check the documentation.", Toast.LENGTH_LONG).show();
+                            break;
+
+                        case "ERROR_CUSTOM_TOKEN_MISMATCH":
+                            Toast.makeText(Login.this, "The custom token corresponds to a different audience.", Toast.LENGTH_LONG).show();
+                            break;
+
+                        case "ERROR_INVALID_CREDENTIAL":
+                            Toast.makeText(Login.this, "The supplied auth credential is malformed or has expired.", Toast.LENGTH_LONG).show();
+                            break;
+
+                        case "ERROR_INVALID_EMAIL":
+                            Toast.makeText(Login.this, "The email address is badly formatted.", Toast.LENGTH_LONG).show();
+                            edtEmail.setError("The email address is badly formatted.");
+                            edtEmail.requestFocus();
+                            break;
+                        case "ERROR_WRONG_PASSWORD":
+                            edtPassWord.setError("Sai Mật Khẩu");
+                            edtPassWord.requestFocus();
+                            break;
+
+                        case "ERROR_USER_MISMATCH":
+                            Toast.makeText(Login.this, "The supplied credentials do not correspond to the previously signed in user.", Toast.LENGTH_LONG).show();
+                            break;
+
+                        case "ERROR_REQUIRES_RECENT_LOGIN":
+                            Toast.makeText(Login.this, "This operation is sensitive and requires recent authentication. Log in again before retrying this request.", Toast.LENGTH_LONG).show();
+                            break;
+
+                        case "ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL":
+                            Toast.makeText(Login.this, "An account already exists with the same email address but different sign-in credentials. Sign in using a provider associated with this email address.", Toast.LENGTH_LONG).show();
+                            break;
+
+                        case "ERROR_EMAIL_ALREADY_IN_USE":
+                            Toast.makeText(Login.this, "The email address is already in use by another account.   ", Toast.LENGTH_LONG).show();
+                            edtEmail.setError("The email address is already in use by another account.");
+                            edtEmail.requestFocus();
+                            break;
+
+                        case "ERROR_CREDENTIAL_ALREADY_IN_USE":
+                            Toast.makeText(Login.this, "This credential is already associated with a different user account.", Toast.LENGTH_LONG).show();
+                            break;
+
+                        case "ERROR_USER_DISABLED":
+                            Toast.makeText(Login.this, "The user account has been disabled by an administrator.", Toast.LENGTH_LONG).show();
+                            break;
+
+                        case "ERROR_USER_TOKEN_EXPIRED":
+                            Toast.makeText(Login.this, "The user\\'s credential is no longer valid. The user must sign in again.", Toast.LENGTH_LONG).show();
+                            break;
+
+                        case "ERROR_USER_NOT_FOUND":
+                            Toast.makeText(Login.this, "Tài khoản không tồn tại , hãy đăng ký tài khoản", Toast.LENGTH_LONG).show();
+                            break;
+
+                        case "ERROR_INVALID_USER_TOKEN":
+                            Toast.makeText(Login.this, "The user\\'s credential is no longer valid. The user must sign in again.", Toast.LENGTH_LONG).show();
+                            break;
+
+                        case "ERROR_OPERATION_NOT_ALLOWED":
+                            Toast.makeText(Login.this, "This operation is not allowed. You must enable this service in the console.", Toast.LENGTH_LONG).show();
+                            break;
+                    }
                 }
             }
         });
