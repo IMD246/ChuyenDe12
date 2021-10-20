@@ -41,6 +41,7 @@ public class TopicManagement extends AppCompatActivity {
     private String level;
     private SearchView searchView;
     private ImageView imgAdd;
+    private int index;
     private Level level1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +124,17 @@ public class TopicManagement extends AppCompatActivity {
         ImageView imgTopic = dialog.findViewById(R.id.imgaddeditTopic);
         AutoCompleteTextView autoCompleteTextView1 = dialog.findViewById(R.id.atcaddeditTopic_Level);
         autoCompleteTextView1.setAdapter(new LevelSpinnerAdapter(this,R.layout.listoptionitem,R.id.tvOptionItem,listLevel));
+        if (topic!=null)
+        {
+            for (int i=0; i<list.size();i++)
+            {
+                if (topic.getId() == list.get(i).getId())
+                {
+                    index = i;
+                    break;
+                }
+            }
+        }
         autoCompleteTextView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
