@@ -1,6 +1,5 @@
 package com.example.myapplication.Admin.LearnManagement;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,19 +8,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
-import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -31,19 +27,15 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.myapplication.DEFAULTVALUE;
+import com.example.myapplication.Admin.LearnManagement.DAO.DAOImageStorage;
+import com.example.myapplication.Admin.LearnManagement.DAO.DAOLevel;
+import com.example.myapplication.Admin.LearnManagement.DAO.DAOTopic;
 import com.example.myapplication.R;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,36 +43,41 @@ public class TopicManagement extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private TopicAdapter topicAdapter;
-    private List<Topic> list;
-    private List<Level> listLevel;
+    private DAOTopic daoTopic;
+    private DAOLevel daoLevel;
+    private DAOImageStorage daoImageStorage;
     private AutoCompleteTextView autoCompleteTextView;
     private String level;
     private Uri mImgURL;
     private SearchView searchView;
     private ImageView imgAdd;
-    private static final int PICK_IMAGE_REQUEST = 1;
-    private int index;
     private ImageView imgTopic;
-    private Level level1;
-    private StorageReference storageReference;
-    private DatabaseReference databaseReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_topic_management);
-        storageReference = FirebaseStorage.getInstance().getReference("images");
-        databaseReference = FirebaseDatabase.getInstance().getReference("images");
+        initUI();
+        getDataFirebase();
+    }
+
+    private void getDataFirebase() {
+        daoTopic.getDataFromRealTimeFirebase(topicAdapter);
+    }
+
+    private void initUI() {
+        daoImageStorage = new DAOImageStorage(this);
+        daoLevel = new DAOLevel(this);
+        daoLevel.getDataFromRealTimeToList(null);
+        daoTopic = new DAOTopic(this);
         searchView = findViewById(R.id.svTopic);
-        list = setData();
-        listLevel = setDataListLevel();
         autoCompleteTextView = findViewById(R.id.atcTopic_Level);
-        autoCompleteTextView.setAdapter(new LevelSpinnerAdapter(this,R.layout.listoptionitem,R.id.tvOptionItem,listLevel));
+        autoCompleteTextView.setAdapter(new LevelSpinnerAdapter(this,R.layout.listoptionitem,R.id.tvOptionItem,daoLevel.getLevelList()));
         recyclerView = findViewById(R.id.rcvTopic);
         topicAdapter = new TopicAdapter(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(recyclerView.VERTICAL);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        topicAdapter.setTopicList(list);
+        topicAdapter.setTopicList(daoTopic.getTopicList());
         recyclerView.setAdapter(topicAdapter);
         topicAdapter.setMyDelegationLevel(new TopicAdapter.MyDelegationLevel() {
             @Override
@@ -119,43 +116,23 @@ public class TopicManagement extends AppCompatActivity {
             }
         });
     }
-    private void uploadFile(String topicName)
-    {
-        if (mImgURL!=null)
-        {
-            StorageReference fileReference = storageReference.child(topicName);
-            fileReference.putFile(mImgURL).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    imgTopic.setImageURI(null);
-                    Toast.makeText(TopicManagement.this, "Upload file successful", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-        else
-        {
-            Toast.makeText(this, "Không có file nào được chọn", Toast.LENGTH_SHORT).show();
-        }
-    }
-    private void openFileChoose()
+
+    public void openFileChoose()
     {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent,PICK_IMAGE_REQUEST);
+        startActivityForResult(intent, 100);
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data !=null && data.getData()!=null)
+        if (requestCode == 100 && resultCode == RESULT_OK && data !=null && data.getData()!=null)
         {
-            mImgURL = data.getData();
-            Picasso.get().load(mImgURL).into(imgTopic);
-            imgTopic.setImageURI(mImgURL);
+            daoImageStorage.setmImgURL(data.getData());
+            imgTopic.setImageURI(daoImageStorage.getmImgURL());
         }
     }
-
     private int getSelectedSpinner(Spinner spinner , String word)
     {
         for (int i=0; i< spinner.getCount();i++)
@@ -201,7 +178,7 @@ public class TopicManagement extends AppCompatActivity {
             }
         });
         List<String> list = new ArrayList<>();
-        for (Level level : listLevel)
+        for (Level level : daoLevel.getLevelList())
         {
             list.add(String.valueOf(level.getNameLevel()));
         }
@@ -222,14 +199,9 @@ public class TopicManagement extends AppCompatActivity {
         {
             btnYes.setText("Sửa");
             edtTopic.setText(topic.getNameTopic());
-            if (topic.getUrlImageTopic().length() > 0) {
-                Picasso.get().load(topic.getUrlImageTopic()).into(imgTopic);
-            }
             btnYes.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    editDataList(topic,edtTopic.getText().toString());
-                    uploadFile("Topic " + topic.getId());
                     Toast.makeText(TopicManagement.this, "Sửa", Toast.LENGTH_SHORT).show();
                 }
             });
@@ -240,46 +212,24 @@ public class TopicManagement extends AppCompatActivity {
             btnYes.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (level1==null)
-                    {
-                        level1 = new Level(1,1);
-                    }
-                    if (mImgURL != null) {
-                        Topic topic = new Topic(3, level1.getId(), level1.getNameLevel(), edtTopic.getText().toString(),mImgURL.toString());
-                        uploadFile("Topic " + topic.getId());
-                        addDataList(topic);
-                    }
-                    Toast.makeText(TopicManagement.this, "Thêm", Toast.LENGTH_SHORT).show();
+                        Topic topic = new Topic();
+                        topic.setId(daoTopic.getTopicList().get(daoTopic.getTopicList().size()-1).getId()+1);
+                        topic.setNameTopic(edtTopic.getText().toString());
+                        topic.setLevel(Integer.parseInt(spnTopic.getSelectedItem().toString()));
+                        for (Level level : daoLevel.getLevelList())
+                        {
+                            if (level.getNameLevel() == topic.getLevel())
+                            {
+                                topic.setIdLevel(level.getId());
+                                break;
+                            }
+                        }
+                        daoImageStorage.uploadFile(imgTopic,"Topic",topic.getId());
+                        daoTopic.addDataToFireBase(topic,edtTopic);
                 }
             });
         }
         dialog.show();
-    }
-    private void editDataList(Topic topic,String nameTopic)
-    {
-        int j=0;
-        for (int i=0;i<list.size();i++)
-        {
-            if (topic.getNameTopic() == list.get(i).getNameTopic())
-            {
-                j=i;
-                break;
-            }
-        }
-        list.get(j).setNameTopic(nameTopic);
-        list.get(j).setUrlImageTopic(mImgURL.toString());
-        topicAdapter.setTopicList(list);
-    }
-    private void deleteDataList(Topic topic)
-    {
-        list.remove(topic);
-        topicAdapter.setTopicList(list);
-    }
-    private void addDataList(Topic topic)
-    {
-        Toast.makeText(this, ""+mImgURL.toString(), Toast.LENGTH_SHORT).show();
-        list.add(topic);
-        topicAdapter.setTopicList(list);
     }
     // Xây dựng một Hộp thoại thông báo
     public void alertDialog(Topic topic) {
@@ -290,7 +240,6 @@ public class TopicManagement extends AppCompatActivity {
                 "Có",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        deleteDataList(topic);
                         Toast.makeText(TopicManagement.this, "Xóa", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -305,22 +254,5 @@ public class TopicManagement extends AppCompatActivity {
 
         AlertDialog alert11 = builder1.create();
         alert11.show();
-    }
-    private List<Topic> setData() {
-        List<Topic>list = new ArrayList<>();
-        Topic topic = new Topic(1,1,1,"Cơ bản","");
-        Topic topic1 = new Topic(2,2,2,"Cơ bản 1","");
-        list.add(topic);
-        list.add(topic1);
-        return list;
-    }
-    private List<Level>setDataListLevel()
-    {
-        List<Level>list = new ArrayList<>();
-        Level level = new Level(1,1);
-        Level level1 = new Level(2,2);
-        list.add(level);
-        list.add(level1);
-        return list;
     }
 }

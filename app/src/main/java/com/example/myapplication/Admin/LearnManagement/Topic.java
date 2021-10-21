@@ -2,14 +2,24 @@ package com.example.myapplication.Admin.LearnManagement;
 
 public class Topic {
     private int id,idLevel,level;
-    String nameTopic,urlImageTopic;
+    String nameTopic;
 
-    public Topic(int id, int idLevel, int level, String nameTopic, String urlImageTopic) {
+    public Topic(int id, int idLevel, int level, String nameTopic) {
         this.id = id;
         this.idLevel = idLevel;
         this.level = level;
         this.nameTopic = nameTopic;
-        this.urlImageTopic = urlImageTopic;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Topic() {
+    }
+
+    public void setIdLevel(int idLevel) {
+        this.idLevel = idLevel;
     }
 
     public int getLevel() {
@@ -32,15 +42,7 @@ public class Topic {
         return nameTopic;
     }
 
-    public String getUrlImageTopic() {
-        return urlImageTopic;
-    }
-
     public void setNameTopic(String nameTopic) {
         this.nameTopic = nameTopic;
-    }
-
-    public void setUrlImageTopic(String urlImageTopic) {
-        this.urlImageTopic = urlImageTopic;
     }
 }

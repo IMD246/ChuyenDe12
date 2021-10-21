@@ -49,7 +49,10 @@ public class DAOLevel {
                     Level level = dataSnapshot.getValue(Level.class);
                     levelList.add(level);
                 }
-                levelAdapter.notifyDataSetChanged();
+                if (levelAdapter != null)
+                {
+                    levelAdapter.notifyDataSetChanged();
+                }
             }
 
             @Override

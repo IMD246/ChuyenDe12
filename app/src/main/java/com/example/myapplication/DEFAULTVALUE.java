@@ -1,13 +1,14 @@
 package com.example.myapplication;
 
 public class DEFAULTVALUE {
-    public static String ADMIN = "Admin";
-    public static String USER = "User";
-    public static String LEVEL = "Cấp độ";
-    public static String TYPEQUESTION = "Loại câu hỏi";
-    public static String TOPIC = "Chủ đề";
-    public static String ANSWER = "Câu trả lời";
-    public static String LEARNTOPIC = "Học";
-    public static String QUESTION = "Câu hỏi";
-    public static String ALL = "All";
+    final public static String ADMIN = "Admin";
+    final public static String USER = "User";
+    final public static String LEVEL = "Cấp độ";
+    final public static String TYPEQUESTION = "Loại câu hỏi";
+    final public static String TOPIC = "Chủ đề";
+    final public static String ANSWER = "Câu trả lời";
+    final public static String LEARNTOPIC = "Học";
+    final public static String QUESTION = "Câu hỏi";
+    final public static String ALL = "All";
+    final public static String LEVELLABEL = "Level";
 }

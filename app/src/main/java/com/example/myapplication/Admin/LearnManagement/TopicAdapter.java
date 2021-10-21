@@ -1,6 +1,9 @@
 package com.example.myapplication.Admin.LearnManagement;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +15,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.Admin.LearnManagement.DAO.DAOImageStorage;
 import com.example.myapplication.DEFAULTVALUE;
 import com.example.myapplication.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +36,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
     private Context context;
     private List<Topic> topicList;
     private List<Topic>topicListOld;
+    private StorageReference firebaseStorage;
 
     private MyDelegationLevel myDelegationLevel;
 
@@ -40,9 +53,9 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
         topicListOld = topicList;
         notifyDataSetChanged();
     }
-    public void setTopicListDependOnLevel(String level)
+    public void setTopicListDependOnLevel(@NonNull String level)
     {
-        if (level == "Level")
+        if (level.equals(DEFAULTVALUE.LEVELLABEL.trim()))
         {
             topicList = topicListOld;
         }
@@ -72,15 +85,27 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
         Topic topic = topicList.get(position);
         if (topic==null)
         {return;}
+        try {
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference("images/Topic "+topic.getId());
+            File file = File.createTempFile("tempfile",".jpg");
+            storageReference.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                    holder.imgTopic.setImageBitmap(bitmap);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                }
+            });
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
         holder.tvLevel.setText("Level: "+String.valueOf(topic.getLevel()));
         holder.tvNameTopic.setText("Topic: "+topic.getNameTopic());
-        if (topic.getUrlImageTopic().length() == 0) {
 
-        }
-        else
-        {
-            Picasso.get().load(topic.getUrlImageTopic()).into(holder.imgTopic);
-        }
         holder.onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
