@@ -19,9 +19,13 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapplication.Admin.LearnManagement.DAO.DAOLevel;
 import com.example.myapplication.R;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,21 +34,27 @@ public class LevelManagement extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private LevelAdapter levelAdapter;
-    private List<Level>list;
-    SearchView searchView;
+    private List<Level> list;
+    private SearchView searchView;
+    private DAOLevel daoLevel;
     private ImageView imgAdd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level_management);
+        initUI();
+        setDataListFromRealTimeFireBase();
+    }
+
+    private void initUI() {
+        daoLevel = new DAOLevel(this);
         searchView = findViewById(R.id.svLevel);
-        list = setData();
         recyclerView = findViewById(R.id.rcvLevel);
         levelAdapter = new LevelAdapter(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(recyclerView.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        levelAdapter.setListLevel(list);
+        levelAdapter.setListLevel(daoLevel.getLevelList());
         recyclerView.setAdapter(levelAdapter);
         levelAdapter.setMyDelegationLevel(new LevelAdapter.MyDelegationLevel() {
             @Override
@@ -77,6 +87,11 @@ public class LevelManagement extends AppCompatActivity {
             }
         });
     }
+    private void setDataListFromRealTimeFireBase()
+    {
+        daoLevel.getDataFromRealTimeToList(levelAdapter);
+    }
+    // tạo hộp thoại để thêm và sửa dữ liệu
     private void openDialog(int center, int choice, Level level) {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -87,11 +102,14 @@ public class LevelManagement extends AppCompatActivity {
         {return;}
         window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
         WindowManager.LayoutParams windowAttributes = window.getAttributes();
         windowAttributes.gravity = center;
         window.setAttributes(windowAttributes);
-
+        EditText edtLevel = dialog.findViewById(R.id.edtLevel);
+        TextView tvThemSua = dialog.findViewById(R.id.tvThemSua);
+        Button btnYes = dialog.findViewById(R.id.btnYes);
+        Button btnNo = dialog.findViewById(R.id.btnNo);
+        edtLevel.setInputType(InputType.TYPE_CLASS_NUMBER);
         if (Gravity.CENTER == center)
         {
             dialog.setCancelable(true);
@@ -100,10 +118,6 @@ public class LevelManagement extends AppCompatActivity {
         {
             dialog.setCancelable(false);
         }
-        EditText edtLevel = dialog.findViewById(R.id.edtLevel);
-        Button btnYes = dialog.findViewById(R.id.btnYes);
-        Button btnNo = dialog.findViewById(R.id.btnNo);
-        edtLevel.setInputType(InputType.TYPE_CLASS_NUMBER);
         btnNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,12 +127,12 @@ public class LevelManagement extends AppCompatActivity {
         if (choice == 2)
         {
             btnYes.setText("Sửa");
+            tvThemSua.setText("Sửa dữ liệu");
             edtLevel.setText(String.valueOf(level.getNameLevel()));
             btnYes.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    editDataList(level,Integer.parseInt(edtLevel.getText().toString()));
-                    Toast.makeText(LevelManagement.this, "Sửa", Toast.LENGTH_SHORT).show();
+                    daoLevel.editDataToFireBase(level,edtLevel);
                 }
             });
         }
@@ -128,41 +142,11 @@ public class LevelManagement extends AppCompatActivity {
             btnYes.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Level level = new Level(3,Integer.parseInt(edtLevel.getText().toString()));
-                    addDataList(level);
-                    levelAdapter.notifyDataSetChanged();
-                    Toast.makeText(LevelManagement.this, "Thêm", Toast.LENGTH_SHORT).show();
+                    daoLevel.addDataToFireBase(edtLevel);
                 }
             });
         }
         dialog.show();
-    }
-    private void editDataList(Level level,int nameLevel)
-    {
-        int j=0;
-        for (int i=0;i<list.size();i++)
-        {
-            if (level.getNameLevel() == list.get(i).getNameLevel())
-            {
-                j=i;
-                break;
-            }
-        }
-        list.get(j).setNameLevel(nameLevel);
-        levelAdapter.setListLevel(list);
-        levelAdapter.notifyDataSetChanged();
-    }
-    private void deleteDataList(Level level)
-    {
-        list.remove(level);
-        levelAdapter.setListLevel(list);
-        levelAdapter.notifyDataSetChanged();
-    }
-    private void addDataList(Level level)
-    {
-        list.add(level);
-        levelAdapter.setListLevel(list);
-        levelAdapter.notifyDataSetChanged();
     }
     // Xây dựng một Hộp thoại thông báo
     public void alertDialog(Level level) {
@@ -173,8 +157,7 @@ public class LevelManagement extends AppCompatActivity {
                 "Có",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        deleteDataList(level);
-                        Toast.makeText(LevelManagement.this, "Xóa", Toast.LENGTH_SHORT).show();
+                        daoLevel.deleteDataToFire(level);
                     }
                 });
 
