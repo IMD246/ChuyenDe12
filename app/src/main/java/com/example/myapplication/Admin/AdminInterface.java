@@ -119,7 +119,6 @@ public class AdminInterface extends AppCompatActivity {
     }
     public void Transaction(LearnItem learnItem)
     {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         if (learnItem.getName().equals(DEFAULTVALUE.LEVEL))
         {
             startActivity(new Intent(AdminInterface.this, LevelManagement.class));

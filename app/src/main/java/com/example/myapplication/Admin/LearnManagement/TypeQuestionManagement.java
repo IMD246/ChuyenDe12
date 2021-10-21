@@ -19,8 +19,10 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapplication.Admin.LearnManagement.DAO.DAOTypeQuestion;
 import com.example.myapplication.R;
 
 import java.util.ArrayList;
@@ -30,21 +32,26 @@ public class TypeQuestionManagement extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private TypeQuestionAdapter typeQuestionAdapter;
-    private List<TypeQuestion> list;
-    SearchView searchView;
+    private DAOTypeQuestion daoTypeQuestion;
+    private SearchView searchView;
     private ImageView imgAdd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_type_question_management);
+        initUI();
+        getDataFromFireBase();
+    }
+
+    private void initUI() {
+        daoTypeQuestion = new DAOTypeQuestion(this);
         searchView = findViewById(R.id.svTypeQuestion);
-        list = setData();
         recyclerView = findViewById(R.id.rcvTypeQuestion);
         typeQuestionAdapter = new TypeQuestionAdapter(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(recyclerView.VERTICAL);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        typeQuestionAdapter.setTypeQuestionList(list);
+        typeQuestionAdapter.setTypeQuestionList(daoTypeQuestion.getTypeQuestionList());
         recyclerView.setAdapter(typeQuestionAdapter);
         typeQuestionAdapter.setMyDelegationLevel(new TypeQuestionAdapter.MyDelegationLevel() {
             @Override
@@ -76,17 +83,19 @@ public class TypeQuestionManagement extends AppCompatActivity {
             }
         });
     }
+    private void getDataFromFireBase() {
+        daoTypeQuestion.getDataFromRealTimeToList(typeQuestionAdapter);
+    }
+
     private void openDialog(int center, int choice, TypeQuestion typeQuestion) {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.addeditlevel);
-
         Window window = dialog.getWindow();
         if (window==null)
         {return;}
         window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
         WindowManager.LayoutParams windowAttributes = window.getAttributes();
         windowAttributes.gravity = center;
         window.setAttributes(windowAttributes);
@@ -99,8 +108,9 @@ public class TypeQuestionManagement extends AppCompatActivity {
         {
             dialog.setCancelable(false);
         }
-        EditText edtLevel = dialog.findViewById(R.id.edtLevel);
-        edtLevel.setHint("TypeQuestion");
+        EditText edtTypeQuestion = dialog.findViewById(R.id.edtLevel);
+        edtTypeQuestion.setHint("TypeQuestion");
+        TextView textView = dialog.findViewById(R.id.tvThemSua);
         Button btnYes = dialog.findViewById(R.id.btnYes);
         Button btnNo = dialog.findViewById(R.id.btnNo);
         btnNo.setOnClickListener(new View.OnClickListener() {
@@ -111,13 +121,13 @@ public class TypeQuestionManagement extends AppCompatActivity {
         });
         if (choice == 2)
         {
+            textView.setText("Sửa dữ liệu");
             btnYes.setText("Sửa");
-            edtLevel.setText(typeQuestion.getTypeQuestionName());
+            edtTypeQuestion.setText(typeQuestion.getTypeQuestionName());
             btnYes.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    editDataList(typeQuestion,edtLevel.getText().toString());
-                    Toast.makeText(TypeQuestionManagement.this, "Sửa", Toast.LENGTH_SHORT).show();
+                    daoTypeQuestion.editDataToFireBase(typeQuestion,edtTypeQuestion);
                 }
             });
         }
@@ -127,40 +137,11 @@ public class TypeQuestionManagement extends AppCompatActivity {
             btnYes.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    TypeQuestion typeQuestion1 = new TypeQuestion(3,edtLevel.getText().toString());
-                    addDataList(typeQuestion1);
-                    Toast.makeText(TypeQuestionManagement.this, "Thêm", Toast.LENGTH_SHORT).show();
+                    daoTypeQuestion.addDataToFireBase(edtTypeQuestion);
                 }
             });
         }
         dialog.show();
-    }
-    private void editDataList(TypeQuestion typeQuestion,String nameLevel)
-    {
-        int j=0;
-        for (int i=0;i<list.size();i++)
-        {
-            if (typeQuestion.getTypeQuestionName() == list.get(i).getTypeQuestionName())
-            {
-                j=i;
-                break;
-            }
-        }
-        list.get(j).setTypeQuestionName(nameLevel);
-        typeQuestionAdapter.setTypeQuestionList(list);
-        typeQuestionAdapter.notifyDataSetChanged();
-    }
-    private void deleteDataList(TypeQuestion typeQuestion)
-    {
-        list.remove(typeQuestion);
-        typeQuestionAdapter.setTypeQuestionList(list);
-        typeQuestionAdapter.notifyDataSetChanged();
-    }
-    private void addDataList(TypeQuestion typeQuestion)
-    {
-        list.add(typeQuestion);
-        typeQuestionAdapter.setTypeQuestionList(list);
-        typeQuestionAdapter.notifyDataSetChanged();
     }
     // Xây dựng một Hộp thoại thông báo
     public void alertDialog(TypeQuestion typeQuestion) {
@@ -171,8 +152,7 @@ public class TypeQuestionManagement extends AppCompatActivity {
                 "Có",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        deleteDataList(typeQuestion);
-                        Toast.makeText(TypeQuestionManagement.this, "Xóa", Toast.LENGTH_SHORT).show();
+                        daoTypeQuestion.deleteDataToFire(typeQuestion);
                     }
                 });
 
@@ -185,13 +165,5 @@ public class TypeQuestionManagement extends AppCompatActivity {
                 });
         AlertDialog alert11 = builder1.create();
         alert11.show();
-    }
-    private List<TypeQuestion> setData() {
-        List<TypeQuestion>list = new ArrayList<>();
-        TypeQuestion typeQuestion1 = new TypeQuestion(1,"Viết");
-        TypeQuestion typeQuestion2 = new TypeQuestion(2,"Đọc");
-        list.add(typeQuestion1);
-        list.add(typeQuestion2);
-        return list;
     }
 }

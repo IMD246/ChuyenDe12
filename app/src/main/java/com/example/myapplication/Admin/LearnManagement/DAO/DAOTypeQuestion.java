@@ -10,7 +10,8 @@ import androidx.annotation.Nullable;
 
 import com.example.myapplication.Admin.LearnManagement.Level;
 import com.example.myapplication.Admin.LearnManagement.LevelAdapter;
-import com.example.myapplication.Admin.LearnManagement.LevelManagement;
+import com.example.myapplication.Admin.LearnManagement.TypeQuestion;
+import com.example.myapplication.Admin.LearnManagement.TypeQuestionAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -20,41 +21,40 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-public class DAOLevel {
-    private List<Level> levelList;
+public class DAOTypeQuestion {
+    private List<TypeQuestion> typeQuestionList;
     private DatabaseReference databaseReference;
-
-    public List<Level> getLevelList() {
-        return levelList;
-    }
-
     private Context context;
 
-    public DAOLevel(Context context) {
-        this.context = context;
-        levelList = new ArrayList<>();
-        databaseReference = FirebaseDatabase.getInstance().getReference("listlevel");
+
+    public List<TypeQuestion> getTypeQuestionList() {
+        return typeQuestionList;
     }
-    public void getDataFromRealTimeToList(LevelAdapter levelAdapter) {
+
+    public DAOTypeQuestion(Context context) {
+        this.context = context;
+        typeQuestionList = new ArrayList<TypeQuestion>();
+        databaseReference = FirebaseDatabase.getInstance().getReference("listtypequestion");
+    }
+
+    public void getDataFromRealTimeToList(TypeQuestionAdapter typeQuestionAdapter) {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (levelList != null) {
-                    levelList.clear();
+                if (typeQuestionList != null) {
+                    typeQuestionList.clear();
                 }
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Level level = dataSnapshot.getValue(Level.class);
-                    levelList.add(level);
-                }
-                levelAdapter.notifyDataSetChanged();
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        TypeQuestion typeQuestion = dataSnapshot.getValue(TypeQuestion.class);
+                        typeQuestionList.add(typeQuestion);
+                    }
+                typeQuestionAdapter.notifyDataSetChanged();
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(context, "Get list Level failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Get list Type Question failed", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -62,17 +62,17 @@ public class DAOLevel {
     public void addDataToFireBase(EditText editText) {
         boolean[] check = new boolean[2];
         int s = 1;
-        String namelevel = editText.getText().toString().trim();
+        String nameTypeQuestion = editText.getText().toString().trim();
         for (int i = 0; i < check.length; i++) {
             check[i] = true;
         }
-        if (namelevel.isEmpty() || namelevel.length() == 0) {
+        if (nameTypeQuestion.isEmpty() || nameTypeQuestion.length() == 0) {
             check[0] = false;
         } else {
-            if (levelList.size() > 0)
+            if (typeQuestionList.size() > 0)
             {
-                for (Level level1 : levelList) {
-                    if (Integer.parseInt(namelevel) == level1.getNameLevel()) {
+                for (TypeQuestion typeQuestion1 : typeQuestionList) {
+                    if (nameTypeQuestion.equalsIgnoreCase(typeQuestion1.getTypeQuestionName())) {
                         check[1] = false;
                         break;
                     }
@@ -86,12 +86,12 @@ public class DAOLevel {
             editText.setError("Trùng dữ liệu");
             editText.requestFocus();
         } else {
-            if (levelList.size() > 0)
+            if (typeQuestionList.size() > 0)
             {
-                s = levelList.get(levelList.size() - 1).getId() + 1;
+                s = typeQuestionList.get(typeQuestionList.size() - 1).getId() + 1;
             }
-            Level level2 = new Level(s, Integer.parseInt(editText.getText().toString()));
-            databaseReference.child(String.valueOf(level2.getId())).setValue(level2).addOnCompleteListener(new OnCompleteListener<Void>() {
+            TypeQuestion typeQuestion = new TypeQuestion(s, editText.getText().toString());
+            databaseReference.child(String.valueOf(typeQuestion.getId())).setValue(typeQuestion).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isComplete()) {
@@ -101,17 +101,17 @@ public class DAOLevel {
             });
         }
     }
-    public void editDataToFireBase(Level level, EditText editText) {
+    public void editDataToFireBase(TypeQuestion typeQuestion, EditText editText) {
         boolean[] check = new boolean[2];
         for (int i = 0; i < check.length; i++) {
             check[i] = true;
         }
-        String namelevel = editText.getText().toString().trim();
-        if (namelevel.isEmpty() || namelevel.length() == 0) {
+        String nameTypeQuestion = editText.getText().toString();
+        if (nameTypeQuestion.isEmpty() || nameTypeQuestion.length() == 0) {
             check[0] = false;
         } else {
-            for (Level level1 : levelList) {
-                if (Integer.parseInt(namelevel) == level1.getNameLevel()) {
+            for (TypeQuestion typeQuestion1 : typeQuestionList) {
+                if (nameTypeQuestion.equalsIgnoreCase(typeQuestion1.getTypeQuestionName())) {
                     check[1] = false;
                     break;
                 }
@@ -124,8 +124,8 @@ public class DAOLevel {
             editText.setError("Trùng dữ liệu");
             editText.requestFocus();
         } else {
-            Level level2 = new Level(level.getId(),Integer.parseInt(editText.getText().toString()));
-            databaseReference.child(String.valueOf(level2.getId())).setValue(level2).addOnCompleteListener(new OnCompleteListener<Void>() {
+            TypeQuestion typeQuestion2 = new TypeQuestion(typeQuestion.getId(),editText.getText().toString());
+            databaseReference.child(String.valueOf(typeQuestion2.getId())).setValue(typeQuestion2).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isComplete()) {
@@ -136,8 +136,8 @@ public class DAOLevel {
         }
     }
 
-    public void deleteDataToFire(Level level) {
-        databaseReference.child(String.valueOf(level.getId())).removeValue(new DatabaseReference.CompletionListener() {
+    public void deleteDataToFire(TypeQuestion typeQuestion) {
+        databaseReference.child(String.valueOf(typeQuestion.getId())).removeValue(new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                 Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();

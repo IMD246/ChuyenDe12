@@ -51,7 +51,7 @@ public class TypeQuestionAdapter extends RecyclerView.Adapter<TypeQuestionAdapte
         if (typeQuestion==null)
         {return;}
         holder.tvNumber.setText(String.valueOf(position+1));
-        holder.tvName.setText("TypeQuestion: "+String.valueOf(typeQuestion.getTypeQuestionName()));
+        holder.tvName.setText("TypeQuestion: "+typeQuestion.getTypeQuestionName());
         holder.onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {

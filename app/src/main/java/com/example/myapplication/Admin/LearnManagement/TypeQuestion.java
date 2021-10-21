@@ -1,20 +1,19 @@
 package com.example.myapplication.Admin.LearnManagement;
 
 public class TypeQuestion {
-    private int id;
-    private String typeQuestionName;
+    int id;
+    String typeQuestionName;
 
     public TypeQuestion(int id, String typeQuestionName) {
         this.id = id;
         this.typeQuestionName = typeQuestionName;
     }
 
-    public int getId() {
-        return id;
+    public TypeQuestion() {
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public int getId() {
+        return id;
     }
 
     public String getTypeQuestionName() {

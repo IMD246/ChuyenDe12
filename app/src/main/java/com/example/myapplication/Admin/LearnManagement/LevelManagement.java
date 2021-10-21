@@ -45,7 +45,6 @@ public class LevelManagement extends AppCompatActivity {
         initUI();
         setDataListFromRealTimeFireBase();
     }
-
     private void initUI() {
         daoLevel = new DAOLevel(this);
         searchView = findViewById(R.id.svLevel);
