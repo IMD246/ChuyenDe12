@@ -1,9 +1,8 @@
-package com.example.myapplication.Admin.LearnManagement;
+package com.example.myapplication.Admin.LearnManagement.Adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,16 +14,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myapplication.Admin.LearnManagement.DAO.DAOImageStorage;
+import com.example.myapplication.Admin.LearnManagement.DTO.Topic;
 import com.example.myapplication.DEFAULTVALUE;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -62,7 +59,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
         else
         {
             List<Topic> list = new ArrayList<>();
-            for (Topic topic : topicListOld)
+            for (Topic topic : topicList)
             {
                 if (topic.getLevel() == Integer.parseInt(level.toLowerCase().trim()))
                 {
@@ -131,7 +128,6 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
         }
         return 0;
     }
-
     @Override
     public Filter getFilter() {
         return new Filter() {

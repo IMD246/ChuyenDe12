@@ -12,15 +12,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.myapplication.Admin.LearnManagement.LearnItem;
-import com.example.myapplication.Admin.LearnManagement.LearnItemAdapter;
+import com.example.myapplication.Admin.LearnManagement.DTO.LearnItem;
+import com.example.myapplication.Admin.LearnManagement.Adapter.LearnItemAdapter;
 import com.example.myapplication.DEFAULTVALUE;
 import com.example.myapplication.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LearnManagementFragment extends Fragment implements View.OnClickListener{
+public class LearnManagementFragment extends Fragment{
 
     private RecyclerView rcvLearnItem;
     private List<LearnItem>learnItemList;
@@ -72,13 +72,5 @@ public class LearnManagementFragment extends Fragment implements View.OnClickLis
             }
         });
         return view;
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId())
-        {
-
-        }
     }
 }

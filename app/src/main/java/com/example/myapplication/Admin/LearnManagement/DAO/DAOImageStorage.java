@@ -1,24 +1,14 @@
 package com.example.myapplication.Admin.LearnManagement.DAO;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
-import com.example.myapplication.Admin.LearnManagement.TopicManagement;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
-import java.io.File;
-import java.io.IOException;
 
 public class DAOImageStorage {
     private StorageReference storageReference;
@@ -38,8 +28,9 @@ public class DAOImageStorage {
     }
     public void uploadFile(ImageView imageView , String name, int id)
     {
+        if (mImgURL !=null)
+        {
         StorageReference fileReference = storageReference.child(name+" "+id);
-        if (mImgURL !=null) {
             fileReference.putFile(mImgURL).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {

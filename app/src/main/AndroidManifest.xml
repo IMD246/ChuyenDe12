@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
         <activity
+            android:name=".Admin.QuestionInterface"
+            android:exported="false" />
+        <activity
             android:name=".Admin.LearnManagement.TopicManagement"
             android:exported="false" />
         <activity

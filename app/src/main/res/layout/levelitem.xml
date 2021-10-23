@@ -42,7 +42,7 @@
             android:layout_marginLeft="100dp"
             android:layout_toEndOf="@id/tvTitleLevel"
             android:layout_toRightOf="@id/tvTitleLevel"
-            android:src="@drawable/ic_lock" />
+            android:src="@drawable/ic_delete" />
 
         <ImageView
             android:id="@+id/imgEdit"
@@ -52,6 +52,6 @@
             android:layout_marginLeft="100dp"
             android:layout_toEndOf="@id/imgDelete"
             android:layout_toRightOf="@id/imgDelete"
-            android:src="@drawable/ic_email" />
+            android:src="@drawable/ic_edit" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

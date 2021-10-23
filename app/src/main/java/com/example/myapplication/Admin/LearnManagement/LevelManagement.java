@@ -22,12 +22,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapplication.Admin.LearnManagement.Adapter.LevelAdapter;
+import com.example.myapplication.Admin.LearnManagement.DAO.DAOQuestion;
+import com.example.myapplication.Admin.LearnManagement.DTO.Level;
 import com.example.myapplication.Admin.LearnManagement.DAO.DAOLevel;
 import com.example.myapplication.R;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LevelManagement extends AppCompatActivity {
@@ -170,13 +170,5 @@ public class LevelManagement extends AppCompatActivity {
 
         AlertDialog alert11 = builder1.create();
         alert11.show();
-    }
-    private List<Level> setData() {
-        List<Level>list = new ArrayList<>();
-        Level level = new Level(1,1);
-        Level level1 = new Level(2,2);
-        list.add(level);
-        list.add(level1);
-        return list;
     }
 }

@@ -4,16 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import com.example.myapplication.Admin.LearnManagement.LearnItem;
+import com.example.myapplication.Admin.LearnManagement.DTO.LearnItem;
 import com.example.myapplication.Admin.LearnManagement.LevelManagement;
 import com.example.myapplication.Admin.LearnManagement.TopicManagement;
 import com.example.myapplication.Admin.LearnManagement.TypeQuestionManagement;
@@ -130,6 +128,10 @@ public class AdminInterface extends AppCompatActivity {
         else if (learnItem.getName().equals(DEFAULTVALUE.TOPIC))
         {
             startActivity(new Intent(AdminInterface.this, TopicManagement.class));
+        }
+        else if (learnItem.getName().equals(DEFAULTVALUE.QUESTION))
+        {
+            startActivity(new Intent(AdminInterface.this, QuestionInterface.class));
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.myapplication.Admin.LearnManagement;
+package com.example.myapplication.Admin.LearnManagement.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.Admin.LearnManagement.DTO.LearnItem;
 import com.example.myapplication.R;
 
 import java.util.List;

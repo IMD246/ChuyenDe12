@@ -1,4 +1,4 @@
-package com.example.myapplication.Admin.LearnManagement;
+package com.example.myapplication.Admin.LearnManagement.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,9 +12,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.Admin.LearnManagement.DTO.TypeQuestion;
 import com.example.myapplication.R;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 

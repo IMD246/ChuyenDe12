@@ -24,12 +24,11 @@
             android:layout_width="70dp"
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
-            android:src="@drawable/ic_lock"
+            android:src="@drawable/ic_add"
             app:layout_constraintLeft_toRightOf="@id/svTypeQuestion"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcvTypeQuestion"
             android:layout_width="match_parent"

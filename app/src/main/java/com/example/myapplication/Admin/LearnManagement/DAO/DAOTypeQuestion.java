@@ -1,17 +1,14 @@
 package com.example.myapplication.Admin.LearnManagement.DAO;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.myapplication.Admin.LearnManagement.Level;
-import com.example.myapplication.Admin.LearnManagement.LevelAdapter;
-import com.example.myapplication.Admin.LearnManagement.TypeQuestion;
-import com.example.myapplication.Admin.LearnManagement.TypeQuestionAdapter;
+import com.example.myapplication.Admin.LearnManagement.DTO.TypeQuestion;
+import com.example.myapplication.Admin.LearnManagement.Adapter.TypeQuestionAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -50,7 +47,9 @@ public class DAOTypeQuestion {
                         TypeQuestion typeQuestion = dataSnapshot.getValue(TypeQuestion.class);
                         typeQuestionList.add(typeQuestion);
                     }
-                typeQuestionAdapter.notifyDataSetChanged();
+                if (typeQuestionAdapter != null) {
+                    typeQuestionAdapter.notifyDataSetChanged();
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -135,7 +134,6 @@ public class DAOTypeQuestion {
             });
         }
     }
-
     public void deleteDataToFire(TypeQuestion typeQuestion) {
         databaseReference.child(String.valueOf(typeQuestion.getId())).removeValue(new DatabaseReference.CompletionListener() {
             @Override

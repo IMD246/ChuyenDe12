@@ -14,59 +14,54 @@
         android:layout_marginRight="10dp"
         >
         <ImageView
-            android:id="@+id/imgEdit_Topic"
+            android:id="@+id/imgEdit_Question"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginEnd="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/imgDelete_Topic"
+            app:layout_constraintLeft_toRightOf="@id/imgDelete_Question"
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/ic_edit"/>
 
-        <ImageView
-            android:id="@+id/imgvTopic"
-            android:layout_width="75dp"
-            android:layout_height="100dp"
-            android:src="@drawable/ic_search"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+        <TextView
+            android:id="@+id/tvQuestion"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="Câu hỏi"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/tvTopic_Question"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
             />
 
         <TextView
-            android:id="@+id/tvTopic"
+            android:id="@+id/tvTopic_Question"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintHorizontal_bias="0.5"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:text="TextView"
+            android:text="Chủ đề"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/tvTopic_Level"
-            app:layout_constraintStart_toEndOf="@+id/imgvTopic"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toTopOf="@id/tvTypeQuestion_Question"
+            app:layout_constraintTop_toBottomOf="@+id/tvQuestion"
+            app:layout_constraintLeft_toLeftOf="parent" />
 
         <TextView
-            android:id="@+id/tvTopic_Level"
+            android:id="@+id/tvTypeQuestion_Question"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintHorizontal_bias="0.5"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Loại câu hỏi"
             android:textStyle="bold"
-            android:text="TextView"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imgvTopic"
-            app:layout_constraintTop_toBottomOf="@+id/tvTopic" />
-
+            app:layout_constraintTop_toBottomOf="@+id/tvTopic_Question"
+            app:layout_constraintLeft_toLeftOf="parent" />
         <ImageView
-            android:id="@+id/imgDelete_Topic"
+            android:id="@+id/imgDelete_Question"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imgEdit_Topic"
+            app:layout_constraintEnd_toStartOf="@+id/imgEdit_Question"
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/ic_delete"/>
     </androidx.constraintlayout.widget.ConstraintLayout>

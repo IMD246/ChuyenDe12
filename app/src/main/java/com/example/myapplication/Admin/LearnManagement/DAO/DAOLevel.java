@@ -1,16 +1,14 @@
 package com.example.myapplication.Admin.LearnManagement.DAO;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.myapplication.Admin.LearnManagement.Level;
-import com.example.myapplication.Admin.LearnManagement.LevelAdapter;
-import com.example.myapplication.Admin.LearnManagement.LevelManagement;
+import com.example.myapplication.Admin.LearnManagement.DTO.Level;
+import com.example.myapplication.Admin.LearnManagement.Adapter.LevelAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -20,7 +18,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class DAOLevel {

@@ -1,4 +1,4 @@
-package com.example.myapplication.Admin.LearnManagement;
+package com.example.myapplication.Admin.LearnManagement.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,26 +6,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.myapplication.Admin.LearnManagement.DTO.Topic;
+import com.example.myapplication.Admin.LearnManagement.DTO.TypeQuestion;
 import com.example.myapplication.R;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-public class LevelSpinnerAdapter extends ArrayAdapter<Level> {
+public class TypeQuestionSpinnerAdapter extends ArrayAdapter<TypeQuestion> {
 
-    private List<Level> listLevel;
-    public LevelSpinnerAdapter(@NonNull Context context, int resource, int textViewResourceId, @NonNull List<Level> objects) {
+    private List<TypeQuestion> typeQuestionList;
+
+    public TypeQuestionSpinnerAdapter(@NonNull Context context, int resource, int textViewResourceId, @NonNull List<TypeQuestion> objects) {
         super(context, resource, textViewResourceId, objects);
-        listLevel = new ArrayList<>(objects);
+        typeQuestionList = new ArrayList<>(objects);
     }
-
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -33,9 +33,9 @@ public class LevelSpinnerAdapter extends ArrayAdapter<Level> {
         {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.listoptionitem,parent,false);
         }
-        Level level = getItem(position);
+        TypeQuestion typeQuestion = getItem(position);
         TextView tvOption = convertView.findViewById(R.id.tvOptionItem);
-        tvOption.setText(String.valueOf(level.getNameLevel()));
+        tvOption.setText(String.valueOf(typeQuestion.getTypeQuestionName()));
 
         return convertView;
     }
@@ -45,19 +45,19 @@ public class LevelSpinnerAdapter extends ArrayAdapter<Level> {
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-                List<Level> list = new ArrayList<>();
+                List<TypeQuestion> list = new ArrayList<>();
                 if (constraint == null || constraint.length() ==0)
                 {
-                    list.addAll(listLevel);
+                    list.addAll(typeQuestionList);
                 }
                 else
                 {
-                    String keyword = constraint.toString().toLowerCase().trim();
-                    for (Level level : listLevel)
+                    String keyword = constraint.toString().toLowerCase();
+                    for (TypeQuestion typeQuestion : typeQuestionList)
                     {
-                        if (Integer.parseInt(keyword) == level.getNameLevel())
+                        if (typeQuestion.getTypeQuestionName().toLowerCase().contains(keyword))
                         {
-                            list.add(level);
+                            list.add(typeQuestion);
                         }
                     }
                 }
@@ -70,14 +70,13 @@ public class LevelSpinnerAdapter extends ArrayAdapter<Level> {
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 clear();
-                addAll((List<Level>)results.values);
+                addAll((List<TypeQuestion>)results.values);
                 notifyDataSetChanged();
             }
 
             @Override
             public CharSequence convertResultToString(Object resultValue) {
-                String s = Integer.toString(((Level) resultValue).getNameLevel());
-                return s;
+                return ((TypeQuestion) resultValue).getTypeQuestionName();
             }
         };
     }

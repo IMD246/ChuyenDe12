@@ -11,7 +11,6 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -20,13 +19,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.myapplication.Admin.LearnManagement.Adapter.TypeQuestionAdapter;
+import com.example.myapplication.Admin.LearnManagement.DTO.TypeQuestion;
 import com.example.myapplication.Admin.LearnManagement.DAO.DAOTypeQuestion;
 import com.example.myapplication.R;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class TypeQuestionManagement extends AppCompatActivity {
 

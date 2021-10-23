@@ -1,4 +1,4 @@
-package com.example.myapplication.Admin.LearnManagement;
+package com.example.myapplication.Admin.LearnManagement.DTO;
 
 public class TypeQuestion {
     int id;

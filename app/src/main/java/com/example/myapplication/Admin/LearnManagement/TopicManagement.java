@@ -1,5 +1,6 @@
 package com.example.myapplication.Admin.LearnManagement;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,9 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -25,17 +27,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
+import com.example.myapplication.Admin.LearnManagement.Adapter.LevelSpinnerAdapter;
+import com.example.myapplication.Admin.LearnManagement.Adapter.TopicAdapter;
+import com.example.myapplication.Admin.LearnManagement.DTO.Level;
+import com.example.myapplication.Admin.LearnManagement.DTO.Topic;
 import com.example.myapplication.Admin.LearnManagement.DAO.DAOImageStorage;
 import com.example.myapplication.Admin.LearnManagement.DAO.DAOLevel;
 import com.example.myapplication.Admin.LearnManagement.DAO.DAOTopic;
 import com.example.myapplication.R;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +56,6 @@ public class TopicManagement extends AppCompatActivity {
     private DAOImageStorage daoImageStorage;
     private AutoCompleteTextView autoCompleteTextView;
     private String level;
-    private Uri mImgURL;
     private SearchView searchView;
     private ImageView imgAdd;
     private ImageView imgTopic;
@@ -79,6 +86,7 @@ public class TopicManagement extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
         topicAdapter.setTopicList(daoTopic.getTopicList());
         recyclerView.setAdapter(topicAdapter);
+        recyclerView.scrollToPosition(topicAdapter.getItemCount() -1);
         topicAdapter.setMyDelegationLevel(new TopicAdapter.MyDelegationLevel() {
             @Override
             public void editItem(Topic topic) {
@@ -199,10 +207,41 @@ public class TopicManagement extends AppCompatActivity {
         {
             btnYes.setText("Sửa");
             edtTopic.setText(topic.getNameTopic());
+            try {
+                StorageReference storageReference = FirebaseStorage.getInstance().getReference("images/Topic "+topic.getId());
+                File file = File.createTempFile("tempfile",".jpg");
+                storageReference.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                        imgTopic.setImageBitmap(bitmap);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                    }
+                });
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
             btnYes.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(TopicManagement.this, "Sửa", Toast.LENGTH_SHORT).show();
+                    Topic topic1 = new Topic();
+                    topic1.setId(topic.getId());
+                    topic1.setNameTopic(edtTopic.getText().toString());
+                    topic1.setLevel(Integer.parseInt(spnTopic.getSelectedItem().toString()));
+                    for (Level level : daoLevel.getLevelList())
+                    {
+                        if (level.getNameLevel() == topic1.getLevel())
+                        {
+                            topic1.setIdLevel(level.getId());
+                            break;
+                        }
+                    }
+                    daoImageStorage.uploadFile(imgTopic,"Topic ",topic.getId());
+                    daoTopic.editDataToFireBase(topic1,edtTopic);
                 }
             });
         }
@@ -240,7 +279,7 @@ public class TopicManagement extends AppCompatActivity {
                 "Có",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Toast.makeText(TopicManagement.this, "Xóa", Toast.LENGTH_SHORT).show();
+                        daoTopic.deleteDataToFire(topic);
                     }
                 });
 
