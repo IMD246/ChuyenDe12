@@ -18,17 +18,14 @@ import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.example.myapplication.Admin.LearnManagement.Adapter.LevelAdapter;
-import com.example.myapplication.Admin.LearnManagement.Adapter.LevelSpinnerAdapter;
 import com.example.myapplication.Admin.LearnManagement.Adapter.QuestionAdapter;
 import com.example.myapplication.Admin.LearnManagement.Adapter.TopicSpinnerAdapter;
 import com.example.myapplication.Admin.LearnManagement.Adapter.TypeQuestionSpinnerAdapter;
 import com.example.myapplication.Admin.LearnManagement.DAO.DAOQuestion;
 import com.example.myapplication.Admin.LearnManagement.DAO.DAOTopic;
 import com.example.myapplication.Admin.LearnManagement.DAO.DAOTypeQuestion;
-import com.example.myapplication.Admin.LearnManagement.DTO.Level;
 import com.example.myapplication.Admin.LearnManagement.DTO.Question;
-import com.example.myapplication.Admin.LearnManagement.DTO.TypeQuestion;
+import com.example.myapplication.DEFAULTVALUE;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -37,6 +34,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.Inflater;
 
 
 public class QuestionManagementFragment extends Fragment implements View.OnClickListener{
@@ -45,25 +43,28 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
     private DAOQuestion daoQuestion;
     private DAOTypeQuestion daoTypeQuestion;
     private DAOTopic daoTopic;
-    private Context context;
-    private View v;
     private ImageView imgAdd;
     private SearchView svQuestion;
     private List<String>listQuestion;
-    private AutoCompleteTextView atcTopic,atcTypeQuestion,atcQuestion;
+    private AutoCompleteTextView atcTopic,atcTypeQuestion;
+    String topic = DEFAULTVALUE.TOPIC,typeQuestion = DEFAULTVALUE.TYPEQUESTION;
     private QuestionAdapter questionAdapter;
-    public QuestionManagementFragment(Context context) {
-        this.context = context;
-        daoTopic = new DAOTopic(context);
-        daoQuestion = new DAOQuestion(context);
-        daoTypeQuestion = new DAOTypeQuestion(context);
-        questionAdapter = new QuestionAdapter(context);
+    public QuestionManagementFragment() {
+        daoTopic = new DAOTopic(getContext());
+        daoQuestion = new DAOQuestion(getContext());
+        daoTypeQuestion = new DAOTypeQuestion(getContext());
+        questionAdapter = new QuestionAdapter(getContext());
     }
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
     }
 
+    @Override
+    public void onCreate( Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
     @Override
     public void onResume() {
         super.onResume();
@@ -72,63 +73,66 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        v = LayoutInflater.from(context).inflate(R.layout.fragment_question_management,container,false);
-        initUI();
+        View v = inflater.inflate(R.layout.fragment_question_management,container,false);
+        initUI(v);
         getDataFromRealTime();
         return v;
     }
-    private void initUI() {
+    private void initUI(View v) {
+        rcvQuestion = v.findViewById(R.id.rcvQuestion);
         atcTopic = v.findViewById(R.id.atcQuestion_Topic);
+        svQuestion = v.findViewById(R.id.svQuestion);
         imgAdd = v.findViewById(R.id.imgAddQuestion);
         imgAdd.setOnClickListener(this);
         atcTypeQuestion = v.findViewById(R.id.atcQuestion_TypeQuestion);
-        atcQuestion = v.findViewById(R.id.atcQuestion);
-        rcvQuestion = v.findViewById(R.id.rcvQuestion);
-        atcTopic.setAdapter(new TopicSpinnerAdapter(context,R.layout.listoptionitem,R.id.tvOptionItem,daoTopic.getTopicList()));
-        atcTypeQuestion.setAdapter(new TypeQuestionSpinnerAdapter(context,R.layout.listoptionitem,
+        atcTypeQuestion.setAdapter(new TypeQuestionSpinnerAdapter(getContext(),R.layout.listoptionitem,
                 R.id.tvOptionItem,daoTypeQuestion.getTypeQuestionList()));
-        atcQuestion.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1,listQuestion));
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
-        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        atcTopic.setAdapter(new TopicSpinnerAdapter(getContext(),R.layout.listoptionitem,R.id.tvOptionItem,daoTopic.getTopicList()));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager.setOrientation(rcvQuestion.VERTICAL);
         rcvQuestion.setLayoutManager(linearLayoutManager);
         questionAdapter.setQuestionList(daoQuestion.getQuestionList());
         rcvQuestion.setAdapter(questionAdapter);
-        questionAdapter.setMydelegation(new QuestionAdapter.Mydelegation() {
+        questionAdapter.setMyDelegationLevel(new QuestionAdapter.MyDelegationLevel() {
+            @Override
+            public void editItem(Question question) {
+            }
+
             @Override
             public void deleteItem(Question question) {
 
             }
+        });
+        svQuestion.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
             @Override
-            public void editItem(Question question) {
-
+            public boolean onQueryTextChange(String newText) {
+                questionAdapter.getFilter().filter(newText);
+                return false;
             }
         });
-        atcQuestion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        atcTypeQuestion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (atcQuestion.getText().toString().isEmpty())
-                {
-                    questionAdapter.setQuestionList(daoQuestion.getQuestionList());
-                }
-                else {
-                    questionAdapter.getFilter().filter(atcQuestion.getText().toString());
-                }
+                typeQuestion = atcTypeQuestion.getText().toString();
+                questionAdapter.setListDependOnTopicAndTypeQuestion(topic,typeQuestion);
             }
         });
-
+        atcTopic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                topic = atcTopic.getText().toString();
+                questionAdapter.setListDependOnTopicAndTypeQuestion(topic,typeQuestion);
+            }
+        });
     }
     private void getDataFromRealTime()
     {
         daoQuestion.getDataFromRealTimeToList(questionAdapter);
-        listQuestion = new ArrayList<>();
-        if (daoQuestion.getQuestionList().size()>0)
-        {
-            for (Question question : daoQuestion.getQuestionList())
-            {
-                listQuestion.add(question.getTitle());
-            }
-        }
         daoTopic.getDataFromRealTimeFirebase(null);
         daoTypeQuestion.getDataFromRealTimeToList(null);
     }
@@ -146,7 +150,7 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
         databaseReference.child(String.valueOf(1)).setValue(question).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Thêm thành công", Toast.LENGTH_SHORT).show();
             }
         });
     }

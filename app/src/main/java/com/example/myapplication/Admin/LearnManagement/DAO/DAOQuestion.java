@@ -5,9 +5,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.myapplication.Admin.LearnManagement.Adapter.LevelAdapter;
 import com.example.myapplication.Admin.LearnManagement.Adapter.QuestionAdapter;
-import com.example.myapplication.Admin.LearnManagement.DTO.Level;
 import com.example.myapplication.Admin.LearnManagement.DTO.Question;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

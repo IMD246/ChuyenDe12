@@ -13,15 +13,16 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         >
+
         <ImageView
             android:id="@+id/imgEdit_Question"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:src="@drawable/ic_edit"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toRightOf="@id/imgDelete_Question"
-            app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/ic_edit"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvQuestion"
