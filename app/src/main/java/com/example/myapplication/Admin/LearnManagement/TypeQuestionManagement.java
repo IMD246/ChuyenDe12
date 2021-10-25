@@ -39,7 +39,6 @@ public class TypeQuestionManagement extends AppCompatActivity {
         initUI();
         getDataFromFireBase();
     }
-
     private void initUI() {
         daoTypeQuestion = new DAOTypeQuestion(this);
         searchView = findViewById(R.id.svTypeQuestion);

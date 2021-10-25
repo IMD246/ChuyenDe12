@@ -1,6 +1,8 @@
 package com.example.myapplication.Admin.LearnManagement.DTO;
 
-public class Question {
+import java.io.Serializable;
+
+public class Question implements Serializable {
     private int id,idTopic,idTypeQuestion;
     private String title,nameTopic,nameTypeQuestion,correctAnswer;
 

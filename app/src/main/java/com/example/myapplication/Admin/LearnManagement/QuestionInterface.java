@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 
-import com.example.myapplication.Admin.LearnManagement.QuestionManagementFragment;
+import com.example.myapplication.Admin.LearnManagement.DTO.Question;
 import com.example.myapplication.R;
 
 public class QuestionInterface extends AppCompatActivity {
@@ -23,5 +23,23 @@ public class QuestionInterface extends AppCompatActivity {
     {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.fmQuestion,new QuestionManagementFragment()).commit();
+    }
+    public void goToDetailQuestionFragment(Question question)
+    {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        DetailQuestionFragment detailQuestionFragment = new DetailQuestionFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("object_question",question);
+
+        detailQuestionFragment.setArguments(bundle);
+
+        fragmentTransaction.replace(R.id.fmQuestion,detailQuestionFragment,null);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }
