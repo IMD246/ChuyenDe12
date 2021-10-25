@@ -38,9 +38,12 @@ import com.example.myapplication.Admin.LearnManagement.DAO.DAOTopic;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -207,23 +210,11 @@ public class TopicManagement extends AppCompatActivity {
         {
             btnYes.setText("Sửa");
             edtTopic.setText(topic.getNameTopic());
-            try {
-                StorageReference storageReference = FirebaseStorage.getInstance().getReference("images/Topic "+topic.getId());
-                File file = File.createTempFile("tempfile",".jpg");
-                storageReference.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                        imgTopic.setImageBitmap(bitmap);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                    }
-                });
+            if (topic.getUrlImage().isEmpty()) {
             }
-            catch (IOException e) {
-                e.printStackTrace();
+            else
+            {
+                Picasso.get().load(topic.getUrlImage()).resize(100, 100).into(imgTopic);
             }
             btnYes.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -232,6 +223,7 @@ public class TopicManagement extends AppCompatActivity {
                     topic1.setId(topic.getId());
                     topic1.setNameTopic(edtTopic.getText().toString());
                     topic1.setLevel(Integer.parseInt(spnTopic.getSelectedItem().toString()));
+                    topic1.setUrlImage(topic.getUrlImage());
                     for (Level level : daoLevel.getLevelList())
                     {
                         if (level.getNameLevel() == topic1.getLevel())
@@ -240,8 +232,8 @@ public class TopicManagement extends AppCompatActivity {
                             break;
                         }
                     }
-                    daoImageStorage.uploadFile(imgTopic,"Topic ",topic.getId());
                     daoTopic.editDataToFireBase(topic1,edtTopic);
+                    daoImageStorage.uploadFileImageTopic(imgTopic,"Topic ",topic1);
                 }
             });
         }
@@ -255,6 +247,7 @@ public class TopicManagement extends AppCompatActivity {
                         topic.setId(daoTopic.getTopicList().get(daoTopic.getTopicList().size()-1).getId()+1);
                         topic.setNameTopic(edtTopic.getText().toString());
                         topic.setLevel(Integer.parseInt(spnTopic.getSelectedItem().toString()));
+                        topic.setUrlImage("");
                         for (Level level : daoLevel.getLevelList())
                         {
                             if (level.getNameLevel() == topic.getLevel())
@@ -263,8 +256,8 @@ public class TopicManagement extends AppCompatActivity {
                                 break;
                             }
                         }
-                        daoImageStorage.uploadFile(imgTopic,"Topic",topic.getId());
                         daoTopic.addDataToFireBase(topic,edtTopic);
+                    daoImageStorage.uploadFileImageTopic(imgTopic,"Topic",topic);
                 }
             });
         }

@@ -22,9 +22,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,24 +84,12 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
         Topic topic = topicList.get(position);
         if (topic==null)
         {return;}
-        try {
-            StorageReference storageReference = FirebaseStorage.getInstance().getReference("images/Topic "+topic.getId());
-            File file = File.createTempFile("tempfile",".jpg");
-            storageReference.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                    holder.imgTopic.setImageBitmap(bitmap);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                }
-            });
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+            if (topic.getUrlImage().isEmpty()) {
+            }
+            else
+            {
+                Picasso.get().load(topic.getUrlImage()).resize(100, 100).into(holder.imgTopic);
+            }
         holder.tvLevel.setText("Level: "+String.valueOf(topic.getLevel()));
         holder.tvNameTopic.setText("Topic: "+topic.getNameTopic());
 

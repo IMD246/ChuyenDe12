@@ -7,6 +7,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.myapplication.Admin.LearnManagement.DTO.Question;
 import com.example.myapplication.Admin.LearnManagement.DTO.Topic;
 import com.example.myapplication.Admin.LearnManagement.Adapter.TopicAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,10 +28,11 @@ public class DAOTopic {
     public List<Topic> getTopicList() {
         return topicList;
     }
-
+    private DAOQuestion daoQuestion;
     public DAOTopic(Context context) {
         this.context = context;
         topicList = new ArrayList<>();
+        daoQuestion = new DAOQuestion(context);
         databaseReference = FirebaseDatabase.getInstance().getReference("listtopic");
     }
     public void getDataFromRealTimeFirebase(TopicAdapter topicAdapter)

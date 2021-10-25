@@ -1,24 +1,14 @@
-package com.example.myapplication.Admin;
+package com.example.myapplication.Admin.LearnManagement;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.widget.FrameLayout;
 
-import com.example.myapplication.Admin.LearnManagement.Adapter.QuestionAdapter;
-import com.example.myapplication.Admin.LearnManagement.DTO.Question;
+import com.example.myapplication.Admin.LearnManagement.QuestionManagementFragment;
 import com.example.myapplication.R;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class QuestionInterface extends AppCompatActivity {
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
