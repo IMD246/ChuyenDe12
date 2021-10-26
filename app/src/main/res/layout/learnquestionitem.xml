@@ -46,7 +46,7 @@
                     android:id="@+id/tvTopic_LearnQuestion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="144dp"
+                    android:layout_marginRight="16dp"
                     android:text="Chủ đề"
                     android:textStyle="bold"
                     />

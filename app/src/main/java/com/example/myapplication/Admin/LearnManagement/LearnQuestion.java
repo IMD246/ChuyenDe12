@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.myapplication.Admin.LearnManagement.Adapter.LearnQuestionAdapter;
 import com.example.myapplication.Admin.LearnManagement.Adapter.QuestionAdapter;
@@ -58,8 +59,11 @@ public class LearnQuestion extends AppCompatActivity {
         initUI();
         getDataFromRealTime();
     }
-
     private void initUI() {
+        daoQuestion = new DAOQuestion(this);
+        daoTypeQuestion = new DAOTypeQuestion(this);
+        daoTopic = new DAOTopic(this);
+        learnQuestionAdapter = new LearnQuestionAdapter(this);
         rcvQuestion = findViewById(R.id.rcvQuestion);
         atcTopic = findViewById(R.id.atcQuestion_Topic);
         svQuestion = findViewById(R.id.svQuestion);
@@ -93,24 +97,15 @@ public class LearnQuestion extends AppCompatActivity {
         atcTypeQuestion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (atcTypeQuestion.getText().toString().isEmpty())
-                {}
-                else {
                     typeQuestion = atcTypeQuestion.getText().toString();
                     learnQuestionAdapter.setListDependOnTopicAndTypeQuestion(topic, typeQuestion);
-                }
             }
         });
         atcTopic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (atcTopic.getText().toString().isEmpty())
-                {
-                }
-                else {
                     topic = atcTopic.getText().toString();
                     learnQuestionAdapter.setListDependOnTopicAndTypeQuestion(topic, typeQuestion);
-                }
             }
         });
     }
@@ -134,7 +129,6 @@ public class LearnQuestion extends AppCompatActivity {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.editlearnquestion);
-
         Window window = dialog.getWindow();
         if (window == null) {
             return;

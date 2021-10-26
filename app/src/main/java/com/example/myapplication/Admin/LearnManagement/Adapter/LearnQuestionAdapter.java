@@ -43,24 +43,26 @@ public class LearnQuestionAdapter extends RecyclerView.Adapter<LearnQuestionAdap
 
     public void setListDependOnTopicAndTypeQuestion(@NonNull String topic , @NonNull String typeQuestion)
     {
+        if (questionList.size()==0)
+        {
+            questionList = questionListOld;
+        }
         if (topic.equalsIgnoreCase(DEFAULTVALUE.TOPIC) && typeQuestion.equalsIgnoreCase(DEFAULTVALUE.TYPEQUESTION))
         {
             questionList = questionListOld;
         }
         else
         {
-            List<Question> list = new ArrayList<>();
-            for (Question question : questionList)
-            {
-                if (question.getNameTopic().equalsIgnoreCase(topic) || question.getNameTypeQuestion().equalsIgnoreCase(typeQuestion))
-                {
-                    list.add(question);
+                List<Question> list = new ArrayList<>();
+                for (Question question : questionList) {
+                    if (question.getNameTopic().equalsIgnoreCase(topic) && question.getNameTypeQuestion().equalsIgnoreCase(typeQuestion)) {
+                        list.add(question);
+                    } else if (question.getNameTypeQuestion().equalsIgnoreCase(typeQuestion) && topic.equalsIgnoreCase(DEFAULTVALUE.TOPIC)) {
+                        list.add(question);
+                    } else if (typeQuestion.equalsIgnoreCase(DEFAULTVALUE.TYPEQUESTION) && question.getNameTopic().equalsIgnoreCase(topic)) {
+                        list.add(question);
+                    }
                 }
-                else
-                {
-                    list = questionList;
-                }
-            }
             questionList = list;
         }
         notifyDataSetChanged();
@@ -110,7 +112,7 @@ public class LearnQuestionAdapter extends RecyclerView.Adapter<LearnQuestionAdap
                 {
                     switch (v.getId())
                     {
-                        case R.id.imgEdit_Question:myDelegationLevel.editItem(question);
+                        case R.id.imgEdit_LearnQuestion:myDelegationLevel.editItem(question);
                             break;
                     }
                 }
@@ -176,7 +178,7 @@ public class LearnQuestionAdapter extends RecyclerView.Adapter<LearnQuestionAdap
             tvExample = itemView.findViewById(R.id.tvExampleLearnQuestion);
             tvWord = itemView.findViewById(R.id.tvWordLearnQuestion);
             tvGrammar = itemView.findViewById(R.id.tvGrammar);
-            imgEdit = itemView.findViewById(R.id.imgEdit_Question);
+            imgEdit = itemView.findViewById(R.id.imgEdit_LearnQuestion);
             imgEdit.setOnClickListener(this);
         }
         @Override
