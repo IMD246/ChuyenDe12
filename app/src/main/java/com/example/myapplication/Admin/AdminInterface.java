@@ -104,7 +104,6 @@ public class AdminInterface extends AppCompatActivity {
                     break;
                 case R.id.profile:
                     drawerLayout.openDrawer(GravityCompat.END);
-                    Log.d("1", "1");
                     break;
             }
             return true;
