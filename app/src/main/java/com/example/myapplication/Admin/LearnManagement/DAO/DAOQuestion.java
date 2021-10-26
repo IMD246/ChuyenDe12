@@ -8,6 +8,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.myapplication.Admin.LearnManagement.Adapter.LearnQuestionAdapter;
 import com.example.myapplication.Admin.LearnManagement.Adapter.QuestionAdapter;
 import com.example.myapplication.Admin.LearnManagement.DTO.Question;
 import com.example.myapplication.Admin.LearnManagement.DTO.Topic;
@@ -20,7 +21,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DAOQuestion {
     private List<Question> questionList;
@@ -41,7 +44,7 @@ public class DAOQuestion {
         return questionList;
     }
 
-    public void getDataFromRealTimeToList(QuestionAdapter questionAdapter) {
+    public void getDataFromRealTimeToList(QuestionAdapter questionAdapter, LearnQuestionAdapter learnQuestionAdapter) {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -55,6 +58,10 @@ public class DAOQuestion {
                 if (questionAdapter != null)
                 {
                     questionAdapter.notifyDataSetChanged();
+                }
+                if (learnQuestionAdapter != null)
+                {
+                    learnQuestionAdapter.notifyDataSetChanged();
                 }
             }
             @Override
@@ -168,5 +175,37 @@ public class DAOQuestion {
                 Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void updateLearnQuestion(int idQuestion,Map<String, Object> map, EditText edtWord, EditText edtExample, EditText edtGrammar) {
+        boolean check[] = new boolean[3];
+        for (int i=0;i<check.length;i++)
+        {
+            check[i] = true;
+        }
+        if (map.get("example").toString().isEmpty() ||map.get("example").toString().trim().length()==0)
+        {
+            edtExample.setError("Không để trống");
+            edtExample.requestFocus();
+        }
+        else if (map.get("word").toString().isEmpty() ||map.get("word").toString().trim().length()==0)
+        {
+            edtWord.setError("Không để trống");
+            edtExample.requestFocus();
+        }
+        else if (map.get("grammar").toString().isEmpty() ||map.get("grammar").toString().trim().length()==0)
+        {
+            edtGrammar.setError("Không để trống");
+            edtGrammar.requestFocus();
+        }
+        else
+        {
+            databaseReference.child(String.valueOf(idQuestion)).updateChildren(map, new DatabaseReference.CompletionListener() {
+                @Override
+                public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                    Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 }

@@ -11,4 +11,9 @@ public class DEFAULTVALUE {
     final public static String QUESTION = "Câu hỏi";
     final public static String ALL = "All";
     final public static String LEVELLABEL = "Level";
+    final public static String DEFAULTVALUE = "Default";
+    final public static String NOUNS = "Nouns";
+    final public static String VERBS = "Verbs";
+    final public static String ADJECTIVE = "Adjective";
+    final public static String ADVERB = "Adverb";
 }

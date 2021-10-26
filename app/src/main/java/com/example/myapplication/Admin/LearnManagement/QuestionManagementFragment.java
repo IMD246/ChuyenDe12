@@ -181,7 +181,7 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
     }
 
     private void getDataFromRealTime() {
-        daoQuestion.getDataFromRealTimeToList(questionAdapter);
+        daoQuestion.getDataFromRealTimeToList(questionAdapter,null);
         daoTopic.getDataFromRealTimeFirebase(null);
         daoTypeQuestion.getDataFromRealTimeToList(null);
     }

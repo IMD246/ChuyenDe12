@@ -15,6 +15,9 @@
         android:theme="@style/Theme.MyApplication"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Admin.LearnManagement.LearnQuestion"
+            android:exported="false" />
+        <activity
             android:name=".Admin.ChangePasswordActivity_Admin"
             android:exported="false" />
         <activity
@@ -49,7 +52,7 @@
             android:exported="true" />
         <activity
             android:name=".Login.Login"
-            android:exported="false"></activity>
+            android:exported="false" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

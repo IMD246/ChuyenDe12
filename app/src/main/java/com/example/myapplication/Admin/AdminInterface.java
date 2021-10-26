@@ -18,6 +18,7 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.myapplication.Admin.LearnManagement.DTO.LearnItem;
+import com.example.myapplication.Admin.LearnManagement.LearnQuestion;
 import com.example.myapplication.Admin.LearnManagement.LevelManagement;
 import com.example.myapplication.Admin.LearnManagement.QuestionInterface;
 import com.example.myapplication.Admin.LearnManagement.TopicManagement;
@@ -42,8 +43,6 @@ public class AdminInterface extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_interface);
-
-
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -156,7 +155,7 @@ public class AdminInterface extends AppCompatActivity {
         }
         else if (learnItem.getName().equals(DEFAULTVALUE.LEARNTOPIC))
         {
-            startActivity(new Intent(AdminInterface.this, QuestionInterface.class));
+            startActivity(new Intent(AdminInterface.this, LearnQuestion.class));
         }
     }
 

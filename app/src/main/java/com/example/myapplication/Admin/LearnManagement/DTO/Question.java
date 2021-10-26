@@ -1,12 +1,16 @@
 package com.example.myapplication.Admin.LearnManagement.DTO;
 
+import com.example.myapplication.DEFAULTVALUE;
+
 import java.io.Serializable;
 
 public class Question implements Serializable {
     private int id,idTopic,idTypeQuestion;
-    private String title,nameTopic,nameTypeQuestion,correctAnswer;
-
-    public Question(int id, int idTopic, int idTypeQuestion, String title, String nameTopic, String nameTypeQuestion, String correctAnswer) {
+    private String title,nameTopic,nameTypeQuestion,correctAnswer,
+            example= DEFAULTVALUE.DEFAULTVALUE,word = DEFAULTVALUE.DEFAULTVALUE,
+            typeWord = DEFAULTVALUE.DEFAULTVALUE,grammar= DEFAULTVALUE.DEFAULTVALUE;
+    public Question(int id, int idTopic, int idTypeQuestion, String title, String nameTopic, String nameTypeQuestion,
+                    String correctAnswer) {
         this.id = id;
         this.idTopic = idTopic;
         this.idTypeQuestion = idTypeQuestion;
@@ -14,6 +18,38 @@ public class Question implements Serializable {
         this.nameTopic = nameTopic;
         this.nameTypeQuestion = nameTypeQuestion;
         this.correctAnswer = correctAnswer;
+    }
+
+    public String getExample() {
+        return example;
+    }
+
+    public void setExample(String example) {
+        this.example = example;
+    }
+
+    public String getWord() {
+        return word;
+    }
+
+    public void setWord(String word) {
+        this.word = word;
+    }
+
+    public String getTypeWord() {
+        return typeWord;
+    }
+
+    public void setTypeWord(String typeWord) {
+        this.typeWord = typeWord;
+    }
+
+    public String getGrammar() {
+        return grammar;
+    }
+
+    public void setGrammar(String grammar) {
+        this.grammar = grammar;
     }
 
     public Question() {
