@@ -24,6 +24,7 @@ public class LearnQuestionAdapter extends RecyclerView.Adapter<LearnQuestionAdap
     private Context context;
     private List<Question> questionList;
     private List<Question>questionListOld;
+    private List<Question>questionRequest;
 
     private MyDelegationLevel myDelegationLevel;
 
@@ -64,6 +65,7 @@ public class LearnQuestionAdapter extends RecyclerView.Adapter<LearnQuestionAdap
                     }
                 }
             questionList = list;
+                questionRequest = questionList;
         }
         notifyDataSetChanged();
     }
@@ -136,7 +138,13 @@ public class LearnQuestionAdapter extends RecyclerView.Adapter<LearnQuestionAdap
                 String strSearch = constraint.toString();
                 if (strSearch.isEmpty() || strSearch.length() == 0)
                 {
-                    questionList = questionListOld;
+                    if (questionList.size()==0) {
+                        questionList = questionListOld;
+                    }
+                    else
+                    {
+                        questionList = questionRequest;
+                    }
                 }
                 else
                 {
