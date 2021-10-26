@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             />
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/flEdit"
             android:layout_width="wrap_content"
@@ -25,6 +26,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginBottom="5dp"
             android:src="@drawable/ic_edit" />
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/flAdd"
             android:layout_width="wrap_content"

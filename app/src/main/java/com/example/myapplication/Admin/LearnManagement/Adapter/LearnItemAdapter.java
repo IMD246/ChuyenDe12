@@ -36,7 +36,7 @@ public class LearnItemAdapter extends RecyclerView.Adapter<LearnItemAdapter.Lear
     @NonNull
     @Override
     public LearnItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.learnitem,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_item_learn_management,parent,false);
         return new LearnItemHolder(view);
     }
 

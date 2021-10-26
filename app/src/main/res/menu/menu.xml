@@ -2,8 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/learn"
         android:icon="@drawable/ic_email"
-        android:title="@string/learn_fragment"
-        />
+        android:title="@string/learn_fragment"/>
     <item android:id="@+id/word"
         android:icon="@drawable/ic_email"
         android:title="@string/word_fragment"
