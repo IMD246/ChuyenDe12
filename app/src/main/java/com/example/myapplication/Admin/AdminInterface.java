@@ -155,6 +155,10 @@ public class AdminInterface extends AppCompatActivity {
         } else if (learnItem.getName().equals(DEFAULTVALUE.QUESTION)) {
             startActivity(new Intent(AdminInterface.this, QuestionInterface.class));
         }
+        else if (learnItem.getName().equals(DEFAULTVALUE.LEARNTOPIC))
+        {
+            startActivity(new Intent(AdminInterface.this, QuestionInterface.class));
+        }
     }
 
 }
