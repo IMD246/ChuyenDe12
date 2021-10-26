@@ -232,7 +232,11 @@ public class TopicManagement extends AppCompatActivity {
                             break;
                         }
                     }
-                    daoTopic.editDataToFireBase(topic1,edtTopic);
+                    if (topic.getNameTopic().equalsIgnoreCase(topic1.getNameTopic())&&topic.getIdLevel() == topic1.getIdLevel())
+                    { }
+                    else {
+                        daoTopic.editDataToFireBase(topic1, edtTopic);
+                    }
                     daoImageStorage.uploadFileImageTopic(imgTopic,"Topic ",topic1);
                 }
             });

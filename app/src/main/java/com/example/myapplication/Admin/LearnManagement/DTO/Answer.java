@@ -2,12 +2,15 @@ package com.example.myapplication.Admin.LearnManagement.DTO;
 
 public class Answer {
     private int id;
-    private String answerQuestion,urlImage;
+    private String answerQuestion,urlImage = "";
 
     public Answer(int id, String answerQuestion, String urlImage) {
         this.id = id;
         this.answerQuestion = answerQuestion;
         this.urlImage = urlImage;
+    }
+
+    public Answer() {
     }
 
     public int getId() {

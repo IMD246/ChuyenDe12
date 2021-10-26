@@ -38,6 +38,10 @@ public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.AnswerView
         this.context = context;
     }
 
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
     public void setAnswerList(List<Answer> answerList) {
         this.answerList = answerList;
     }
@@ -54,7 +58,7 @@ public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.AnswerView
         Answer answer = answerList.get(position);
         if (answer==null)
         {return;}
-            if (answer.getUrlImage().isEmpty()) {
+            if (answer.getUrlImage() != null) {
                 holder.imgAnswer.setVisibility(View.GONE);
             }
             else

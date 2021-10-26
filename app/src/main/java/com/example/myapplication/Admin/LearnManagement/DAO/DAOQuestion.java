@@ -2,6 +2,7 @@ package com.example.myapplication.Admin.LearnManagement.DAO;
 
 import android.content.Context;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -110,7 +111,7 @@ public class DAOQuestion {
             });
         }
     }
-    public void editDataToFireBase(Question question, EditText edtTitle, EditText edtCorrectAnswer) {
+    public void editDataToFireBase(Question question, EditText edtTitle, EditText edtCorrectAnswer, TextView tvTitle,TextView tvCorrect) {
         boolean[] check = new boolean[3];
         int s=1;
         for (int i = 0; i < check.length; i++) {
@@ -148,6 +149,8 @@ public class DAOQuestion {
             edtTitle.setError("Trùng dữ liệu , hãy kiểm tra lại dữ liệu");
             edtTitle.requestFocus();
         } else {
+            tvTitle.setText("Câu hỏi: "+question.getTitle());
+            tvCorrect.setText("Câu Trả Lời Chính xác: "+question.getCorrectAnswer());
             databaseReference.child(String.valueOf(question.getId())).setValue(question).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {

@@ -12,12 +12,33 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcvAnswer"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            />
-
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tvTitleQuestionDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Câu hỏi"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:textAlignment="center"
+                />
+            <TextView
+                android:id="@+id/tvCorrectAnswerQuestion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Câu trả lời"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:textAlignment="center"
+                />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvAnswer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/flEdit"
             android:layout_width="wrap_content"

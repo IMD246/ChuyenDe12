@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.myapplication.Admin.LearnManagement.DTO.Answer;
 import com.example.myapplication.Admin.LearnManagement.DTO.Topic;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -59,8 +60,8 @@ public class DAOImageStorage {
                         mImgURL =  task.getResult();
                         topic.setUrlImage(mImgURL.toString());
                         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listtopic");
-                        databaseReference.child(String.valueOf(topic.getId()))
-                                .setValue(topic).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        databaseReference.child(topic.getId()+"/urlImage").
+                                setValue(topic.getUrlImage()).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isComplete())
@@ -69,6 +70,47 @@ public class DAOImageStorage {
                                         }
                                     }
                                 });
+                    }
+                }
+            });
+        }
+    }
+    public void uploadFileImageToAnswer(int i, ImageView imgAnswer, String s, Answer answer1, int idQuestion) {
+        if (mImgURL !=null)
+        {
+            StorageReference fileReference = storageReference.child(s);
+            fileReference.putFile(mImgURL).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful())
+                    {
+                        throw task.getException();
+                    }
+                    return fileReference.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful())
+                    {
+                        if (i == 1) {
+                            imgAnswer.setImageURI(null);
+                        }
+                        mImgURL =  task.getResult();
+                        answer1.setUrlImage(mImgURL.toString());
+                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listquestion");
+                        databaseReference.child(idQuestion+"/listanswer").child(String.valueOf(answer1.getId())).setValue(answer1).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isComplete()) {
+                                    Toast.makeText(context, "Thêm ảnh thành công", Toast.LENGTH_SHORT).show();
+                                }
+                                else
+                                {
+                                    Toast.makeText(context, "Thêm ảnh không thành công", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
                     }
                 }
             });

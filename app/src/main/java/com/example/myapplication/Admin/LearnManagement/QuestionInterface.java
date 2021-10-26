@@ -1,8 +1,11 @@
 package com.example.myapplication.Admin.LearnManagement;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.myapplication.Admin.LearnManagement.DTO.Question;
@@ -36,6 +39,11 @@ public class QuestionInterface extends AppCompatActivity {
         fragmentTransaction.replace(R.id.fmQuestion,detailQuestionFragment,null);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
