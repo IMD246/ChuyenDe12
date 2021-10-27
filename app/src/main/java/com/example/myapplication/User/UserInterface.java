@@ -25,7 +25,6 @@ import com.google.firebase.database.ValueEventListener;
 public class UserInterface extends AppCompatActivity implements View.OnClickListener{
 
     private Button btnLogout;
-    FirebaseAuth firebaseAuth;
     FirebaseUser user;
     DatabaseReference databaseReference;
     @Override

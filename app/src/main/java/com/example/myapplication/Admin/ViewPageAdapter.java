@@ -20,14 +20,13 @@ public class ViewPageAdapter extends FragmentStateAdapter {
             case 1:return new WordManagementFragment();
             case 2:return new AnalysicUser();
             case 3:return new AccountUserManagement();
-//            case 4:return new ProfileAdmin();
             default:return new LearnManagementFragment();
         }
     }
 
     @Override
     public int getItemCount() {
-        return 5;
+        return 4;
     }
 }
 
