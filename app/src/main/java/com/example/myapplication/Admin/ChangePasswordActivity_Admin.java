@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class ChangePasswordActivity_Admin extends AppCompatActivity implements View.OnClickListener {
 
     private EditText edtNewPass,edtVerifyPass;
-    private Button btnYes,btnBack;
+    private Button btnYes;
     FirebaseUser user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +35,6 @@ public class ChangePasswordActivity_Admin extends AppCompatActivity implements V
         edtVerifyPass = findViewById(R.id.edtVerifyNewPass);
         btnYes = findViewById(R.id.btn_edit_account_save);
         btnYes.setOnClickListener(this);
-        btnBack = findViewById(R.id.btn_edit_account_back);
-        btnBack.setOnClickListener(this);
     }
 
     @Override
@@ -45,8 +43,6 @@ public class ChangePasswordActivity_Admin extends AppCompatActivity implements V
         {
             case R.id.btn_edit_account_save : changePassWord();
             break;
-            case R.id.btn_edit_account_back:
-                break;
         }
     }
     private void changePassWord() {
@@ -55,18 +51,15 @@ public class ChangePasswordActivity_Admin extends AppCompatActivity implements V
         if (newPass.isEmpty()) {
             edtNewPass.setError("Không bỏ trống");
             edtNewPass.requestFocus();
-            return;
         }
         else if (newPass.length() < 6) {
             edtNewPass.setError("Độ dài nhỏ nhất của mật khẩu là 6");
             edtNewPass.requestFocus();
-            return;
         }
         else if (!verifyPass.equalsIgnoreCase(newPass))
         {
             edtVerifyPass.setError("Mật khẩu không trùng nhau");
             edtVerifyPass.requestFocus();
-            return;
         }
         else
         {
