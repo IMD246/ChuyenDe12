@@ -13,7 +13,7 @@
         android:background="@drawable/bg_yellow_corner_16_top_left_top_right"
         android:gravity="center"
         android:padding="12dp"
-        android:text="Thêm dữ liệu"
+        android:text="@string/th_m_d_li_u"
         android:textColor="@color/black"
         android:textSize="16sp" />
 
@@ -29,7 +29,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/bg_white_corner_10_border_gray"
-            android:hint="Topic"
+            android:hint="@string/topic"
+            android:inputType="text"
+            android:autofillHints="name"
             android:padding="12dp"
             android:textAlignment="center" />
 
@@ -42,8 +44,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Chọn level: "
-                android:textSize="20dp"
+                android:text="@string/ch_n_level"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <Spinner
@@ -51,7 +53,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Chọn Level"
                 android:textAlignment="center" />
         </LinearLayout>
 
@@ -65,6 +66,7 @@
                 android:id="@+id/imgaddeditTopic"
                 android:layout_width="180dp"
                 android:layout_height="120dp"
+                android:contentDescription="@string/nh_c_a_ng_i_d_ng"
                 android:src="@drawable/ic_search" />
 
             <Button
@@ -72,13 +74,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_alignParentEnd="true"
                 android:layout_marginTop="70dp"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="0dp"
                 android:background="@drawable/bg_yellow_corner_10"
                 android:backgroundTint="@color/white"
-                android:text="Chọn ảnh"
+                android:text="@string/ch_n_nh"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
@@ -99,9 +100,10 @@
                 android:layout_weight="1"
                 android:background="@drawable/bg_yellow_corner_10"
                 android:backgroundTint="@color/white"
-                android:text="Có"
+                android:text="@string/c"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                style="?android:attr/buttonBarButtonStyle" />
 
             <Button
                 android:id="@+id/btnNo"
@@ -112,9 +114,10 @@
                 android:alpha="0.7"
                 android:background="@drawable/bg_gray_corner_10"
                 android:backgroundTint="@color/white"
-                android:text="Không"
+                android:text="@string/kh_ng"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                style="?android:attr/buttonBarButtonStyle" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

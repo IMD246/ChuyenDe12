@@ -22,6 +22,24 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="level">Level</string>
     <string name="nh_p_l_i_m_t_kh_u_m_i">Nhập lại mật khẩu mới</string>
+    <string name="l_u_thay_i">Lưu thay đổi</string>
+    <string name="quay_l_i">Quay lại</string>
+    <string name="nh_p_m_t_kh_u_m_i">Nhập mật khẩu mới</string>
+    <string name="thay_i_m_t_kh_u">Thay đổi mật khẩu</string>
+    <string name="d_ng_th_m_d_li_u">Dùng để thêm dữ liệu</string>
+    <string name="lo_i_t_v_ng">Loại từ vựng</string>
+    <string name="ch">Chủ đề</string>
+    <string name="lo_i_c_u_h_i">Loại câu hỏi</string>
+    <string name="lo_i_c_u_h_i">Loại câu hỏi</string>
+    <string name="th_m_d_li_u">Thêm dữ liệu</string>
+    <string name="question">Question</string>
+    <string name="answer">Answer</string>
+    <string name="nh_c_a_ng_i_d_ng">Ảnh của người dùng</string>
+    <string name="ch_n_nh">Chọn ảnh</string>
+    <string name="c">Có</string>
+    <string name="kh_ng">Không</string>
+    <string name="topic">Topic</string>
+    <string name="ch_n_level">Chọn level:</string>
     <array name="typeWord">
         <item>Nouns</item>
         <item>Verbs</item>

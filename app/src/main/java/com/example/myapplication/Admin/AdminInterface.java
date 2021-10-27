@@ -6,6 +6,8 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -29,6 +31,7 @@ import com.example.myapplication.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class AdminInterface extends AppCompatActivity {
 
@@ -38,13 +41,21 @@ public class AdminInterface extends AppCompatActivity {
     //Khai báo drawerLayout
     private DrawerLayout drawerLayout;
     NavigationView navigationView;
-
+    TextView tvUserName;
+    FirebaseUser user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_interface);
+        user = FirebaseAuth.getInstance().getCurrentUser();
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
+        View header = navigationView.getHeaderView(0);
+        tvUserName = header.findViewById(R.id.tvUserNameAdmin);
+        if (user!=null)
+        {
+            tvUserName.setText(user.getEmail());
+        }
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

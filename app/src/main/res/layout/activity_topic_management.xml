@@ -15,7 +15,7 @@
             android:id="@+id/svTopic"
             android:layout_width="310dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/bg_white_corner_16dp"
             app:layout_constraintRight_toLeftOf="@id/imgAdd"
@@ -28,6 +28,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
             android:src="@drawable/ic_add"
+            android:contentDescription="@string/d_ng_th_m_d_li_u"
             app:layout_constraintLeft_toRightOf="@id/svTopic"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -48,6 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="none"
+                android:hint="@string/level"
                 android:text="@string/level" />
         </com.google.android.material.textfield.TextInputLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
