@@ -3,6 +3,9 @@ package com.example.myapplication.Admin;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +23,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class ChangePasswordActivity_Admin extends AppCompatActivity implements View.OnClickListener {
 
     private EditText edtNewPass,edtVerifyPass;
-    private Button btnYes;
+    private Button btnYes, btnBack;
     FirebaseUser user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,8 @@ public class ChangePasswordActivity_Admin extends AppCompatActivity implements V
 
     private void initUI() {
         user = FirebaseAuth.getInstance().getCurrentUser();
+        btnBack = findViewById(R.id.btn_edit_account_back);
+        btnBack.setOnClickListener(this);
         edtNewPass = findViewById(R.id.edtNewPass);
         edtVerifyPass = findViewById(R.id.edtVerifyNewPass);
         btnYes = findViewById(R.id.btn_edit_account_save);
@@ -43,6 +48,10 @@ public class ChangePasswordActivity_Admin extends AppCompatActivity implements V
         {
             case R.id.btn_edit_account_save : changePassWord();
             break;
+            case R.id.btn_edit_account_back:
+                Intent intent = new Intent(ChangePasswordActivity_Admin.this, AdminInterface.class);
+                startActivity(intent);
+                break;
         }
     }
     private void changePassWord() {

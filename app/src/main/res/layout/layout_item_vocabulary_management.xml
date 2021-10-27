@@ -9,19 +9,19 @@
     card_view:cardUseCompatPadding="true">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:id="@+id/rltlearnitem"
+        android:id="@+id/rlt_vocabulary_item"
         android:layout_height="300dp"
         >
 
         <ImageView
-            android:id="@+id/imgItem"
+            android:id="@+id/img_item_list_vocabulary"
             android:layout_width="170dp"
             android:layout_height="170dp"
             android:layout_centerInParent="true"
             android:foregroundGravity="center"
             android:src="@drawable/ic_lock" />
         <TextView
-            android:id="@+id/nameItem"
+            android:id="@+id/tv_title_item_list_vocabulary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

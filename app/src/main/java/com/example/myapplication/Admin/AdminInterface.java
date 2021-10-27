@@ -2,6 +2,8 @@ package com.example.myapplication.Admin;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -50,9 +52,13 @@ public class AdminInterface extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item_menu_drawer_change_pass:
+//                        navigationView.getMenu().findItem(R.id.item_menu_drawer_change_pass).setChecked(true);
+//                        navigationView.getMenu().findItem(R.id.item_menu_drawer_change_pass).setChecked(false);
                         startActivity(new Intent(AdminInterface.this, ChangePasswordActivity_Admin.class));
                         break;
                     case R.id.item_menu_drawer_logout:
+//                        navigationView.getMenu().findItem(R.id.item_menu_drawer_change_pass).setChecked(true);
+//                        navigationView.getMenu().findItem(R.id.item_menu_drawer_change_pass).setChecked(false);
                         alertDialog();
                         break;
                 }
@@ -62,6 +68,18 @@ public class AdminInterface extends AppCompatActivity {
         });
 
         bottomNavigationView = findViewById(R.id.botnav);
+        int[] colors = new int[] {
+                Color.GRAY,
+                Color.BLUE,
+        };
+
+        int [][] states = new int [][]{
+                new int[] { android.R.attr.state_enabled, -android.R.attr.state_checked},
+                new int[] {android.R.attr.state_enabled, android.R.attr.state_checked}
+        };
+
+        bottomNavigationView.setItemTextColor(new ColorStateList(states, colors));
+        bottomNavigationView.setItemIconTintList(new ColorStateList(states, colors));
         viewPager = findViewById(R.id.viewPage);
         ViewPageAdapter viewPageAdapter = new ViewPageAdapter(this);
         viewPager.setAdapter(viewPageAdapter);
