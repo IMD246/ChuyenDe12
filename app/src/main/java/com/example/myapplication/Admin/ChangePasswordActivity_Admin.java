@@ -56,6 +56,10 @@ public class ChangePasswordActivity_Admin extends AppCompatActivity implements V
             edtNewPass.setError("Độ dài nhỏ nhất của mật khẩu là 6");
             edtNewPass.requestFocus();
         }
+        else if (verifyPass.isEmpty()) {
+            edtVerifyPass.setError("Không bỏ trống");
+            edtVerifyPass.requestFocus();
+        }
         else if (!verifyPass.equalsIgnoreCase(newPass))
         {
             edtVerifyPass.setError("Mật khẩu không trùng nhau");
