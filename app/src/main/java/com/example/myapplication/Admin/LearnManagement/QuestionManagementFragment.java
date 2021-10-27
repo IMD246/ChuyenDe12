@@ -95,10 +95,10 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
     private void initUI(View v) {
         questionInterface = (QuestionInterface) getActivity();
         rcvQuestion = v.findViewById(R.id.rcvQuestion);
-//        atcTopic = v.findViewById(R.id.atcQuestion_Topic);
         svQuestion = v.findViewById(R.id.svQuestion);
         imgAdd = v.findViewById(R.id.imgAddQuestion);
         imgAdd.setOnClickListener(this);
+//        atcTopic = v.findViewById(R.id.atcQuestion_Topic);
 //        atcTypeQuestion = v.findViewById(R.id.atcQuestion_TypeQuestion);
 //        atcTypeQuestion.setAdapter(new TypeQuestionSpinnerAdapter(getContext(), R.layout.listoptionitem,
 //                R.id.tvOptionItem, daoTypeQuestion.getTypeQuestionList()));

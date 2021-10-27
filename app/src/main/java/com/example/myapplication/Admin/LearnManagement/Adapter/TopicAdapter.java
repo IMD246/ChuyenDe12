@@ -35,7 +35,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
     private Context context;
     private List<Topic> topicList;
     private List<Topic>topicListOld;
-    private StorageReference firebaseStorage;
+    private List<Topic>topicListRequest;
 
     private MyDelegationLevel myDelegationLevel;
 
@@ -54,6 +54,10 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
     }
     public void setTopicListDependOnLevel(@NonNull String level)
     {
+        if (topicList.size()==0)
+        {
+            topicList = topicListOld;
+        }
         if (level.equals(DEFAULTVALUE.LEVELLABEL.trim()))
         {
             topicList = topicListOld;
@@ -69,6 +73,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
                 }
             }
             topicList = list;
+            topicListRequest = list;
         }
         notifyDataSetChanged();
     }
@@ -126,7 +131,12 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
                 String strSearch = constraint.toString();
                 if (strSearch.isEmpty() || strSearch.length() == 0)
                 {
-                    topicList = topicListOld;
+                    if (topicList.size() == 0) {
+                        topicList = topicListOld;
+                    }
+                    else {
+                        topicList = topicListRequest;
+                    }
                 }
                 else
                 {

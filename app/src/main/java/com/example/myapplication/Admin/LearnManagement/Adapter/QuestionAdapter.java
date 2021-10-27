@@ -24,7 +24,8 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
 
     private Context context;
     private List<Question> questionList;
-    private List<Question>questionListOld;
+    private List<Question> questionListOld;
+    private List<Question> questionListRequest;
 
     private MyDelegationLevel myDelegationLevel;
 
@@ -42,56 +43,56 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
         notifyDataSetChanged();
     }
 
-    public void setListDependOnTopicAndTypeQuestion(@NonNull String topic , @NonNull String typeQuestion)
-    {
-        if (topic.equalsIgnoreCase(DEFAULTVALUE.TOPIC) && typeQuestion.equalsIgnoreCase(DEFAULTVALUE.TYPEQUESTION))
-        {
+    public void setListDependOnTopicAndTypeQuestion(@NonNull String topic, @NonNull String typeQuestion) {
+        if (questionList.size() == 0) {
             questionList = questionListOld;
         }
-        else
-        {
+        if (topic.equalsIgnoreCase(DEFAULTVALUE.TOPIC) && typeQuestion.equalsIgnoreCase(DEFAULTVALUE.TYPEQUESTION)) {
+            questionList = questionListOld;
+        } else {
             List<Question> list = new ArrayList<>();
-            for (Question question : questionList)
-            {
-                if (question.getNameTopic().equalsIgnoreCase(topic) || question.getNameTypeQuestion().equalsIgnoreCase(typeQuestion))
-                {
+            for (Question question : questionList) {
+                if (question.getNameTopic().equalsIgnoreCase(topic) && question.getNameTypeQuestion().equalsIgnoreCase(typeQuestion)) {
                     list.add(question);
-                }
-                else
-                {
-                    list = questionList;
+                } else if (question.getNameTypeQuestion().equalsIgnoreCase(typeQuestion) && topic.equalsIgnoreCase(DEFAULTVALUE.TOPIC)) {
+                    list.add(question);
+                } else if (typeQuestion.equalsIgnoreCase(DEFAULTVALUE.TYPEQUESTION) && question.getNameTopic().equalsIgnoreCase(topic)) {
+                    list.add(question);
                 }
             }
             questionList = list;
+            questionListRequest = list;
         }
         notifyDataSetChanged();
     }
+
     @NonNull
     @Override
     public QuestionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.questionitem,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.questionitem, parent, false);
         return new QuestionViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull QuestionViewHolder holder, int position) {
         Question question = questionList.get(position);
-        if (question==null)
-        {return;}
-        holder.tvTitle.setText("Câu hỏi: "+String.valueOf(question.getTitle()));
-        holder.tvNameTopic.setText("Chủ đề: "+question.getNameTopic());
-        holder.tvTypeQuestion.setText("Loại câu hỏi: "+question.getNameTypeQuestion());
+        if (question == null) {
+            return;
+        }
+        holder.tvTitle.setText("Câu hỏi: " + String.valueOf(question.getTitle()));
+        holder.tvNameTopic.setText("Chủ đề: " + question.getNameTopic());
+        holder.tvTypeQuestion.setText("Loại câu hỏi: " + question.getNameTypeQuestion());
 
         holder.onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (myDelegationLevel != null)
-                {
-                    switch (v.getId())
-                    {
-                        case R.id.imgEdit_Question:myDelegationLevel.editItem(question);
+                if (myDelegationLevel != null) {
+                    switch (v.getId()) {
+                        case R.id.imgEdit_Question:
+                            myDelegationLevel.editItem(question);
                             break;
-                        case R.id.imgDelete_Question:myDelegationLevel.deleteItem(question);
+                        case R.id.imgDelete_Question:
+                            myDelegationLevel.deleteItem(question);
                             break;
                     }
                 }
@@ -101,29 +102,28 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
 
     @Override
     public int getItemCount() {
-        if (questionList !=null)
-        {
+        if (questionList != null) {
             return questionList.size();
         }
         return 0;
     }
+
     @Override
     public Filter getFilter() {
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 String strSearch = constraint.toString();
-                if (strSearch.isEmpty() || strSearch.length() == 0)
-                {
-                    questionList = questionListOld;
-                }
-                else
-                {
+                if (strSearch.isEmpty() || strSearch.length() == 0) {
+                    if (questionList.size() == 0) {
+                        questionList = questionListOld;
+                    } else {
+                        questionList = questionListRequest;
+                    }
+                } else {
                     List<Question> list = new ArrayList<>();
-                    for (Question question : questionList)
-                    {
-                        if (question.getTitle().toLowerCase().contains(strSearch.toLowerCase()))
-                        {
+                    for (Question question : questionList) {
+                        if (question.getTitle().toLowerCase().contains(strSearch.toLowerCase())) {
                             list.add(question);
                         }
                     }
@@ -133,7 +133,6 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
                 filterResults.values = questionList;
                 return filterResults;
             }
-
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 questionList = (List<Question>) results.values;
@@ -142,9 +141,9 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
         };
     }
 
-    public static class QuestionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private TextView tvTitle,tvNameTopic,tvTypeQuestion;
-        private ImageView imgDelete,imgEdit;
+    public static class QuestionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private TextView tvTitle, tvNameTopic, tvTypeQuestion;
+        private ImageView imgDelete, imgEdit;
         View.OnClickListener onClickListener;
 
         public void setOnClickListener(View.OnClickListener onClickListener) {
@@ -167,9 +166,10 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
             onClickListener.onClick(v);
         }
     }
-    public interface MyDelegationLevel
-    {
+
+    public interface MyDelegationLevel {
         public void editItem(Question question);
+
         public void deleteItem(Question question);
     }
 }

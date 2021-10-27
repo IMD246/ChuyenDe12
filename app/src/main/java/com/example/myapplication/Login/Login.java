@@ -339,7 +339,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                         case "ERROR_INVALID_CREDENTIAL":
                             Toast.makeText(Login.this, "The supplied auth credential is malformed or has expired.", Toast.LENGTH_LONG).show();
                             break;
-
                         case "ERROR_INVALID_EMAIL":
                             edtEmail.setError("Định dạng email không phù hợp");
                             edtEmail.requestFocus();
@@ -348,7 +347,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                             edtPassWord.setError("Sai Mật Khẩu");
                             edtPassWord.requestFocus();
                             break;
-
                         case "ERROR_USER_MISMATCH":
                             Toast.makeText(Login.this, "The supplied credentials do not correspond to the previously signed in user.", Toast.LENGTH_LONG).show();
                             break;

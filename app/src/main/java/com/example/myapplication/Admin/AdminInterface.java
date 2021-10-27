@@ -5,20 +5,16 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.myapplication.Admin.LearnManagement.Adapter.ViewPageAdapter;
 import com.example.myapplication.Admin.LearnManagement.DTO.LearnItem;
 import com.example.myapplication.Admin.LearnManagement.LearnQuestion;
 import com.example.myapplication.Admin.LearnManagement.LevelManagement;

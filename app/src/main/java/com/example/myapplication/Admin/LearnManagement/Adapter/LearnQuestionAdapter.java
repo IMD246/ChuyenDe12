@@ -23,8 +23,8 @@ public class LearnQuestionAdapter extends RecyclerView.Adapter<LearnQuestionAdap
 
     private Context context;
     private List<Question> questionList;
-    private List<Question>questionListOld;
-    private List<Question>questionRequest;
+    private List<Question> questionListOld;
+    private List<Question> questionRequest;
 
     private MyDelegationLevel myDelegationLevel;
 
@@ -42,79 +42,67 @@ public class LearnQuestionAdapter extends RecyclerView.Adapter<LearnQuestionAdap
         notifyDataSetChanged();
     }
 
-    public void setListDependOnTopicAndTypeQuestion(@NonNull String topic , @NonNull String typeQuestion)
-    {
-        if (questionList.size()==0)
-        {
+    public void setListDependOnTopicAndTypeQuestion(@NonNull String topic, @NonNull String typeQuestion) {
+        if (questionList.size() == 0) {
             questionList = questionListOld;
         }
-        if (topic.equalsIgnoreCase(DEFAULTVALUE.TOPIC) && typeQuestion.equalsIgnoreCase(DEFAULTVALUE.TYPEQUESTION))
-        {
+        if (topic.equalsIgnoreCase(DEFAULTVALUE.TOPIC) && typeQuestion.equalsIgnoreCase(DEFAULTVALUE.TYPEQUESTION)) {
             questionList = questionListOld;
-        }
-        else
-        {
-                List<Question> list = new ArrayList<>();
-                for (Question question : questionList) {
-                    if (question.getNameTopic().equalsIgnoreCase(topic) && question.getNameTypeQuestion().equalsIgnoreCase(typeQuestion)) {
-                        list.add(question);
-                    } else if (question.getNameTypeQuestion().equalsIgnoreCase(typeQuestion) && topic.equalsIgnoreCase(DEFAULTVALUE.TOPIC)) {
-                        list.add(question);
-                    } else if (typeQuestion.equalsIgnoreCase(DEFAULTVALUE.TYPEQUESTION) && question.getNameTopic().equalsIgnoreCase(topic)) {
-                        list.add(question);
-                    }
+        } else {
+            List<Question> list = new ArrayList<>();
+            for (Question question : questionList) {
+                if (question.getNameTopic().equalsIgnoreCase(topic) && question.getNameTypeQuestion().equalsIgnoreCase(typeQuestion)) {
+                    list.add(question);
+                } else if (question.getNameTypeQuestion().equalsIgnoreCase(typeQuestion) && topic.equalsIgnoreCase(DEFAULTVALUE.TOPIC)) {
+                    list.add(question);
+                } else if (typeQuestion.equalsIgnoreCase(DEFAULTVALUE.TYPEQUESTION) && question.getNameTopic().equalsIgnoreCase(topic)) {
+                    list.add(question);
                 }
+            }
             questionList = list;
-                questionRequest = questionList;
+            questionRequest = list;
         }
         notifyDataSetChanged();
     }
+
     @NonNull
     @Override
     public LearnQuestionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.learnquestionitem,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.learnquestionitem, parent, false);
         return new LearnQuestionViewHolder(view);
     }
+
     @Override
     public void onBindViewHolder(@NonNull LearnQuestionViewHolder holder, int position) {
         Question question = questionList.get(position);
-        if (question==null)
-        {return;}
-        holder.tvTitle.setText("Câu hỏi: "+question.getTitle());
-        holder.tvNameTopic.setText("Chủ đề: "+question.getNameTopic());
-        holder.tvTypeQuestion.setText("Loại câu hỏi: "+question.getNameTypeQuestion());
-        if (question.getTypeWord().equalsIgnoreCase(null)&&question.getWord().equalsIgnoreCase(null))
-        {
-            holder.tvWord.setText("Từ vựng: "+DEFAULTVALUE.DEFAULTVALUE+" ("+DEFAULTVALUE.DEFAULTVALUE+")");
+        if (question == null) {
+            return;
         }
-        else
-        {
-            holder.tvWord.setText("Từ vựng: "+question.getWord()+" ("+question.getTypeWord()+")");
+        holder.tvTitle.setText("Câu hỏi: " + question.getTitle());
+        holder.tvNameTopic.setText("Chủ đề: " + question.getNameTopic());
+        holder.tvTypeQuestion.setText("Loại câu hỏi: " + question.getNameTypeQuestion());
+        if (question.getTypeWord().equalsIgnoreCase(null) && question.getWord().equalsIgnoreCase(null)) {
+            holder.tvWord.setText("Từ vựng: " + DEFAULTVALUE.DEFAULTVALUE + " (" + DEFAULTVALUE.DEFAULTVALUE + ")");
+        } else {
+            holder.tvWord.setText("Từ vựng: " + question.getWord() + " (" + question.getTypeWord() + ")");
         }
-        if (question.getExample().equalsIgnoreCase(null))
-        {
-            holder.tvExample.setText("Ví dụ: "+DEFAULTVALUE.DEFAULTVALUE);
+        if (question.getExample().equalsIgnoreCase(null)) {
+            holder.tvExample.setText("Ví dụ: " + DEFAULTVALUE.DEFAULTVALUE);
+        } else {
+            holder.tvExample.setText("Ví dụ: " + question.getExample());
         }
-        else
-        {
-            holder.tvExample.setText("Ví dụ: "+question.getExample());
-        }
-        if (question.getGrammar().equalsIgnoreCase(null))
-        {
-            holder.tvGrammar.setText("Ngữ pháp: "+DEFAULTVALUE.DEFAULTVALUE);
-        }
-        else
-        {
-            holder.tvGrammar.setText("Ngữ pháp: "+question.getGrammar());
+        if (question.getGrammar().equalsIgnoreCase(null)) {
+            holder.tvGrammar.setText("Ngữ pháp: " + DEFAULTVALUE.DEFAULTVALUE);
+        } else {
+            holder.tvGrammar.setText("Ngữ pháp: " + question.getGrammar());
         }
         holder.onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (myDelegationLevel != null)
-                {
-                    switch (v.getId())
-                    {
-                        case R.id.imgEdit_LearnQuestion:myDelegationLevel.editItem(question);
+                if (myDelegationLevel != null) {
+                    switch (v.getId()) {
+                        case R.id.imgEdit_LearnQuestion:
+                            myDelegationLevel.editItem(question);
                             break;
                     }
                 }
@@ -124,35 +112,28 @@ public class LearnQuestionAdapter extends RecyclerView.Adapter<LearnQuestionAdap
 
     @Override
     public int getItemCount() {
-        if (questionList !=null)
-        {
+        if (questionList != null) {
             return questionList.size();
         }
         return 0;
     }
+
     @Override
     public Filter getFilter() {
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 String strSearch = constraint.toString();
-                if (strSearch.isEmpty() || strSearch.length() == 0)
-                {
-                    if (questionList.size()==0) {
+                if (strSearch.isEmpty() || strSearch.length() == 0) {
+                    if (questionList.size() == 0) {
                         questionList = questionListOld;
-                    }
-                    else
-                    {
+                    } else {
                         questionList = questionRequest;
                     }
-                }
-                else
-                {
+                } else {
                     List<Question> list = new ArrayList<>();
-                    for (Question question : questionList)
-                    {
-                        if (question.getTitle().toLowerCase().contains(strSearch.toLowerCase()))
-                        {
+                    for (Question question : questionList) {
+                        if (question.getTitle().toLowerCase().contains(strSearch.toLowerCase())) {
                             list.add(question);
                         }
                     }
@@ -162,6 +143,7 @@ public class LearnQuestionAdapter extends RecyclerView.Adapter<LearnQuestionAdap
                 filterResults.values = questionList;
                 return filterResults;
             }
+
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 questionList = (List<Question>) results.values;
@@ -170,10 +152,11 @@ public class LearnQuestionAdapter extends RecyclerView.Adapter<LearnQuestionAdap
         };
     }
 
-    public static class LearnQuestionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private TextView tvTitle,tvNameTopic,tvTypeQuestion,tvExample,tvWord,tvGrammar;
+    public static class LearnQuestionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private TextView tvTitle, tvNameTopic, tvTypeQuestion, tvExample, tvWord, tvGrammar;
         private ImageView imgEdit;
         View.OnClickListener onClickListener;
+
         public void setOnClickListener(View.OnClickListener onClickListener) {
             this.onClickListener = onClickListener;
         }
@@ -189,13 +172,14 @@ public class LearnQuestionAdapter extends RecyclerView.Adapter<LearnQuestionAdap
             imgEdit = itemView.findViewById(R.id.imgEdit_LearnQuestion);
             imgEdit.setOnClickListener(this);
         }
+
         @Override
         public void onClick(View v) {
             onClickListener.onClick(v);
         }
     }
-    public interface MyDelegationLevel
-    {
+
+    public interface MyDelegationLevel {
         public void editItem(Question question);
     }
 }
