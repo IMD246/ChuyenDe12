@@ -1,15 +1,82 @@
 <resources>
-    <string name="app_name">My Application</string>
-    <string name="facebook_app_id">1000910057421767</string>
-    <string name="fb_login_protocol_scheme">fb1000910057421767</string>
-    <string name="enter_your_email">Enter Your Email</string>
-    <string name="login">Login</string>
-    <string name="ng_nh_p">Đăng Nhập</string>
-    <string name="forgot_password">Forgot Password?</string>
-    <string name="register">Register</string>
-    <string name="enter_your_pass">Enter Your Pass</string>
-    <string name="or_register_with">Or Register With</string>
-    <string name="email">Email</string>
-    <string name="qu_n_m_t_kh_u">Quên mật khẩu</string>
-    <string name="send_email">Send Email</string>
+    <string name="LearningEnglish"></string>
+    <!--    tạo chuỗi cho xml main_interface-->
+    <string name="name_user">Nguyễn Trường Sinh</string>
+    <string name="level_user">Lv1</string>
+    <string name="xp_user">120xp</string>
+
+    <!--tạo chuỗi cho chức năng profile-->
+    <string name="nav_account_management">Quản lí tài khoản</string>
+    <string name="nav_profile">Xem hồ sơ</string>
+    <string name="nav_account">Tài khoản</string>
+    <string name="nav_setting_management">Cài đặt chung</string>
+    <string name="nav_setting">Cài đặt</string>
+    <string name="nav_help">Trợ giúp</string>
+    <string name="nav_Logout">Đăng xuất</string>
+
+    <!--tạo chuỗi cho bottom navigation-->
+    <string name="bottom_nav_learn">HỌC</string>
+    <string name="bottom_nav_alarm">HẸN GIỜ</string>
+    <string name="bottom_nav_vocabulary">TỪ VỰNG</string>
+    <string name="hoso"><u>Hồ sơ</u></string>
+
+    <!--màn hình edit profile-->
+    <string name="title_profile"><u>Hồ sơ</u></string>
+    <string name="edt_name">Nhập tên của bạn</string>
+    <string name="edt_age">Nhập tuổi của bạn</string>
+    <string name="rdb_male">Nam</string>
+    <string name="rdb_female">Nữ</string>
+    <string name="rdb_another">Khác</string>
+
+    <!--màn hình edit setting-->
+    <string name="title_setting"><u>Cài đặt</u></string>
+
+    <!--màn hình edit account-->
+    <string name="title_account"><u>Tài khoản</u></string>
+    <string name="current_pass">Nhập mậu khẩu hiện tại</string>
+    <string name="new_pass">Nhập mật khẩu mới</string>
+    <string name="re_pass">Nhập lại mật khẩu mới</string>
+    <string name="btn_back">Quay lại</string>
+    <string name="btn_save">Lưu thay đổi</string>
+
+    <!--màn hình edit privacy-->
+    <string name="title_privacy"><u>Quyền riêng tư</u></string>
+    <string name="cb_privacy">Công khai hồ sơ của tôi</string>
+    <string name="content_cb_privacy">Cho phép người khác tìm hồ sơ và theo dõi bạn. Cho phép bạn theo dõi người khác. Bạn sẽ được gia nhập bảng xếp hạng chung.</string>
+
+    <!--màn hình edit studymode-->
+    <string name="title_study_mode"><u>Chế độ huấn luyện</u></string>
+    <string name="cb_study_mode_remind">Nhắc nhở luyện tập</string>
+    <string name="tv_study_mode_medium">Vừa</string>
+    <string name="tv_study_mode_basic">Cơ bản</string>
+    <string name="tv_study_mode_hard">Cơ bản</string>
+    <string name="tv_study_mode_superhard">Cơ bản</string>
+    <string name="tv_study_mode_xp_basic">30 điểm XP mỗi ngày</string>
+    <string name="tv_study_mode_xp_medium">50 điểm XP mỗi ngày</string>
+    <string name="tv_study_mode_xp_hard">80 điểm XP mỗi ngày</string>
+    <string name="tv_study_mode_xp_superhard">100 điểm XP mỗi ngày</string>
+
+    <!--màn hình edit menu setting-->
+    <string name="title_menu_setting"><u>Cài đặt</u></string>
+    <string name="tv_name_user">Nguyễn Đình Thọ</string>
+    <string name="tv_watch_profile">Xem hồ sơ của bạn</string>
+    <string name="tv_title_btn_profile">Hồ sơ</string>
+    <string name="tv_title_btn_account">Tài khoản</string>
+    <string name="tv_title_btn_studymode">Chế độ huấn luyện</string>
+    <string name="tv_title_btn_privacy">Quyền riêng tư</string>
+
+    <!--màn hình profile-->
+    <string name="tv_age_user">22 tuổi</string>
+    <string name="tv_gender_user">Name</string>
+    <string name="tv_join_user">đã tham gia tháng 5 năm 2021</string>
+    <string name="tv_profile_statistic">Thống kê: </string>
+    <string name="tv_profile_level">level</string>
+    <string name="tv_profile_value_level">1</string>
+    <string name="tv_profile_XP">Kinh nghiệm</string>
+    <string name="tv_profile_value_XP">1200</string>
+    <string name="tv_profile_achievement">thành tựu</string>
+    <string name="tv_profile_value_achievement">chưa có</string>
+    <string name="tv_profile_value_rank">Xếp hạng</string>
+    <string name="btn_edit_profile">sửa hồ sơ</string>
+
 </resources>

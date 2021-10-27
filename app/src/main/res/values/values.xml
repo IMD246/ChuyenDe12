@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="textsize_title_account">30sp</dimen>
+
+    <!--màn hình edit account-->
+    <dimen name="mgl_btn_save">30dp</dimen>
+
+    <!--màn hình edit prodile-->
+    <dimen name="mgl_rdb_female">36dp</dimen>
+
+    <!--màn hình edit studymode-->
+    <dimen name="mgl_tv_study_mode">50dp</dimen>
+</resources>
