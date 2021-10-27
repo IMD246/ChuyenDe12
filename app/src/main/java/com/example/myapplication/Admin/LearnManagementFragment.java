@@ -12,8 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.myapplication.Admin.LearnManagement.DTO.LearnItem;
-import com.example.myapplication.Admin.LearnManagement.Adapter.LearnItemAdapter;
+import com.example.myapplication.Admin.DTO.LearnItem;
+import com.example.myapplication.Admin.Adapter.LearnItemAdapter;
 import com.example.myapplication.DEFAULTVALUE;
 import com.example.myapplication.R;
 

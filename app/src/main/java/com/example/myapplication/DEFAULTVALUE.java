@@ -16,4 +16,7 @@ public class DEFAULTVALUE {
     final public static String VERBS = "Verbs";
     final public static String ADJECTIVE = "Adjective";
     final public static String ADVERB = "Adverb";
+    final public static String TOEIC = "Toeic";
+    final public static String IETLS = "Ietls";
+    final public static String TYPEWORD = "Loại từ vựng";
 }

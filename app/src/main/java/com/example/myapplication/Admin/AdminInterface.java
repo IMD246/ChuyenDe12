@@ -14,13 +14,15 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.myapplication.Admin.LearnManagement.Adapter.ViewPageAdapter;
-import com.example.myapplication.Admin.LearnManagement.DTO.LearnItem;
+import com.example.myapplication.Admin.Adapter.ViewPageAdapter;
+import com.example.myapplication.Admin.DTO.LearnItem;
 import com.example.myapplication.Admin.LearnManagement.LearnQuestion;
 import com.example.myapplication.Admin.LearnManagement.LevelManagement;
 import com.example.myapplication.Admin.LearnManagement.QuestionInterface;
 import com.example.myapplication.Admin.LearnManagement.TopicManagement;
 import com.example.myapplication.Admin.LearnManagement.TypeQuestionManagement;
+import com.example.myapplication.Admin.WordManagement.IetlsManagement;
+import com.example.myapplication.Admin.WordManagement.ToeicManagement;
 import com.example.myapplication.DEFAULTVALUE;
 import com.example.myapplication.Login.Login;
 import com.example.myapplication.R;
@@ -73,7 +75,6 @@ public class AdminInterface extends AppCompatActivity {
                 new int[] { android.R.attr.state_enabled, -android.R.attr.state_checked},
                 new int[] {android.R.attr.state_enabled, android.R.attr.state_checked}
         };
-
         bottomNavigationView.setItemTextColor(new ColorStateList(states, colors));
         bottomNavigationView.setItemIconTintList(new ColorStateList(states, colors));
         viewPager = findViewById(R.id.viewPage);
@@ -156,7 +157,7 @@ public class AdminInterface extends AppCompatActivity {
         AlertDialog alert11 = builder1.create();
         alert11.show();
     }
-
+    // hàm chuyển màn hình dựa theo tên
     public void Transaction(LearnItem learnItem) {
         if (learnItem.getName().equals(DEFAULTVALUE.LEVEL)) {
             startActivity(new Intent(AdminInterface.this, LevelManagement.class));
@@ -171,6 +172,13 @@ public class AdminInterface extends AppCompatActivity {
         {
             startActivity(new Intent(AdminInterface.this, LearnQuestion.class));
         }
+        else if (learnItem.getName().equals(DEFAULTVALUE.TOEIC))
+        {
+            startActivity(new Intent(AdminInterface.this, ToeicManagement.class));
+        }
+        else if (learnItem.getName().equals(DEFAULTVALUE.IETLS))
+        {
+            startActivity(new Intent(AdminInterface.this, IetlsManagement.class));
+        }
     }
-
 }

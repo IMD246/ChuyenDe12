@@ -1,6 +1,5 @@
 package com.example.myapplication.Admin.LearnManagement;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,8 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -28,25 +25,16 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
-import com.example.myapplication.Admin.LearnManagement.Adapter.LevelSpinnerAdapter;
-import com.example.myapplication.Admin.LearnManagement.Adapter.TopicAdapter;
-import com.example.myapplication.Admin.LearnManagement.DTO.Level;
-import com.example.myapplication.Admin.LearnManagement.DTO.Topic;
-import com.example.myapplication.Admin.LearnManagement.DAO.DAOImageStorage;
-import com.example.myapplication.Admin.LearnManagement.DAO.DAOLevel;
-import com.example.myapplication.Admin.LearnManagement.DAO.DAOTopic;
+import com.example.myapplication.Admin.Adapter.LevelSpinnerAdapter;
+import com.example.myapplication.Admin.Adapter.TopicAdapter;
+import com.example.myapplication.Admin.DTO.Level;
+import com.example.myapplication.Admin.DTO.Topic;
+import com.example.myapplication.Admin.DAO.DAOImageStorage;
+import com.example.myapplication.Admin.DAO.DAOLevel;
+import com.example.myapplication.Admin.DAO.DAOTopic;
 import com.example.myapplication.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 

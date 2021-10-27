@@ -20,12 +20,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.myapplication.Admin.LearnManagement.Adapter.LevelAdapter;
-import com.example.myapplication.Admin.LearnManagement.DAO.DAOQuestion;
-import com.example.myapplication.Admin.LearnManagement.DTO.Level;
-import com.example.myapplication.Admin.LearnManagement.DAO.DAOLevel;
+import com.example.myapplication.Admin.Adapter.LevelAdapter;
+import com.example.myapplication.Admin.DTO.Level;
+import com.example.myapplication.Admin.DAO.DAOLevel;
 import com.example.myapplication.R;
 
 import java.util.List;

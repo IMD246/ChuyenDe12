@@ -1,28 +1,22 @@
 package com.example.myapplication.Admin.LearnManagement;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -30,36 +24,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import com.example.myapplication.Admin.LearnManagement.Adapter.QuestionAdapter;
-import com.example.myapplication.Admin.LearnManagement.Adapter.TopicSpinnerAdapter;
-import com.example.myapplication.Admin.LearnManagement.Adapter.TypeQuestionSpinnerAdapter;
-import com.example.myapplication.Admin.LearnManagement.DAO.DAOQuestion;
-import com.example.myapplication.Admin.LearnManagement.DAO.DAOTopic;
-import com.example.myapplication.Admin.LearnManagement.DAO.DAOTypeQuestion;
-import com.example.myapplication.Admin.LearnManagement.DTO.Level;
-import com.example.myapplication.Admin.LearnManagement.DTO.Question;
-import com.example.myapplication.Admin.LearnManagement.DTO.Topic;
-import com.example.myapplication.Admin.LearnManagement.DTO.TypeQuestion;
+import com.example.myapplication.Admin.Adapter.QuestionAdapter;
+import com.example.myapplication.Admin.DAO.DAOQuestion;
+import com.example.myapplication.Admin.DAO.DAOTopic;
+import com.example.myapplication.Admin.DAO.DAOTypeQuestion;
+import com.example.myapplication.Admin.DTO.Question;
+import com.example.myapplication.Admin.DTO.Topic;
+import com.example.myapplication.Admin.DTO.TypeQuestion;
 import com.example.myapplication.DEFAULTVALUE;
 import com.example.myapplication.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 
 public class QuestionManagementFragment extends Fragment implements View.OnClickListener {

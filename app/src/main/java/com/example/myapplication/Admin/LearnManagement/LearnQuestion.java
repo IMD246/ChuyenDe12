@@ -13,31 +13,24 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import com.example.myapplication.Admin.LearnManagement.Adapter.LearnQuestionAdapter;
-import com.example.myapplication.Admin.LearnManagement.Adapter.QuestionAdapter;
-import com.example.myapplication.Admin.LearnManagement.Adapter.TopicSpinnerAdapter;
-import com.example.myapplication.Admin.LearnManagement.Adapter.TypeQuestionSpinnerAdapter;
-import com.example.myapplication.Admin.LearnManagement.DAO.DAOQuestion;
-import com.example.myapplication.Admin.LearnManagement.DAO.DAOTopic;
-import com.example.myapplication.Admin.LearnManagement.DAO.DAOTypeQuestion;
-import com.example.myapplication.Admin.LearnManagement.DTO.Question;
-import com.example.myapplication.Admin.LearnManagement.DTO.Topic;
-import com.example.myapplication.Admin.LearnManagement.DTO.TypeQuestion;
+import com.example.myapplication.Admin.Adapter.LearnQuestionAdapter;
+import com.example.myapplication.Admin.Adapter.TopicSpinnerAdapter;
+import com.example.myapplication.Admin.Adapter.TypeQuestionSpinnerAdapter;
+import com.example.myapplication.Admin.DAO.DAOQuestion;
+import com.example.myapplication.Admin.DAO.DAOTopic;
+import com.example.myapplication.Admin.DAO.DAOTypeQuestion;
+import com.example.myapplication.Admin.DTO.Question;
 import com.example.myapplication.DEFAULTVALUE;
 import com.example.myapplication.R;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class LearnQuestion extends AppCompatActivity {

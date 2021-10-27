@@ -20,9 +20,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.myapplication.Admin.LearnManagement.Adapter.TypeQuestionAdapter;
-import com.example.myapplication.Admin.LearnManagement.DTO.TypeQuestion;
-import com.example.myapplication.Admin.LearnManagement.DAO.DAOTypeQuestion;
+import com.example.myapplication.Admin.Adapter.TypeQuestionAdapter;
+import com.example.myapplication.Admin.DTO.TypeQuestion;
+import com.example.myapplication.Admin.DAO.DAOTypeQuestion;
 import com.example.myapplication.R;
 
 public class TypeQuestionManagement extends AppCompatActivity {

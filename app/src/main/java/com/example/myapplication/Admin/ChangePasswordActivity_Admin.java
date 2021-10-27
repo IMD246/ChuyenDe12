@@ -31,7 +31,7 @@ public class ChangePasswordActivity_Admin extends AppCompatActivity implements V
         setContentView(R.layout.activity_change_password);
         initUI();
     }
-
+    // ánh xạ view và lấy dữ liệu authenticate khi user đăng nhập
     private void initUI() {
         user = FirebaseAuth.getInstance().getCurrentUser();
         btnBack = findViewById(R.id.btn_edit_account_back);
@@ -41,7 +41,7 @@ public class ChangePasswordActivity_Admin extends AppCompatActivity implements V
         btnYes = findViewById(R.id.btn_edit_account_save);
         btnYes.setOnClickListener(this);
     }
-
+    // set onClick dựa vào id của view
     @Override
     public void onClick(View v) {
         switch (v.getId())
@@ -54,6 +54,7 @@ public class ChangePasswordActivity_Admin extends AppCompatActivity implements V
                 break;
         }
     }
+    // hàm này dùng để đổi mật khẩu
     private void changePassWord() {
         String newPass = edtNewPass.getText().toString();
         String verifyPass = edtVerifyPass.getText().toString();

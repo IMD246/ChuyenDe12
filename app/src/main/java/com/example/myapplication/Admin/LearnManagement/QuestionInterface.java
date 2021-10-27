@@ -2,14 +2,12 @@ package com.example.myapplication.Admin.LearnManagement;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.android.installreferrer.BuildConfig;
-import com.example.myapplication.Admin.LearnManagement.DTO.Question;
+import com.example.myapplication.Admin.DTO.Question;
 import com.example.myapplication.R;
 
 public class QuestionInterface extends AppCompatActivity {

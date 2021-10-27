@@ -7,20 +7,15 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -32,19 +27,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.myapplication.Admin.LearnManagement.Adapter.AnswerAdapter;
-import com.example.myapplication.Admin.LearnManagement.DAO.DAOAnswer;
-import com.example.myapplication.Admin.LearnManagement.DAO.DAOImageStorage;
-import com.example.myapplication.Admin.LearnManagement.DAO.DAOQuestion;
-import com.example.myapplication.Admin.LearnManagement.DAO.DAOTopic;
-import com.example.myapplication.Admin.LearnManagement.DAO.DAOTypeQuestion;
-import com.example.myapplication.Admin.LearnManagement.DTO.Answer;
-import com.example.myapplication.Admin.LearnManagement.DTO.Level;
-import com.example.myapplication.Admin.LearnManagement.DTO.Question;
-import com.example.myapplication.Admin.LearnManagement.DTO.Topic;
-import com.example.myapplication.Admin.LearnManagement.DTO.TypeQuestion;
+import com.example.myapplication.Admin.Adapter.AnswerAdapter;
+import com.example.myapplication.Admin.DAO.DAOAnswer;
+import com.example.myapplication.Admin.DAO.DAOImageStorage;
+import com.example.myapplication.Admin.DAO.DAOQuestion;
+import com.example.myapplication.Admin.DAO.DAOTopic;
+import com.example.myapplication.Admin.DAO.DAOTypeQuestion;
+import com.example.myapplication.Admin.DTO.Answer;
+import com.example.myapplication.Admin.DTO.Question;
+import com.example.myapplication.Admin.DTO.Topic;
+import com.example.myapplication.Admin.DTO.TypeQuestion;
 import com.example.myapplication.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
@@ -109,7 +102,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
             }
         });
     }
-
+    // ánh xạ cho các view và set adapter
     private void initUI() {
         tvTitle = view.findViewById(R.id.tvTitleQuestionDetail);
         tvCorrectAnswer = view.findViewById(R.id.tvCorrectAnswerQuestion);
@@ -143,7 +136,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
             }
         });
     }
-
+    // hộp thoại để thống báo có xóa dữ liệu hay không
     private void alertDialogtoDelete(Answer answer) {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
         builder1.setMessage("Bạn có muốn xóa không?");
@@ -181,7 +174,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         }
         return 0;
     }
-
+    // hộp thoại sửa dữ liệu Question
     public void openDialogEditQuestion(int center, Question question) {
         final Dialog dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -260,7 +253,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         });
         dialog.show();
     }
-
+    // hộp thoại để thêm và sửa Answer
     public void openDiaLogAnswer(int center, int choice, Answer answer) {
         final Dialog dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -363,7 +356,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         }
         dialog.show();
     }
-
+    // lấy kết quả khi chọn file ảnh trong thiết bị
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -372,14 +365,14 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
             imgAnswer.setImageURI(daoImageStorage.getmImgURL());
         }
     }
-
+    // hàm mở file chọn ảnh trong thiết bị
     public void openFileChoose() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, 100);
     }
-
+    // hàm onClick cho các view theo id
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
