@@ -27,11 +27,7 @@
         <activity
             android:name=".Login.Login"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <meta-data
@@ -54,6 +50,50 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-    </application>
 
+<!--        learnword-->
+        <activity
+            android:name=".User.LearnWord.vocubulary.VocabularyScreen"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".User.LearnWord.word.WordScreen"
+            android:exported="true">
+
+        </activity>
+
+        <activity
+            android:name=".User.LearnWord.saveWord.SaveScreen"
+            android:exported="true">
+
+        </activity>
+        <activity
+            android:name=".User.LearnWord.practice.PracticeScreen"
+            android:exported="true">
+
+        </activity>
+        <activity
+            android:name=".User.LearnWord.history.HistoryScreen"
+            android:exported="true">
+
+        </activity>
+
+        <activity
+            android:name=".User.LearnWord.word.WordItemDetail"
+            android:exported="true">
+
+        </activity>
+
+    </application>
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+    </queries>
 </manifest>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:background="@drawable/wordbg"
+    tools:context=".User.LearnWord.vocubulary.VocabularyScreen">
+
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="30dp">
+    <TextView
+        android:layout_weight="2"
+        android:layout_width="0dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:text="Vocabulary"
+        android:textColor="#1A9C90"
+        android:textSize="30dp"
+        android:layout_height="50dp"/>
+
+</LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:clickable="true"
+        android:id="@+id/img_toeic"
+        android:layout_margin="20dp"
+        android:layout_weight="1"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/toeic"/>
+    <ImageView
+        android:clickable="true"
+        android:id="@+id/img_ielts"
+        android:layout_margin="20dp"
+        android:layout_weight="1"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/ielts"/>
+</LinearLayout>
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/vocubulary_recycleItem"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+</androidx.recyclerview.widget.RecyclerView>
+</LinearLayout>

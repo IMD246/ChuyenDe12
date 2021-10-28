@@ -25,7 +25,9 @@ public class UserManagement {
                 addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                userArrayList.clear();
+                if (userArrayList != null) {
+                    userArrayList.clear();
+                }
                 for (DataSnapshot shot : snapshot.getChildren())
                 {
                     User user = shot.getValue(User.class);

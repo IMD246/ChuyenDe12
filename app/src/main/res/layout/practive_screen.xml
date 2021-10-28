@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".User.LearnWord.practice.PracticeScreen">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Practice"
+        android:textSize="30dp"
+        android:textStyle="bold">
+
+    </TextView>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_weight="1"
+            android:id="@+id/practice_imgSpeak"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/speakericon"
+            android:clickable="true">
+
+        </ImageView>
+
+        <TextView
+            android:layout_weight="8"
+            android:text=""
+            android:id="@+id/practice_txt_hint"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textSize="20dp">
+
+        </TextView>
+
+        <ImageView
+            android:layout_weight="1"
+            android:id="@+id/practice_imgShowHint"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/ic_baseline_remove_red_eye_24"
+            android:clickable="true">
+
+        </ImageView>
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/practice_rclAnswer"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_margin="20dp"
+        android:layout_weight="10">
+
+    </androidx.recyclerview.widget.RecyclerView>
+    <!--    <TextView-->
+
+    <!--        android:layout_weight="1"-->
+    <!--        android:id="@+id/practice_txtCheckAnswer"-->
+    <!--        android:layout_marginTop="30dp"-->
+    <!--        android:text="V correct"-->
+    <!--        android:textColor="#368C3A"-->
+    <!--        android:textSize="20dp"-->
+    <!--        android:textStyle="bold"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:gravity="center">-->
+
+    <!--    </TextView>-->
+    <Button
+        android:id="@+id/practice_btnSubmit"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:layout_weight="1"
+        android:text="Submit">
+
+    </Button>
+</LinearLayout>
