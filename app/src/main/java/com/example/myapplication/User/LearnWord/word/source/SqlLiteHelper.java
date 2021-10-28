@@ -66,24 +66,23 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
         try {
             checkDb = SQLiteDatabase.openDatabase(filePath, null, 0);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        if (checkDb != null) {
-            Toast.makeText(context, "Databsr alreay exsitr", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, "coppying", Toast.LENGTH_SHORT).show();
-
+        if (checkDb!= null) {
             CopyDatabase();
+        } else if(checkDb==null) {
+            Toast.makeText(context, filePath, Toast.LENGTH_SHORT).show();
+
+
         }
     }
 
     private void CopyDatabase() {
+        context.deleteDatabase(dbName);
         this.getReadableDatabase();
         try {
-
 
             InputStream ios = context.getAssets().open(dbName);
 
@@ -97,13 +96,14 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
                 os.write(buffer, 0, len);
 
             }
+
             os.flush();
             ios.close();
             os.close();
-            Toast.makeText(context, "Databsr alreay exsitr", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         Log.d("Copy db", "CopyDatabase: coppied ");
     }
 
@@ -114,7 +114,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
 
     public void fetchData(ArrayList<Word> listOfWord, int page)    {
-
+    try {
         listOfWord.clear();
         int startPosition = page * 30;
         int endPosition = startPosition + 30 - 1;
@@ -133,16 +133,20 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         if(cursor != null){
 
 
-        while (cursor.moveToNext()) {
+            while (cursor.moveToNext()) {
 
-            Word addItem = new Word(Integer.parseInt(cursor.getString(0)),
-                    cursor.getString(1).toString(), cursor.getString(2).toString(),cursor.getString(3).toString(),
-                    cursor.getString(4).toString()
-                   );
-            listOfWord.add(addItem);
-        } }
+                Word addItem = new Word(Integer.parseInt(cursor.getString(0)),
+                        cursor.getString(1).toString(), cursor.getString(2).toString(),cursor.getString(3).toString(),
+                        cursor.getString(4).toString()
+                );
+                listOfWord.add(addItem);
+            } }
         cursor.close();
         sqLiteDatabase.close();
+    }catch (Exception ex){
+        ex.printStackTrace();
+    }
+
     }
     public void fetchRandomWord(String word,ArrayList<String> listItem){
 
