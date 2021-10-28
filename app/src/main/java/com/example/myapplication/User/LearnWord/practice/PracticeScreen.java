@@ -1,15 +1,12 @@
 package com.example.myapplication.User.LearnWord.practice;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +28,7 @@ import com.example.myapplication.User.LearnWord.saveWord.source.SaveSqliteHelper
 import com.example.myapplication.User.LearnWord.vocubulary.VocabularyScreen;
 import com.example.myapplication.User.LearnWord.word.source.MySingleton;
 import com.example.myapplication.User.LearnWord.word.source.SqlLiteHelper;
-import com.example.myapplication.User.LearnWord.word.source.WordClass;
+import com.example.myapplication.User.DTO.Word;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
@@ -46,7 +43,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
 
 public class PracticeScreen extends AppCompatActivity {
 
@@ -56,7 +52,7 @@ public class PracticeScreen extends AppCompatActivity {
     ArrayList<Boolean> listOfResult = new ArrayList<Boolean>();
     String result = "";
     //list of word get from sqlite
-    ArrayList<WordClass> listItem = new ArrayList<>();
+    ArrayList<Word> listItem = new ArrayList<>();
     SaveSqliteHelper sqliteHelper;
     SqlLiteHelper databaseHelper;
     PracticeAdapter adapter;

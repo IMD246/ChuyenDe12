@@ -21,7 +21,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.myapplication.R;
 import com.example.myapplication.User.LearnWord.saveWord.source.SaveSqliteHelper;
 import com.example.myapplication.User.LearnWord.word.source.MySingleton;
-import com.example.myapplication.User.LearnWord.word.source.WordClass;
+import com.example.myapplication.User.DTO.Word;
 
 //import org.chromium.base.Callback;
 //import org.chromium.base.Promise;
@@ -33,11 +33,11 @@ import java.util.ArrayList;
 public class SaveAdapter extends RecyclerView.Adapter<SaveAdapter.ViewHolder> {
 
     Context context;
-    ArrayList<WordClass> listSave ;
+    ArrayList<Word> listSave ;
     MediaPlayer player;
     SaveSqliteHelper sqlLiteHelper;
 
-    public SaveAdapter(Context context, ArrayList<WordClass> listSave,SaveSqliteHelper sqlLiteHelper) {
+    public SaveAdapter(Context context, ArrayList<Word> listSave, SaveSqliteHelper sqlLiteHelper) {
         this.context = context;
         this.listSave = listSave;
         this.sqlLiteHelper = sqlLiteHelper;

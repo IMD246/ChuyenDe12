@@ -3,18 +3,13 @@ package com.example.myapplication.User.LearnWord.word;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -22,13 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.User.LearnWord.word.source.SqlLiteHelper;
-import com.example.myapplication.User.LearnWord.word.source.WordClass;
+import com.example.myapplication.User.DTO.Word;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Locale;
 
 public class WordScreen extends AppCompatActivity{
 
@@ -40,7 +32,7 @@ public class WordScreen extends AppCompatActivity{
     int page = 0;
     public boolean textToSpeechIsInitialized = false;  // <--- add this line
 
-    ArrayList<WordClass> wordItems = new ArrayList<>();
+    ArrayList<Word> wordItems = new ArrayList<>();
     MediaPlayer player ;
     String audioURI="";
     WordAdapter adapter;
@@ -100,7 +92,7 @@ public class WordScreen extends AppCompatActivity{
         }
 
     }
-    private void pageniteAndAPI(ArrayList<WordClass> wordList){
+    private void pageniteAndAPI(ArrayList<Word> wordList){
         databaseHelper.fetchData(wordList,page);
         adapter.notifyDataSetChanged();
 

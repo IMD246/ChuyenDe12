@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.myapplication.User.DTO.Word;
+
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -101,7 +103,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
     }
 
 
-    public void fetchData(ArrayList<WordClass> listOfWord, int page)    {
+    public void fetchData(ArrayList<Word> listOfWord, int page)    {
 
         listOfWord.clear();
         int startPosition = page * 30;
@@ -123,7 +125,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
         while (cursor.moveToNext()) {
 
-            WordClass addItem = new WordClass(Integer.parseInt(cursor.getString(0)),
+            Word addItem = new Word(Integer.parseInt(cursor.getString(0)),
                     cursor.getString(1).toString(), cursor.getString(2).toString(),cursor.getString(3).toString(),
                     cursor.getString(4).toString()
                    );

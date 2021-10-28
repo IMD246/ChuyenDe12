@@ -12,7 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 
-import com.example.myapplication.User.LearnWord.word.source.WordClass;
+import com.example.myapplication.User.DTO.Word;
 
 import java.util.ArrayList;
 
@@ -51,15 +51,15 @@ public class SaveSqliteHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addSaveWord(WordClass wordClass){
+    public void addSaveWord(Word word){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        cv.put(column_id,wordClass.getId());
-        cv.put(column_word,wordClass.getWord());
-        cv.put(column_html,wordClass.getHtmlText());
-        cv.put(column_description,wordClass.getDescription());
-        cv.put(column_pronounce,wordClass.getPronounce());
+        cv.put(column_id, word.getId());
+        cv.put(column_word, word.getWord());
+        cv.put(column_html, word.getHtmlText());
+        cv.put(column_description, word.getDescription());
+        cv.put(column_pronounce, word.getPronounce());
 
         long result = db.insert(table_name,null,cv);
         if(result== -1){
@@ -69,7 +69,7 @@ public class SaveSqliteHelper extends SQLiteOpenHelper {
             Toast.makeText(context, "Successfully", Toast.LENGTH_SHORT).show();
         }
     }
-    public void fetchData(ArrayList<WordClass> list){
+    public void fetchData(ArrayList<Word> list){
         list.clear();
 
 
@@ -84,13 +84,13 @@ public class SaveSqliteHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 boolean checked = false;
 
-                WordClass addItem = new WordClass(Integer.parseInt(cursor.getString(0)),
+                Word addItem = new Word(Integer.parseInt(cursor.getString(0)),
                         cursor.getString(1).toString(),
                         cursor.getString(2).toString()
                         ,cursor.getString(3).toString(),
                         cursor.getString(4).toString()
                 );
-                for (WordClass w:list
+                for (Word w:list
                      ) {
                     if( w.getId() == addItem.getId()){
                         checked = true;
@@ -105,10 +105,10 @@ public class SaveSqliteHelper extends SQLiteOpenHelper {
         cursor.close();
         sqLiteDatabase.close();
     }
-    public void removeSaveWord(WordClass wordClass){
+    public void removeSaveWord(Word word){
         SQLiteDatabase db = this.getWritableDatabase();
 
-        int i= db.delete("save_word","id = '" + wordClass.getId() +"'",null);
+        int i= db.delete("save_word","id = '" + word.getId() +"'",null);
 
         Log.e("","delete data" + i);
     }

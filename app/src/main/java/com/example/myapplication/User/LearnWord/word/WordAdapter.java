@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,22 +27,21 @@ import com.example.myapplication.User.LearnWord.history.source.HistorySqliteData
 import com.example.myapplication.User.LearnWord.saveWord.source.SaveSqliteHelper;
 import com.example.myapplication.User.LearnWord.word.source.MySingleton;
 import com.example.myapplication.User.LearnWord.word.source.SqlLiteHelper;
-import com.example.myapplication.User.LearnWord.word.source.WordClass;
+import com.example.myapplication.User.DTO.Word;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
 
     Context context;
-    ArrayList<WordClass> listWord;
+    ArrayList<Word> listWord;
     SqlLiteHelper databaseHelper;
     MediaPlayer player;
 
-    public WordAdapter(Context context, ArrayList<WordClass> listWord, SqlLiteHelper databaseHelper) {
+    public WordAdapter(Context context, ArrayList<Word> listWord, SqlLiteHelper databaseHelper) {
         this.context = context;
         this.listWord = listWord;
         this.databaseHelper = databaseHelper;
@@ -63,7 +60,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        WordClass temp = listWord.get(position);
+        Word temp = listWord.get(position);
         holder.txt_word.setText(temp.getWord());
         holder.txt_pronounce.setText(temp.getPronounce());
 //

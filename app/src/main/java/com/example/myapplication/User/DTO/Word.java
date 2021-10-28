@@ -1,24 +1,41 @@
-package com.example.myapplication.User.LearnWord.word.source;
+package com.example.myapplication.User.DTO;
 
-
-
-public class WordClass {
+public class Word {
     int id;
     String word;
     String htmlText;
     String description;
     String pronounce;
+    String typeWord,meaning;
 
-    public WordClass(int id, String word, String htmlText, String description, String pronounce) {
+    public Word(int id, String word, String htmlText, String description, String pronounce, String typeWord, String meaning) {
         this.id = id;
         this.word = word;
         this.htmlText = htmlText;
         this.description = description;
         this.pronounce = pronounce;
-
+        this.typeWord = typeWord;
+        this.meaning = meaning;
     }
 
+    public Word() {
+    }
 
+    public String getTypeWord() {
+        return typeWord;
+    }
+
+    public void setTypeWord(String typeWord) {
+        this.typeWord = typeWord;
+    }
+
+    public String getMeaning() {
+        return meaning;
+    }
+
+    public void setMeaning(String meaning) {
+        this.meaning = meaning;
+    }
 
     public String getDescription() {
         return description;
@@ -44,7 +61,7 @@ public class WordClass {
         this.pronounce = pronounce;
     }
 
-    public WordClass(int id, String word) {
+    public Word(int id, String word) {
         this.id = id;
         this.word = word;
     }

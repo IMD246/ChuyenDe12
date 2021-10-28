@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.User.LearnWord.saveWord.source.SaveSqliteHelper;
-import com.example.myapplication.User.LearnWord.word.source.WordClass;
+import com.example.myapplication.User.DTO.Word;
 
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class SaveScreen extends AppCompatActivity {
 
     RecyclerView rcl;
-    ArrayList<WordClass> listItem = new ArrayList<>();
+    ArrayList<Word> listItem = new ArrayList<>();
     SaveAdapter adapter ;
     SaveSqliteHelper sqliteHelper;
     @Override
