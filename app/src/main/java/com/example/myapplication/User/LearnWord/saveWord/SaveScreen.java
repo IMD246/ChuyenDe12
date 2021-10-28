@@ -25,7 +25,6 @@ public class SaveScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.saveword_screen);
-        getSupportActionBar().hide();
 
         sqliteHelper = new SaveSqliteHelper(getBaseContext());
         AddItem();

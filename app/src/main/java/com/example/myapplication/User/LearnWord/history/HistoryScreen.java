@@ -28,7 +28,7 @@ public class HistoryScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.history_screen);
-        getSupportActionBar().hide();
+
 
         historySqliteDataHelper = new HistorySqliteDataHelper(getBaseContext());
 

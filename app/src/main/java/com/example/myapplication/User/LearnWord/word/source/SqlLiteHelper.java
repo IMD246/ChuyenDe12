@@ -23,7 +23,11 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         this.context = context;
         this.dbName = dbName;
 
-        this.dbPath = "/data/data/com.example.myapplication" + "/databases/";
+        SQLiteDatabase database = this.getReadableDatabase();
+        String filePath = database.getPath();
+        database.close();
+        this.dbPath =filePath;
+
     }
 
     @Override
@@ -37,9 +41,16 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
     }
 
+    @Override
+    public void onConfigure(SQLiteDatabase db) {
+        super.onConfigure(db);
+        db.disableWriteAheadLogging();
+
+    }
+
     public void checkDb() {
         SQLiteDatabase checkDb = null;
-        String filePath = dbPath + dbName;
+        String filePath = dbPath+dbName;
 
         try {
             checkDb = SQLiteDatabase.openDatabase(filePath, null, 0);
@@ -51,26 +62,33 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         if (checkDb != null) {
             Toast.makeText(context, "Databsr alreay exsitr", Toast.LENGTH_SHORT).show();
         } else {
+            Toast.makeText(context, "coppying", Toast.LENGTH_SHORT).show();
+
             CopyDatabase();
         }
     }
 
     private void CopyDatabase() {
         this.getReadableDatabase();
-
         try {
+
+
             InputStream ios = context.getAssets().open(dbName);
-            OutputStream os = new FileOutputStream(dbPath + dbName);
+
+            OutputStream os = new FileOutputStream(dbPath );
+
 
             byte[] buffer = new byte[1024];
 
             int len;
             while ((len = ios.read(buffer)) > 0) {
                 os.write(buffer, 0, len);
+
             }
             os.flush();
             ios.close();
             os.close();
+            Toast.makeText(context, "Databsr alreay exsitr", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -84,35 +102,35 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
 
     public void fetchData(ArrayList<WordClass> listOfWord, int page)    {
-//
-//        listOfWord.clear();
-//        int startPosition = page * 30;
-//        int endPosition = startPosition + 30 - 1;
-//        if (page == 0) {
-//            startPosition = page + 100;
-//            endPosition = page + 38 - 1;
-//        }
-//
-//
-//        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-//        //add a column if it not exist
-//
-//        Cursor cursor = sqLiteDatabase.rawQuery("select * from av LIMIT "
-//                + startPosition + "," + endPosition, null, null);
-//
-//        if(cursor != null){
-//
-//
-//        while (cursor.moveToNext()) {
-//
-//            WordClass addItem = new WordClass(Integer.parseInt(cursor.getString(0)),
-//                    cursor.getString(1).toString(), cursor.getString(2).toString(),cursor.getString(3).toString(),
-//                    cursor.getString(4).toString()
-//                   );
-//            listOfWord.add(addItem);
-//        } }
-//        cursor.close();
-//        sqLiteDatabase.close();
+
+        listOfWord.clear();
+        int startPosition = page * 30;
+        int endPosition = startPosition + 30 - 1;
+        if (page == 0) {
+            startPosition = page + 100;
+            endPosition = page + 38 - 1;
+        }
+
+
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        //add a column if it not exist
+
+        Cursor cursor = sqLiteDatabase.rawQuery("select * from av LIMIT "
+                + startPosition + "," + endPosition, null, null);
+
+        if(cursor != null){
+
+
+        while (cursor.moveToNext()) {
+
+            WordClass addItem = new WordClass(Integer.parseInt(cursor.getString(0)),
+                    cursor.getString(1).toString(), cursor.getString(2).toString(),cursor.getString(3).toString(),
+                    cursor.getString(4).toString()
+                   );
+            listOfWord.add(addItem);
+        } }
+        cursor.close();
+        sqLiteDatabase.close();
     }
     public void fetchRandomWord(String word,ArrayList<String> listItem){
 

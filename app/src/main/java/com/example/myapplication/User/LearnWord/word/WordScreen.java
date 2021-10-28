@@ -65,10 +65,9 @@ public class WordScreen extends AppCompatActivity{
 
 
     private void prepareSQL() {
-         databaseHelper = new SqlLiteHelper(this,"Dictionary.db",1);
+         databaseHelper = new SqlLiteHelper(this,"Dictionary.db",2);
         try {
             databaseHelper.checkDb();
-
         }catch (Exception e){e.printStackTrace();}
 
         try {

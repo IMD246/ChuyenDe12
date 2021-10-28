@@ -19,7 +19,6 @@ public class WordItemDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.word_item_detail);
         //hide appbar
-        getSupportActionBar().hide();
 
 
 
