@@ -70,7 +70,6 @@ public class PracticeScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.practive_screen);
         FirebaseApp.initializeApp(getBaseContext());
-        getSupportActionBar().hide();
 
         sqliteHelper = new SaveSqliteHelper(getBaseContext());
         //lay du lieu saveword trong sqlite roi dua vao list

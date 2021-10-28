@@ -77,7 +77,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
             InputStream ios = context.getAssets().open(dbName);
 
-            OutputStream os = new FileOutputStream(dbPath );
+            OutputStream os = new FileOutputStream(dbPath);
 
 
             byte[] buffer = new byte[1024];
@@ -98,7 +98,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
     }
 
     public void OpenDatabase() {
-        String filePath = dbPath + dbName;
+        String filePath = dbPath ;
         SQLiteDatabase.openDatabase(filePath, null, 0);
     }
 

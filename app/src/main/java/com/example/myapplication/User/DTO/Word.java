@@ -21,6 +21,14 @@ public class Word {
     public Word() {
     }
 
+    public Word(int id, String word, String htmlText, String description, String pronounce) {
+        this.id = id;
+        this.word = word;
+        this.htmlText = htmlText;
+        this.description = description;
+        this.pronounce = pronounce;
+    }
+
     public String getTypeWord() {
         return typeWord;
     }
