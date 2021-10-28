@@ -48,8 +48,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="none"
-                android:hint="@string/lo_i_c_u_h_i"
-                android:text="@string/lo_i_c_u_h_i" />
+                android:hint="@string/lo_i_t_v_ng"
+                android:text="@string/lo_i_t_v_ng" />
         </com.google.android.material.textfield.TextInputLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <androidx.recyclerview.widget.RecyclerView
