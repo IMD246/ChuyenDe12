@@ -4,7 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -42,7 +43,7 @@ public class RecyclerViewLearn_Adapter extends RecyclerView.Adapter<RecyclerView
         if (learn == null) {
             return;
         }
-        holder.tvtitle.setText(learn.getTitle());
+        holder.imgLesson.setImageResource(learn.getImage());
         //xử lí khi click item learn:
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,13 +64,13 @@ public class RecyclerViewLearn_Adapter extends RecyclerView.Adapter<RecyclerView
 
     //class ViewHodler
     public class LearnViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvtitle;
-        private CardView layout;
+        private ImageView imgLesson;
+        private LinearLayout layout;
 
         public LearnViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvtitle = itemView.findViewById(R.id.tv_title);
-            layout = itemView.findViewById(R.id.cardview_item_learn);
+            imgLesson = itemView.findViewById(R.id.img_btn_lesson);
+            layout = itemView.findViewById(R.id.layout_btn_lesson);
         }
     }
     public interface Interface_Learn {

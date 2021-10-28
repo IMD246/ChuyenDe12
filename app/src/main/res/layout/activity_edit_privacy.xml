@@ -22,7 +22,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="60dp"
         android:layout_marginRight="20dp"
-        android:background="@drawable/ct_privacy_boder"
+        android:background="@drawable/ct_layout_boder1"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="20dp">

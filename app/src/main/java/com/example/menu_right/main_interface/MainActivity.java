@@ -9,6 +9,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -52,10 +54,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     //Ánh xạ, khởi gán giá trị,...
     private void setControl() {
-//        //set up toolbar
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-
         //drawe layout
         drawerLayout = findViewById(R.id.drawer_layout);
 
@@ -155,27 +153,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     break;
                 case R.id.bottom_nav_profile:
                     drawerLayout.openDrawer(GravityCompat.END);
-                    Log.d("1", "1");
                     break;
             }
             return true;
         });
     }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_navigation, menu);
-//        return super.onCreateOptionsMenu(menu);
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        int id = item.getItemId();
-//        if (id == R.id.menu_toolbar) {
-//
-//        }
-//        return true;
-//    }
 
     //xử lí navigation drawer
     @Override
@@ -183,7 +165,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
             case R.id.nav_profile:
                 checkLogicScreen(FRAGMENT_PROFILE, 3);
-                Log.d("2", "2");
                 break;
             case R.id.nav_setting:
                 checkLogicScreen(FRAGMENT_SETTING, 4);

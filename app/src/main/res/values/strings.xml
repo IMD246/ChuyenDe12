@@ -1,7 +1,7 @@
 <resources>
     <string name="LearningEnglish"></string>
     <!--    tạo chuỗi cho xml main_interface-->
-    <string name="name_user">Nguyễn Trường Sinh</string>
+    <string name="name_user">Trường Sinh</string>
     <string name="level_user">Lv1</string>
     <string name="xp_user">120xp</string>
 
@@ -78,5 +78,6 @@
     <string name="tv_profile_value_achievement">chưa có</string>
     <string name="tv_profile_value_rank">Xếp hạng</string>
     <string name="btn_edit_profile">sửa hồ sơ</string>
+    <string name="ca_nhan">CÁ NHÂN</string>
 
 </resources>

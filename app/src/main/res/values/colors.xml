@@ -10,7 +10,12 @@
     <color name="orange">#FFC107</color>
     <color name="red">#F44336</color>
     <color name="blue">#03A9F4</color>
+    <color name="blue1">#1cb0f6</color>
+    <color name="d_blue">#0573CA</color>
     <color name="green">#8BC34A</color>
     <color name="pink">#75ED64DB</color>
-    <color name="grey">#DDD</color>
+    <color name="grey">#E1BCBABA</color>
+    <color name="grey1">#afafaf</color>
+    <color name="d_grey">#80222222</color>
+    <color name="l_grey">#B4DDDDDD</color>
 </resources>

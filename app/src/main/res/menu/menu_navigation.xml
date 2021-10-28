@@ -8,7 +8,7 @@
             <group>
                 <item
                     android:id="@+id/nav_profile"
-                    android:icon="@drawable/ic_account"
+                    android:icon="@drawable/baseline_feed_black_24dp"
                     android:title="@string/nav_profile" />
             </group>
         </menu>
@@ -18,15 +18,15 @@
             <group>
                 <item
                     android:id="@+id/nav_setting"
-                    android:icon="@drawable/ic_account"
+                    android:icon="@drawable/baseline_settings_black_24dp"
                     android:title="@string/nav_setting" />
                 <item
                     android:id="@+id/nav_help"
-                    android:icon="@drawable/ic_account"
+                    android:icon="@drawable/baseline_help_outline_black_24dp"
                     android:title="@string/nav_help" />
                 <item
                     android:id="@+id/nav_logout"
-                    android:icon="@drawable/ic_account"
+                    android:icon="@drawable/baseline_power_settings_new_black_24dp"
                     android:title="@string/nav_Logout" />
             </group>
         </menu>
