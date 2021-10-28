@@ -276,13 +276,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.getString("authenticate").equals(DEFAULTVALUE.Admin)) {
-                    startActivity(new Intent(Login.this, AdminInterface.class));
-                    finish();
-                } else if (documentSnapshot.getString("authenticate").equals(DEFAULTVALUE.User)) {
-                    startActivity(new Intent(Login.this, UserInterface.class));
-                    finish();
-                }
+//                if (documentSnapshot.getString("authenticate").equals(DEFAULTVALUE.Admin)) {
+//                    startActivity(new Intent(Login.this, AdminInterface.class));
+//                    finish();
+//                } else if (documentSnapshot.getString("authenticate").equals(DEFAULTVALUE.User)) {
+//                    startActivity(new Intent(Login.this, UserInterface.class));
+//                    finish();
+//                }
             }
         });
     }

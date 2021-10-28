@@ -52,7 +52,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
     public void checkDb() {
         SQLiteDatabase checkDb = null;
-        String filePath = dbPath+dbName;
+        String filePath = dbPath;
 
         try {
             checkDb = SQLiteDatabase.openDatabase(filePath, null, 0);

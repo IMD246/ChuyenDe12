@@ -4,7 +4,10 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -17,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,9 +28,19 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.myapplication.R;
 import com.example.myapplication.User.Adapter.WordToeicIetlsAdapter;
 import com.example.myapplication.User.DAO.DAOToeic;
+import com.example.myapplication.User.DTO.Word;
+import com.example.myapplication.User.LearnWord.saveWord.source.SaveSqliteHelper;
+import com.example.myapplication.User.LearnWord.word.source.MySingleton;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class ToeicManagement extends AppCompatActivity {
 
@@ -35,6 +49,7 @@ public class ToeicManagement extends AppCompatActivity {
     private AutoCompleteTextView atcToeic;
     private SearchView svToeic;
     private DAOToeic daoToeic;
+    MediaPlayer player;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,20 +71,21 @@ public class ToeicManagement extends AppCompatActivity {
         rcvToeic.setAdapter(wordToeicIetlsAdapter);
         wordToeicIetlsAdapter.setMyDelegationLevel(new WordToeicIetlsAdapter.MyDelegationLevel() {
             @Override
-            public void editItem(Word word) {
-                openDialog(Gravity.CENTER,2, word);
+            public void saveItem(Word word) {
+                saveWord(word);
             }
+
             @Override
-            public void deleteItem(Word word) {
-                alertDialog(word);
+            public void speechItem(Word word) {
+                getAudioLink(word.getWord());
             }
         });
-        imgAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDialog(Gravity.CENTER,1,null);
-            }
-        });
+//        imgAdd.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                openDialog(Gravity.CENTER,1,null);
+//            }
+//        });
         svToeic.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -91,90 +107,7 @@ public class ToeicManagement extends AppCompatActivity {
     private void getDataFirebase() {
         daoToeic.getDataFromRealTimeToList(wordToeicIetlsAdapter);
     }
-    public void openDialog(int center, int choice, Word word) {
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.addeditword);
 
-        Window window = dialog.getWindow();
-        if (window==null)
-        {return;}
-        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
-        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        WindowManager.LayoutParams windowAttributes = window.getAttributes();
-        windowAttributes.gravity = center;
-        window.setAttributes(windowAttributes);
-
-        if (Gravity.CENTER == center)
-        {
-            dialog.setCancelable(true);
-        }
-        else
-        {
-            dialog.setCancelable(false);
-        }
-        EditText edtWord = dialog.findViewById(R.id.edtWordItem);
-        EditText edtMeaning = dialog.findViewById(R.id.edtMeaningItem);
-        Spinner spnTypeWord = dialog.findViewById(R.id.spnTypeWordItem);
-        TextView tvThemSua = dialog.findViewById(R.id.tvThemSua);
-        if (word!=null)
-        {
-            spnTypeWord.setSelection(getSelectedSpinner(spnTypeWord,String.valueOf(word.getTypeWord())));
-            edtMeaning.setText(word.getMeaning());
-            edtWord.setText(word.getWord());
-        }
-        Button btnYes = dialog.findViewById(R.id.btnYes);
-        Button btnNo = dialog.findViewById(R.id.btnNo);
-        btnNo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        if (choice == 2)
-        {
-            btnYes.setText("Sửa");
-            btnYes.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Word word1 = new Word();
-                    word1.setId(word.getId());
-                    word1.setWord(edtWord.getText().toString());
-                    word1.setTypeWord(spnTypeWord.getSelectedItem().toString());
-                    word1.setMeaning(edtMeaning.getText().toString());
-                    if (word.getWord().equalsIgnoreCase(word1.getWord())&&word.getTypeWord().equalsIgnoreCase(word1.getTypeWord())
-                            &&word.getMeaning().equalsIgnoreCase(word1.getMeaning()))
-                    { }
-                    else {
-                        daoToeic.editDataToFireBase(word1,edtWord);
-                    }
-                }
-            });
-        }
-        else if (choice == 1)
-        {
-            btnYes.setText("Thêm");
-            tvThemSua.setText("Thêm dữ liệu");
-            btnYes.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Word word1 = new Word();
-                    int i=1;
-                    if (daoToeic.getWordList().size()>0)
-                    {
-                        i = daoToeic.getWordList().get(daoToeic.getWordList().size()-1).getId()+1;
-                    }
-                    word1.setId(i);
-                    word1.setWord(edtWord.getText().toString());
-                    word1.setTypeWord(spnTypeWord.getSelectedItem().toString());
-                    word1.setMeaning(edtMeaning.getText().toString());
-                    daoToeic.addDataToFireBase(word1,edtWord);
-                }
-            });
-        }
-        dialog.show();
-    }
     private int getSelectedSpinner(Spinner spnTypeWord, String valueOf) {
         for (int i=0; i< spnTypeWord.getCount();i++)
         {
@@ -186,27 +119,59 @@ public class ToeicManagement extends AppCompatActivity {
         return 0;
     }
     // Xây dựng một Hộp thoại thông báo
-    public void alertDialog(Word word) {
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-        builder1.setMessage("Bạn có muốn xóa không?");
-        builder1.setCancelable(true);
-        builder1.setPositiveButton(
-                "Có",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        daoToeic.deleteDataToFire(word);
-                    }
-                });
 
-        builder1.setNegativeButton(
-                "Không",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
+    private void getAudioLink(String word) {
+        //lay ra chuoi trong search view
+        String url = "https://api.dictionaryapi.dev/api/v2/entries/en/" + word;
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
 
-        AlertDialog alert11 = builder1.create();
-        alert11.show();
+                    @Override
+                    public void onResponse(JSONArray response) {
+
+                        try {
+                            JSONObject jsonObject = response.getJSONObject(0);
+                            JSONArray jsonArray = jsonObject.getJSONArray("phonetics");
+                            JSONObject jsonObject1 = jsonArray.getJSONObject(0);
+                            String audio = jsonObject1.getString("audio");
+
+                            PlaySong(audio);
+
+                        } catch (Exception exception) {
+                            Toast.makeText(getBaseContext(), "bug found.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getBaseContext(), "am thanh khong co san....", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        MySingleton.getInstance(getBaseContext()).addToRequestQueue(jsonArrayRequest);
+
+    }
+
+    private void PlaySong(String url) {
+        try {
+            Uri uri = Uri.parse("https:" + url);
+            player = new MediaPlayer();
+            player.setDataSource(getBaseContext(), uri);
+            player.prepare();
+            player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mp.start();
+                }
+            });
+        } catch (Exception exception) {
+            Log.d(exception.toString(), "PlaySong: ");
+        }
+
+    }
+    public void saveWord(Word word) {
+        SaveSqliteHelper sqliteHelper = new SaveSqliteHelper(getBaseContext());
+        sqliteHelper.addSaveWord(word);
+
     }
 }

@@ -1,6 +1,7 @@
 package com.example.myapplication.User.DAO;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -44,12 +45,13 @@ public class DAOIetls {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (wordList != null) {
+
                     wordList.clear();
-                }
+
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Word word = dataSnapshot.getValue(Word.class);
                     wordList.add(word);
+                    Log.e("firebase", word.getWord() );
                 }
                 if (wordToeicIetlsAdapter != null) {
                     wordToeicIetlsAdapter.notifyDataSetChanged();

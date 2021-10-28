@@ -57,9 +57,7 @@ public class SaveSqliteHelper extends SQLiteOpenHelper {
 
         cv.put(column_id, word.getId());
         cv.put(column_word, word.getWord());
-        cv.put(column_html, word.getHtmlText());
-        cv.put(column_description, word.getDescription());
-        cv.put(column_pronounce, word.getPronounce());
+
 
         long result = db.insert(table_name,null,cv);
         if(result== -1){
@@ -85,10 +83,7 @@ public class SaveSqliteHelper extends SQLiteOpenHelper {
                 boolean checked = false;
 
                 Word addItem = new Word(Integer.parseInt(cursor.getString(0)),
-                        cursor.getString(1).toString(),
-                        cursor.getString(2).toString()
-                        ,cursor.getString(3).toString(),
-                        cursor.getString(4).toString()
+                        cursor.getString(1).toString()
                 );
                 for (Word w:list
                      ) {

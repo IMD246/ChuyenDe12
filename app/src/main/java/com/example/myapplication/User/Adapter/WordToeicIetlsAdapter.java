@@ -81,11 +81,11 @@ public class WordToeicIetlsAdapter extends RecyclerView.Adapter<WordToeicIetlsAd
             public void onClick(View v) {
                 if (myDelegationLevel != null) {
                     switch (v.getId()) {
-                        case R.id.imgEdit_Word:
-                            myDelegationLevel.editItem(word);
+                        case R.id.imgSave_Word:
+                            myDelegationLevel.saveItem(word);
                             break;
-                        case R.id.imgDelete_Word:
-                            myDelegationLevel.deleteItem(word);
+                        case R.id.imgSpeech_Word:
+                            myDelegationLevel.speechItem(word);
                             break;
                     }
                 }
@@ -135,7 +135,7 @@ public class WordToeicIetlsAdapter extends RecyclerView.Adapter<WordToeicIetlsAd
 
     public static class WordToeicIetlsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView tvWord, tvMeaning, tvNumberList;
-        private ImageView imgDelete, imgEdit;
+        private ImageView imgSave, imgSpeech;
         View.OnClickListener onClickListener;
 
         public void setOnClickListener(View.OnClickListener onClickListener) {
@@ -147,10 +147,10 @@ public class WordToeicIetlsAdapter extends RecyclerView.Adapter<WordToeicIetlsAd
             tvWord = itemView.findViewById(R.id.tvWordToeicIetls);
             tvMeaning = itemView.findViewById(R.id.tvMeaning);
             tvNumberList = itemView.findViewById(R.id.tvNumberListToeicIetls);
-            imgDelete = itemView.findViewById(R.id.imgDelete_Word);
-            imgDelete.setOnClickListener(this);
-            imgEdit = itemView.findViewById(R.id.imgEdit_Word);
-            imgEdit.setOnClickListener(this);
+            imgSpeech = itemView.findViewById(R.id.imgSpeech_Word);
+            imgSpeech.setOnClickListener(this);
+            imgSave = itemView.findViewById(R.id.imgSave_Word);
+            imgSave.setOnClickListener(this);
         }
 
         @Override
@@ -160,8 +160,8 @@ public class WordToeicIetlsAdapter extends RecyclerView.Adapter<WordToeicIetlsAd
     }
 
     public interface MyDelegationLevel {
-        public void editItem(Word word);
+        public void saveItem(Word word);
 
-        public void deleteItem(Word word);
+        public void speechItem(Word word);
     }
 }

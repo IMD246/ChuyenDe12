@@ -91,7 +91,16 @@
             android:exported="true">
 
         </activity>
+        <activity
+            android:name=".User.LearnWord.WordManagement.ToeicManagement"
+            android:exported="true">
 
+        </activity>
+        <activity
+            android:name=".User.LearnWord.WordManagement.IetlsManagement"
+            android:exported="true">
+
+        </activity>
     </application>
     <queries>
         <intent>

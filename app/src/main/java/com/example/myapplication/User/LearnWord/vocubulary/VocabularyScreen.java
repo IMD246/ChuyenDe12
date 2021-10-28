@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.User.LearnWord.WordManagement.IetlsManagement;
+import com.example.myapplication.User.LearnWord.WordManagement.ToeicManagement;
 
 
 import java.util.ArrayList;
@@ -34,21 +36,21 @@ public class VocabularyScreen extends AppCompatActivity {
 
     private void setEvent() {
 
-//        ielts_image.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(getBaseContext(), WordScreen.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        toeic_image.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(getBaseContext(), WordScreen.class);
-//                startActivity(intent);
-//            }
-//        });
+        ielts_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), IetlsManagement.class);
+                startActivity(intent);
+            }
+        });
+
+        toeic_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), ToeicManagement.class);
+                startActivity(intent);
+            }
+        });
 
 
     }

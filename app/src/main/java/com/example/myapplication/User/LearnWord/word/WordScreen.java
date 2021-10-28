@@ -10,15 +10,24 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.myapplication.R;
+import com.example.myapplication.User.LearnWord.word.source.MySingleton;
 import com.example.myapplication.User.LearnWord.word.source.SqlLiteHelper;
 import com.example.myapplication.User.DTO.Word;
 
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -30,11 +39,10 @@ public class WordScreen extends AppCompatActivity{
     private RecyclerView danhsach;
     TextView currentPage;
     int page = 0;
-    public boolean textToSpeechIsInitialized = false;  // <--- add this line
 
     ArrayList<Word> wordItems = new ArrayList<>();
-    MediaPlayer player ;
-    String audioURI="";
+
+
     WordAdapter adapter;
     SqlLiteHelper databaseHelper;
     @Override
@@ -57,7 +65,7 @@ public class WordScreen extends AppCompatActivity{
 
 
     private void prepareSQL() {
-         databaseHelper = new SqlLiteHelper(this,"Dictionary.db",2);
+         databaseHelper = new SqlLiteHelper(this,"Dictionary.db",3);
         try {
             databaseHelper.checkDb();
         }catch (Exception e){e.printStackTrace();}
@@ -75,23 +83,7 @@ public class WordScreen extends AppCompatActivity{
 
     }
 
-    private void PlaySong(String url){
-        try {
-            Uri uri = Uri.parse("https:"+audioURI);
-            player = new MediaPlayer();
-            player.setDataSource(getApplicationContext(), uri);
-                player.prepareAsync();
-            player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    mp.start();
-                }
-            });
-        }catch (Exception exception){
-            Log.d(exception.toString(), "PlaySong: ");
-        }
 
-    }
     private void pageniteAndAPI(ArrayList<Word> wordList){
         databaseHelper.fetchData(wordList,page);
         adapter.notifyDataSetChanged();
@@ -150,7 +142,7 @@ public class WordScreen extends AppCompatActivity{
 
     }
 
-    //lay ra meaning cua tu` tren api
+    //lay ra file am thanh cua tu` tren api
 
 
 

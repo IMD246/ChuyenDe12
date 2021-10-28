@@ -182,7 +182,9 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
             player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
+
                     mp.start();
+                    Toast.makeText(context, "playing", Toast.LENGTH_SHORT).show();
                 }
             });
         } catch (Exception exception) {

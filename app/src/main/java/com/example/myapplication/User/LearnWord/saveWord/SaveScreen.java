@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.R;
 import com.example.myapplication.User.LearnWord.saveWord.source.SaveSqliteHelper;
 import com.example.myapplication.User.DTO.Word;
+import com.google.firebase.FirebaseApp;
 
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class SaveScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.saveword_screen);
+        FirebaseApp.initializeApp(getBaseContext());
 
         sqliteHelper = new SaveSqliteHelper(getBaseContext());
         AddItem();
