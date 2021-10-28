@@ -32,7 +32,7 @@
             android:autofillHints="phone"
             android:background="@drawable/bg_white_corner_10_border_gray"
             android:hint="@string/level"
-            android:hintTextColor="#757575"
+
             android:inputType="number"
             android:padding="12dp"
             tools:ignore="TextContrastCheck" />

@@ -32,7 +32,6 @@
             android:autofillHints="name"
             android:background="@drawable/bg_white_corner_10_border_gray"
             android:hint="@string/question"
-            android:hintTextColor="#757575"
             android:inputType="none"
             android:padding="12dp"
             android:textAlignment="center"
@@ -46,7 +45,7 @@
             android:autofillHints="name"
             android:background="@drawable/bg_white_corner_10_border_gray"
             android:hint="@string/answer"
-            android:hintTextColor="#757575"
+
             android:inputType="text"
             android:padding="12dp"
             android:textAlignment="center"
