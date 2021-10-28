@@ -1,6 +1,8 @@
 package com.example.myapplication.User.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +12,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.myapplication.Login.DEFAULTVALUE;
 import com.example.myapplication.R;
 import com.example.myapplication.User.DTO.Word;
+import com.example.myapplication.User.LearnWord.history.HistoryItem;
+import com.example.myapplication.User.LearnWord.history.source.HistorySqliteDataHelper;
+import com.example.myapplication.User.LearnWord.word.WordItemDetail;
+import com.example.myapplication.User.LearnWord.word.source.SqlLiteHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,6 +98,26 @@ public class WordToeicIetlsAdapter extends RecyclerView.Adapter<WordToeicIetlsAd
                 }
             }
         };
+        holder.cardView_toeicIelts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HistorySqliteDataHelper historySqliteDataHelper = new HistorySqliteDataHelper(context);
+                HistoryItem is=
+                        new HistoryItem(wordList.get(holder.getAdapterPosition()).getId()+"",
+                                wordList.get(holder.getAdapterPosition()).getWord(),
+                                HistoryItem.getDateTimeNow());
+                historySqliteDataHelper.addHistory(is);
+                SqlLiteHelper sqlLiteHelperOfWord = new SqlLiteHelper(context,"Dictionary.db",3);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("htmlText", sqlLiteHelperOfWord.getHtmlTextByWord(wordList.get(holder.getAdapterPosition()).getWord()));
+
+                Intent it = new Intent(context, WordItemDetail.class);
+                it.putExtras(bundle);
+                it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(it);
+            }
+        });
     }
 
     @Override
@@ -135,6 +162,7 @@ public class WordToeicIetlsAdapter extends RecyclerView.Adapter<WordToeicIetlsAd
 
     public static class WordToeicIetlsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView tvWord, tvMeaning, tvNumberList;
+        CardView cardView_toeicIelts;
         private ImageView imgSave, imgSpeech;
         View.OnClickListener onClickListener;
 
@@ -151,6 +179,7 @@ public class WordToeicIetlsAdapter extends RecyclerView.Adapter<WordToeicIetlsAd
             imgSpeech.setOnClickListener(this);
             imgSave = itemView.findViewById(R.id.imgSave_Word);
             imgSave.setOnClickListener(this);
+            cardView_toeicIelts = itemView.findViewById(R.id.cardView_IeltsToeic);
         }
 
         @Override

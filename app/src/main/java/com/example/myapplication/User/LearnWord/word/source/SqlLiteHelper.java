@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+
 import com.example.myapplication.User.DTO.Word;
 
 import java.io.FileOutputStream;
@@ -32,6 +34,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         this.dbPath =filePath;
 
     }
+
 
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -162,6 +165,24 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         cursor.close();
         sqLiteDatabase.close();
 
+
+    }
+    public String getHtmlTextByWord(String word){
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery("  select * from av where word like '"+word+"'", null, null);
+        if(cursor!=null && cursor.moveToFirst()){
+            String temp ="<h1>"+cursor.getString(2)+"</h1>";
+            sqLiteDatabase.close();
+            cursor.close();
+            return  temp;
+        }
+        else {
+            String temp ="<h1>The detail of word is currently update</h1>";
+            sqLiteDatabase.close();
+            cursor.close();
+            return temp;
+
+        }
 
     }
 }

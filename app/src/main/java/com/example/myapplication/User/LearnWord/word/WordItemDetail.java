@@ -1,7 +1,10 @@
 package com.example.myapplication.User.LearnWord.word;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -13,7 +16,7 @@ import org.sufficientlysecure.htmltextview.HtmlTextView;
 
 public class WordItemDetail extends AppCompatActivity {
     String htmlCode;
-
+    Button returnBack;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,5 +31,12 @@ public class WordItemDetail extends AppCompatActivity {
         HtmlTextView htmlTextView = (HtmlTextView) findViewById(R.id.wordItemDetail_html_text);
         htmlTextView.setHtml(htmlCode);
 
+        returnBack = findViewById(R.id.btn_return);
+        returnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 }
