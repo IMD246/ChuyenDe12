@@ -32,11 +32,13 @@ import com.example.myapplication.User.DTO.Word;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
+
 import com.google.firebase.ml.common.modeldownload.FirebaseModelDownloadConditions;
 import com.google.firebase.ml.naturallanguage.FirebaseNaturalLanguage;
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateLanguage;
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslator;
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslatorOptions;
+
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -48,28 +50,29 @@ public class PracticeScreen extends AppCompatActivity {
 
     private RecyclerView danhsach;
 
-    ArrayList<String> listAnswer = new ArrayList<>();
-    ArrayList<Boolean> listOfResult = new ArrayList<Boolean>();
-    String result = "";
+     ArrayList<String> listAnswer = new ArrayList<>();
+     ArrayList<Boolean> listOfResult = new ArrayList<Boolean>();
+    private String result = "";
     //list of word get from sqlite
-    ArrayList<Word> listItem = new ArrayList<>();
-    SaveSqliteHelper sqliteHelper;
-    SqlLiteHelper databaseHelper;
-    PracticeAdapter adapter;
+     ArrayList<Word> listItem = new ArrayList<>();
+    private SaveSqliteHelper sqliteHelper;
+    private SqlLiteHelper databaseHelper;
+    private PracticeAdapter adapter;
+    private MediaPlayer player;
 
-    MediaPlayer player;
-
-    ImageView speakerIcon,showHint;
-    Button submitButton;
-
-    TextView hintText, questionText;
+    private ImageView speakerIcon,showHint;
+    private Button submitButton;
+    private TextView hintText, questionText;
     int currentpos = 0;
-
+    FirebaseApp firebaseApp ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        firebaseApp.initializeApp(PracticeScreen.this);
+//        firebaseApp.getApplicationContext();
+
         setContentView(R.layout.practive_screen);
-        FirebaseApp.initializeApp(getBaseContext());
+
 
         sqliteHelper = new SaveSqliteHelper(getBaseContext());
         //lay du lieu saveword trong sqlite roi dua vao list
@@ -81,13 +84,14 @@ public class PracticeScreen extends AppCompatActivity {
         prepareSQL();
 
         setControl();
-
         setEvent();
         AddItem();
         if (listItem.size() == 0) {
             ifDataIsNull();
         }
     }
+
+
 
     private void setEvent() {
         AddItem();
@@ -97,11 +101,11 @@ public class PracticeScreen extends AppCompatActivity {
                 try {
                     if (currentpos < listItem.size()-1&&currentpos<10) {
                         currentpos = currentpos + 1;
-                        listAnswer.clear();
+//                        listAnswer.clear();
                         AddItem();
 
                     } else {
-                        listAnswer.clear();
+                      //  listAnswer.clear();
                         setAdapter(1);
                         afterThePractice();
                     }
@@ -110,19 +114,15 @@ public class PracticeScreen extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     private void prepareSQL() {
-        databaseHelper = new SqlLiteHelper(this, "Dictionary.db", 1);
+        databaseHelper = new SqlLiteHelper(this, "Dictionary.db", 3);
         try {
             databaseHelper.checkDb();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         try {
             databaseHelper.OpenDatabase();
 
@@ -142,7 +142,7 @@ public class PracticeScreen extends AppCompatActivity {
     }
 
     private void setAdapter(int resultPos){
-        adapter = new PracticeAdapter(this, translateText(listAnswer), resultPos,listOfResult);
+        adapter = new PracticeAdapter(getBaseContext(), listAnswer, resultPos,listOfResult);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);// Tạo layout manager
         danhsach.setItemAnimator(new DefaultItemAnimator());// Gán hiệu ứng cho Recyclerview
         danhsach.setLayoutManager(layoutManager);// Gán layout manager cho recyclerview
@@ -152,12 +152,13 @@ public class PracticeScreen extends AppCompatActivity {
     private void AddItem() {
         try {
             //reset the hint
-            hintText.setText("");
             //save word get from sqlite to listitem
+            hintText.setText("");
             databaseHelper.fetchRandomWord(listItem.get(currentpos).getWord(), listAnswer);
             //get  word to a new list
             listAnswer.add(listItem.get(currentpos).getWord());
             Collections.shuffle(listAnswer);
+            Toast.makeText(getBaseContext(),  listAnswer.get(0), Toast.LENGTH_SHORT).show();
 
             setAdapter(getResultPos(listAnswer,listItem.get(currentpos).getWord()));
             //set am thanh
@@ -176,7 +177,8 @@ public class PracticeScreen extends AppCompatActivity {
             showHint.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                        hintText.setText(listItem.get(currentpos).getWord());
+                // translateText(listItem.get(currentpos).getWord().toString(),hintText);
+                 hintText.setText(listItem.get(currentpos).getWord());
                 }
             });
 
@@ -191,11 +193,7 @@ public class PracticeScreen extends AppCompatActivity {
     }
 
     private void afterThePractice() {
-
-
-
-
-
+        listAnswer.clear();
         speakerIcon.setVisibility(View.GONE);
         hintText.setText("Your Score is:"+getScore()+"/"+listItem.size());
         hintText.setTextSize(30);
@@ -247,8 +245,6 @@ public class PracticeScreen extends AppCompatActivity {
 
                         try {
                             JSONObject jsonObject = response.getJSONObject(0);
-
-
                             JSONArray jsonArray = jsonObject.getJSONArray("phonetics");
                             JSONObject jsonObject1 = jsonArray.getJSONObject(0);
                             String audio = jsonObject1.getString("audio");
@@ -294,52 +290,46 @@ public class PracticeScreen extends AppCompatActivity {
         }
 
     }
-    private ArrayList<String> translateText(ArrayList<String> listToTranSlate) {
-        ArrayList<String> listPossibleResult = new ArrayList<>();
+    private void translateText(String word,TextView txt_temp) {
         try {
-
+            firebaseApp.initializeApp(PracticeScreen.this);
             FirebaseTranslatorOptions options = new FirebaseTranslatorOptions.Builder()
                     .setSourceLanguage(FirebaseTranslateLanguage.EN)
                     .setTargetLanguage(FirebaseTranslateLanguage.VI)
                     .build();
-            FirebaseTranslator translator = FirebaseNaturalLanguage.getInstance().getTranslator(options);
+            FirebaseTranslator translator = FirebaseNaturalLanguage.getInstance(firebaseApp).getTranslator(options);
 
             FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions.Builder().build();
 
             translator.downloadModelIfNeeded(conditions).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void unused) {
-                    int temp=0;
-                    for (String i: listToTranSlate) {
-                        translator.translate(i.trim().toString().toLowerCase()).addOnSuccessListener(new OnSuccessListener<String>() {
-                            @Override
-                            public void onSuccess(String s) {
 
 
-                               listPossibleResult.add(s);
+                    translator.translate(word).addOnSuccessListener(new OnSuccessListener<String>() {
+                        @Override
+                        public void onSuccess(String s) {
 
-                           adapter.notifyDataSetChanged();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(getBaseContext(), "fail", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
 
+                            txt_temp.setText(s);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            e.printStackTrace();
+                                }
+                    });
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getBaseContext(), "fail", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
                 }
             });
 
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return listPossibleResult;
     }
     private int getResultPos(ArrayList<String> list,String answer){
         int pos =0;

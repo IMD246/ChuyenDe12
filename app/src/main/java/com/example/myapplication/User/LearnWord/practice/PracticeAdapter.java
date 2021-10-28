@@ -60,14 +60,14 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewHo
                 @Override
                 public void onClick(View v) {
 
-                if(holder.getAdapterPosition()==resultPos){
-                    holder.answerButton.setBackgroundColor(Color.GREEN);
-                    listResult.add(true);
-                }
-                else {
-                    holder.answerButton.setBackgroundColor(Color.RED);
-                    listResult.add(false);
-                }
+                    if(holder.getAdapterPosition()==resultPos){
+                        holder.answerButton.setBackgroundColor(Color.GREEN);
+                        listResult.add(true);
+                    }
+                    else {
+                        holder.answerButton.setBackgroundColor(Color.RED);
+                        listResult.add(false);
+                    }
                     holder.answerButton.setEnabled(false);
                     notifyDataSetChanged();
 

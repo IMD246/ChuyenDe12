@@ -2,6 +2,7 @@ package com.example.myapplication.User.LearnWord.word.source;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -30,6 +31,12 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         database.close();
         this.dbPath =filePath;
 
+    }
+
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        throw new SQLException("Can't downgrade database from version " +
+                oldVersion + " to " + newVersion);
     }
 
     @Override
@@ -157,5 +164,4 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
 
     }
-
 }
