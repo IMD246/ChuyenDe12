@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/drawable-v24/ct_layout_boder1.xml" value="0.2703125" />
         <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/drawable-v24/ct_privacy_boder.xml" value="0.2703125" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/drawable-v24/ic_email.xml" value="0.24027777777777778" />
         <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/drawable/ct_layout_item_recycleview_learn.xml" value="0.2703125" />
         <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/drawable/ct_learn_img_btn_exit.xml" value="0.2703125" />
         <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/drawable/ct_profile_boder_itemstatistic.xml" value="0.2703125" />
@@ -16,13 +17,14 @@
         <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/activity_edit_study_mode.xml" value="0.1793478260869565" />
         <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/activity_forget_password.xml" value="0.2619047619047619" />
         <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/activity_learning_english.xml" value="0.264" />
-        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/activity_main.xml" value="0.1793478260869565" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/activity_test_english.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/activity_user_interface.xml" value="0.1793478260869565" />
         <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/layout_fragment_alarm.xml" value="0.1793478260869565" />
         <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/layout_fragment_learn.xml" value="0.17300724637681159" />
         <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/layout_fragment_profile.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/layout_header_nav.xml" value="0.17300724637681159" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/layout_fragment_setting_menu.xml" value="0.22592592592592592" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/layout_header_nav.xml" value="0.264" />
         <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/layout_item_recycleview_learn.xml" value="0.264" />
         <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/menu/menu_bottom_navigation.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/menu/menu_button_lesson.xml" value="0.25416666666666665" />

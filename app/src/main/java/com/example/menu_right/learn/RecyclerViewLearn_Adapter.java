@@ -2,15 +2,20 @@ package com.example.menu_right.learn;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.menu_right.Login.DEFAULTVALUE;
 import com.example.menu_right.R;
 
 import java.util.ArrayList;
@@ -22,9 +27,13 @@ public class RecyclerViewLearn_Adapter extends RecyclerView.Adapter<RecyclerView
     private Context context;
 
     //hàm constructor
-    public RecyclerViewLearn_Adapter(Context context, ArrayList<Learn> learnArrayList, Interface_Learn interface_learn) {
+    public RecyclerViewLearn_Adapter(Context context, ArrayList<Learn> learnArrayList) {
         this.context = context;
         this.learnArrayList = learnArrayList;
+    }
+
+
+    public void setInterface_learn(Interface_Learn interface_learn) {
         this.interface_learn = interface_learn;
     }
 
@@ -48,11 +57,28 @@ public class RecyclerViewLearn_Adapter extends RecyclerView.Adapter<RecyclerView
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                interface_learn.onClickItemLearn(learn);
+                //hiện thị các lựa chọn khi ấn vào nút bài học
+                PopupMenu popupMenu = new PopupMenu(context, holder.imgLesson);
+                popupMenu.getMenuInflater().inflate(R.menu.menu_button_lesson, popupMenu.getMenu());
+                onSelectedItemMenu(popupMenu);
+                popupMenu.show();
             }
         });
     }
 
+    private void onSelectedItemMenu(PopupMenu popupMenu){
+        popupMenu.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()){
+                case R.id.item_menu_learn:
+                    interface_learn.onClickItemPopup(DEFAULTVALUE.LEARNING_SCREEN);
+                    break;
+                case R.id.item_menu_test:
+                    interface_learn.onClickItemPopup(DEFAULTVALUE.TEST_SCREEN);
+                    break;
+            }
+            return true;
+        });
+    }
     //trả về số phần tử của list
     @Override
     public int getItemCount() {
@@ -73,7 +99,9 @@ public class RecyclerViewLearn_Adapter extends RecyclerView.Adapter<RecyclerView
             layout = itemView.findViewById(R.id.layout_btn_lesson);
         }
     }
+
     public interface Interface_Learn {
         public void onClickItemLearn(Learn learn);
+        public void onClickItemPopup(String string);
     }
 }

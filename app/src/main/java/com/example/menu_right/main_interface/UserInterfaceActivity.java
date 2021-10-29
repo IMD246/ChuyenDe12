@@ -3,25 +3,41 @@ package com.example.menu_right.main_interface;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.DialogInterface;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.menu_right.Login.DAOUserProfile;
+import com.example.menu_right.Login.DEFAULTVALUE;
+import com.example.menu_right.Login.Login;
+import com.example.menu_right.Login.User;
 import com.example.menu_right.R;
+import com.example.menu_right.learn.LearningEnglishActivity;
+import com.example.menu_right.learn.TestEnglishActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class UserInterfaceActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    //Khai báo các trường dữ liệu để lấy data trên firebase
+    private DAOUserProfile daoUserProfile;
+    FirebaseAuth firebaseAuth;
+    FirebaseUser user;
+    DatabaseReference databaseReference;
+
     //khai báo giá trị cho screen
     public static final int FRAGMENT_LEARN = 1;
     public static final int FRAGMENT_ALARM = 2;
@@ -50,6 +66,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setControl();
+        getDataUser();
+    }
+
+    //lấy dữ liệu user
+    private void getDataUser() {
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        databaseReference.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User us = snapshot.getValue(User.class);
+                if (us != null) {
+                    Toast.makeText(UserInterfaceActivity.this, "" + us.getEmail().toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     //Ánh xạ, khởi gán giá trị,...
@@ -90,26 +127,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case 0:
                         myCurrentViewpager2 = FRAGMENT_LEARN;
                         bottomNavigationView.getMenu().findItem(R.id.bottom_nav_learn).setChecked(true);
-                        navigationView.getMenu().findItem(R.id.nav_profile).setChecked(false);
-                        navigationView.getMenu().findItem(R.id.nav_setting).setChecked(false);
-                        navigationView.getMenu().findItem(R.id.nav_help).setChecked(false);
-                        navigationView.getMenu().findItem(R.id.nav_logout).setChecked(false);
                         break;
                     case 1:
                         myCurrentViewpager2 = FRAGMENT_ALARM;
                         bottomNavigationView.getMenu().findItem(R.id.bottom_nav_alarm).setChecked(true);
-                        navigationView.getMenu().findItem(R.id.nav_profile).setChecked(false);
-                        navigationView.getMenu().findItem(R.id.nav_setting).setChecked(false);
-                        navigationView.getMenu().findItem(R.id.nav_help).setChecked(false);
-                        navigationView.getMenu().findItem(R.id.nav_logout).setChecked(false);
                         break;
                     case 2:
                         myCurrentViewpager2 = FRAGMENT_VOCABULARY;
                         bottomNavigationView.getMenu().findItem(R.id.bottom_nav_vocabulary).setChecked(true);
-                        navigationView.getMenu().findItem(R.id.nav_profile).setChecked(false);
-                        navigationView.getMenu().findItem(R.id.nav_setting).setChecked(false);
-                        navigationView.getMenu().findItem(R.id.nav_help).setChecked(false);
-                        navigationView.getMenu().findItem(R.id.nav_logout).setChecked(false);
                         break;
                     case 3:
                         myCurrentViewpager2 = FRAGMENT_PROFILE;
@@ -118,19 +143,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         navigationView.getMenu().findItem(R.id.nav_setting).setChecked(false);
                         navigationView.getMenu().findItem(R.id.nav_help).setChecked(false);
                         navigationView.getMenu().findItem(R.id.nav_logout).setChecked(false);
-                        bottomNavigationView.getMenu().findItem(R.id.bottom_nav_learn).setChecked(false);
-                        bottomNavigationView.getMenu().findItem(R.id.bottom_nav_alarm).setChecked(false);
-                        bottomNavigationView.getMenu().findItem(R.id.bottom_nav_vocabulary).setChecked(false);
                         break;
                     case 4:
                         myCurrentViewpager2 = FRAGMENT_SETTING;
-                        navigationView.getMenu().findItem(R.id.nav_profile).setChecked(false);
                         navigationView.getMenu().findItem(R.id.nav_setting).setChecked(true);
+                        navigationView.getMenu().findItem(R.id.nav_profile).setChecked(false);
                         navigationView.getMenu().findItem(R.id.nav_help).setChecked(false);
                         navigationView.getMenu().findItem(R.id.nav_logout).setChecked(false);
-                        bottomNavigationView.getMenu().findItem(R.id.bottom_nav_learn).setChecked(false);
-                        bottomNavigationView.getMenu().findItem(R.id.bottom_nav_alarm).setChecked(false);
-                        bottomNavigationView.getMenu().findItem(R.id.bottom_nav_vocabulary).setChecked(false);
                         break;
                 }
             }
@@ -170,16 +189,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 checkLogicScreen(FRAGMENT_SETTING, 4);
                 break;
             case R.id.nav_help://ấn vào help sẽ chuyển acti
-                Toast.makeText(MainActivity.this, "click help", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserInterfaceActivity.this, "click help", Toast.LENGTH_SHORT).show();
+                navigationView.getMenu().findItem(R.id.nav_profile).setChecked(false);
+                navigationView.getMenu().findItem(R.id.nav_setting).setChecked(false);
+                navigationView.getMenu().findItem(R.id.nav_help).setChecked(false);
+                navigationView.getMenu().findItem(R.id.nav_logout).setChecked(true);
                 break;
             case R.id.nav_logout:
                 navigationView.getMenu().findItem(R.id.nav_profile).setChecked(false);
                 navigationView.getMenu().findItem(R.id.nav_setting).setChecked(false);
                 navigationView.getMenu().findItem(R.id.nav_help).setChecked(false);
                 navigationView.getMenu().findItem(R.id.nav_logout).setChecked(true);
-                bottomNavigationView.getMenu().findItem(R.id.bottom_nav_learn).setChecked(false);
-                bottomNavigationView.getMenu().findItem(R.id.bottom_nav_alarm).setChecked(false);
-                bottomNavigationView.getMenu().findItem(R.id.bottom_nav_vocabulary).setChecked(false);
                 alertDialog();
                 break;
         }
@@ -213,8 +233,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 "Có",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-//                        FirebaseAuth.getInstance().signOut();
-//                        startActivity(new Intent(UserInterface.this, Login.class));
+                        FirebaseAuth.getInstance().signOut();
+                        startActivity(new Intent(UserInterfaceActivity.this, Login.class));
                     }
                 });
 
@@ -228,5 +248,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         AlertDialog alert11 = builder1.create();
         alert11.show();
+    }
+
+    //
+    public void navigationScreen(String string){
+        if(DEFAULTVALUE.LEARNING_SCREEN.equalsIgnoreCase(string)){
+            startActivity(new Intent(this, LearningEnglishActivity.class));
+        }else if (DEFAULTVALUE.TEST_SCREEN.equalsIgnoreCase(string)){
+            startActivity(new Intent(this, TestEnglishActivity.class));
+        }
     }
 }

@@ -1,7 +1,7 @@
 <resources>
     <string name="LearningEnglish"></string>
     <!--    tạo chuỗi cho xml main_interface-->
-    <string name="name_user">Trường Sinh</string>
+    <string name="name_user">Nguyễn Thanh Tùng</string>
     <string name="level_user">Lv1</string>
     <string name="xp_user">120xp</string>
 
@@ -58,8 +58,7 @@
 
     <!--màn hình edit menu setting-->
     <string name="title_menu_setting"><u>Cài đặt</u></string>
-    <string name="tv_name_user">Nguyễn Đình Thọ</string>
-    <string name="tv_watch_profile">Xem hồ sơ của bạn</string>
+    <string name="tv_watch_profile"><u>Xem hồ sơ của bạn</u></string>
     <string name="tv_title_btn_profile">Hồ sơ</string>
     <string name="tv_title_btn_account">Tài khoản</string>
     <string name="tv_title_btn_studymode">Chế độ huấn luyện</string>
@@ -79,5 +78,24 @@
     <string name="tv_profile_value_rank">Xếp hạng</string>
     <string name="btn_edit_profile">sửa hồ sơ</string>
     <string name="ca_nhan">CÁ NHÂN</string>
+    <string name="username">SonTung.M-TP@gmail.com</string>
+
+
+
+
+
+    <string name="app_name">My Application</string>
+    <string name="facebook_app_id">1000910057421767</string>
+    <string name="fb_login_protocol_scheme">fb1000910057421767</string>
+    <string name="enter_your_email">Enter Your Email</string>
+    <string name="login">Login</string>
+    <string name="ng_nh_p">Đăng Nhập</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="register">Register</string>
+    <string name="enter_your_pass">Enter Your Pass</string>
+    <string name="or_register_with">Or Register With</string>
+    <string name="email">Email</string>
+    <string name="qu_n_m_t_kh_u">Quên mật khẩu</string>
+    <string name="send_email">Send Email</string>
 
 </resources>

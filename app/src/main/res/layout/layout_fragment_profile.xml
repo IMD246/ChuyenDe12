@@ -26,10 +26,14 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@drawable/ic_account"/>
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/img_avtar_user"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:src="@drawable/iamsky"
+                app:civ_border_color="@color/l_grey"
+                app:civ_border_width="1dp" />
 
             <ImageButton
                 android:layout_width="20dp"
@@ -50,7 +54,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tv_name_user"
+                android:text="@string/name_user"
                 android:textColor="@color/blue"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -284,10 +288,11 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
     <Button
         android:id="@+id/btn_profile_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
         android:layout_gravity="center"
         android:layout_marginTop="24dp"
         android:backgroundTint="@color/blue"

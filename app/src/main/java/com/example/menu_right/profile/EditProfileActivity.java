@@ -1,16 +1,14 @@
 package com.example.menu_right.profile;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.menu_right.R;
-import com.example.menu_right.main_interface.MainActivity;
+import com.example.menu_right.main_interface.UserInterfaceActivity;
 
 public class EditProfileActivity extends AppCompatActivity {
     //kháo báo các phần tử
@@ -27,7 +25,7 @@ public class EditProfileActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(EditProfileActivity.this, MainActivity.class));
+                startActivity(new Intent(EditProfileActivity.this, UserInterfaceActivity.class));
             }
         });
         btnSave.setOnClickListener(new View.OnClickListener() {
