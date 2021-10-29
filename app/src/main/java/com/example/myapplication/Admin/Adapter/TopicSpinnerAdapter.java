@@ -65,7 +65,7 @@ public class TopicSpinnerAdapter extends ArrayAdapter<Topic> {
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 clear();
-                addAll((List<Topic>) results.values);
+//                addAll((List<Topic>) results.values);
                 notifyDataSetChanged();
             }
 

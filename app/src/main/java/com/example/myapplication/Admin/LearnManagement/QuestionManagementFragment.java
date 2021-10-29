@@ -11,12 +11,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -26,6 +28,8 @@ import android.widget.SearchView;
 import android.widget.Spinner;
 
 import com.example.myapplication.Admin.Adapter.QuestionAdapter;
+import com.example.myapplication.Admin.Adapter.TopicSpinnerAdapter;
+import com.example.myapplication.Admin.Adapter.TypeQuestionSpinnerAdapter;
 import com.example.myapplication.Admin.DAO.DAOQuestion;
 import com.example.myapplication.Admin.DAO.DAOTopic;
 import com.example.myapplication.Admin.DAO.DAOTypeQuestion;
@@ -43,30 +47,39 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
 
     private RecyclerView rcvQuestion;
     private DAOQuestion daoQuestion;
-    private DAOTypeQuestion daoTypeQuestion;
-    private DAOTopic daoTopic;
+//    private DAOTypeQuestion daoTypeQuestion;
+//    private DAOTopic daoTopic;
     private ImageView imgAdd;
     private SearchView svQuestion;
-    private List<String> listQuestion;
     private QuestionInterface questionInterface;
     private AutoCompleteTextView atcTopic, atcTypeQuestion;
     String topic = DEFAULTVALUE.TOPIC, typeQuestion = DEFAULTVALUE.TYPEQUESTION;
     private QuestionAdapter questionAdapter;
+    private View v;
 
     public QuestionManagementFragment() {
-        daoTopic = new DAOTopic(getContext());
+//        daoTopic = new DAOTopic(getContext());
         daoQuestion = new DAOQuestion(getContext());
-        daoTypeQuestion = new DAOTypeQuestion(getContext());
+//        daoTypeQuestion = new DAOTypeQuestion(getContext());
         questionAdapter = new QuestionAdapter(getContext());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_question_management, container, false);
+        v = inflater.inflate(R.layout.fragment_question_management, container, false);
         initUI(v);
         getDataFromRealTime();
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        atcTypeQuestion.setAdapter(new TypeQuestionSpinnerAdapter(getContext(), R.layout.listoptionitem,
+                R.id.tvOptionItem, questionInterface.daoTypeQuestion.getTypeQuestionList()));
+        atcTopic.setAdapter(new TopicSpinnerAdapter(getContext(), R.layout.listoptionitem,
+                R.id.tvOptionItem, questionInterface.daoTopic.getTopicList()));
     }
 
     private void initUI(View v) {
@@ -75,11 +88,11 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
         svQuestion = v.findViewById(R.id.svQuestion);
         imgAdd = v.findViewById(R.id.imgAddQuestion);
         imgAdd.setOnClickListener(this);
-//        atcTopic = v.findViewById(R.id.atcQuestion_Topic);
-//        atcTypeQuestion = v.findViewById(R.id.atcQuestion_TypeQuestion);
-//        atcTypeQuestion.setAdapter(new TypeQuestionSpinnerAdapter(getContext(), R.layout.listoptionitem,
-//                R.id.tvOptionItem, daoTypeQuestion.getTypeQuestionList()));
-//        atcTopic.setAdapter(new TopicSpinnerAdapter(getContext(), R.layout.listoptionitem, R.id.tvOptionItem, daoTopic.getTopicList()));
+        atcTopic = v.findViewById(R.id.atcQuestion_Topic);
+        atcTypeQuestion = v.findViewById(R.id.atcQuestion_TypeQuestion);
+
+
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(rcvQuestion.VERTICAL);
         rcvQuestion.setLayoutManager(linearLayoutManager);
@@ -89,6 +102,7 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
             @Override
             public void editItem(Question question) {
                 questionInterface.goToDetailQuestionFragment(question);
+                questionInterface.setFlag(true);
             }
             @Override
             public void deleteItem(Question question) {
@@ -107,29 +121,29 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
                 return false;
             }
         });
-//        atcTypeQuestion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                if (atcTypeQuestion.getText().toString().isEmpty())
-//                {}
-//                else {
-//                    typeQuestion = atcTypeQuestion.getText().toString();
-//                    questionAdapter.setListDependOnTopicAndTypeQuestion(topic, typeQuestion);
-//                }
-//            }
-//        });
-//        atcTopic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                if (atcTopic.getText().toString().isEmpty())
-//                {
-//                }
-//                else {
-//                    topic = atcTopic.getText().toString();
-//                    questionAdapter.setListDependOnTopicAndTypeQuestion(topic, typeQuestion);
-//                }
-//            }
-//        });
+        atcTypeQuestion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (atcTypeQuestion.getText().toString().isEmpty())
+                {}
+                else {
+                    typeQuestion = atcTypeQuestion.getText().toString();
+                    questionAdapter.setListDependOnTopicAndTypeQuestion(topic, typeQuestion);
+                }
+            }
+        });
+        atcTopic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (atcTopic.getText().toString().isEmpty())
+                {
+                }
+                else {
+                    topic = atcTopic.getText().toString();
+                    questionAdapter.setListDependOnTopicAndTypeQuestion(topic, typeQuestion);
+                }
+            }
+        });
     }
     // Xây dựng một Hộp thoại thông báo
     private void alertDialog(Question question) {
@@ -159,8 +173,8 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
 
     private void getDataFromRealTime() {
         daoQuestion.getDataFromRealTimeToList(questionAdapter,null);
-        daoTopic.getDataFromRealTimeFirebase(null);
-        daoTypeQuestion.getDataFromRealTimeToList(null);
+//        daoTopic.getDataFromRealTimeFirebase(null);
+//        daoTypeQuestion.getDataFromRealTimeToList(null);
     }
 
     @Override
@@ -200,10 +214,10 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
         Button btnYes = dialog.findViewById(R.id.btnYes);
         Button btnNo = dialog.findViewById(R.id.btnNo);
         btnYes.setText("Add");
-        for (Topic topic : daoTopic.getTopicList()) {
+        for (Topic topic : questionInterface.daoTopic.getTopicList()) {
             listTopic.add(topic.getNameTopic());
         }
-        for (TypeQuestion typeQuestion : daoTypeQuestion.getTypeQuestionList()) {
+        for (TypeQuestion typeQuestion : questionInterface.daoTypeQuestion.getTypeQuestionList()) {
             listTypeQuestion.add(typeQuestion.getTypeQuestionName());
         }
         spnTopic.setAdapter(new ArrayAdapter<String>(getContext(), R.layout.listoptionitem, R.id.tvOptionItem, listTopic));
@@ -228,13 +242,13 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
                 question.setCorrectAnswer(edtCorrectAnswer.getText().toString());
                 question.setNameTopic(spnTopic.getSelectedItem().toString());
                 question.setNameTypeQuestion(spnTypeQuestion.getSelectedItem().toString());
-                for (Topic topic : daoTopic.getTopicList()) {
+                for (Topic topic : questionInterface.daoTopic.getTopicList()) {
                     if (question.getNameTopic().equalsIgnoreCase(topic.getNameTopic())) {
                         question.setIdTopic(topic.getId());
                         break;
                     }
                 }
-                for (TypeQuestion typeQuestion : daoTypeQuestion.getTypeQuestionList()) {
+                for (TypeQuestion typeQuestion : questionInterface.daoTypeQuestion.getTypeQuestionList()) {
                     if (question.getNameTypeQuestion().equalsIgnoreCase(typeQuestion.getTypeQuestionName())) {
                         question.setIdTypeQuestion(typeQuestion.getId());
                         break;

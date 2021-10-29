@@ -50,10 +50,9 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
     private View view;
     private DAOAnswer daoAnswer;
     private AnswerAdapter answerAdapter;
-    private DAOTopic daoTopic;
+    private QuestionInterface questionInterface;
     private FloatingActionButton flAdd, flEdit;
     private DAOQuestion daoQuestion;
-    private DAOTypeQuestion daoTypeQuestion;
     private DAOImageStorage daoImageStorage;
     private RecyclerView rcvAnswer;
     private ImageView imgAnswer;
@@ -82,28 +81,9 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (getView() == null) {
-            return;
-        }
-        getView().setFocusableInTouchMode(true);
-        getView().requestFocus();
-        getView().setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
-                if (keyEvent.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                    getActivity().getSupportFragmentManager().popBackStack();
-                    return true;
-                }
-                return false;
-            }
-        });
-    }
     // ánh xạ cho các view và set adapter
     private void initUI() {
+        questionInterface = (QuestionInterface) getActivity();
         tvTitle = view.findViewById(R.id.tvTitleQuestionDetail);
         tvCorrectAnswer = view.findViewById(R.id.tvCorrectAnswerQuestion);
         tvTitle.setText("Câu hỏi: "+question.getTitle());
@@ -111,8 +91,6 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         answerAdapter = new AnswerAdapter(getContext());
         daoAnswer = new DAOAnswer(getContext());
         daoImageStorage = new DAOImageStorage(getContext());
-        daoTypeQuestion = new DAOTypeQuestion(getContext());
-        daoTopic = new DAOTopic(getContext());
         daoQuestion = new DAOQuestion(getContext());
         rcvAnswer = view.findViewById(R.id.rcvAnswer);
         flAdd = view.findViewById(R.id.flAdd);
@@ -162,8 +140,6 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
     }
     private void getDataFromFirebase() {
         daoAnswer.getDataFromFirebase(question.getId(), answerAdapter);
-        daoTopic.getDataFromRealTimeFirebase(null);
-        daoTypeQuestion.getDataFromRealTimeToList(null);
     }
 
     private int getSelectedSpinner(Spinner spinner, String word) {
@@ -206,10 +182,10 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         Button btnNo = dialog.findViewById(R.id.btnNo);
         btnYes.setText("Sửa");
         tvThemSua.setText("Sửa dữ liệu");
-        for (Topic topic : daoTopic.getTopicList()) {
+        for (Topic topic : questionInterface.daoTopic.getTopicList()) {
             listTopic.add(topic.getNameTopic());
         }
-        for (TypeQuestion typeQuestion : daoTypeQuestion.getTypeQuestionList()) {
+        for (TypeQuestion typeQuestion : questionInterface.daoTypeQuestion.getTypeQuestionList()) {
             listTypeQuestion.add(typeQuestion.getTypeQuestionName());
         }
         spnTopic.setAdapter(new ArrayAdapter<String>(getContext(), R.layout.listoptionitem, R.id.tvOptionItem, listTopic));
@@ -235,13 +211,13 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
                 question.setCorrectAnswer(edtCorrectAnswer.getText().toString());
                 question.setNameTopic(spnTopic.getSelectedItem().toString());
                 question.setNameTypeQuestion(spnTypeQuestion.getSelectedItem().toString());
-                for (Topic topic : daoTopic.getTopicList()) {
+                for (Topic topic : questionInterface.daoTopic.getTopicList()) {
                     if (question.getNameTopic().equalsIgnoreCase(topic.getNameTopic())) {
                         question.setIdTopic(topic.getId());
                         break;
                     }
                 }
-                for (TypeQuestion typeQuestion : daoTypeQuestion.getTypeQuestionList()) {
+                for (TypeQuestion typeQuestion : questionInterface.daoTypeQuestion.getTypeQuestionList()) {
                     if (question.getNameTypeQuestion().equalsIgnoreCase(typeQuestion.getTypeQuestionName())) {
                         question.setIdTypeQuestion(typeQuestion.getId());
                         break;
@@ -287,7 +263,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         Button btnPickImageTopic = dialog.findViewById(R.id.btnPickImageTopic);
         LinearLayout linearLayout = dialog.findViewById(R.id.lnpickimage);
         if (daoAnswer.getAnswerList().size() > 0) {
-            idAnswer = daoTopic.getTopicList().get(daoTopic.getTopicList().size() - 1).getId() + 1;
+            idAnswer = questionInterface.daoTopic.getTopicList().get(questionInterface.daoTopic.getTopicList().size() - 1).getId() + 1;
         }
         if (question.getNameTypeQuestion().equalsIgnoreCase("Image")) {
         } else {
@@ -297,7 +273,10 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         btnPickImageTopic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openFileChoose();
+                questionInterface.openFileChoose();
+                if (questionInterface.uri!= null) {
+                    imgAnswer.setImageURI(questionInterface.uri);
+                }
             }
         });
         Button btnYes = dialog.findViewById(R.id.btnYes);
@@ -334,7 +313,10 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
                         daoAnswer.setContext(getContext());
                         daoAnswer.editDataToFireBase(answer1, edtAnswer, question.getId());
                     }
-                    daoImageStorage.uploadFileImageToAnswer(2, imgAnswer, "Question" + question.getId() + "Answer" + answer1.getId(), answer1, question.getId());
+                    if (questionInterface.uri!= null) {
+                        daoImageStorage.setmImgURL(questionInterface.uri);
+                        daoImageStorage.uploadFileImageToAnswer(2, imgAnswer, "Question" + question.getId() + "Answer" + answer1.getId(), answer1, question.getId());
+                    }
                 }
             });
         } else if (choice == 1) {
@@ -349,28 +331,15 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
                         answer1.setUrlImage("");
                         daoAnswer.setContext(getContext());
                         daoAnswer.addDataToFireBase(answer1, edtAnswer, question.getId());
-                        daoImageStorage.uploadFileImageToAnswer(1, imgAnswer, "Question" + question.getId() + "Answer" + answer1.getId(), answer1, question.getId());
+                        if (questionInterface.uri!=null) {
+                            daoImageStorage.setmImgURL(questionInterface.uri);
+                            daoImageStorage.uploadFileImageToAnswer(1, imgAnswer, "Question" + question.getId() + "Answer" + answer1.getId(), answer1, question.getId());
+                        }
                     }
                 }
             });
         }
         dialog.show();
-    }
-    // lấy kết quả khi chọn file ảnh trong thiết bị
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == getActivity().RESULT_OK) {
-            daoImageStorage.setmImgURL(data.getData());
-            imgAnswer.setImageURI(daoImageStorage.getmImgURL());
-        }
-    }
-    // hàm mở file chọn ảnh trong thiết bị
-    public void openFileChoose() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, 100);
     }
     // hàm onClick cho các view theo id
     @Override

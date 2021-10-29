@@ -56,7 +56,7 @@ public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.AnswerView
         if (answer == null) {
             return;
         }
-        if (answer.getUrlImage() != null) {
+        if (answer.getUrlImage().isEmpty()) {
             holder.imgAnswer.setVisibility(View.GONE);
         } else {
             holder.imgAnswer.setVisibility(View.VISIBLE);

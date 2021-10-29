@@ -40,6 +40,7 @@
     <string name="kh_ng">Không</string>
     <string name="topic">Topic</string>
     <string name="ch_n_level">Chọn level:</string>
+    <string name="c_u_tr_l_i">Câu trả lời</string>
     <array name="typeWord">
         <item>Nouns</item>
         <item>Verbs</item>

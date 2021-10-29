@@ -67,7 +67,7 @@ public class DAOIetls {
         });
     }
 
-    public void addDataToFireBase(Word word, EditText edtWord) {
+    public void addDataToFireBase(Word word, EditText edtWord,EditText edtMeaning) {
         boolean[] check = new boolean[2];
         int s = 1;
         for (int i = 0; i < check.length; i++) {
@@ -99,6 +99,8 @@ public class DAOIetls {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isComplete()) {
+                        edtWord.setText("");
+                        edtMeaning.setText("");
                         Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
                     }
                 }

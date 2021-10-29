@@ -186,7 +186,7 @@ public class IetlsManagement extends AppCompatActivity {
                     word1.setWord(edtWord.getText().toString());
                     word1.setTypeWord(spnTypeWord.getSelectedItem().toString());
                     word1.setMeaning(edtMeaning.getText().toString());
-                    daoIetls.addDataToFireBase(word1,edtWord);
+                    daoIetls.addDataToFireBase(word1,edtWord,edtMeaning);
                 }
             });
         }

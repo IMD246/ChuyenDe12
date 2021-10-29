@@ -69,7 +69,7 @@ public class TypeQuestionSpinnerAdapter extends ArrayAdapter<TypeQuestion> {
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 clear();
-                addAll((List<TypeQuestion>)results.values);
+//                addAll((List<TypeQuestion>)results.values);
                 notifyDataSetChanged();
             }
 

@@ -173,7 +173,7 @@ public class ToeicManagement extends AppCompatActivity {
                     word1.setWord(edtWord.getText().toString());
                     word1.setTypeWord(spnTypeWord.getSelectedItem().toString());
                     word1.setMeaning(edtMeaning.getText().toString());
-                    daoToeic.addDataToFireBase(word1,edtWord);
+                    daoToeic.addDataToFireBase(word1,edtWord,edtMeaning);
                 }
             });
         }
