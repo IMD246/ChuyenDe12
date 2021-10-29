@@ -69,7 +69,13 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         setContentView(R.layout.activity_main);
         setControl();
         getDataUser();
+        checkLogicDrawerLayout();
+        processBottomNavigation();
+        processViewPager2();
+    }
 
+    //kiểm tra logic khi drawer layout đóng
+    private void checkLogicDrawerLayout() {
         drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
@@ -83,15 +89,27 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
 
             @Override
             public void onDrawerClosed(@NonNull View drawerView) {
-                switch (myCurrentViewpager2){
+                switch (myCurrentViewpager2) {
                     case 0:
                         bottomNavigationView.getMenu().findItem(R.id.bottom_nav_learn).setChecked(true);
+                        navigationView.getMenu().findItem(R.id.nav_profile).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.nav_setting).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.nav_help).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.nav_logout).setChecked(false);
                         break;
                     case 1:
                         bottomNavigationView.getMenu().findItem(R.id.bottom_nav_alarm).setChecked(true);
+                        navigationView.getMenu().findItem(R.id.nav_profile).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.nav_setting).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.nav_help).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.nav_logout).setChecked(false);
                         break;
                     case 2:
                         bottomNavigationView.getMenu().findItem(R.id.bottom_nav_vocabulary).setChecked(true);
+                        navigationView.getMenu().findItem(R.id.nav_profile).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.nav_setting).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.nav_help).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.nav_logout).setChecked(false);
                         break;
                     case 3:
                         bottomNavigationView.getMenu().findItem(R.id.bottom_nav_profile).setChecked(true);
@@ -148,13 +166,6 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         viewPager2 = findViewById(R.id.view_pager2);
         viewPager2_adapter = new ViewPager2_Adapter(this);
         viewPager2.setAdapter(viewPager2_adapter);
-
-        //xử lí bottom Navigation
-        processBottomNavigation();
-
-        //xử lí Viewpager2
-        processViewPager2();
-
     }
 
     //xử lí Viewpager2
@@ -221,6 +232,7 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
             return true;
         });
     }
+
     //xử lí navigation drawer
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -235,8 +247,8 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
                 Toast.makeText(UserInterfaceActivity.this, "click help", Toast.LENGTH_SHORT).show();
                 navigationView.getMenu().findItem(R.id.nav_profile).setChecked(false);
                 navigationView.getMenu().findItem(R.id.nav_setting).setChecked(false);
-                navigationView.getMenu().findItem(R.id.nav_help).setChecked(false);
-                navigationView.getMenu().findItem(R.id.nav_logout).setChecked(true);
+                navigationView.getMenu().findItem(R.id.nav_help).setChecked(true);
+                navigationView.getMenu().findItem(R.id.nav_logout).setChecked(false);
                 break;
             case R.id.nav_logout:
                 navigationView.getMenu().findItem(R.id.nav_profile).setChecked(false);
@@ -262,23 +274,6 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
             drawerLayout.closeDrawer(GravityCompat.END);
-            switch (myCurrentViewpager2){
-                case 0:
-                    bottomNavigationView.getMenu().findItem(R.id.bottom_nav_learn).setChecked(true);
-                    break;
-                case 1:
-                    bottomNavigationView.getMenu().findItem(R.id.bottom_nav_alarm).setChecked(true);
-                    break;
-                case 2:
-                    bottomNavigationView.getMenu().findItem(R.id.bottom_nav_vocabulary).setChecked(true);
-                    break;
-                case 3:
-                    bottomNavigationView.getMenu().findItem(R.id.bottom_nav_profile).setChecked(true);
-                    break;
-                case 4:
-                    bottomNavigationView.getMenu().findItem(R.id.bottom_nav_profile).setChecked(true);
-                    break;
-            }
         } else {
             super.onBackPressed();
         }
@@ -311,10 +306,10 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
     }
 
     //hàm chuyển màn hình
-    public void navigationScreen(String string){
-        if(DEFAULTVALUE.LEARNING_SCREEN.equalsIgnoreCase(string)){
+    public void navigationScreen(String string) {
+        if (DEFAULTVALUE.LEARNING_SCREEN.equalsIgnoreCase(string)) {
             startActivity(new Intent(this, LearningEnglishActivity.class));
-        }else if (DEFAULTVALUE.TEST_SCREEN.equalsIgnoreCase(string)){
+        } else if (DEFAULTVALUE.TEST_SCREEN.equalsIgnoreCase(string)) {
             startActivity(new Intent(this, TestEnglishActivity.class));
         }
     }
