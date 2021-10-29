@@ -1,6 +1,7 @@
 package com.example.menu_right.main_interface;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -12,6 +13,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.menu_right.Login.DAOUserProfile;
@@ -39,11 +41,11 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
     DatabaseReference databaseReference;
 
     //khai báo giá trị cho screen
-    public static final int FRAGMENT_LEARN = 1;
-    public static final int FRAGMENT_ALARM = 2;
-    public static final int FRAGMENT_VOCABULARY = 3;
-    public static final int FRAGMENT_PROFILE = 4;
-    public static final int FRAGMENT_SETTING = 5;
+    public static final int FRAGMENT_LEARN = 0;
+    public static final int FRAGMENT_ALARM = 1;
+    public static final int FRAGMENT_VOCABULARY = 2;
+    public static final int FRAGMENT_PROFILE = 3;
+    public static final int FRAGMENT_SETTING = 4;
 
     //khai báo giá trị màn hình hiện tại, mặc định là home
     private int myCurrentViewpager2 = FRAGMENT_LEARN;
@@ -67,6 +69,44 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         setContentView(R.layout.activity_main);
         setControl();
         getDataUser();
+
+        drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(@NonNull View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerClosed(@NonNull View drawerView) {
+                switch (myCurrentViewpager2){
+                    case 0:
+                        bottomNavigationView.getMenu().findItem(R.id.bottom_nav_learn).setChecked(true);
+                        break;
+                    case 1:
+                        bottomNavigationView.getMenu().findItem(R.id.bottom_nav_alarm).setChecked(true);
+                        break;
+                    case 2:
+                        bottomNavigationView.getMenu().findItem(R.id.bottom_nav_vocabulary).setChecked(true);
+                        break;
+                    case 3:
+                        bottomNavigationView.getMenu().findItem(R.id.bottom_nav_profile).setChecked(true);
+                        break;
+                    case 4:
+                        bottomNavigationView.getMenu().findItem(R.id.bottom_nav_profile).setChecked(true);
+                        break;
+                }
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
     }
 
     //lấy dữ liệu user
@@ -125,26 +165,30 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
                 super.onPageSelected(position);
                 switch (position) {
                     case 0:
+                        Log.d("bạn đang ở màn hình thứ", "0");
                         myCurrentViewpager2 = FRAGMENT_LEARN;
                         bottomNavigationView.getMenu().findItem(R.id.bottom_nav_learn).setChecked(true);
                         break;
                     case 1:
+                        Log.d("bạn đang ở màn hình thứ", "1");
                         myCurrentViewpager2 = FRAGMENT_ALARM;
                         bottomNavigationView.getMenu().findItem(R.id.bottom_nav_alarm).setChecked(true);
                         break;
                     case 2:
+                        Log.d("bạn đang ở màn hình thứ", "2");
                         myCurrentViewpager2 = FRAGMENT_VOCABULARY;
                         bottomNavigationView.getMenu().findItem(R.id.bottom_nav_vocabulary).setChecked(true);
                         break;
                     case 3:
+                        Log.d("bạn đang ở màn hình thứ", "3");
                         myCurrentViewpager2 = FRAGMENT_PROFILE;
-                        Log.d("3", "3");
                         navigationView.getMenu().findItem(R.id.nav_profile).setChecked(true);
                         navigationView.getMenu().findItem(R.id.nav_setting).setChecked(false);
                         navigationView.getMenu().findItem(R.id.nav_help).setChecked(false);
                         navigationView.getMenu().findItem(R.id.nav_logout).setChecked(false);
                         break;
                     case 4:
+                        Log.d("bạn đang ở màn hình thứ", "4");
                         myCurrentViewpager2 = FRAGMENT_SETTING;
                         navigationView.getMenu().findItem(R.id.nav_setting).setChecked(true);
                         navigationView.getMenu().findItem(R.id.nav_profile).setChecked(false);
@@ -177,7 +221,6 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
             return true;
         });
     }
-
     //xử lí navigation drawer
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -219,6 +262,23 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
             drawerLayout.closeDrawer(GravityCompat.END);
+            switch (myCurrentViewpager2){
+                case 0:
+                    bottomNavigationView.getMenu().findItem(R.id.bottom_nav_learn).setChecked(true);
+                    break;
+                case 1:
+                    bottomNavigationView.getMenu().findItem(R.id.bottom_nav_alarm).setChecked(true);
+                    break;
+                case 2:
+                    bottomNavigationView.getMenu().findItem(R.id.bottom_nav_vocabulary).setChecked(true);
+                    break;
+                case 3:
+                    bottomNavigationView.getMenu().findItem(R.id.bottom_nav_profile).setChecked(true);
+                    break;
+                case 4:
+                    bottomNavigationView.getMenu().findItem(R.id.bottom_nav_profile).setChecked(true);
+                    break;
+            }
         } else {
             super.onBackPressed();
         }
@@ -250,7 +310,7 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         alert11.show();
     }
 
-    //
+    //hàm chuyển màn hình
     public void navigationScreen(String string){
         if(DEFAULTVALUE.LEARNING_SCREEN.equalsIgnoreCase(string)){
             startActivity(new Intent(this, LearningEnglishActivity.class));
