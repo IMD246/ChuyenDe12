@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 
 import com.example.myapplication.User.DTO.Word;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -60,28 +61,29 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
     }
 
-    public void checkDb() {
-        SQLiteDatabase checkDb = null;
-        String filePath = dbPath;
+//    public void checkDb() {
+//        SQLiteDatabase checkDb = null;
+//        String filePath = dbPath;
+//
+//        try {
+//            File sqlite =  context.getDatabasePath(dbName);
+//            Toast.makeText(context,  context.getDatabasePath(dbName).exists()+"", Toast.LENGTH_SHORT).show();
+//            if (!sqlite.exists())
+//            {
+//                CopyDatabase();
+//            }
+//
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//    }
 
-        try {
-            checkDb = SQLiteDatabase.openDatabase(filePath, null, 0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (checkDb!= null) {
-            CopyDatabase();
-        } else if(checkDb==null) {
-            Toast.makeText(context, filePath, Toast.LENGTH_SHORT).show();
-
-
-        }
-    }
-
-    private void CopyDatabase() {
+    public void CopyDatabase() {
         context.deleteDatabase(dbName);
-        this.getReadableDatabase();
+         this.getReadableDatabase();
         try {
 
             InputStream ios = context.getAssets().open(dbName);
@@ -189,4 +191,64 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         }
 
     }
-}
+    public void fetchWordByLetter(String letter,ArrayList<String> listItem){
+
+        listItem.clear();
+        try {
+
+
+            SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+            //add a column if it not exist
+            Cursor cursor = sqLiteDatabase.rawQuery("  select * from av where word like '" + letter + "%' LIMIT 7", null, null);
+            if (cursor != null) {
+
+
+                while (cursor.moveToNext()) {
+
+                    String item = cursor.getString(1);
+                    listItem.add(item);
+                }
+            }
+            cursor.close();
+            sqLiteDatabase.close();
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+    }
+    public ArrayList<Word> fetchWordByInput(String letter) {
+        ArrayList<Word> tempList = new ArrayList<>();
+        try{
+
+            if (letter.equals(null)) {
+                Toast.makeText(context, "nhap vao tu ban muon tim", Toast.LENGTH_SHORT).show();
+
+            } else {
+
+                SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+                //add a column if it not exist
+                Cursor cursor = sqLiteDatabase.rawQuery("  select * from av where word like '" + letter + "%'", null, null);
+                if (cursor != null) {
+
+
+                    while (cursor != null && cursor.moveToNext()) {
+
+                        Word addItem = new Word(Integer.parseInt(cursor.getString(0)),
+                                cursor.getString(1).toString(), cursor.getString(2).toString(), cursor.getString(3).toString(),
+                                cursor.getString(4).toString()
+                        );
+                        tempList.add(addItem);
+                    }
+                }
+                cursor.close();
+                sqLiteDatabase.close();
+
+            }
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return tempList;
+    }
+
+    }

@@ -24,6 +24,7 @@ public class HistoryScreen extends AppCompatActivity {
 
     ArrayList<HistoryItem> listItem2 = new ArrayList<>();
     HistorySqliteDataHelper historySqliteDataHelper;
+    Button returnButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,9 +36,16 @@ public class HistoryScreen extends AppCompatActivity {
         setControl();
         AddItem();
 
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
     private void setControl() {
+        returnButton = findViewById(R.id.history_btn_return);
         RecyclerView rcl=(RecyclerView)findViewById(R.id.history_fragment_rcl);
         // tao ra mot doi tuong adapter
         HistoryAdapter adapter = new HistoryAdapter(getBaseContext(),listItem2);

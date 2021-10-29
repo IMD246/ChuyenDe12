@@ -61,7 +61,7 @@ public class PracticeScreen extends AppCompatActivity {
     private MediaPlayer player;
 
     private ImageView speakerIcon,showHint;
-    private Button submitButton;
+    private Button submitButton,returnButton;
     private TextView hintText, questionText;
     int currentpos = 0;
     FirebaseApp firebaseApp ;
@@ -114,15 +114,22 @@ public class PracticeScreen extends AppCompatActivity {
 
             }
         });
+
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void prepareSQL() {
         databaseHelper = new SqlLiteHelper(this, "Dictionary.db", 3);
-        try {
-            databaseHelper.checkDb();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            databaseHelper.checkDb();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         try {
             databaseHelper.OpenDatabase();
 
@@ -138,7 +145,7 @@ public class PracticeScreen extends AppCompatActivity {
         hintText = findViewById(R.id.practice_txt_hint);
         //checkingText = findViewById(R.id.practice_txtCheckAnswer);
         danhsach = (RecyclerView) findViewById(R.id.practice_rclAnswer);
-
+        returnButton = findViewById(R.id.practice_btn_return);
     }
 
     private void setAdapter(int resultPos){

@@ -23,7 +23,15 @@
     </TextView>
 
     </LinearLayout>
-
+    <Button
+        android:id="@+id/history_btn_return"
+        android:layout_width="100dp"
+        android:gravity=""
+        android:layout_gravity="center_vertical"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:text="Return">
+    </Button>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/history_fragment_rcl"
         android:layout_width="match_parent"

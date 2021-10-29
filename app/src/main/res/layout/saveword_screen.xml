@@ -20,8 +20,17 @@
             android:textStyle="bold">
 
         </TextView>
-    </LinearLayout>
 
+    </LinearLayout>
+    <Button
+        android:id="@+id/saveWord_btn_return"
+        android:layout_width="100dp"
+        android:gravity=""
+        android:layout_gravity="center_vertical"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:text="Return">
+    </Button>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcl_saveScreen"
 

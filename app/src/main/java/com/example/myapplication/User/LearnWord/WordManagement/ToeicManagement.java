@@ -49,6 +49,7 @@ public class ToeicManagement extends AppCompatActivity {
     private AutoCompleteTextView atcToeic;
     private SearchView svToeic;
     private DAOToeic daoToeic;
+    private Button returnButton;
     MediaPlayer player;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,7 @@ public class ToeicManagement extends AppCompatActivity {
         wordToeicIetlsAdapter = new WordToeicIetlsAdapter(this);
         svToeic = findViewById(R.id.svToeic);
         atcToeic = findViewById(R.id.atcTypeWord);
+        returnButton = findViewById(R.id.toeic_returnButton);
         atcToeic.setAdapter(new ArrayAdapter<String>(this, R.layout.listoptionitem, R.id.tvOptionItem,getResources().getStringArray(R.array.typeWord)));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
@@ -101,6 +103,12 @@ public class ToeicManagement extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 wordToeicIetlsAdapter.setListDependOnTypeWord(atcToeic.getText().toString());
+            }
+        });
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }

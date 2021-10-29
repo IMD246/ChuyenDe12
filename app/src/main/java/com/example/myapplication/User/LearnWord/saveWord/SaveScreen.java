@@ -1,6 +1,8 @@
 package com.example.myapplication.User.LearnWord.saveWord;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -22,6 +24,7 @@ public class SaveScreen extends AppCompatActivity {
     ArrayList<Word> listItem = new ArrayList<>();
     SaveAdapter adapter ;
     SaveSqliteHelper sqliteHelper;
+    Button returnButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +34,13 @@ public class SaveScreen extends AppCompatActivity {
         sqliteHelper = new SaveSqliteHelper(getBaseContext());
         AddItem();
         setControl();
+
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void AddItem() {
@@ -41,6 +51,7 @@ public class SaveScreen extends AppCompatActivity {
     private void setControl(){
         //anh xa
         rcl =(RecyclerView) findViewById(R.id.rcl_saveScreen);
+        returnButton = findViewById(R.id.saveWord_btn_return);
         // tao ra mot doi tuong adapter
         adapter = new SaveAdapter(getBaseContext(),listItem,sqliteHelper);
         //manager de custom hien thi len recycle view

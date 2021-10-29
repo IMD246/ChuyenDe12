@@ -3,8 +3,13 @@ package com.example.myapplication.User.LearnWord.word;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,15 +38,15 @@ import java.util.ArrayList;
 
 public class WordScreen extends AppCompatActivity{
 
-    SearchView searchView;
 
-    Button prevPage,nextPage;
+
+    private Button prevPage,nextPage,searchButton,returnButton;
     private RecyclerView danhsach;
-    TextView currentPage;
+    private  TextView currentPage;
     int page = 0;
-
+    private AutoCompleteTextView autoCompleteTextView;
     ArrayList<Word> wordItems = new ArrayList<>();
-
+    ArrayList<Word> tempList;
 
     WordAdapter adapter;
     SqlLiteHelper databaseHelper;
@@ -58,7 +63,12 @@ public class WordScreen extends AppCompatActivity{
 
         setEvent();
 
-
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
 
     }
@@ -67,7 +77,7 @@ public class WordScreen extends AppCompatActivity{
     private void prepareSQL() {
          databaseHelper = new SqlLiteHelper(this,"Dictionary.db",3);
         try {
-            databaseHelper.checkDb();
+            databaseHelper.CopyDatabase();
         }catch (Exception e){e.printStackTrace();}
 
         try {
@@ -79,15 +89,56 @@ public class WordScreen extends AppCompatActivity{
     private void setEvent() {
         pageniteAndAPI(wordItems);
 
+        autoCompleteTextView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                ArrayList<String>temp = new ArrayList<>();
+                databaseHelper.fetchWordByLetter(autoCompleteTextView.getText().toString(),temp);
+
+                setAdapterForAutoComplete(temp);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tempList =   databaseHelper.fetchWordByInput
+                       (autoCompleteTextView.getText().toString().trim());
+                setAdapterForListView(tempList);
+
+                nextPage.setVisibility(View.GONE);
+                currentPage.setVisibility(View.GONE);
+                prevPage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        page = 0;
+                        pageniteAndAPI(wordItems);
+                        setAdapterForListView(wordItems);
+                        nextPage.setVisibility(View.VISIBLE);
+                        currentPage.setVisibility(View.VISIBLE);
+                    }
+                });
+            }
+        });
 
     }
 
 
     private void pageniteAndAPI(ArrayList<Word> wordList){
+        ArrayList<Word> tempList = new ArrayList<>();
         databaseHelper.fetchData(wordList,page);
         adapter.notifyDataSetChanged();
-
+        currentPage.setText(page+"");
 
 
         prevPage.setOnClickListener(new View.OnClickListener() {
@@ -124,16 +175,21 @@ public class WordScreen extends AppCompatActivity{
     }
 
     private void setControl() {
-
+        returnButton = findViewById(R.id.word_btn_return);
         prevPage = findViewById(R.id.word_btn_prvPage);
         nextPage = findViewById(R.id.word_btn_nextPage);
         currentPage = findViewById(R.id.word_txt_currentPage);
-
+        autoCompleteTextView = findViewById(R.id.word_autocomplete);
         //searchView =  (SearchView) findViewById(R.id.simpleSearchView);
         danhsach =(RecyclerView) findViewById(R.id.word_recycleItem);
+        searchButton = findViewById(R.id.word_btn_searchButton);
 
+        setAdapterForListView(wordItems) ;
 
-         adapter= new WordAdapter(getBaseContext(), wordItems,databaseHelper);
+    }
+
+    private void setAdapterForListView(ArrayList<Word> listToSetAdapter) {
+        adapter= new WordAdapter(getBaseContext(), listToSetAdapter,databaseHelper);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 1);// Tạo layout manager
         danhsach.setItemAnimator(new DefaultItemAnimator());// Gán hiệu ứng cho Recyclerview
         danhsach.setLayoutManager(layoutManager);// Gán layout manager cho recyclerview
@@ -142,8 +198,12 @@ public class WordScreen extends AppCompatActivity{
 
     }
 
-    //lay ra file am thanh cua tu` tren api
-
+    private void setAdapterForAutoComplete(ArrayList<String> listItem){
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(WordScreen.this, android.R.layout.simple_expandable_list_item_1,
+                listItem);
+        autoCompleteTextView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
 
 
  }

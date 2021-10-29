@@ -50,6 +50,7 @@ public class IetlsManagement extends AppCompatActivity {
     private AutoCompleteTextView atcIetls;
     private SearchView svIetls;
     private DAOIetls daoIetls;
+    private Button returnButton;
     MediaPlayer player;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +63,7 @@ public class IetlsManagement extends AppCompatActivity {
         daoIetls = new DAOIetls(this);
         rcvIetls = findViewById(R.id.rcvIetls);
         wordToeicIetlsAdapter = new WordToeicIetlsAdapter(this);
-
+        returnButton = findViewById(R.id.ielts_returnButton);
         svIetls = findViewById(R.id.svIetls);
         atcIetls = findViewById(R.id.atcTypeWord);
         atcIetls.setAdapter(new ArrayAdapter<String>(this, R.layout.listoptionitem, R.id.tvOptionItem,getResources().getStringArray(R.array.typeWord)));
@@ -98,6 +99,12 @@ public class IetlsManagement extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 wordToeicIetlsAdapter.setListDependOnTypeWord(atcIetls.getText().toString());
+            }
+        });
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }
@@ -166,9 +173,10 @@ public class IetlsManagement extends AppCompatActivity {
     }
 
     // Xây dựng một Hộp thoại thông báo
-    public void saveWord(Word word) {
+    private void saveWord(Word word) {
         SaveSqliteHelper sqliteHelper = new SaveSqliteHelper(getBaseContext());
         sqliteHelper.addSaveWord(word);
 
     }
+
 }

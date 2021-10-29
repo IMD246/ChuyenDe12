@@ -64,7 +64,32 @@ public class DAOIetls {
             }
         });
     }
+    public void getDataForSearch(String letter,WordToeicIetlsAdapter wordToeicIetlsAdapter){
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
+                wordList.clear();
+
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+
+                    Word word = dataSnapshot.getValue(Word.class);
+                    if(word.getWord().equals(letter)){
+                        wordList.add(word);
+                    }
+                    Log.e("firebase", word.getWord() );
+                }
+                if (wordToeicIetlsAdapter != null) {
+                    wordToeicIetlsAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(context, "Get list question failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
     public void addDataToFireBase(Word word, EditText edtWord) {
         boolean[] check = new boolean[2];
         int s = 1;
