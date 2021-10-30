@@ -13,7 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.Admin.DTO.Level;
+import com.example.myapplication.DEFAULTVALUE;
 import com.example.myapplication.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +54,10 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHol
         if (level == null) {
             return;
         }
-        holder.tvNumber.setText(String.valueOf(position + 1));
+        if (level.getUrlImage().isEmpty()) {
+        } else {
+            Picasso.get().load(level.getUrlImage()).resize(100, 100).into(holder.imgLevel);
+        }
         holder.tvName.setText("Level: " + String.valueOf(level.getNameLevel()));
         holder.onClickListener = new View.OnClickListener() {
             @Override
@@ -110,8 +115,8 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHol
     }
 
     public static class LevelViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView tvNumber, tvName;
-        private ImageView imgDelete, imgEdit;
+        private TextView tvName;
+        private ImageView imgDelete, imgEdit,imgLevel;
         View.OnClickListener onClickListener;
 
         public void setOnClickListener(View.OnClickListener onClickListener) {
@@ -121,7 +126,7 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHol
         public LevelViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tvTitleLevel);
-            tvNumber = itemView.findViewById(R.id.tvlevelnumber);
+            imgLevel = itemView.findViewById(R.id.imgLevel);
             imgDelete = itemView.findViewById(R.id.imgDelete);
             imgDelete.setOnClickListener(this);
             imgEdit = itemView.findViewById(R.id.imgEdit);

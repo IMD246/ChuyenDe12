@@ -8,6 +8,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.myapplication.Admin.DTO.Answer;
+import com.example.myapplication.Admin.DTO.Level;
 import com.example.myapplication.Admin.DTO.Topic;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -69,6 +70,47 @@ public class DAOImageStorage {
                                         }
                                     }
                                 });
+                    }
+                }
+            });
+        }
+    }
+    // hàm upload ảnh cho Level
+    public void uploadFileImageLevel(int choice,ImageView imageView , String name, Level level)
+    {
+        if (mImgURL !=null)
+        {
+            StorageReference fileReference = storageReference.child(name+" "+level.getId());
+            fileReference.putFile(mImgURL).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful())
+                    {
+                        throw task.getException();
+                    }
+                    return fileReference.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful())
+                    {
+                        if (choice == 1) {
+                            imageView.setImageURI(null);
+                        }
+                        mImgURL =  task.getResult();
+                        level.setUrlImage(mImgURL.toString());
+                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listlevel");
+                        databaseReference.child(level.getId()+"/urlImage").
+                                setValue(level.getUrlImage()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isComplete())
+                                {
+                                    Toast.makeText(context, "thêm ảnh thành công", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
                     }
                 }
             });

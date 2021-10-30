@@ -51,7 +51,6 @@ public class DAOLevel {
                     levelAdapter.notifyDataSetChanged();
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(context, "Get list Level failed", Toast.LENGTH_SHORT).show();
@@ -59,20 +58,20 @@ public class DAOLevel {
         });
     }
 
-    public void addDataToFireBase(EditText editText) {
+    public void addDataToFireBase(Level level,EditText editText) {
         boolean[] check = new boolean[2];
         int s = 1;
         String namelevel = editText.getText().toString().trim();
         for (int i = 0; i < check.length; i++) {
             check[i] = true;
         }
-        if (namelevel.isEmpty() || namelevel.length() == 0) {
+        if (level.getNameLevel()==0) {
             check[0] = false;
-        } else {
+        }else {
             if (levelList.size() > 0)
             {
                 for (Level level1 : levelList) {
-                    if (Integer.parseInt(namelevel) == level1.getNameLevel()) {
+                    if (level.getNameLevel() == level1.getNameLevel()) {
                         check[1] = false;
                         break;
                     }
@@ -90,8 +89,7 @@ public class DAOLevel {
             {
                 s = levelList.get(levelList.size() - 1).getId() + 1;
             }
-            Level level2 = new Level(s, Integer.parseInt(editText.getText().toString()));
-            databaseReference.child(String.valueOf(level2.getId())).setValue(level2).addOnCompleteListener(new OnCompleteListener<Void>() {
+            databaseReference.child(String.valueOf(level.getId())).setValue(level).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isComplete()) {
@@ -101,31 +99,29 @@ public class DAOLevel {
             });
         }
     }
-    public void editDataToFireBase(Level level, EditText editText) {
+    public void editDataToFireBase(Level level, EditText edtLevel) {
         boolean[] check = new boolean[2];
         for (int i = 0; i < check.length; i++) {
             check[i] = true;
         }
-        String namelevel = editText.getText().toString().trim();
-        if (namelevel.isEmpty() || namelevel.length() == 0) {
+        if (level.getNameLevel()==0) {
             check[0] = false;
         } else {
             for (Level level1 : levelList) {
-                if (Integer.parseInt(namelevel) == level1.getNameLevel()) {
+                if (level.getNameLevel() == level1.getNameLevel()) {
                     check[1] = false;
                     break;
                 }
             }
         }
         if (check[0] == false) {
-            editText.setError("Không để trống");
-            editText.requestFocus();
+            edtLevel.setError("Không để trống");
+            edtLevel.requestFocus();
         } else if (check[1] == false) {
-            editText.setError("Trùng dữ liệu");
-            editText.requestFocus();
+            edtLevel.setError("Trùng dữ liệu");
+            edtLevel.requestFocus();
         } else {
-            Level level2 = new Level(level.getId(),Integer.parseInt(editText.getText().toString()));
-            databaseReference.child(String.valueOf(level2.getId())).setValue(level2).addOnCompleteListener(new OnCompleteListener<Void>() {
+            databaseReference.child(String.valueOf(level.getId())).setValue(level).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isComplete()) {

@@ -1,5 +1,6 @@
 package com.example.myapplication.Admin.LearnManagement;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -22,9 +24,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.myapplication.Admin.Adapter.LevelAdapter;
+import com.example.myapplication.Admin.DAO.DAOImageStorage;
 import com.example.myapplication.Admin.DTO.Level;
 import com.example.myapplication.Admin.DAO.DAOLevel;
 import com.example.myapplication.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -32,10 +36,10 @@ public class LevelManagement extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private LevelAdapter levelAdapter;
-    private List<Level> list;
     private SearchView searchView;
     private DAOLevel daoLevel;
-    private ImageView imgAdd;
+    private ImageView imgAdd,imgLevel;
+    private DAOImageStorage daoImageStorage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +48,7 @@ public class LevelManagement extends AppCompatActivity {
         setDataListFromRealTimeFireBase();
     }
     private void initUI() {
+        daoImageStorage = new DAOImageStorage(this);
         daoLevel = new DAOLevel(this);
         searchView = findViewById(R.id.svLevel);
         recyclerView = findViewById(R.id.rcvLevel);
@@ -88,6 +93,23 @@ public class LevelManagement extends AppCompatActivity {
     {
         daoLevel.getDataFromRealTimeToList(levelAdapter);
     }
+    public void openFileChoose()
+    {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, 100);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100 && resultCode == RESULT_OK && data !=null && data.getData()!=null)
+        {
+            daoImageStorage.setmImgURL(data.getData());
+            imgLevel.setImageURI(daoImageStorage.getmImgURL());
+        }
+    }
+
     // tạo hộp thoại để thêm và sửa dữ liệu
     private void openDialog(int center, int choice, Level level) {
         final Dialog dialog = new Dialog(this);
@@ -99,14 +121,11 @@ public class LevelManagement extends AppCompatActivity {
         {return;}
         window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
         WindowManager.LayoutParams windowAttributes = window.getAttributes();
         windowAttributes.gravity = center;
         window.setAttributes(windowAttributes);
-        EditText edtLevel = dialog.findViewById(R.id.edtLevel);
-        TextView tvThemSua = dialog.findViewById(R.id.tvThemSua);
-        Button btnYes = dialog.findViewById(R.id.btnYes);
-        Button btnNo = dialog.findViewById(R.id.btnNo);
-        edtLevel.setInputType(InputType.TYPE_CLASS_NUMBER);
+
         if (Gravity.CENTER == center)
         {
             dialog.setCancelable(true);
@@ -115,6 +134,19 @@ public class LevelManagement extends AppCompatActivity {
         {
             dialog.setCancelable(false);
         }
+        EditText edtLevel = dialog.findViewById(R.id.edtLevel);
+        edtLevel.setInputType(InputType.TYPE_CLASS_NUMBER);
+        TextView tvThemSua = dialog.findViewById(R.id.tvThemSua);
+        imgLevel = dialog.findViewById(R.id.imgaddeditLevel);
+        Button btnYes = dialog.findViewById(R.id.btnYes);
+        Button btnNo = dialog.findViewById(R.id.btnNo);
+        Button btnPickImage = dialog.findViewById(R.id.btnPickImageLevel);
+        btnPickImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openFileChoose();
+            }
+        });
         btnNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,13 +155,34 @@ public class LevelManagement extends AppCompatActivity {
         });
         if (choice == 2)
         {
+            if (level.getUrlImage().isEmpty())
+            {
+
+            }
+            else
+            {
+                Picasso.get().load(level.getUrlImage()).resize(100, 100).into(imgLevel);
+            }
             btnYes.setText("Sửa");
             tvThemSua.setText("Sửa dữ liệu");
             edtLevel.setText(String.valueOf(level.getNameLevel()));
             btnYes.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    daoLevel.editDataToFireBase(level,edtLevel);
+                    Level level2 = new Level();
+                    level2.setId(level.getId());
+                    if (edtLevel.getText().toString().isEmpty())
+                    {
+                        level2.setNameLevel(0);
+                    }
+                    else {
+                        level2.setNameLevel(Integer.parseInt(edtLevel.getText().toString()));
+                    }
+                    level2.setUrlImage(level.getUrlImage());
+                    if (level.getNameLevel() != level2.getNameLevel()) {
+                        daoLevel.editDataToFireBase(level2, edtLevel);
+                    }
+                    daoImageStorage.uploadFileImageLevel(choice,imgLevel,"Level",level2);
                 }
             });
         }
@@ -139,7 +192,22 @@ public class LevelManagement extends AppCompatActivity {
             btnYes.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    daoLevel.addDataToFireBase(edtLevel);
+                    Level level1 = new Level();
+                    int i=1;
+                    if (daoLevel.getLevelList().size()>0)
+                    {
+                        i = daoLevel.getLevelList().get(daoLevel.getLevelList().size()-1).getId()+1;
+                    }
+                    level1.setId(i);
+                    if (edtLevel.getText().toString().isEmpty())
+                    {
+                        level1.setNameLevel(0);
+                    }
+                    else {
+                        level1.setNameLevel(Integer.parseInt(edtLevel.getText().toString()));
+                    }
+                    daoLevel.addDataToFireBase(level1,edtLevel);
+                    daoImageStorage.uploadFileImageLevel(choice,imgLevel,"Level",level1);
                 }
             });
         }

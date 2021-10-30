@@ -12,27 +12,26 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         >
-        <TextView
-            android:id="@+id/tvlevelnumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1"
-            android:textSize="30dp"
+        <ImageView
+            android:id="@+id/imgLevel"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:gravity="center"
-            />
+            android:src="@drawable/ic_search"
+            android:text="1"
+            android:textSize="30dp" />
         <TextView
             android:id="@+id/tvTitleLevel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Level"
-            android:layout_toRightOf="@id/tvlevelnumber"
-            android:layout_toEndOf="@id/tvlevelnumber"
-            android:textStyle="bold"
-            android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
-            android:textSize="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toEndOf="@id/imgLevel"
+            android:layout_toRightOf="@id/imgLevel"
             android:gravity="center"
-            />
+            android:text="Level"
+            android:textSize="30dp"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/imgDelete"

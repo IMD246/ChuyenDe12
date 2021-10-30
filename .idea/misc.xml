@@ -3,8 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/word_nghia/ChuyenDe12/app/src/main/res/layout/activity_level_management.xml" value="0.25" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/word_nghia/ChuyenDe12/app/src/main/res/layout/addeditanswer.xml" value="0.25" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/word_nghia/ChuyenDe12/app/src/main/res/layout/addeditlevel.xml" value="0.25" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/word_nghia/ChuyenDe12/app/src/main/res/layout/addedittopic.xml" value="0.25" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/word_nghia/ChuyenDe12/app/src/main/res/layout/answeritem.xml" value="0.25" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/word_nghia/ChuyenDe12/app/src/main/res/layout/levelitem.xml" value="0.25" />
       </map>
     </option>
   </component>
