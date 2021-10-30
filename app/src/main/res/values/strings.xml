@@ -13,7 +13,8 @@
     <string name="qu_n_m_t_kh_u">Quên mật khẩu</string>
     <string name="send_email">Send Email</string>
     <string name="check_to_save">check to save</string>
-    <string name="lo_i_t_v_ng">Loại từ vựng</string>
+    <string name="lo_i_t_v_ng">Tất cả</string>
+    <string name="type_vocabulary_string">Loại từ vựng</string>
 
     <!--    Array Type Word-->
     <array name="typeWord">

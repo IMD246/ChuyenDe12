@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -98,7 +99,7 @@ public class WordToeicIetlsAdapter extends RecyclerView.Adapter<WordToeicIetlsAd
                 }
             }
         };
-        holder.cardView_toeicIelts.setOnClickListener(new View.OnClickListener() {
+        holder.layout_toeicIelts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 HistorySqliteDataHelper historySqliteDataHelper = new HistorySqliteDataHelper(context);
@@ -162,7 +163,7 @@ public class WordToeicIetlsAdapter extends RecyclerView.Adapter<WordToeicIetlsAd
 
     public static class WordToeicIetlsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView tvWord, tvMeaning, tvNumberList;
-        CardView cardView_toeicIelts;
+        LinearLayout layout_toeicIelts;
         private ImageView imgSave, imgSpeech;
         View.OnClickListener onClickListener;
 
@@ -179,7 +180,7 @@ public class WordToeicIetlsAdapter extends RecyclerView.Adapter<WordToeicIetlsAd
             imgSpeech.setOnClickListener(this);
             imgSave = itemView.findViewById(R.id.imgSave_Word);
             imgSave.setOnClickListener(this);
-            cardView_toeicIelts = itemView.findViewById(R.id.cardView_IeltsToeic);
+            layout_toeicIelts = itemView.findViewById(R.id.layout_IeltsToeic);
         }
 
         @Override

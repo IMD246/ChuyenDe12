@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".User.LearnWord.history.HistoryScreen"
-    android:background="#24BAA9"
-    android:layout_height="match_parent">
+    tools:context=".User.LearnWord.history.HistoryScreen">
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="100dp">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="25dp"
-        android:text="HisTory Search"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:textColor="#F57C00">
+        android:layout_height="100dp"
+        android:orientation="horizontal">
 
-    </TextView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="HisTory Search"
+            android:textColor="#F57C00"
+            android:textSize="25dp"
+            android:textStyle="bold"/>
 
     </LinearLayout>
-    <Button
-        android:id="@+id/history_btn_return"
-        android:layout_width="100dp"
-        android:gravity=""
-        android:layout_gravity="center_vertical"
-        android:layout_height="50dp"
-        android:layout_margin="10dp"
-        android:text="Return">
-    </Button>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/history_fragment_rcl"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_margin="8dp"
+        android:layout_height="568dp"
+        android:background="@drawable/bg_white_corner_16dp"
+        android:padding="1dp" >
 
     </androidx.recyclerview.widget.RecyclerView>
 
+    <Button
+        android:id="@+id/history_btn_return"
+        android:layout_width="145dp"
+        android:layout_height="64dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:text="Quay lại"/>
 
 </LinearLayout>

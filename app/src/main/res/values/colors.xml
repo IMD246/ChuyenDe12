@@ -13,4 +13,7 @@
     <color name="green">#BC8BC34A</color>
     <color name="red">#F5F8460C</color>
     <color name="pink">#F890B3</color>
+    <color name="l_blue">#941797F8</color>
+    <color name="blue">#07A6ED</color>
+    <color name="d_blue">#1A91EF</color>
 </resources>
