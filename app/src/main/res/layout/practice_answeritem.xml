@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_weight="1"
-    android:layout_height="wrap_content">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_answer_item_list"
+    android:layout_width="180dp"
+    android:layout_height="180dp"
+    android:layout_margin="8dp"
+    android:background="@drawable/bg_boder_grey1"
+    android:gravity="center"
+    android:orientation="horizontal">
 
-    <Button
-        android:layout_marginLeft="20dp"
-        android:id="@+id/practice_btnAnswer"
-        android:text="My poke"
+
+    <TextView
+        android:id="@+id/tv_item_listanswer_practice"
         android:layout_width="wrap_content"
-        android:layout_height="100dp">
+        android:layout_height="wrap_content"
+        android:text="money"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
-    </Button>
-
-</androidx.cardview.widget.CardView>
+</LinearLayout>

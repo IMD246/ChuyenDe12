@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,15 +29,15 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewHo
 
     Context context;
     ArrayList<String> listAnswer;
-    ArrayList<Boolean>listResult;
+    ArrayList<Boolean> listResult;
     int resultPos;
 
 
-    public PracticeAdapter(Context context, ArrayList<String> listAnswer,int resultPos,ArrayList<Boolean>listResult) {
+    public PracticeAdapter(Context context, ArrayList<String> listAnswer, int resultPos, ArrayList<Boolean> listResult) {
         this.context = context;
         this.listAnswer = listAnswer;
         this.resultPos = resultPos;
-        this.listResult=listResult;
+        this.listResult = listResult;
 
     }
 
@@ -44,33 +45,27 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View ref = LayoutInflater.from(context).inflate(R.layout.practice_answeritem,parent,false);
+        View ref = LayoutInflater.from(context).inflate(R.layout.practice_answeritem, parent, false);
 
         return new ViewHolder(ref);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
-
-        holder.answerButton.setText(  listAnswer.get(position).toString());
-
-        if(listAnswer.size()>3){
-            holder.answerButton.setOnClickListener(new View.OnClickListener() {
+        holder.tvAnswer.setText(listAnswer.get(position));
+        if (listAnswer.size() > 3) {
+            holder.layoutAnswer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    if(holder.getAdapterPosition()==resultPos){
-                        holder.answerButton.setBackgroundColor(Color.GREEN);
+                    if (holder.getAdapterPosition() == resultPos) {
+                        holder.layoutAnswer.setBackgroundColor(Color.GREEN);
                         listResult.add(true);
-                    }
-                    else {
-                        holder.answerButton.setBackgroundColor(Color.RED);
+                    } else {
+                        holder.layoutAnswer.setBackgroundColor(Color.RED);
                         listResult.add(false);
                     }
-                    holder.answerButton.setEnabled(false);
+                    holder.layoutAnswer.setEnabled(false);
                     notifyDataSetChanged();
-
                 }
             });
         }
@@ -82,12 +77,15 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewHo
         return listAnswer.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
-        Button answerButton;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        //khai báo các phần từ
+        TextView tvAnswer;
+        LinearLayout layoutAnswer;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            this.answerButton =itemView.findViewById(R.id.practice_btnAnswer);
+            tvAnswer = itemView.findViewById(R.id.tv_item_listanswer_practice);
+            layoutAnswer = itemView.findViewById(R.id.layout_answer_item_list);
         }
     }
 

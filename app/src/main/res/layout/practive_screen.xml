@@ -6,98 +6,93 @@
     android:orientation="vertical"
     tools:context=".User.LearnWord.practice.PracticeScreen">
 
+    <ProgressBar
+        android:id="@+id/practice_progress_bar"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_weight="1"
         android:gravity="center"
-        android:text="Practice"
-        android:textSize="30dp"
-        android:textStyle="bold">
-
-    </TextView>
-    <Button
-        android:id="@+id/practice_btn_return"
-        android:layout_width="100dp"
-        android:gravity=""
-        android:layout_gravity="center_vertical"
-        android:layout_height="50dp"
-        android:layout_margin="10dp"
-        android:text="Return">
-    </Button>
+        android:text="Luyện tập"
+        android:textColor="@color/d_blue"
+        android:textSize="30sp"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
+        android:layout_marginTop="24dp"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="12dp">
 
         <ImageView
-            android:layout_weight="1"
             android:id="@+id/practice_imgSpeak"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_margin="20dp"
             android:background="@drawable/speakericon"
-            android:clickable="true">
-
-        </ImageView>
+            android:clickable="true" />
 
         <TextView
-            android:layout_weight="8"
-            android:text=""
             android:id="@+id/practice_txt_hint"
-            android:layout_width="match_parent"
+            android:layout_width="290dp"
             android:layout_height="50dp"
+            android:gravity="center"
+            android:text="Money"
+            android:textColor="@color/black"
             android:textSize="20dp">
 
         </TextView>
 
         <ImageView
-            android:layout_weight="1"
             android:id="@+id/practice_imgShowHint"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_margin="20dp"
             android:background="@drawable/ic_baseline_remove_red_eye_24"
-            android:clickable="true">
+            android:clickable="true" />
+    </LinearLayout>
 
-        </ImageView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/bg_bottomboder_blue">
+
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/practice_rclAnswer"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_margin="20dp"
-        android:layout_weight="10">
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp" />
 
-    </androidx.recyclerview.widget.RecyclerView>
-    <!--    <TextView-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal">
 
-    <!--        android:layout_weight="1"-->
-    <!--        android:id="@+id/practice_txtCheckAnswer"-->
-    <!--        android:layout_marginTop="30dp"-->
-    <!--        android:text="V correct"-->
-    <!--        android:textColor="#368C3A"-->
-    <!--        android:textSize="20dp"-->
-    <!--        android:textStyle="bold"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:gravity="center">-->
+        <Button
+            android:id="@+id/practice_btn_return"
+            android:layout_width="145dp"
+            android:layout_height="64dp"
+            android:text="Thoát" />
 
-    <!--    </TextView>-->
-    <Button
-        android:id="@+id/practice_btnSubmit"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center"
-        android:layout_margin="20dp"
-        android:layout_weight="1"
-        android:text="Submit">
-
-    </Button>
-
+        <Button
+            android:id="@+id/practice_btnSubmit"
+            android:layout_width="145dp"
+            android:layout_height="64dp"
+            android:layout_marginStart="24dp"
+            android:text="Tiếp tục" />
+    </LinearLayout>
 </LinearLayout>
