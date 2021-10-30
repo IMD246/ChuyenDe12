@@ -40,9 +40,13 @@ public class AdminInterface extends AppCompatActivity {
 
     //Khai báo drawerLayout
     private DrawerLayout drawerLayout;
+
     NavigationView navigationView;
     TextView tvUserName;
     FirebaseUser user;
+
+    //khai báo biến lưu index màn hình hiện tại
+    private int myCurrentScreen = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,18 +60,54 @@ public class AdminInterface extends AppCompatActivity {
         {
             tvUserName.setText(user.getEmail());
         }
+        //kiểm tra logic màn hình khi đóng drawer
+        drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(@NonNull View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerClosed(@NonNull View drawerView) {
+                switch (myCurrentScreen){
+                    case 0:
+                        bottomNavigationView.getMenu().findItem(R.id.learn).setChecked(true);
+                        break;
+                    case 1:
+                        bottomNavigationView.getMenu().findItem(R.id.word).setChecked(true);
+                        break;
+                    case 2:
+                        bottomNavigationView.getMenu().findItem(R.id.analysic).setChecked(true);
+                        break;
+                    case 3:
+                        bottomNavigationView.getMenu().findItem(R.id.account).setChecked(true);
+                        break;
+                    case 4:
+                        bottomNavigationView.getMenu().findItem(R.id.profile).setChecked(true);
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item_menu_drawer_change_pass:
-//                        navigationView.getMenu().findItem(R.id.item_menu_drawer_change_pass).setChecked(true);
-//                        navigationView.getMenu().findItem(R.id.item_menu_drawer_change_pass).setChecked(false);
                         startActivity(new Intent(AdminInterface.this, ChangePasswordActivity_Admin.class));
                         break;
                     case R.id.item_menu_drawer_logout:
-//                        navigationView.getMenu().findItem(R.id.item_menu_drawer_change_pass).setChecked(true);
-//                        navigationView.getMenu().findItem(R.id.item_menu_drawer_change_pass).setChecked(false);
                         alertDialog();
                         break;
                 }
@@ -88,6 +128,7 @@ public class AdminInterface extends AppCompatActivity {
         };
         bottomNavigationView.setItemTextColor(new ColorStateList(states, colors));
         bottomNavigationView.setItemIconTintList(new ColorStateList(states, colors));
+
         viewPager = findViewById(R.id.viewPage);
         ViewPageAdapter viewPageAdapter = new ViewPageAdapter(this);
         viewPager.setAdapter(viewPageAdapter);
@@ -97,18 +138,23 @@ public class AdminInterface extends AppCompatActivity {
                 switch (position) {
                     case 0:
                         bottomNavigationView.getMenu().findItem(R.id.learn).setChecked(true);
+                        myCurrentScreen = 0;
                         break;
                     case 1:
                         bottomNavigationView.getMenu().findItem(R.id.word).setChecked(true);
+                        myCurrentScreen = 1;
                         break;
                     case 2:
                         bottomNavigationView.getMenu().findItem(R.id.analysic).setChecked(true);
+                        myCurrentScreen = 2;
                         break;
                     case 3:
                         bottomNavigationView.getMenu().findItem(R.id.account).setChecked(true);
+                        myCurrentScreen = 3;
                         break;
                     case 4:
                         bottomNavigationView.getMenu().findItem(R.id.profile).setChecked(true);
+                        myCurrentScreen = 4;
                         break;
                 }
             }
