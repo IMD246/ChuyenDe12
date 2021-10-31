@@ -80,6 +80,7 @@
         android:id="@+id/practice_rclAnswer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layoutAnimation="@anim/layout_animation"
         android:layout_margin="20dp" />
 
     <LinearLayout

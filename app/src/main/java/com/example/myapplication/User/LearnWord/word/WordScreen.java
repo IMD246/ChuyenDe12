@@ -21,10 +21,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
+
 import com.example.myapplication.R;
 import com.example.myapplication.User.LearnWord.word.source.MySingleton;
 import com.example.myapplication.User.LearnWord.word.source.SqlLiteHelper;
@@ -46,7 +43,6 @@ public class WordScreen extends AppCompatActivity{
     int page = 0;
     private AutoCompleteTextView autoCompleteTextView;
     ArrayList<Word> wordItems = new ArrayList<>();
-    ArrayList<Word> tempList;
 
     WordAdapter adapter;
     SqlLiteHelper databaseHelper;
@@ -112,22 +108,30 @@ public class WordScreen extends AppCompatActivity{
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tempList =   databaseHelper.fetchWordByInput
-                       (autoCompleteTextView.getText().toString().trim());
-                setAdapterForListView(tempList);
+                if(autoCompleteTextView.getText().toString().trim()==null){
 
-                nextPage.setVisibility(View.GONE);
-                currentPage.setVisibility(View.GONE);
-                prevPage.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        page = 0;
-                        pageniteAndAPI(wordItems);
-                        setAdapterForListView(wordItems);
-                        nextPage.setVisibility(View.VISIBLE);
-                        currentPage.setVisibility(View.VISIBLE);
-                    }
-                });
+                }
+                else{
+                    ArrayList<Word> tempList = new ArrayList<>();
+                    tempList =   databaseHelper.fetchWordByInput
+                            (autoCompleteTextView.getText().toString().trim());
+                    setAdapterForListView(tempList);
+
+                    autoCompleteTextView.setText(null);
+                    nextPage.setVisibility(View.GONE);
+                    currentPage.setVisibility(View.GONE);
+                    prevPage.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            page = 0;
+                            pageniteAndAPI(wordItems);
+                            setAdapterForListView(wordItems);
+                            nextPage.setVisibility(View.VISIBLE);
+                            currentPage.setVisibility(View.VISIBLE);
+                        }
+                    });
+                }
+
             }
         });
 

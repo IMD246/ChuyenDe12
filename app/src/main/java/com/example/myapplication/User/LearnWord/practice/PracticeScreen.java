@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,7 +61,7 @@ public class PracticeScreen extends AppCompatActivity {
     private SqlLiteHelper databaseHelper;
     private PracticeAdapter adapter;
     private MediaPlayer player;
-
+    private ProgressBar progressBar;
     private ImageView speakerIcon, showHint;
     private Button submitButton, returnButton;
     private TextView hintText, questionText;
@@ -87,6 +88,7 @@ public class PracticeScreen extends AppCompatActivity {
         setControl();
         setEvent();
         AddItem();
+        progressBar.setMax(listItem.size());
         if (listItem.size() == 0) {
             ifDataIsNull();
         }
@@ -95,6 +97,7 @@ public class PracticeScreen extends AppCompatActivity {
 
     private void setEvent() {
         AddItem();
+
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,6 +142,7 @@ public class PracticeScreen extends AppCompatActivity {
     }
 
     private void setControl() {
+        progressBar = findViewById(R.id.practice_progress_bar);
         speakerIcon = findViewById(R.id.practice_imgSpeak);
         showHint = findViewById(R.id.practice_imgShowHint);
         submitButton = findViewById(R.id.practice_btnSubmit);
@@ -152,7 +156,6 @@ public class PracticeScreen extends AppCompatActivity {
         adapter = new PracticeAdapter(getBaseContext(), listAnswer, resultPos, listOfResult);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);// Tạo layout manager
 
-        danhsach.setItemAnimator(new DefaultItemAnimator());// Gán hiệu ứng cho Recyclerview
 
         danhsach.setLayoutManager(layoutManager);// Gán layout manager cho recyclerview
         danhsach.setAdapter(adapter);//gán adapter cho Recyclerview.
@@ -161,6 +164,7 @@ public class PracticeScreen extends AppCompatActivity {
 
     private void AddItem() {
         try {
+            progressBar.setProgress(currentpos);
             //reset the hint
             //save word get from sqlite to listitem
             hintText.setText("");
@@ -193,7 +197,7 @@ public class PracticeScreen extends AppCompatActivity {
             });
 
             adapter.notifyDataSetChanged();
-
+            danhsach.scheduleLayoutAnimation();
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -204,6 +208,7 @@ public class PracticeScreen extends AppCompatActivity {
 
     private void afterThePractice() {
         listAnswer.clear();
+        progressBar.setMax(listItem.size());
         speakerIcon.setVisibility(View.GONE);
         hintText.setText("Your Score is: " + getScore() + "/" + listItem.size());
         hintText.setTextSize(30);
@@ -211,6 +216,7 @@ public class PracticeScreen extends AppCompatActivity {
         returnButton.setVisibility(View.GONE);
         submitButton.setText("Thoát");
         submitButton.setPadding(0,30,0,0);
+
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -235,6 +241,7 @@ public class PracticeScreen extends AppCompatActivity {
     private void ifDataIsNull() {
         speakerIcon.setVisibility(View.GONE);
         submitButton.setText("Return to main");
+        hintText.setText("your save word list is empty");
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

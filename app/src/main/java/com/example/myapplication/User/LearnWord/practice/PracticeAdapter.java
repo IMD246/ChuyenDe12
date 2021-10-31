@@ -69,6 +69,7 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewHo
                     }
                     holder.layoutAnswer.setEnabled(false);
                     notifyDataSetChanged();
+
                 }
             });
         }
