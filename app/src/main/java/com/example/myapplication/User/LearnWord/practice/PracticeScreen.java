@@ -25,6 +25,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.myapplication.R;
 
 
+import com.example.myapplication.User.LearnWord.practice.source.TranslateText;
 import com.example.myapplication.User.LearnWord.saveWord.source.SaveSqliteHelper;
 import com.example.myapplication.User.LearnWord.vocubulary.VocabularyScreen;
 import com.example.myapplication.User.LearnWord.word.source.MySingleton;
@@ -167,6 +168,7 @@ public class PracticeScreen extends AppCompatActivity {
             progressBar.setProgress(currentpos);
             //reset the hint
             //save word get from sqlite to listitem
+            TranslateText translateText = new TranslateText();
             hintText.setText("");
             databaseHelper.fetchRandomWord(listItem.get(currentpos).getWord(), listAnswer);
             //get  word to a new list
@@ -192,7 +194,9 @@ public class PracticeScreen extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     // translateText(listItem.get(currentpos).getWord().toString(),hintText);
-                    hintText.setText(listItem.get(currentpos).getWord());
+                    translateText.makeNetworkRequest(listItem.get(currentpos).getWord(),hintText);
+
+                   // hintText.setText(listItem.get(currentpos).getWord());
                 }
             });
 
@@ -309,47 +313,6 @@ public class PracticeScreen extends AppCompatActivity {
 
     }
 
-    private void translateText(String word, TextView txt_temp) {
-        try {
-            firebaseApp.initializeApp(PracticeScreen.this);
-            FirebaseTranslatorOptions options = new FirebaseTranslatorOptions.Builder()
-                    .setSourceLanguage(FirebaseTranslateLanguage.EN)
-                    .setTargetLanguage(FirebaseTranslateLanguage.VI)
-                    .build();
-            FirebaseTranslator translator = FirebaseNaturalLanguage.getInstance(firebaseApp).getTranslator(options);
-
-            FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions.Builder().build();
-
-            translator.downloadModelIfNeeded(conditions).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void unused) {
-
-
-                    translator.translate(word).addOnSuccessListener(new OnSuccessListener<String>() {
-                        @Override
-                        public void onSuccess(String s) {
-
-
-                            txt_temp.setText(s);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            e.printStackTrace();
-                        }
-                    });
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    e.printStackTrace();
-                }
-            });
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
 
     private int getResultPos(ArrayList<String> list, String answer) {
         int pos = 0;
