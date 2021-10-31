@@ -2,6 +2,7 @@ package com.example.myapplication.Admin.LearnManagement;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -15,12 +16,13 @@ import com.example.myapplication.Admin.DAO.DAOTypeQuestion;
 import com.example.myapplication.Admin.DTO.Question;
 import com.example.myapplication.R;
 
+import java.util.List;
+
 public class QuestionInterface extends AppCompatActivity {
     private String TAGQuestionManagement = QuestionManagementFragment.class.getName();
     public DAOTypeQuestion daoTypeQuestion;
     public boolean flag = false;
     public DAOTopic daoTopic;
-    public Uri uri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +76,6 @@ public class QuestionInterface extends AppCompatActivity {
 //        QuestionManagementFragment questionManagementFragmen = getSupportFragmentManager().popBackStack;
         if (getSupportFragmentManager().findFragmentByTag(TAGQuestionManagement) == null) {
             QuestionManagementFragment questionManagementFragment = new QuestionManagementFragment();
-
             fragmentTransaction.replace(R.id.fmQuestion, questionManagementFragment, TAGQuestionManagement).addToBackStack(null).commit();
         } else {
             QuestionManagementFragment questionManagementFragment = (QuestionManagementFragment) getSupportFragmentManager().findFragmentByTag(TAGQuestionManagement);
@@ -102,14 +103,17 @@ public class QuestionInterface extends AppCompatActivity {
         startActivityForResult(intent, 100);
     }
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100 && resultCode == RESULT_OK && data !=null && data.getData()!=null)
-        {
-            uri = data.getData();
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        List<Fragment> listOfFragments = getSupportFragmentManager().getFragments();
+        if(listOfFragments.size()>=1){
+            for (Fragment fragment : listOfFragments) {
+                if(fragment instanceof DetailQuestionFragment){
+                    fragment.onActivityResult(requestCode, resultCode, data);
+                }
+            }
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();

@@ -216,7 +216,7 @@ public class DAOImageStorage {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isComplete()) {
-                                    Toast.makeText(context, "Thêm Ảnh Answer cho Question trong Topic thành công", Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(context, "Thêm Ảnh Answer cho Question trong Topic thành công", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
