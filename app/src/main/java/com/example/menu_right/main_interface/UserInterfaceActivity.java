@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.menu_right.DAO.DAOLevel;
 import com.example.menu_right.Login.DAOUserProfile;
 import com.example.menu_right.Login.DEFAULTVALUE;
 import com.example.menu_right.Login.Login;
@@ -68,13 +69,14 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setControl();
-        getDataUser();
+//        getDataUser();
         checkLogicDrawerLayout();
         processBottomNavigation();
         processViewPager2();
     }
 
     //kiểm tra logic khi drawer layout đóng
+
     private void checkLogicDrawerLayout() {
         drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
@@ -126,28 +128,28 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
             }
         });
     }
-
     //lấy dữ liệu user
-    private void getDataUser() {
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        databaseReference = FirebaseDatabase.getInstance().getReference("users");
-        databaseReference.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User us = snapshot.getValue(User.class);
-                if (us != null) {
-                    Toast.makeText(UserInterfaceActivity.this, "" + us.getEmail().toString(), Toast.LENGTH_SHORT).show();
-                }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
+//    private void getDataUser() {
+//        user = FirebaseAuth.getInstance().getCurrentUser();
+//        databaseReference = FirebaseDatabase.getInstance().getReference("users");
+//        databaseReference.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                User us = snapshot.getValue(User.class);
+//                if (us != null) {
+//                    Toast.makeText(UserInterfaceActivity.this, "" + us.getEmail().toString(), Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+//    }
     //Ánh xạ, khởi gán giá trị,...
+
     private void setControl() {
         //drawe layout
         drawerLayout = findViewById(R.id.drawer_layout);

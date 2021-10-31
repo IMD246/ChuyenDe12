@@ -7,6 +7,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.menu_right.Adapter.Topic_Adapter;
 import com.example.menu_right.DTO.Topic;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -33,111 +34,24 @@ public class DAOTopic {
         daoQuestion = new DAOQuestion(context);
         databaseReference = FirebaseDatabase.getInstance().getReference("listtopic");
     }
-//    public void getDataFromRealTimeFirebase(TopicAdapter topicAdapter)
-//    {
-//        databaseReference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if (topicList!=null)
-//                {
-//                    topicList.clear();
-//                }
-//                for (DataSnapshot dataSnapshot : snapshot.getChildren())
-//                {
-//                    Topic topic = dataSnapshot.getValue(Topic.class);
-//                    topicList.add(topic);
-//                }
-//                if (topicAdapter !=null) {
-//                    topicAdapter.notifyDataSetChanged();
-//                }
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Toast.makeText(context, "Get list Topic failed", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
-    public void addDataToFireBase(Topic topic , EditText edtTopic)
+    public void getDataFromRealTimeFirebase()
     {
-        boolean[] check = new boolean[2];
-        int s=1;
-        for (int i = 0; i < check.length; i++) {
-            check[i] = true;
-        }
-        if (topic.getNameTopic().isEmpty() || topic.getNameTopic().length() == 0) {
-            check[0] = false;
-        } else {
-            if (topicList.size() > 0)
-            {
-                for (Topic topic1 : topicList) {
-                    if (topic.getNameTopic().equalsIgnoreCase(topic1.getNameTopic()) && topic1.getLevel() == topic.getLevel()) {
-                        check[1] = false;
-                        break;
-                    }
-                }
-            }
-        }
-        if (check[0] == false) {
-            edtTopic.setError("Không để trống");
-            edtTopic.requestFocus();
-        } else if (check[1] == false) {
-            edtTopic.setError("Trùng dữ liệu , hãy kiểm tra lại dữ liệu");
-            edtTopic.requestFocus();
-        } else {
-            databaseReference.child(String.valueOf(topic.getId())).setValue(topic).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isComplete()) {
-                        Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-        }
-    }
-    public void editDataToFireBase(Topic topic , EditText edtTopic)
-    {
-        boolean[] check = new boolean[2];
-        int s=1;
-        for (int i = 0; i < check.length; i++) {
-            check[i] = true;
-        }
-        if (topic.getNameTopic().isEmpty() || topic.getNameTopic().length() == 0) {
-            check[0] = false;
-        } else {
-            if (topicList.size() > 0)
-            {
-                for (Topic topic1 : topicList) {
-                    if ((topic.getNameTopic().equalsIgnoreCase(topic1.getNameTopic()))
-                    && topic.getIdLevel() == topic1.getIdLevel()){
-                        check[1] = false;
-                        break;
-                    }
-                }
-            }
-        }
-        if (check[0] == false) {
-            edtTopic.setError("Không để trống");
-            edtTopic.requestFocus();
-        } else if (check[1] == false) {
-            edtTopic.setError("Trùng dữ liệu , hãy kiểm tra lại dữ liệu");
-            edtTopic.requestFocus();
-        } else
-            {
-                databaseReference.child(String.valueOf(topic.getId())).setValue(topic).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isComplete()) {
-                        Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-        }
-    }
-    public void deleteDataToFire(Topic topic) {
-        databaseReference.child(String.valueOf(topic.getId())).removeValue(new DatabaseReference.CompletionListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (topicList!=null)
+                {
+                    topicList.clear();
+                }
+                for (DataSnapshot dataSnapshot : snapshot.getChildren())
+                {
+                    Topic topic = dataSnapshot.getValue(Topic.class);
+                    topicList.add(topic);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(context, "Get list Topic failed", Toast.LENGTH_SHORT).show();
             }
         });
     }
