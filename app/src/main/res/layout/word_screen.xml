@@ -45,8 +45,8 @@
         android:id="@+id/word_recycleItem"
         android:layout_width="match_parent"
         android:layout_height="554dp"
-        android:background="@drawable/bg_white_corner_16dp"
-        android:layout_marginTop="12dp"
+        android:layout_margin="8dp"
+        android:background="@drawable/bg_blue_corner_recycleview"
         android:padding="1dp" />
 
     <LinearLayout

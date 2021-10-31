@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
@@ -100,7 +101,7 @@ public class VocubularyAapter extends RecyclerView.Adapter<VocubularyAapter.View
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView txt_VocubularyText;
         ImageView txt_VocubularyImage;
-        LinearLayout container;
+        CardView container;
         public ViewHolder(View itemView){
             super(itemView);
             container = itemView.findViewById(R.id.vocubulary_linearContainer);

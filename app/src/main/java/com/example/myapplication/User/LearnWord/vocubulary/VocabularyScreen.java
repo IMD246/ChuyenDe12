@@ -56,10 +56,10 @@ public class VocabularyScreen extends AppCompatActivity {
     }
 
     private void AddItem(){
-        VocubularyItem item1 = new VocubularyItem("Save",R.drawable.save);
-        VocubularyItem item2 = new VocubularyItem("History",R.drawable.history);
-        VocubularyItem item3 = new VocubularyItem("All Word",R.drawable.word);
-        VocubularyItem item4 = new VocubularyItem("Practice",R.drawable.practice);
+        VocubularyItem item1 = new VocubularyItem("Từ đã lưu",R.drawable.save);
+        VocubularyItem item2 = new VocubularyItem("lịch sử tra từ",R.drawable.history);
+        VocubularyItem item3 = new VocubularyItem("tra từ điển",R.drawable.word);
+        VocubularyItem item4 = new VocubularyItem("Luyện tập",R.drawable.practice);
         vocabularyItems.add(item1);
         vocabularyItems.add(item2);
         vocabularyItems.add(item3);

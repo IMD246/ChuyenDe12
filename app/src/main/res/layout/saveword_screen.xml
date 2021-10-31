@@ -28,6 +28,8 @@
         android:id="@+id/rcl_saveScreen"
         android:layout_width="match_parent"
         android:layout_height="568dp"
+        android:padding="1dp"
+        android:background="@drawable/bg_blue_corner_recycleview"
         android:layout_margin="8dp" />
 
     <Button

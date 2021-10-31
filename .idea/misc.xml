@@ -10,7 +10,9 @@
         <entry key="..\:/Users/WIN 10/didong2/Admin/app/src/main/res/drawable-v24/bg_yellow_corner_16_top_left_top_right.xml" value="0.236986301369863" />
         <entry key="..\:/Users/WIN 10/didong2/Admin/app/src/main/res/drawable/bg_blue_corner_recycleview.xml" value="0.236986301369863" />
         <entry key="..\:/Users/WIN 10/didong2/Admin/app/src/main/res/drawable/bg_boder_grey1.xml" value="0.236986301369863" />
+        <entry key="..\:/Users/WIN 10/didong2/Admin/app/src/main/res/drawable/bg_boder_grey2.xml" value="0.236986301369863" />
         <entry key="..\:/Users/WIN 10/didong2/Admin/app/src/main/res/drawable/bg_tv_auto_complete_all_word.xml" value="0.236986301369863" />
+        <entry key="..\:/Users/WIN 10/didong2/Admin/app/src/main/res/drawable/bg_tv_id_vocabulary_cicler.xml" value="0.236986301369863" />
         <entry key="..\:/Users/WIN 10/didong2/Admin/app/src/main/res/drawable/circle_button.xml" value="0.236986301369863" />
         <entry key="..\:/Users/WIN 10/didong2/Admin/app/src/main/res/drawable/ic_baseline_remove_red_eye_24.xml" value="0.236986301369863" />
         <entry key="..\:/Users/WIN 10/didong2/Admin/app/src/main/res/drawable/ic_baseline_star_checked.xml" value="0.236986301369863" />
@@ -30,6 +32,7 @@
         <entry key="..\:/Users/WIN 10/didong2/Admin/app/src/main/res/layout/history_item.xml" value="0.2246376811594203" />
         <entry key="..\:/Users/WIN 10/didong2/Admin/app/src/main/res/layout/history_screen.xml" value="0.2246376811594203" />
         <entry key="..\:/Users/WIN 10/didong2/Admin/app/src/main/res/layout/listoptionitem.xml" value="0.2246376811594203" />
+        <entry key="..\:/Users/WIN 10/didong2/Admin/app/src/main/res/layout/login.xml" value="0.22010869565217392" />
         <entry key="..\:/Users/WIN 10/didong2/Admin/app/src/main/res/layout/practice_answeritem.xml" value="0.2246376811594203" />
         <entry key="..\:/Users/WIN 10/didong2/Admin/app/src/main/res/layout/practive_screen.xml" value="0.2246376811594203" />
         <entry key="..\:/Users/WIN 10/didong2/Admin/app/src/main/res/layout/register_user.xml" value="0.12360688956433637" />

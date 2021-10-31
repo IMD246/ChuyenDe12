@@ -49,10 +49,10 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvToeic"
         android:layout_width="match_parent"
-        android:layout_height="485dp"
+        android:layout_height="500dp"
         android:layout_margin="8dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/bg_white_corner_16dp"
+        android:background="@drawable/bg_blue_corner_recycleview"
         android:padding="1dp" />
 
     <Button

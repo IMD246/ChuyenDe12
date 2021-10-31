@@ -13,11 +13,9 @@
         android:layout_marginBottom="12dp"
         android:orientation="vertical">
 
-        <androidx.cardview.widget.CardView
-            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
             card_view:cardCornerRadius="8dp"
             card_view:cardElevation="4dp"
             card_view:cardUseCompatPadding="true">
@@ -25,8 +23,7 @@
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/svIetls"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:elevation="4dp" />
+                android:layout_height="wrap_content"/>
         </androidx.cardview.widget.CardView>
 
 
@@ -50,18 +47,18 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvIetls"
         android:layout_width="match_parent"
-        android:layout_height="485dp"
+        android:layout_height="500dp"
         android:layout_margin="8dp"
-        android:padding="1dp"
-        android:background="@drawable/bg_white_corner_16dp"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_blue_corner_recycleview"
+        android:padding="1dp" />
 
     <Button
         android:id="@+id/ielts_returnButton"
         android:layout_width="145dp"
         android:layout_height="64dp"
-        android:layout_marginTop="12dp"
         android:layout_gravity="center"
+        android:layout_marginTop="12dp"
         android:backgroundTint="@color/l_blue"
         android:text="Quay Lại" />
 </LinearLayout>
