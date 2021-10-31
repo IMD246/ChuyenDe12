@@ -116,6 +116,104 @@ public class DAOQuestion {
             });
         }
     }
+    public void addDataQuestionToFireBaseTopic(Question question, EditText edtTitle, EditText edtCorrectAnswer) {
+        boolean[] check = new boolean[3];
+        int s=1;
+        for (int i = 0; i < check.length; i++) {
+            check[i] = true;
+        }
+        if (question.getTitle().isEmpty() || question.getTitle().length() == 0) {
+            check[0] = false;
+        }
+        else if (question.getCorrectAnswer().isEmpty() || question.getCorrectAnswer().length() == 0) {
+            check[1] = false;
+        }
+        else {
+            if (questionList.size() > 0)
+            {
+                for (Question question1 : questionList) {
+                    if (question1.getNameTopic().equalsIgnoreCase(question.getNameTopic())&&
+                            question1.getNameTypeQuestion().equalsIgnoreCase(question.getNameTypeQuestion())&&
+                            question1.getTitle().equalsIgnoreCase(question.getTitle()))
+                    {
+                        check[2] = false;
+                        break;
+                    }
+                }
+            }
+        }
+        if (check[0] == false) {
+            edtTitle.setError("Không để trống");
+            edtTitle.requestFocus();
+        }
+        else if (check[1] == false) {
+            edtCorrectAnswer.setError("Không để trống");
+            edtCorrectAnswer.requestFocus();
+        }
+        else if (check[2] == false) {
+            edtTitle.setError("Trùng dữ liệu , hãy kiểm tra lại dữ liệu");
+            edtTitle.requestFocus();
+        } else {
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listtopic/"+question.getIdTopic());
+            databaseReference.child("listquestion/"+question.getId()).setValue(question).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isComplete()) {
+                        Toast.makeText(context,"Thêm Question vào Topic thành công", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
+    }
+    public void addDataQuestionToFireBaseTypeQuestion(Question question, EditText edtTitle, EditText edtCorrectAnswer) {
+        boolean[] check = new boolean[3];
+        int s=1;
+        for (int i = 0; i < check.length; i++) {
+            check[i] = true;
+        }
+        if (question.getTitle().isEmpty() || question.getTitle().length() == 0) {
+            check[0] = false;
+        }
+        else if (question.getCorrectAnswer().isEmpty() || question.getCorrectAnswer().length() == 0) {
+            check[1] = false;
+        }
+        else {
+            if (questionList.size() > 0)
+            {
+                for (Question question1 : questionList) {
+                    if (question1.getNameTopic().equalsIgnoreCase(question.getNameTopic())&&
+                            question1.getNameTypeQuestion().equalsIgnoreCase(question.getNameTypeQuestion())&&
+                            question1.getTitle().equalsIgnoreCase(question.getTitle()))
+                    {
+                        check[2] = false;
+                        break;
+                    }
+                }
+            }
+        }
+        if (check[0] == false) {
+            edtTitle.setError("Không để trống");
+            edtTitle.requestFocus();
+        }
+        else if (check[1] == false) {
+            edtCorrectAnswer.setError("Không để trống");
+            edtCorrectAnswer.requestFocus();
+        }
+        else if (check[2] == false) {
+            edtTitle.setError("Trùng dữ liệu , hãy kiểm tra lại dữ liệu");
+            edtTitle.requestFocus();
+        } else {
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listtypequestion/"+question.getIdTypeQuestion());
+            databaseReference.child("listquestion/"+question.getId()).setValue(question).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isComplete()) {
+                        Toast.makeText(context,"Thêm Question vào TypeQuestion thành công", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
+    }
     public void editDataToFireBase(Question question, EditText edtTitle, EditText edtCorrectAnswer, TextView tvTitle,TextView tvCorrect) {
         boolean[] check = new boolean[3];
         int s=1;

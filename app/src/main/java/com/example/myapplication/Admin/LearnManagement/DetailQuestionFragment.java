@@ -2,19 +2,16 @@ package com.example.myapplication.Admin.LearnManagement;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +29,6 @@ import com.example.myapplication.Admin.Adapter.AnswerAdapter;
 import com.example.myapplication.Admin.DAO.DAOAnswer;
 import com.example.myapplication.Admin.DAO.DAOImageStorage;
 import com.example.myapplication.Admin.DAO.DAOQuestion;
-import com.example.myapplication.Admin.DAO.DAOTopic;
-import com.example.myapplication.Admin.DAO.DAOTypeQuestion;
 import com.example.myapplication.Admin.DTO.Answer;
 import com.example.myapplication.Admin.DTO.Question;
 import com.example.myapplication.Admin.DTO.Topic;
@@ -57,8 +52,8 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
     private RecyclerView rcvAnswer;
     private ImageView imgAnswer;
     private Question question;
-    private TextView tvTitle,tvCorrectAnswer;
-    int idAnswer = 1;
+    private TextView tvTitle, tvCorrectAnswer;
+    private int idAnswer = 1;
     Question question2;
 
     public DetailQuestionFragment() {
@@ -81,13 +76,14 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
     }
+
     // ánh xạ cho các view và set adapter
     private void initUI() {
         questionInterface = (QuestionInterface) getActivity();
         tvTitle = view.findViewById(R.id.tvTitleQuestionDetail);
         tvCorrectAnswer = view.findViewById(R.id.tvCorrectAnswerQuestion);
-        tvTitle.setText("Câu hỏi: "+question.getTitle());
-        tvCorrectAnswer.setText("Câu Trả Lời Chính xác: "+question.getCorrectAnswer());
+        tvTitle.setText("Câu hỏi: " + question.getTitle());
+        tvCorrectAnswer.setText("Câu Trả Lời Chính xác: " + question.getCorrectAnswer());
         answerAdapter = new AnswerAdapter(getContext());
         daoAnswer = new DAOAnswer(getContext());
         daoImageStorage = new DAOImageStorage(getContext());
@@ -114,6 +110,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
             }
         });
     }
+
     // hộp thoại để thống báo có xóa dữ liệu hay không
     private void alertDialogtoDelete(Answer answer) {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
@@ -138,8 +135,10 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         AlertDialog alert11 = builder1.create();
         alert11.show();
     }
+
     private void getDataFromFirebase() {
         daoAnswer.getDataFromFirebase(question.getId(), answerAdapter);
+        daoAnswer.getAQuestionFromFirebase(question.getId());
     }
 
     private int getSelectedSpinner(Spinner spinner, String word) {
@@ -150,6 +149,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         }
         return 0;
     }
+
     // hộp thoại sửa dữ liệu Question
     public void openDialogEditQuestion(int center, Question question) {
         final Dialog dialog = new Dialog(getContext());
@@ -224,11 +224,12 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
                     }
                 }
                 daoQuestion.setContext(getContext());
-                daoQuestion.editDataToFireBase(question, edtTitle, edtCorrectAnswer,tvTitle,tvCorrectAnswer);
+                daoQuestion.editDataToFireBase(question, edtTitle, edtCorrectAnswer, tvTitle, tvCorrectAnswer);
             }
         });
         dialog.show();
     }
+
     // hộp thoại để thêm và sửa Answer
     public void openDiaLogAnswer(int center, int choice, Answer answer) {
         final Dialog dialog = new Dialog(getContext());
@@ -262,9 +263,6 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         TextView tvThemSua = dialog.findViewById(R.id.tvThemSua);
         Button btnPickImageTopic = dialog.findViewById(R.id.btnPickImageTopic);
         LinearLayout linearLayout = dialog.findViewById(R.id.lnpickimage);
-        if (daoAnswer.getAnswerList().size() > 0) {
-            idAnswer = questionInterface.daoTopic.getTopicList().get(questionInterface.daoTopic.getTopicList().size() - 1).getId() + 1;
-        }
         if (question.getNameTypeQuestion().equalsIgnoreCase("Image")) {
         } else {
             linearLayout.setVisibility(View.GONE);
@@ -274,7 +272,8 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
             @Override
             public void onClick(View v) {
                 questionInterface.openFileChoose();
-                if (questionInterface.uri!= null) {
+                if (questionInterface.uri != null) {
+                    daoImageStorage.setmImgURL(questionInterface.uri);
                     imgAnswer.setImageURI(questionInterface.uri);
                 }
             }
@@ -287,8 +286,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
                 dialog.dismiss();
             }
         });
-        if (choice == 2)
-        {
+        if (choice == 2) {
             btnYes.setText("Sửa");
             tvThemSua.setText("Sửa dữ liệu");
             edtAnswer.setText(answer.getAnswerQuestion());
@@ -302,7 +300,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
                     Answer answer1 = new Answer();
                     answer1.setId(answer.getId());
                     answer1.setAnswerQuestion(edtAnswer.getText().toString());
-                    if (answer.getUrlImage().isEmpty()) {
+                    if (answer.getUrlImage().isEmpty() || answer.getUrlImage().trim().length() == 0) {
                     } else {
                         answer1.setUrlImage(answer.getUrlImage());
                     }
@@ -313,10 +311,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
                         daoAnswer.setContext(getContext());
                         daoAnswer.editDataToFireBase(answer1, edtAnswer, question.getId());
                     }
-                    if (questionInterface.uri!= null) {
-                        daoImageStorage.setmImgURL(questionInterface.uri);
-                        daoImageStorage.uploadFileImageToAnswer(2, imgAnswer, "Question" + question.getId() + "Answer" + answer1.getId(), answer1, question.getId());
-                    }
+                    daoImageStorage.uploadFileImageToAnswer(2, imgAnswer, "Question" + question.getId() + "Answer" + answer1.getId(), answer1, question.getId(), daoAnswer.getQuestion());
                 }
             });
         } else if (choice == 1) {
@@ -326,21 +321,25 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
                 public void onClick(View v) {
                     {
                         Answer answer1 = new Answer();
+                        if (daoAnswer.getAnswerList().size() > 0) {
+                            idAnswer = daoAnswer.getAnswerList().get(daoAnswer.getAnswerList().size() - 1).getId() + 1;
+                        }
                         answer1.setId(idAnswer);
                         answer1.setAnswerQuestion(edtAnswer.getText().toString());
                         answer1.setUrlImage("");
                         daoAnswer.setContext(getContext());
-                        daoAnswer.addDataToFireBase(answer1, edtAnswer, question.getId());
-                        if (questionInterface.uri!=null) {
-                            daoImageStorage.setmImgURL(questionInterface.uri);
-                            daoImageStorage.uploadFileImageToAnswer(1, imgAnswer, "Question" + question.getId() + "Answer" + answer1.getId(), answer1, question.getId());
+                        daoAnswer.addDataAnswerToFirebaseQuestion(answer1, edtAnswer, question.getId());
+                        if (daoAnswer.getQuestion() != null) {
+                            daoAnswer.addDataAnswerForQuestionInFirebaseTopic(answer1, edtAnswer, question.getId(), daoAnswer.getQuestion());
                         }
+                        daoImageStorage.uploadFileImageToAnswer(1, imgAnswer, "Question" + question.getId() + "Answer" + answer1.getId(), answer1, question.getId(), daoAnswer.getQuestion());
                     }
                 }
             });
         }
         dialog.show();
     }
+
     // hàm onClick cho các view theo id
     @Override
     public void onClick(View v) {

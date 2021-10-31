@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 
 import com.example.myapplication.Admin.DTO.Answer;
 import com.example.myapplication.Admin.DTO.Level;
+import com.example.myapplication.Admin.DTO.Question;
 import com.example.myapplication.Admin.DTO.Topic;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -74,6 +75,39 @@ public class DAOImageStorage {
                 }
             });
         }
+        if (mImgURL !=null)
+        {
+            StorageReference fileReference = storageReference.child(name+" "+topic.getId());
+            fileReference.putFile(mImgURL).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful())
+                    {
+                        throw task.getException();
+                    }
+                    return fileReference.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful())
+                    {
+                        imageView.setImageURI(null);
+                        mImgURL =  task.getResult();
+                        topic.setUrlImage(mImgURL.toString());
+                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listlevel");
+                        databaseReference.child(String.valueOf(topic.getIdLevel()) + "/listtopic").child(topic.getId()+"/urlImage").
+                                setValue(topic.getUrlImage()).
+                                addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Toast.makeText(context, "Thêm Ảnh cho Topic của Level thành công", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+            });
+        }
     }
     // hàm upload ảnh cho Level
     public void uploadFileImageLevel(int choice,ImageView imageView , String name, Level level)
@@ -117,7 +151,7 @@ public class DAOImageStorage {
         }
     }
     // hàm upload ảnh cho answer
-    public void uploadFileImageToAnswer(int i, ImageView imgAnswer, String s, Answer answer1, int idQuestion) {
+    public void uploadFileImageToAnswer(int i, ImageView imgAnswer, String s, Answer answer1, int idQuestion, Question question) {
         if (mImgURL !=null)
         {
             StorageReference fileReference = storageReference.child(s);
@@ -150,6 +184,39 @@ public class DAOImageStorage {
                                 else
                                 {
                                     Toast.makeText(context, "Thêm ảnh không thành công", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        if (mImgURL !=null)
+        {
+            StorageReference fileReference = storageReference.child(s);
+            fileReference.putFile(mImgURL).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful())
+                    {
+                        throw task.getException();
+                    }
+                    return fileReference.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful())
+                    {
+                        mImgURL = task.getResult();
+                        answer1.setUrlImage(mImgURL.toString());
+                        DatabaseReference databaseReference =  FirebaseDatabase.getInstance().getReference("listtopic/"+question.getIdTopic()+"/listquestion");
+                        databaseReference.child(idQuestion + "/listanswer").child(String.valueOf(answer1.getId())).setValue(answer1).
+                                addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isComplete()) {
+                                    Toast.makeText(context, "Thêm Ảnh Answer cho Question trong Topic thành công", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });

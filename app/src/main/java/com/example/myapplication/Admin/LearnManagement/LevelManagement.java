@@ -30,8 +30,6 @@ import com.example.myapplication.Admin.DAO.DAOLevel;
 import com.example.myapplication.R;
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
-
 public class LevelManagement extends AppCompatActivity {
 
     private RecyclerView recyclerView;
@@ -54,7 +52,7 @@ public class LevelManagement extends AppCompatActivity {
         recyclerView = findViewById(R.id.rcvLevel);
         levelAdapter = new LevelAdapter(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(recyclerView.VERTICAL);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
         levelAdapter.setListLevel(daoLevel.getLevelList());
         recyclerView.setAdapter(levelAdapter);
@@ -156,9 +154,7 @@ public class LevelManagement extends AppCompatActivity {
         if (choice == 2)
         {
             if (level.getUrlImage().isEmpty())
-            {
-
-            }
+            { }
             else
             {
                 Picasso.get().load(level.getUrlImage()).resize(100, 100).into(imgLevel);

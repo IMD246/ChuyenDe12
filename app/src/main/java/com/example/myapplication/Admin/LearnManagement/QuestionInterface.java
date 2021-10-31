@@ -107,8 +107,6 @@ public class QuestionInterface extends AppCompatActivity {
         if (requestCode == 100 && resultCode == RESULT_OK && data !=null && data.getData()!=null)
         {
             uri = data.getData();
-//            daoImageStorage.setmImgURL(data.getData());
-//            imgTopic.setImageURI(daoImageStorage.getmImgURL());
         }
     }
 

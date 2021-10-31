@@ -24,52 +24,53 @@ public class DAOTopic {
     private List<Topic> topicList;
     private DatabaseReference databaseReference;
     private Context context;
+
     public List<Topic> getTopicList() {
         return topicList;
     }
+
     private DAOQuestion daoQuestion;
+
     public DAOTopic(Context context) {
         this.context = context;
         topicList = new ArrayList<>();
         daoQuestion = new DAOQuestion(context);
         databaseReference = FirebaseDatabase.getInstance().getReference("listtopic");
     }
-    public void getDataFromRealTimeFirebase(TopicAdapter topicAdapter)
-    {
+
+    public void getDataFromRealTimeFirebase(TopicAdapter topicAdapter) {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (topicList!=null)
-                {
+                if (topicList != null) {
                     topicList.clear();
                 }
-                for (DataSnapshot dataSnapshot : snapshot.getChildren())
-                {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Topic topic = dataSnapshot.getValue(Topic.class);
                     topicList.add(topic);
                 }
-                if (topicAdapter !=null) {
+                if (topicAdapter != null) {
                     topicAdapter.notifyDataSetChanged();
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(context, "Get list Topic failed", Toast.LENGTH_SHORT).show();
             }
         });
     }
-    public void addDataToFireBase(Topic topic , EditText edtTopic)
-    {
+
+    public void addDataToFireBase(Topic topic, EditText edtTopic) {
         boolean[] check = new boolean[2];
-        int s=1;
+        int s = 1;
         for (int i = 0; i < check.length; i++) {
             check[i] = true;
         }
         if (topic.getNameTopic().isEmpty() || topic.getNameTopic().length() == 0) {
             check[0] = false;
         } else {
-            if (topicList.size() > 0)
-            {
+            if (topicList.size() > 0) {
                 for (Topic topic1 : topicList) {
                     if (topic.getNameTopic().equalsIgnoreCase(topic1.getNameTopic()) && topic1.getLevel() == topic.getLevel()) {
                         check[1] = false;
@@ -95,21 +96,18 @@ public class DAOTopic {
             });
         }
     }
-    public void editDataToFireBase(Topic topic , EditText edtTopic)
-    {
+    public void addTopicToFireBaseLevel(Topic topic, EditText edtTopic) {
         boolean[] check = new boolean[2];
-        int s=1;
+        int s = 1;
         for (int i = 0; i < check.length; i++) {
             check[i] = true;
         }
         if (topic.getNameTopic().isEmpty() || topic.getNameTopic().length() == 0) {
             check[0] = false;
         } else {
-            if (topicList.size() > 0)
-            {
+            if (topicList.size() > 0) {
                 for (Topic topic1 : topicList) {
-                    if ((topic.getNameTopic().equalsIgnoreCase(topic1.getNameTopic()))
-                    && topic.getIdLevel() == topic1.getIdLevel()){
+                    if (topic.getNameTopic().equalsIgnoreCase(topic1.getNameTopic()) && topic1.getLevel() == topic.getLevel()) {
                         check[1] = false;
                         break;
                     }
@@ -122,9 +120,44 @@ public class DAOTopic {
         } else if (check[1] == false) {
             edtTopic.setError("Trùng dữ liệu , hãy kiểm tra lại dữ liệu");
             edtTopic.requestFocus();
-        } else
-            {
-                databaseReference.child(String.valueOf(topic.getId())).setValue(topic).addOnCompleteListener(new OnCompleteListener<Void>() {
+        } else {
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listlevel");
+            databaseReference.child(String.valueOf(topic.getIdLevel()) + "/listtopic").child(String.valueOf(topic.getId())).setValue(topic).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    Toast.makeText(context, "Thêm Topic vào Level thành công", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    public void editDataToFireBase(Topic topic, EditText edtTopic) {
+        boolean[] check = new boolean[2];
+        int s = 1;
+        for (int i = 0; i < check.length; i++) {
+            check[i] = true;
+        }
+        if (topic.getNameTopic().isEmpty() || topic.getNameTopic().length() == 0) {
+            check[0] = false;
+        } else {
+            if (topicList.size() > 0) {
+                for (Topic topic1 : topicList) {
+                    if ((topic.getNameTopic().equalsIgnoreCase(topic1.getNameTopic()))
+                            && topic.getIdLevel() == topic1.getIdLevel()) {
+                        check[1] = false;
+                        break;
+                    }
+                }
+            }
+        }
+        if (check[0] == false) {
+            edtTopic.setError("Không để trống");
+            edtTopic.requestFocus();
+        } else if (check[1] == false) {
+            edtTopic.setError("Trùng dữ liệu , hãy kiểm tra lại dữ liệu");
+            edtTopic.requestFocus();
+        } else {
+            databaseReference.child(String.valueOf(topic.getId())).setValue(topic).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isComplete()) {
@@ -134,6 +167,7 @@ public class DAOTopic {
             });
         }
     }
+
     public void deleteDataToFire(Topic topic) {
         databaseReference.child(String.valueOf(topic.getId())).removeValue(new DatabaseReference.CompletionListener() {
             @Override

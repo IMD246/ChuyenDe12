@@ -47,8 +47,6 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
 
     private RecyclerView rcvQuestion;
     private DAOQuestion daoQuestion;
-//    private DAOTypeQuestion daoTypeQuestion;
-//    private DAOTopic daoTopic;
     private ImageView imgAdd;
     private SearchView svQuestion;
     private QuestionInterface questionInterface;
@@ -58,9 +56,7 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
     private View v;
 
     public QuestionManagementFragment() {
-//        daoTopic = new DAOTopic(getContext());
         daoQuestion = new DAOQuestion(getContext());
-//        daoTypeQuestion = new DAOTypeQuestion(getContext());
         questionAdapter = new QuestionAdapter(getContext());
     }
 
@@ -256,6 +252,8 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
                 }
                 daoQuestion.setContext(getContext());
                 daoQuestion.addDataToFireBase(question, edtTitle,edtCorrectAnswer);
+                daoQuestion.addDataQuestionToFireBaseTopic(question,edtTitle,edtCorrectAnswer);
+                daoQuestion.addDataQuestionToFireBaseTypeQuestion(question,edtTitle,edtCorrectAnswer);
             }
         });
         dialog.show();
