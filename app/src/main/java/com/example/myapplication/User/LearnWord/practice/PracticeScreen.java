@@ -50,27 +50,28 @@ public class PracticeScreen extends AppCompatActivity {
 
     private RecyclerView danhsach;
 
-     ArrayList<String> listAnswer = new ArrayList<>();
-     ArrayList<Boolean> listOfResult = new ArrayList<Boolean>();
+    ArrayList<String> listAnswer = new ArrayList<>();
+    ArrayList<Boolean> listOfResult = new ArrayList<Boolean>();
     private String result = "";
+
     //list of word get from sqlite
-     ArrayList<Word> listItem = new ArrayList<>();
+    ArrayList<Word> listItem = new ArrayList<>();
     private SaveSqliteHelper sqliteHelper;
     private SqlLiteHelper databaseHelper;
     private PracticeAdapter adapter;
     private MediaPlayer player;
 
-    private ImageView speakerIcon,showHint;
-    private Button submitButton,returnButton;
+    private ImageView speakerIcon, showHint;
+    private Button submitButton, returnButton;
     private TextView hintText, questionText;
     int currentpos = 0;
-    FirebaseApp firebaseApp ;
+    FirebaseApp firebaseApp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         firebaseApp.initializeApp(PracticeScreen.this);
 //        firebaseApp.getApplicationContext();
-
         setContentView(R.layout.practive_screen);
 
 
@@ -92,24 +93,24 @@ public class PracticeScreen extends AppCompatActivity {
     }
 
 
-
     private void setEvent() {
         AddItem();
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    if (currentpos < listItem.size()-1&&currentpos<10) {
+                    if (currentpos < listItem.size() - 1 && currentpos < 10) {
                         currentpos = currentpos + 1;
 //                        listAnswer.clear();
                         AddItem();
 
                     } else {
-                      //  listAnswer.clear();
+                        //  listAnswer.clear();
                         setAdapter(1);
                         afterThePractice();
                     }
                 } catch (Exception ex) {
+
                 }
 
             }
@@ -132,7 +133,6 @@ public class PracticeScreen extends AppCompatActivity {
 //        }
         try {
             databaseHelper.OpenDatabase();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -148,14 +148,17 @@ public class PracticeScreen extends AppCompatActivity {
         returnButton = findViewById(R.id.practice_btn_return);
     }
 
-    private void setAdapter(int resultPos){
-        adapter = new PracticeAdapter(getBaseContext(), listAnswer, resultPos,listOfResult);
+    private void setAdapter(int resultPos) {
+        adapter = new PracticeAdapter(getBaseContext(), listAnswer, resultPos, listOfResult);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);// Tạo layout manager
+
         danhsach.setItemAnimator(new DefaultItemAnimator());// Gán hiệu ứng cho Recyclerview
+
         danhsach.setLayoutManager(layoutManager);// Gán layout manager cho recyclerview
         danhsach.setAdapter(adapter);//gán adapter cho Recyclerview.
 
     }
+
     private void AddItem() {
         try {
             //reset the hint
@@ -165,9 +168,9 @@ public class PracticeScreen extends AppCompatActivity {
             //get  word to a new list
             listAnswer.add(listItem.get(currentpos).getWord());
             Collections.shuffle(listAnswer);
-            Toast.makeText(getBaseContext(),  listAnswer.get(0), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(), listAnswer.get(0), Toast.LENGTH_SHORT).show();
 
-            setAdapter(getResultPos(listAnswer,listItem.get(currentpos).getWord()));
+            setAdapter(getResultPos(listAnswer, listItem.get(currentpos).getWord()));
             //set am thanh
             speakerIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -184,8 +187,8 @@ public class PracticeScreen extends AppCompatActivity {
             showHint.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                // translateText(listItem.get(currentpos).getWord().toString(),hintText);
-                 hintText.setText(listItem.get(currentpos).getWord());
+                    // translateText(listItem.get(currentpos).getWord().toString(),hintText);
+                    hintText.setText(listItem.get(currentpos).getWord());
                 }
             });
 
@@ -202,9 +205,12 @@ public class PracticeScreen extends AppCompatActivity {
     private void afterThePractice() {
         listAnswer.clear();
         speakerIcon.setVisibility(View.GONE);
-        hintText.setText("Your Score is:"+getScore()+"/"+listItem.size());
+        hintText.setText("Your Score is: " + getScore() + "/" + listItem.size());
         hintText.setTextSize(30);
-        submitButton.setText("Return to main");
+        showHint.setVisibility(View.GONE);
+        returnButton.setVisibility(View.GONE);
+        submitButton.setText("Thoát");
+        submitButton.setPadding(0,30,0,0);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -216,10 +222,10 @@ public class PracticeScreen extends AppCompatActivity {
     }
 
     private int getScore() {
-        int score=0;
-        for (Boolean i:listOfResult
-             ) {
-            if(i==true){
+        int score = 0;
+        for (Boolean i : listOfResult
+        ) {
+            if (i == true) {
                 score++;
             }
         }
@@ -227,9 +233,7 @@ public class PracticeScreen extends AppCompatActivity {
     }
 
     private void ifDataIsNull() {
-
         speakerIcon.setVisibility(View.GONE);
-
         submitButton.setText("Return to main");
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -297,7 +301,8 @@ public class PracticeScreen extends AppCompatActivity {
         }
 
     }
-    private void translateText(String word,TextView txt_temp) {
+
+    private void translateText(String word, TextView txt_temp) {
         try {
             firebaseApp.initializeApp(PracticeScreen.this);
             FirebaseTranslatorOptions options = new FirebaseTranslatorOptions.Builder()
@@ -324,7 +329,7 @@ public class PracticeScreen extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             e.printStackTrace();
-                                }
+                        }
                     });
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -338,14 +343,14 @@ public class PracticeScreen extends AppCompatActivity {
             ex.printStackTrace();
         }
     }
-    private int getResultPos(ArrayList<String> list,String answer){
-        int pos =0;
-        for (String i:list)
-        {
 
-            if(answer.equals(i)){
-                 break;
-             }
+    private int getResultPos(ArrayList<String> list, String answer) {
+        int pos = 0;
+        for (String i : list) {
+
+            if (answer.equals(i)) {
+                break;
+            }
             pos++;
 
         }

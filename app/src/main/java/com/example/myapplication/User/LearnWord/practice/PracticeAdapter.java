@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,6 +61,8 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewHo
                     if (holder.getAdapterPosition() == resultPos) {
                         holder.layoutAnswer.setBackgroundColor(Color.GREEN);
                         listResult.add(true);
+//                        int curentProgress = holder.progressBar.getProgress();
+//                        holder.progressBar.setProgress(curentProgress+10);
                     } else {
                         holder.layoutAnswer.setBackgroundColor(Color.RED);
                         listResult.add(false);
@@ -81,11 +84,13 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewHo
         //khai báo các phần từ
         TextView tvAnswer;
         LinearLayout layoutAnswer;
+        ProgressBar progressBar;
 
         public ViewHolder(View itemView) {
             super(itemView);
             tvAnswer = itemView.findViewById(R.id.tv_item_listanswer_practice);
             layoutAnswer = itemView.findViewById(R.id.layout_answer_item_list);
+            progressBar = itemView.findViewById(R.id.practice_progress_bar);
         }
     }
 
