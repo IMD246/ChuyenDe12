@@ -69,9 +69,10 @@ public class Word {
         this.pronounce = pronounce;
     }
 
-    public Word(int id, String word) {
-        this.id = id;
+    public Word(int id,String word,String meaning) {
+
         this.word = word;
+        this.meaning = meaning;
     }
 
     public int getId() {

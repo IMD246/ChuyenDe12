@@ -78,7 +78,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 SaveSqliteHelper sqliteHelper = new SaveSqliteHelper(v.getContext());
-                sqliteHelper.addSaveWord(temp);
+                sqliteHelper.addSaveWordByButton(temp);
 
             }
         });

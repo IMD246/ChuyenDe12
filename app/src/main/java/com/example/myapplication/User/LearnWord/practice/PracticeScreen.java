@@ -12,9 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,15 +29,7 @@ import com.example.myapplication.User.LearnWord.vocubulary.VocabularyScreen;
 import com.example.myapplication.User.LearnWord.word.source.MySingleton;
 import com.example.myapplication.User.LearnWord.word.source.SqlLiteHelper;
 import com.example.myapplication.User.DTO.Word;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
-
-import com.google.firebase.ml.common.modeldownload.FirebaseModelDownloadConditions;
-import com.google.firebase.ml.naturallanguage.FirebaseNaturalLanguage;
-import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateLanguage;
-import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslator;
-import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslatorOptions;
 
 
 import org.json.JSONArray;
@@ -194,9 +184,8 @@ public class PracticeScreen extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     // translateText(listItem.get(currentpos).getWord().toString(),hintText);
-                    translateText.makeNetworkRequest(listItem.get(currentpos).getWord(),hintText);
 
-                   // hintText.setText(listItem.get(currentpos).getWord());
+                   hintText.setText(listItem.get(currentpos).getMeaning());
                 }
             });
 

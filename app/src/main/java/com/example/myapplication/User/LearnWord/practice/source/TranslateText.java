@@ -18,7 +18,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class TranslateText {
-    public void makeNetworkRequest(String word, TextView txtview) {
+    public void HintTextTranslate(String word, TextView txtview) {
 
         OkHttpClient client = new OkHttpClient();
 
@@ -41,9 +41,9 @@ public class TranslateText {
 
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
+//                new Handler(Looper.getMainLooper()).post(new Runnable() {
+//                    @Override
+//                    public void run() {
                         try {
                             String temp = response.body().string();
                             String[]arr = temp.split(",");
@@ -58,12 +58,56 @@ public class TranslateText {
 
                     }
                 });
-            }
-        });
+//            }
+//        });
 
 
     }
-
+//    public String TranslateText(String word) {
+//        String temp="";
+//        OkHttpClient client = new OkHttpClient();
+//
+//        MediaType mediaType = MediaType.parse("application/json");
+//        RequestBody body = RequestBody.create(mediaType, "{\r\"fromLang\": \"auto-detect\",\r\"text\": \""+word+"\",\r\"to\": \"vi\"\r }");
+//        Request request = new Request.Builder()
+//                .url("https://cheap-translate.p.rapidapi.com/translate")
+//                .post(body)
+//                .addHeader("content-type", "application/json")
+//                .addHeader("x-rapidapi-host", "cheap-translate.p.rapidapi.com")
+//                .addHeader("x-rapidapi-key", "7ab6c14598mshff589a0869fafeep1510ddjsne9435a44be7a")
+//                .build();
+//
+//        client.newCall(request).enqueue(new Callback() {
+//            @Override
+//            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+//
+//            }
+//
+//            @Override
+//            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+////                new Handler(Looper.getMainLooper()).post(new Runnable() {
+////                    @Override
+////                    public void run() {
+//                try {
+//                    String temp = response.body().string();
+//                    String[]arr = temp.split(",");
+//                    String []arr2=arr[0].split(":");
+//                    String temp2=arr2[1].substring(0);
+//                    String lastResult = removeFirstandLast(temp2);
+//                    temp=lastResult;
+//                    Log.e("aaaa", "run: "+lastResult );
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//        });
+////            }
+////        });
+//
+//        return temp;
+//    }
+//
     public static String removeFirstandLast(String str)
     {
 
@@ -73,7 +117,6 @@ public class TranslateText {
         // Removing the last character
         // of a string
         sb.delete(str.length() - 1, str.length());
-
         // Removing the first character
         // of a string
         sb.delete(0, 1);
