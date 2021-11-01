@@ -24,6 +24,7 @@ import com.google.firebase.FirebaseApp;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class SaveScreen extends AppCompatActivity {
     private FloatingActionButton flAdd;
@@ -64,7 +65,7 @@ public class SaveScreen extends AppCompatActivity {
 
     private void dialogFloatingAdd() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Word");
+        builder.setTitle("thêm từ bạn muốn");
 
 // Set up the input
         final EditText input = new EditText(this);
@@ -115,6 +116,7 @@ public class SaveScreen extends AppCompatActivity {
     private void AddItem() {
 
         sqliteHelper.fetchData(listItem);
+        Collections.reverse(listItem);
     }
 
     private void setControl() {

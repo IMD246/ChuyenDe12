@@ -16,6 +16,7 @@ import com.example.myapplication.User.DTO.Word;
 import com.example.myapplication.User.LearnWord.practice.source.TranslateText;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class SaveSqliteHelper extends SQLiteOpenHelper {
 
@@ -134,6 +135,7 @@ public class SaveSqliteHelper extends SQLiteOpenHelper {
 
 
             } }
+
         cursor.close();
         sqLiteDatabase.close();
     }
