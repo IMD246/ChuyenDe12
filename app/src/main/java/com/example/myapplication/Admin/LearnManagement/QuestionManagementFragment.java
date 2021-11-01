@@ -86,9 +86,6 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
         imgAdd.setOnClickListener(this);
         atcTopic = v.findViewById(R.id.atcQuestion_Topic);
         atcTypeQuestion = v.findViewById(R.id.atcQuestion_TypeQuestion);
-
-
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(rcvQuestion.VERTICAL);
         rcvQuestion.setLayoutManager(linearLayoutManager);
@@ -98,7 +95,6 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
             @Override
             public void editItem(Question question) {
                 questionInterface.goToDetailQuestionFragment(question);
-                questionInterface.setFlag(true);
             }
             @Override
             public void deleteItem(Question question) {
@@ -169,8 +165,6 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
 
     private void getDataFromRealTime() {
         daoQuestion.getDataFromRealTimeToList(questionAdapter,null);
-//        daoTopic.getDataFromRealTimeFirebase(null);
-//        daoTypeQuestion.getDataFromRealTimeToList(null);
     }
 
     @Override

@@ -19,68 +19,31 @@ import com.example.myapplication.R;
 import java.util.List;
 
 public class QuestionInterface extends AppCompatActivity {
-    private String TAGQuestionManagement = QuestionManagementFragment.class.getName();
     public DAOTypeQuestion daoTypeQuestion;
-    public boolean flag = false;
     public DAOTopic daoTopic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_interface);
-        Log.d("test", "oncreate ");
-//        initUI();
+        initUI();
     }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-//        Log.d("test", "onStart ");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d("test", "onStop ");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d("test", "onDestroy ");
+    private void initUI() {
+        transactionFragment();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        daoTypeQuestion = new DAOTypeQuestion(this);
-        daoTypeQuestion.getDataFromRealTimeToList(null);
         daoTopic = new DAOTopic(this);
+        daoTypeQuestion = new DAOTypeQuestion(this);
         daoTopic.getDataFromRealTimeFirebase(null);
-        initUI();
-        Log.d("test", "onResume ");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d("test", "onpause ");
-    }
-
-    private void initUI() {
-        transactionFragment();
+        daoTypeQuestion.getDataFromRealTimeToList(null);
     }
 
     private void transactionFragment() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//        QuestionManagementFragment questionManagementFragmen = getSupportFragmentManager().popBackStack;
-        if (getSupportFragmentManager().findFragmentByTag(TAGQuestionManagement) == null) {
-            QuestionManagementFragment questionManagementFragment = new QuestionManagementFragment();
-            fragmentTransaction.replace(R.id.fmQuestion, questionManagementFragment, TAGQuestionManagement).addToBackStack(null).commit();
-        } else {
-            QuestionManagementFragment questionManagementFragment = (QuestionManagementFragment) getSupportFragmentManager().findFragmentByTag(TAGQuestionManagement);
-            fragmentTransaction.replace(R.id.fmQuestion, questionManagementFragment).commit();
-        }
+        fragmentTransaction.add(R.id.fmQuestion,new QuestionManagementFragment()).commit();
     }
 
     public void goToDetailQuestionFragment(Question question) {
@@ -92,41 +55,16 @@ public class QuestionInterface extends AppCompatActivity {
         detailQuestionFragment.setArguments(bundle);
 
         fragmentTransaction.replace(R.id.fmQuestion, detailQuestionFragment, null);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
-    public void openFileChoose()
-    {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, 100);
-    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        List<Fragment> listOfFragments = getSupportFragmentManager().getFragments();
-        if(listOfFragments.size()>=1){
-            for (Fragment fragment : listOfFragments) {
-                if(fragment instanceof DetailQuestionFragment){
-                    fragment.onActivityResult(requestCode, resultCode, data);
-                }
-            }
-        }
         super.onActivityResult(requestCode, resultCode, data);
     }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if (flag) {
-            transactionFragment();
-            flag = false;
-        }
-        else
-        {
-            finish();
-        }
-    }
-    public void setFlag(boolean flag) {
-        this.flag = flag;
     }
 }

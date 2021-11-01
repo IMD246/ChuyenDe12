@@ -130,7 +130,6 @@ public class DAOTopic {
             });
         }
     }
-
     public void editDataToFireBase(Topic topic, EditText edtTopic) {
         boolean[] check = new boolean[2];
         int s = 1;

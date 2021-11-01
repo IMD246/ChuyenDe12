@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -151,7 +152,25 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         }
         return 0;
     }
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getView() == null) {
+            return;
+        }
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+                if (keyEvent.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                    getActivity().getSupportFragmentManager().popBackStack();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
     // hộp thoại sửa dữ liệu Question
     public void openDialogEditQuestion(int center, Question question) {
         final Dialog dialog = new Dialog(getContext());
@@ -241,7 +260,13 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
             imgAnswer.setImageURI(daoImageStorage.getmImgURL());
         }
     }
-
+    // hàm mở file chọn ảnh trong thiết bị
+    public void openFileChoose() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, 100);
+    }
     // hộp thoại để thêm và sửa Answer
     public void openDiaLogAnswer(int center, int choice, Answer answer) {
         final Dialog dialog = new Dialog(getContext());
@@ -283,7 +308,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         btnPickImageTopic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                questionInterface.openFileChoose();
+                openFileChoose();
             }
         });
         Button btnYes = dialog.findViewById(R.id.btnYes);
