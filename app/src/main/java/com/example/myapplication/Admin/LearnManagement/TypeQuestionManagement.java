@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -106,6 +107,7 @@ public class TypeQuestionManagement extends AppCompatActivity {
         }
         EditText edtTypeQuestion = dialog.findViewById(R.id.edtLevel);
         edtTypeQuestion.setHint("TypeQuestion");
+        edtTypeQuestion.setInputType(InputType.TYPE_CLASS_TEXT);
         TextView textView = dialog.findViewById(R.id.tvThemSua);
         Button btnYes = dialog.findViewById(R.id.btnYes);
         Button btnNo = dialog.findViewById(R.id.btnNo);

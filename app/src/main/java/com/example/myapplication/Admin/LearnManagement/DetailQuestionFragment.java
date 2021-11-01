@@ -284,10 +284,6 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
             @Override
             public void onClick(View v) {
                 questionInterface.openFileChoose();
-                if (questionInterface.uri != null) {
-                    daoImageStorage.setmImgURL(questionInterface.uri);
-                    imgAnswer.setImageURI(questionInterface.uri);
-                }
             }
         });
         Button btnYes = dialog.findViewById(R.id.btnYes);
