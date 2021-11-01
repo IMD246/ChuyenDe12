@@ -1,5 +1,6 @@
 package com.example.EnglishBeginner.Admin;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -17,6 +18,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.EnglishBeginner.Admin.Adapter.ViewPageAdapter;
+import com.example.EnglishBeginner.Admin.DAO.DAOUserAccount;
 import com.example.EnglishBeginner.Admin.DTO.LearnItem;
 import com.example.EnglishBeginner.Admin.LearnManagement.LearnQuestion;
 import com.example.EnglishBeginner.Admin.LearnManagement.LevelManagement;
@@ -47,6 +49,7 @@ public class AdminInterface extends AppCompatActivity {
 
     //khai báo biến lưu index màn hình hiện tại
     private int myCurrentScreen = 0;
+    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,20 +103,17 @@ public class AdminInterface extends AppCompatActivity {
             }
         });
 
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.item_menu_drawer_change_pass:
-                        startActivity(new Intent(AdminInterface.this, ChangePasswordActivity_Admin.class));
-                        break;
-                    case R.id.item_menu_drawer_logout:
-                        alertDialog();
-                        break;
-                }
-                drawerLayout.closeDrawer(GravityCompat.END);
-                return true;
+        navigationView.setNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.item_menu_drawer_change_pass:
+                    startActivity(new Intent(AdminInterface.this, ChangePasswordActivity_Admin.class));
+                    break;
+                case R.id.item_menu_drawer_logout:
+                    alertDialog();
+                    break;
             }
+            drawerLayout.closeDrawer(GravityCompat.END);
+            return true;
         });
 
         bottomNavigationView = findViewById(R.id.botnav);
