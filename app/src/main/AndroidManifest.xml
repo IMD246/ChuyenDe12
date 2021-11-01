@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.myapplication">
+    package="com.example.EnglishBeginner">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -15,31 +15,31 @@
         android:theme="@style/Theme.MyApplication"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".Admin.WordManagement.IetlsManagement"
+            android:name="com.example.EnglishBeginner.Admin.WordManagement.IetlsManagement"
             android:exported="false" />
         <activity
-            android:name=".Admin.WordManagement.ToeicManagement"
+            android:name="com.example.EnglishBeginner.Admin.WordManagement.ToeicManagement"
             android:exported="false" />
         <activity
-            android:name=".Admin.LearnManagement.LearnQuestion"
+            android:name="com.example.EnglishBeginner.Admin.LearnManagement.LearnQuestion"
             android:exported="false" />
         <activity
-            android:name=".Admin.ChangePasswordActivity_Admin"
+            android:name="com.example.EnglishBeginner.Admin.ChangePasswordActivity_Admin"
             android:exported="false" />
         <activity
-            android:name=".Admin.LearnManagement.QuestionInterface"
+            android:name="com.example.EnglishBeginner.Admin.LearnManagement.QuestionInterface"
             android:exported="false" />
         <activity
-            android:name=".Admin.LearnManagement.TopicManagement"
+            android:name="com.example.EnglishBeginner.Admin.LearnManagement.TopicManagement"
             android:exported="false" />
         <activity
-            android:name=".Admin.LearnManagement.TypeQuestionManagement"
+            android:name="com.example.EnglishBeginner.Admin.LearnManagement.TypeQuestionManagement"
             android:exported="false" />
         <activity
-            android:name=".Admin.LearnManagement.LevelManagement"
+            android:name="com.example.EnglishBeginner.Admin.LearnManagement.LevelManagement"
             android:exported="false" />
         <activity
-            android:name=".Admin.AdminInterface"
+            android:name="com.example.EnglishBeginner.Admin.AdminInterface"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -48,16 +48,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Login.ForgetPassword"
+            android:name="com.example.EnglishBeginner.Login.ForgetPassword"
             android:exported="false" />
         <activity
-            android:name=".User.UserInterface"
+            android:name="com.example.EnglishBeginner.User.UserInterface"
             android:exported="true" />
         <activity
-            android:name=".Login.RegisterUser"
+            android:name="com.example.EnglishBeginner.Login.RegisterUser"
             android:exported="true" />
         <activity
-            android:name=".Login.Login"
+            android:name="com.example.EnglishBeginner.Login.Login"
             android:exported="false" />
 
         <meta-data
