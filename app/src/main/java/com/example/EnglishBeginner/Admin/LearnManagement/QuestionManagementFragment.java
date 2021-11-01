@@ -1,7 +1,7 @@
 package com.example.EnglishBeginner.Admin.LearnManagement;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -42,15 +41,11 @@ import java.util.List;
 
 public class QuestionManagementFragment extends Fragment implements View.OnClickListener {
 
-    private RecyclerView rcvQuestion;
-    private DAOQuestion daoQuestion;
-    private ImageView imgAdd;
-    private SearchView svQuestion;
+    final private DAOQuestion daoQuestion;
     private QuestionInterface questionInterface;
     private AutoCompleteTextView atcTopic, atcTypeQuestion;
     String topic = DEFAULTVALUE.TOPIC, typeQuestion = DEFAULTVALUE.TYPEQUESTION;
-    private QuestionAdapter questionAdapter;
-    private View v;
+    private final QuestionAdapter questionAdapter;
 
     public QuestionManagementFragment() {
         daoQuestion = new DAOQuestion(getContext());
@@ -60,7 +55,7 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        v = inflater.inflate(R.layout.fragment_question_management, container, false);
+        View v = inflater.inflate(R.layout.fragment_question_management, container, false);
         initUI(v);
         getDataFromRealTime();
         return v;
@@ -69,22 +64,24 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
     @Override
     public void onResume() {
         super.onResume();
-        atcTypeQuestion.setAdapter(new TypeQuestionSpinnerAdapter(getContext(), R.layout.listoptionitem,
-                R.id.tvOptionItem, questionInterface.daoTypeQuestion.getTypeQuestionList()));
-        atcTopic.setAdapter(new TopicSpinnerAdapter(getContext(), R.layout.listoptionitem,
-                R.id.tvOptionItem, questionInterface.daoTopic.getTopicList()));
+        if (getContext()!=null) {
+            atcTypeQuestion.setAdapter(new TypeQuestionSpinnerAdapter(getContext(), R.layout.listoptionitem,
+                    R.id.tvOptionItem, questionInterface.daoTypeQuestion.getTypeQuestionList()));
+            atcTopic.setAdapter(new TopicSpinnerAdapter(getContext(), R.layout.listoptionitem,
+                    R.id.tvOptionItem, questionInterface.daoTopic.getTopicList()));
+        }
     }
 
     private void initUI(View v) {
         questionInterface = (QuestionInterface) getActivity();
-        rcvQuestion = v.findViewById(R.id.rcvQuestion);
-        svQuestion = v.findViewById(R.id.svQuestion);
-        imgAdd = v.findViewById(R.id.imgAddQuestion);
+        RecyclerView rcvQuestion = v.findViewById(R.id.rcvQuestion);
+        SearchView svQuestion = v.findViewById(R.id.svQuestion);
+        ImageView imgAdd = v.findViewById(R.id.imgAddQuestion);
         imgAdd.setOnClickListener(this);
         atcTopic = v.findViewById(R.id.atcQuestion_Topic);
         atcTypeQuestion = v.findViewById(R.id.atcQuestion_TypeQuestion);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        linearLayoutManager.setOrientation(rcvQuestion.VERTICAL);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         rcvQuestion.setLayoutManager(linearLayoutManager);
         questionAdapter.setQuestionList(daoQuestion.getQuestionList());
         rcvQuestion.setAdapter(questionAdapter);
@@ -110,54 +107,44 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
                 return false;
             }
         });
-        atcTypeQuestion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (atcTypeQuestion.getText().toString().isEmpty())
-                {}
-                else {
-                    typeQuestion = atcTypeQuestion.getText().toString();
-                    questionAdapter.setListDependOnTopicAndTypeQuestion(topic, typeQuestion);
-                }
+        atcTypeQuestion.setOnItemClickListener((parent, view, position, id) -> {
+            if (atcTypeQuestion.getText().toString().isEmpty())
+            {}
+            else {
+                typeQuestion = atcTypeQuestion.getText().toString();
+                questionAdapter.setListDependOnTopicAndTypeQuestion(topic, typeQuestion);
             }
         });
-        atcTopic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (atcTopic.getText().toString().isEmpty())
-                {
-                }
-                else {
-                    topic = atcTopic.getText().toString();
-                    questionAdapter.setListDependOnTopicAndTypeQuestion(topic, typeQuestion);
-                }
+        atcTopic.setOnItemClickListener((parent, view, position, id) -> {
+            if (atcTopic.getText().toString().isEmpty())
+            {
+            }
+            else {
+                topic = atcTopic.getText().toString();
+                questionAdapter.setListDependOnTopicAndTypeQuestion(topic, typeQuestion);
             }
         });
     }
     // Xây dựng một Hộp thoại thông báo
     private void alertDialog(Question question) {
+        if (getContext() != null) {
             AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
             builder1.setMessage("Bạn có muốn xóa không?");
             builder1.setCancelable(true);
             builder1.setPositiveButton(
                     "Có",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            daoQuestion.setContext(getContext());
-                            daoQuestion.deleteDataToFire(question);
-                        }
+                    (dialog, id) -> {
+                        daoQuestion.setContext(getContext());
+                        daoQuestion.deleteDataToFire(question);
                     });
 
             builder1.setNegativeButton(
                     "Không",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
+                    (dialog, id) -> dialog.cancel());
 
             AlertDialog alert11 = builder1.create();
             alert11.show();
+        }
     }
 
     private void getDataFromRealTime() {
@@ -166,12 +153,12 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.imgAddQuestion:
-                openDialog(Gravity.CENTER);
+        if (v.getId() == R.id.imgAddQuestion) {
+            openDialog(Gravity.CENTER);
         }
     }
 
+    @SuppressLint("SetTextI18n")
     public void openDialog(int center) {
         final Dialog dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -187,11 +174,7 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
         WindowManager.LayoutParams windowAttributes = window.getAttributes();
         windowAttributes.gravity = center;
         window.setAttributes(windowAttributes);
-        if (Gravity.CENTER == center) {
-            dialog.setCancelable(true);
-        } else {
-            dialog.setCancelable(false);
-        }
+        dialog.setCancelable(Gravity.CENTER == center);
         EditText edtTitle = dialog.findViewById(R.id.edtTitle);
         EditText edtCorrectAnswer = dialog.findViewById(R.id.edtCorrectAnswer);
         Spinner spnTopic = dialog.findViewById(R.id.spnQuestion_Topic);
@@ -207,45 +190,37 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
         for (TypeQuestion typeQuestion : questionInterface.daoTypeQuestion.getTypeQuestionList()) {
             listTypeQuestion.add(typeQuestion.getTypeQuestionName());
         }
-        spnTopic.setAdapter(new ArrayAdapter<String>(getContext(), R.layout.listoptionitem, R.id.tvOptionItem, listTopic));
-        spnTypeQuestion.setAdapter(new ArrayAdapter<String>(getContext(), R.layout.listoptionitem, R.id.tvOptionItem, listTypeQuestion));
-        btnNo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
+        spnTopic.setAdapter(new ArrayAdapter<>(getContext(), R.layout.listoptionitem, R.id.tvOptionItem, listTopic));
+        spnTypeQuestion.setAdapter(new ArrayAdapter<>(getContext(), R.layout.listoptionitem, R.id.tvOptionItem, listTypeQuestion));
+        btnNo.setOnClickListener(v -> dialog.dismiss());
+        btnYes.setOnClickListener(v -> {
+            Question question = new Question();
+            if (daoQuestion.getQuestionList().size()>0) {
+                question.setId(daoQuestion.getQuestionList().get(daoQuestion.getQuestionList().size() - 1).getId() + 1);
             }
-        });
-        btnYes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Question question = new Question();
-                if (daoQuestion.getQuestionList().size()>0) {
-                    question.setId(daoQuestion.getQuestionList().get(daoQuestion.getQuestionList().size() - 1).getId() + 1);
-                }
-                else {
-                    question.setId(1);
-                }
-                question.setTitle(edtTitle.getText().toString());
-                question.setCorrectAnswer(edtCorrectAnswer.getText().toString());
-                question.setNameTopic(spnTopic.getSelectedItem().toString());
-                question.setNameTypeQuestion(spnTypeQuestion.getSelectedItem().toString());
-                for (Topic topic : questionInterface.daoTopic.getTopicList()) {
-                    if (question.getNameTopic().equalsIgnoreCase(topic.getNameTopic())) {
-                        question.setIdTopic(topic.getId());
-                        break;
-                    }
-                }
-                for (TypeQuestion typeQuestion : questionInterface.daoTypeQuestion.getTypeQuestionList()) {
-                    if (question.getNameTypeQuestion().equalsIgnoreCase(typeQuestion.getTypeQuestionName())) {
-                        question.setIdTypeQuestion(typeQuestion.getId());
-                        break;
-                    }
-                }
-                daoQuestion.setContext(getContext());
-                daoQuestion.addDataToFireBase(question, edtTitle,edtCorrectAnswer);
-                daoQuestion.addDataQuestionToFireBaseTopic(question,edtTitle,edtCorrectAnswer);
-                daoQuestion.addDataQuestionToFireBaseTypeQuestion(question,edtTitle,edtCorrectAnswer);
+            else {
+                question.setId(1);
             }
+            question.setTitle(edtTitle.getText().toString());
+            question.setCorrectAnswer(edtCorrectAnswer.getText().toString());
+            question.setNameTopic(spnTopic.getSelectedItem().toString());
+            question.setNameTypeQuestion(spnTypeQuestion.getSelectedItem().toString());
+            for (Topic topic : questionInterface.daoTopic.getTopicList()) {
+                if (question.getNameTopic().equalsIgnoreCase(topic.getNameTopic())) {
+                    question.setIdTopic(topic.getId());
+                    break;
+                }
+            }
+            for (TypeQuestion typeQuestion : questionInterface.daoTypeQuestion.getTypeQuestionList()) {
+                if (question.getNameTypeQuestion().equalsIgnoreCase(typeQuestion.getTypeQuestionName())) {
+                    question.setIdTypeQuestion(typeQuestion.getId());
+                    break;
+                }
+            }
+            daoQuestion.setContext(getContext());
+            daoQuestion.addDataToFireBase(question, edtTitle,edtCorrectAnswer);
+            daoQuestion.addDataQuestionToFireBaseTopic(question,edtTitle,edtCorrectAnswer);
+            daoQuestion.addDataQuestionToFireBaseTypeQuestion(question,edtTitle,edtCorrectAnswer);
         });
         dialog.show();
     }
