@@ -46,13 +46,8 @@ public class ProfileFragment extends Fragment {
     private void setEvent() {
         //Lấy dữ liệu của User từ Firebase
         getDataUserProfile();
-
         //gán dữ liệu của User vào các trường dữ liệu
-        if(user == null){
-            Toast.makeText(getContext(), "user null!", Toast.LENGTH_SHORT).show();
-        }
         try {
-            tvFullname.setText(daoUserProfile.getUser().getFullname());
 //            tvFullname.setText(user.getFullname());
 //            tvAge.setText(user.getAge());
 //            tvGender.setText(user.getGender());
