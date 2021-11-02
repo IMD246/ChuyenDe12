@@ -30,8 +30,14 @@ public class DAOLevel {
     public DAOLevel(Context context) {
         this.context = context;
         levelList = new ArrayList<>();
+        topicList = new ArrayList<>();
         databaseReference = FirebaseDatabase.getInstance().getReference("listlevel");
     }
+
+    public void setTopicList(List<Topic> topicList) {
+        this.topicList = topicList;
+    }
+
     public void getDataFromRealTimeToList(Level_Adapter level_adapter) {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override

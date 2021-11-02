@@ -45,9 +45,10 @@ public class Topic_Adapter extends RecyclerView.Adapter<Topic_Adapter.TopicViewH
     @NonNull
     @Override
     public TopicViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.layout_item_topic, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_item_topic, parent, false);
         return new TopicViewHolder(view);
     }
+
     //xử lí giao diện, action cho viewholder
     @Override
     public void onBindViewHolder(@NonNull TopicViewHolder holder, int position) {
@@ -55,10 +56,9 @@ public class Topic_Adapter extends RecyclerView.Adapter<Topic_Adapter.TopicViewH
         if (topic == null) {
             return;
         }
-        if (topic.getUrlImage().trim().isEmpty()||topic.getUrlImage().trim().length()==0)
-        { }
-        else {
-            Picasso.get().load(topic.getUrlImage()).resize(100,100).into(holder.imgTopic);
+        if (topic.getUrlImage().trim().isEmpty() || topic.getUrlImage().trim().length() == 0) {
+        } else {
+            Picasso.get().load(topic.getUrlImage()).resize(100, 100).into(holder.imgTopic);
         }
         holder.tvNameTopic.setText(topic.getNameTopic());
         //xử lí khi click item learn:
@@ -74,7 +74,7 @@ public class Topic_Adapter extends RecyclerView.Adapter<Topic_Adapter.TopicViewH
         });
     }
 
-    private void onSelectedItemMenu(PopupMenu popupMenu){
+    private void onSelectedItemMenu(PopupMenu popupMenu) {
         popupMenu.setOnMenuItemClickListener(item -> {
             Intent intent;
             switch (item.getItemId()) {
@@ -92,21 +92,20 @@ public class Topic_Adapter extends RecyclerView.Adapter<Topic_Adapter.TopicViewH
             return true;
         });
     }
+
     //trả về số phần tử của list
     @Override
     public int getItemCount() {
-        if (topicList != null) {
-            return topicList.size();
-        }
-        return 0;
+        return topicList.size();
     }
+
     //class ViewHodler
     public class TopicViewHolder extends RecyclerView.ViewHolder {
         private ImageView imgTopic;
         private TextView tvNameTopic;
         private LinearLayout layout;
 
-        public TopicViewHolder(@NonNull View itemView) {
+        public TopicViewHolder(View itemView) {
             super(itemView);
             imgTopic = itemView.findViewById(R.id.imgTopic);
             tvNameTopic = itemView.findViewById(R.id.tvNameTopic);
@@ -116,6 +115,7 @@ public class Topic_Adapter extends RecyclerView.Adapter<Topic_Adapter.TopicViewH
 
     public interface Interface_Learn {
         public void onClickItemLearn(Topic topic);
+
         public void onClickItemPopup(String string);
     }
 }

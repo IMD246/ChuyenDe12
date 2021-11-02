@@ -7,21 +7,25 @@ public class Level {
     int id;
     int nameLevel;
     String urlImage = "";
-    List<Topic> listTopic = new ArrayList<>();
+    List<Topic> listTopic;
     public Level(int id, int nameLevel) {
+        listTopic = new ArrayList<>();
         this.id = id;
         this.nameLevel = nameLevel;
     }
 
     public Level(int id, int nameLevel, String urlImage) {
+        listTopic = new ArrayList<>();
         this.id = id;
         this.nameLevel = nameLevel;
         this.urlImage = urlImage;
     }
     public Level() {
+        listTopic = new ArrayList<>();
     }
 
     public Level(int id, int nameLevel, String urlImage, List<Topic> listTopic) {
+        listTopic = new ArrayList<>();
         this.id = id;
         this.nameLevel = nameLevel;
         this.urlImage = urlImage;

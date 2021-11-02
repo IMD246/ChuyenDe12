@@ -59,6 +59,7 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
             Picasso.get().load(level.getUrlImage()).resize(100, 100).into(holder.imgLesson);
         }
         if (level.getListTopic().size() > 0) {
+            holder.rcvLevelTopicItem.getRecycledViewPool().setMaxRecycledViews(1,0);
             setTopicItemRecycler(holder.rcvLevelTopicItem, level.getListTopic());
         }
         //xử lí khi click item learn:
@@ -99,21 +100,20 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
         }
     }
 
+    private void setTopicItemRecycler(RecyclerView recycler, List<Topic> topicList) {
+        recycler.setHasFixedSize(true);
+        recycler.setNestedScrollingEnabled(false);
+        Topic_Adapter topic_adapter = new Topic_Adapter(context);
+        topic_adapter.setTopicList(topicList);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2);
+        topic_adapter.setTopicList(topicList);
+        recycler.setLayoutManager(gridLayoutManager);
+        recycler.setAdapter(topic_adapter);
+    }
+
     public interface Interface_Learn {
         public void onClickItemLearn(Level level);
 
         public void onClickItemPopup(String string);
-    }
-
-    private void setTopicItemRecycler(RecyclerView recycler, List<Topic> topicList) {
-        Topic_Adapter topic_adapter = new Topic_Adapter(context);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
-//        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        topic_adapter.setTopicList(topicList);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2);
-        topic_adapter.setTopicList(topicList);
-//        recycler.setLayoutManager(linearLayoutManager);
-        recycler.setLayoutManager(gridLayoutManager);
-        recycler.setAdapter(topic_adapter);
     }
 }
