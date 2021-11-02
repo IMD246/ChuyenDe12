@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".learn.LearningEnglishActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"
+        android:layout_margin="4dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/img_btn_exit_test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/ct_learn_img_btn_exit"
+            android:src="@drawable/ic_exit_close" />
+
+        <ProgressBar
+            android:id="@+id/test_progress_bar"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/tv_type_question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:text="Viết lại bằng tiếng Việt"
+            android:textColor="@color/red"
+            android:textSize="24dp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/ct_layout_boder3"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/img_btn_Listen"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:clickable="true"
+                    android:src="@drawable/baseline_volume_up_white_24dp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:text="I drink water."
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/img_question"
+            android:layout_gravity="center"
+            android:layout_width="256dp"
+            android:layout_height="192dp"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/drink_water" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycle_view_show_answer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.5"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/ct_layout_boder1" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycle_view_button_answer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.5"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/ct_layout_boder1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_back_test"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_gravity="top"
+            android:backgroundTint="@color/l_grey"
+            android:text="Quay lại" />
+
+        <Button
+            android:id="@+id/btn_continute_test"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_gravity="top"
+            android:layout_marginStart="44dp"
+            android:backgroundTint="@color/green"
+            android:text="Tiếp tục" />
+    </LinearLayout>
+</LinearLayout>

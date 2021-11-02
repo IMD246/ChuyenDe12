@@ -13,13 +13,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.menu_right.DTO.Level;
 import com.example.menu_right.DTO.Topic;
-import com.example.menu_right.Login.DEFAULTVALUE;
 import com.example.menu_right.R;
 import com.example.menu_right.learn.LearningEnglishActivity;
-import com.example.menu_right.learn.TestEnglishActivity;
-import com.squareup.picasso.Picasso;
+import com.example.menu_right.learn.TestSelectionEnglishActivity;
 
 import java.util.List;
 
@@ -87,7 +84,7 @@ public class Topic_Adapter extends RecyclerView.Adapter<Topic_Adapter.TopicViewH
                     break;
                 case R.id.item_menu_test:
 //                    interface_learn.onClickItemPopup(DEFAULTVALUE.TEST_SCREEN);
-                    intent = new Intent(context, TestEnglishActivity.class);
+                    intent = new Intent(context, TestSelectionEnglishActivity.class);
                     context.startActivity(intent);
                     break;
             }

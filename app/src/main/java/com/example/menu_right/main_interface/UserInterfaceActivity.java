@@ -1,7 +1,6 @@
 package com.example.menu_right.main_interface;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -16,30 +15,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.menu_right.DAO.DAOLevel;
-import com.example.menu_right.Login.DAOUserProfile;
+import com.example.menu_right.DAO.DAOUserProfile;
 import com.example.menu_right.Login.DEFAULTVALUE;
 import com.example.menu_right.Login.Login;
-import com.example.menu_right.Login.User;
 import com.example.menu_right.R;
 import com.example.menu_right.learn.LearningEnglishActivity;
-import com.example.menu_right.learn.TestEnglishActivity;
+import com.example.menu_right.learn.TestSelectionEnglishActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class UserInterfaceActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     //Khai báo các trường dữ liệu để lấy data trên firebase
     private DAOUserProfile daoUserProfile;
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
-    DatabaseReference databaseReference;
 
     //khai báo giá trị cho screen
     public static final int FRAGMENT_LEARN = 0;
@@ -69,7 +60,6 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setControl();
-//        getDataUser();
         checkLogicDrawerLayout();
         processBottomNavigation();
         processViewPager2();
@@ -312,7 +302,7 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         if (DEFAULTVALUE.LEARNING_SCREEN.equalsIgnoreCase(string)) {
             startActivity(new Intent(this, LearningEnglishActivity.class));
         } else if (DEFAULTVALUE.TEST_SCREEN.equalsIgnoreCase(string)) {
-            startActivity(new Intent(this, TestEnglishActivity.class));
+            startActivity(new Intent(this, TestSelectionEnglishActivity.class));
         }
     }
 }

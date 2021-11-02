@@ -1,7 +1,6 @@
 package com.example.menu_right.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.menu_right.DTO.Level;
 import com.example.menu_right.DTO.Topic;
-import com.example.menu_right.Login.DEFAULTVALUE;
 import com.example.menu_right.R;
-import com.example.menu_right.learn.LearningEnglishActivity;
-import com.example.menu_right.learn.TestEnglishActivity;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewHolder> {

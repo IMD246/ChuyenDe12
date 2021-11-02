@@ -1,10 +1,25 @@
-package com.example.menu_right.Login;
+package com.example.menu_right.DTO;
 
 public class User {
-    private String fullname,email;
-    private int age,expPerDay,authenticate,totalExp,idTypeProceedPerDay;
+    private String fullname,email,gender;
+    private int age,expPerDay,totalExp,idTypeProceedPerDay;
     private String imageUser;
     private boolean isActivePrivacy;
+
+    public User(String fullname, String email, String gender, int age, int expPerDay, int totalExp, int idTypeProceedPerDay, String imageUser, boolean isActivePrivacy) {
+        this.fullname = fullname;
+        this.email = email;
+        this.gender = gender;
+        this.age = age;
+        this.expPerDay = expPerDay;
+        this.totalExp = totalExp;
+        this.idTypeProceedPerDay = idTypeProceedPerDay;
+        this.imageUser = imageUser;
+        this.isActivePrivacy = isActivePrivacy;
+    }
+
+    public User() {
+    }
 
     public String getFullname() {
         return fullname;
@@ -18,6 +33,18 @@ public class User {
         return age;
     }
 
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -29,7 +56,6 @@ public class User {
     public int getExpPerDay() {
         return expPerDay;
     }
-
 
     public int getTotalExp() {
         return totalExp;
@@ -66,19 +92,5 @@ public class User {
 
     public void setActivePrivacy(boolean activePrivacy) {
         isActivePrivacy = activePrivacy;
-    }
-
-    public User() {
-    }
-
-    public User(String fullname, String email, int age, int expPerDay, int totalExp, int idTypeProceedPerDay, String imageUser, boolean isActivePrivacy) {
-        this.fullname = fullname;
-        this.email = email;
-        this.age = age;
-        this.expPerDay = expPerDay;
-        this.totalExp = totalExp;
-        this.idTypeProceedPerDay = idTypeProceedPerDay;
-        this.imageUser = imageUser;
-        this.isActivePrivacy = isActivePrivacy;
     }
 }

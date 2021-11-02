@@ -35,12 +35,6 @@
                 android:layout_height="150dp"
                 android:id="@+id/img_user"
                 android:src="@drawable/ic_account" />
-
-            <ImageButton
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:background="@color/white"
-                android:src="@drawable/ic_edit_image" />
         </LinearLayout>
 
         <LinearLayout
@@ -59,6 +53,7 @@
                 android:hint="@string/edt_name">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtFullName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -72,6 +67,8 @@
                 android:hint="@string/edt_age">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtAge"
+                    android:inputType="number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -84,18 +81,21 @@
                 android:orientation="horizontal">
 
                 <RadioButton
+                    android:id="@+id/rdbMale"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
                     android:text="@string/rdb_male" />
 
                 <RadioButton
+                    android:id="@+id/rdbFemale"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/mgl_rdb_female"
                     android:text="@string/rdb_female" />
 
                 <RadioButton
+                    android:id="@+id/rdbOther"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/mgl_rdb_female"

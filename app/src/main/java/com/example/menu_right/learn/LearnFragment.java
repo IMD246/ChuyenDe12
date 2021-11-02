@@ -71,29 +71,6 @@ public class LearnFragment extends Fragment {
         daoLevel.getDataFromRealTimeToList(learnRecyclerView_adapter);
 //        daoTopic.getDataFromRealTimeFirebase();
     }
-//    private List<Level> setDaTaLevelList()
-//    {
-//        List<Topic> topicList = new ArrayList<>();
-//        List<Level> levelList = new ArrayList<>();
-//        for (Level level : daoLevel.getLevelList())
-//        {
-//            if (topicList.size()>0)
-//            {
-//                topicList.clear();
-//            }
-//            for (Topic topic : daoTopic.getTopicList())
-//            {
-//                if (topic.getLevel() == level.getNameLevel())
-//                {
-//                    topicList.add(topic);
-//                }
-//            }
-//            level.setTopicList(topicList);
-//            levelList.add(level);
-//        }
-//        return levelList;
-//    }
-
     //hàm chuyển sang màn hình học tiếng Anh
     private void onClickGoToScreen() {
         Intent intent = new Intent(getContext(), LearningEnglishActivity.class);

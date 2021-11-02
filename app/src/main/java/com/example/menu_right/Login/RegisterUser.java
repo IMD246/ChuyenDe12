@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.menu_right.DTO.User;
 import com.example.menu_right.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -103,8 +104,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                         progressBar.setVisibility(View.GONE);
                     }
                 } else {
-                    User us = new User("", email, 0, 0, 0, -1, "", true);
-
+                    User us = new User("",email,"other",0, 0, 0, 0, "", true);
                     FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(us)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
@@ -116,6 +116,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                                         HashMap<String,Object> auThenticateUser = new HashMap<>();
                                         auThenticateUser.put("email",us.getEmail());
                                         auThenticateUser.put("authenticate",DEFAULTVALUE.USER);
+                                        auThenticateUser.put("isBlock",false);
                                         df.set(auThenticateUser);
                                         progressBar.setVisibility(View.VISIBLE);
                                         startActivity(new Intent(RegisterUser.this, Login.class));

@@ -6,11 +6,11 @@ import android.os.Bundle;
 
 import com.example.menu_right.R;
 
-public class TestEnglishActivity extends AppCompatActivity {
+public class TestChooseImageActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test_english);
+        setContentView(R.layout.activity_test_choose_image);
     }
 }
