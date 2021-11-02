@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="210dp"
     android:background="@color/green"
@@ -14,7 +15,8 @@
         android:layout_height="120dp"
         android:src="@drawable/iamsky"
         app:civ_border_color="@color/l_grey"
-        app:civ_border_width="1dp" />
+        app:civ_border_width="1dp"
+        tools:ignore="MissingClass" />
 
     <TextView
         android:id="@+id/tv_name_user"

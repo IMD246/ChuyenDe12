@@ -1,5 +1,5 @@
 <resources>
-    <string name="LearningEnglish"></string>
+    <string name="LearningEnglish">EnglishBeginner</string>
     <!--    tạo chuỗi cho xml main_interface-->
     <string name="name_user">Nguyễn Thanh Tùng</string>
     <string name="level_user">Lv1</string>
