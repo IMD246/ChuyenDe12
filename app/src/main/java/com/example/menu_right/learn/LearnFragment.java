@@ -1,5 +1,6 @@
 package com.example.menu_right.learn;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -64,6 +65,7 @@ public class LearnFragment extends Fragment {
         learnRecyclerView.setAdapter(learnRecyclerView_adapter);
         linearLayoutManager.setOrientation(learnRecyclerView.VERTICAL);
         learnRecyclerView.setLayoutManager(linearLayoutManager);
+
     }
     private void getDataFromRealTime() {
         daoLevel.getDataFromRealTimeToList(learnRecyclerView_adapter);
@@ -93,7 +95,7 @@ public class LearnFragment extends Fragment {
 //    }
 
     //hàm chuyển sang màn hình học tiếng Anh
-    private void onClickGoToLearningEnglish() {
+    private void onClickGoToScreen() {
         Intent intent = new Intent(getContext(), LearningEnglishActivity.class);
         getContext().startActivity(intent);
     }

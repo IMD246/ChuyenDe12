@@ -1,6 +1,7 @@
 package com.example.menu_right.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import com.example.menu_right.DTO.Level;
 import com.example.menu_right.DTO.Topic;
 import com.example.menu_right.Login.DEFAULTVALUE;
 import com.example.menu_right.R;
+import com.example.menu_right.learn.LearningEnglishActivity;
+import com.example.menu_right.learn.TestEnglishActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -55,12 +58,11 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
         if (level == null) {
             return;
         }
-        if (level.getUrlImage().trim().isEmpty()||level.getUrlImage().trim().length()==0)
-        { }
-        else {
-            Picasso.get().load(level.getUrlImage()).resize(100,100).into(holder.imgLesson);
+        if (level.getUrlImage().trim().isEmpty() || level.getUrlImage().trim().length() == 0) {
+        } else {
+            Picasso.get().load(level.getUrlImage()).resize(100, 100).into(holder.imgLesson);
         }
-        if (level.getListtopic().size()>0) {
+        if (level.getListtopic().size() > 0) {
             setTopicItemRecycler(holder.rcvLevelTopicItem, level.getListtopic());
         }
         //xử lí khi click item learn:
@@ -70,25 +72,15 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
                 //hiện thị các lựa chọn khi ấn vào nút bài học
                 PopupMenu popupMenu = new PopupMenu(context, holder.imgLesson);
                 popupMenu.getMenuInflater().inflate(R.menu.menu_button_lesson, popupMenu.getMenu());
-                onSelectedItemMenu(popupMenu);
                 popupMenu.show();
             }
         });
     }
 
-    private void onSelectedItemMenu(PopupMenu popupMenu){
-        popupMenu.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()){
-                case R.id.item_menu_learn:
-                    interface_learn.onClickItemPopup(DEFAULTVALUE.LEARNING_SCREEN);
-                    break;
-                case R.id.item_menu_test:
-                    interface_learn.onClickItemPopup(DEFAULTVALUE.TEST_SCREEN);
-                    break;
-            }
-            return true;
-        });
+    private void onSelectedItemMenu(PopupMenu popupMenu) {
+
     }
+
     //trả về số phần tử của list
     @Override
     public int getItemCount() {
@@ -114,12 +106,13 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
 
     public interface Interface_Learn {
         public void onClickItemLearn(Level level);
+
         public void onClickItemPopup(String string);
     }
-    private void setTopicItemRecycler(RecyclerView recycler,List<Topic>topicList)
-    {
+
+    private void setTopicItemRecycler(RecyclerView recycler, List<Topic> topicList) {
         Topic_Adapter topic_adapter = new Topic_Adapter(context);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(context,2);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2);
         topic_adapter.setTopicList(topicList);
         recycler.setLayoutManager(gridLayoutManager);
         recycler.setAdapter(topic_adapter);

@@ -2,26 +2,47 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layout_btn_lesson"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center"
-    android:elevation="4dp"
+    android:layout_height="match_parent"
     android:layout_margin="20dp"
-    android:background="@drawable/ct_layout_item_recycleview_learn"
+    android:elevation="4dp"
+    android:gravity="center"
     android:orientation="vertical">
-    <de.hdodenhof.circleimageview.CircleImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/imgTopic"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:src="@drawable/iamsky"
-        app:civ_border_color="@color/l_grey"
-        app:civ_border_width="1dp" />
-        <TextView
-            android:id="@+id/tvNameTopic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="Cơ bản 1"
-            android:textStyle="bold"
-            />
+
+    <LinearLayout
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:background="@drawable/ct_layout_item_recycleview_learn"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/imgTopic"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/iamsky"
+            app:civ_border_color="@color/l_grey"
+            app:civ_border_width="1dp" />
+    </LinearLayout>
+
+
+    <ProgressBar
+        android:id="@+id/learn_progress_bar"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:progress="10"
+        android:max="40"
+        android:progressBackgroundTint="@color/green"
+        android:layout_width="68dp"
+        android:layout_marginTop="4dp"
+        android:layout_height="8dp"
+        android:layout_gravity="center" />
+    <TextView
+        android:id="@+id/tvNameTopic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cơ bản 1"
+        android:layout_marginTop="12dp"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+
 </LinearLayout>

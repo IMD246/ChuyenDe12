@@ -1,6 +1,7 @@
 package com.example.menu_right.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import com.example.menu_right.DTO.Level;
 import com.example.menu_right.DTO.Topic;
 import com.example.menu_right.Login.DEFAULTVALUE;
 import com.example.menu_right.R;
+import com.example.menu_right.learn.LearningEnglishActivity;
+import com.example.menu_right.learn.TestEnglishActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -75,12 +78,17 @@ public class Topic_Adapter extends RecyclerView.Adapter<Topic_Adapter.TopicViewH
 
     private void onSelectedItemMenu(PopupMenu popupMenu){
         popupMenu.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()){
+            Intent intent;
+            switch (item.getItemId()) {
                 case R.id.item_menu_learn:
-                    interface_learn.onClickItemPopup(DEFAULTVALUE.LEARNING_SCREEN);
+//                    interface_learn.onClickItemPopup(DEFAULTVALUE.LEARNING_SCREEN);
+                    intent = new Intent(context, LearningEnglishActivity.class);
+                    context.startActivity(intent);
                     break;
                 case R.id.item_menu_test:
-                    interface_learn.onClickItemPopup(DEFAULTVALUE.TEST_SCREEN);
+//                    interface_learn.onClickItemPopup(DEFAULTVALUE.TEST_SCREEN);
+                    intent = new Intent(context, TestEnglishActivity.class);
+                    context.startActivity(intent);
                     break;
             }
             return true;
