@@ -100,7 +100,6 @@ public class Topic_Adapter extends RecyclerView.Adapter<Topic_Adapter.TopicViewH
         }
         return 0;
     }
-
     //class ViewHodler
     public class TopicViewHolder extends RecyclerView.ViewHolder {
         private ImageView imgTopic;

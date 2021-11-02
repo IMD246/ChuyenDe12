@@ -85,7 +85,6 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
         }
         return 0;
     }
-
     //class ViewHodler
     public class LearnViewHolder extends RecyclerView.ViewHolder {
         private ImageView imgLesson;
