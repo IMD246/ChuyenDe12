@@ -277,15 +277,18 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.getString("authenticate").equals(DEFAULTVALUE.ADMIN))
-                {
-                    startActivity(new Intent(Login.this, AdminInterface.class));
-                    finish();
+                if (documentSnapshot.getBoolean("isBlock") == false) {
+                    if (documentSnapshot.getString("authenticate").equalsIgnoreCase(DEFAULTVALUE.ADMIN)) {
+                        startActivity(new Intent(Login.this, AdminInterface.class));
+                        finish();
+                    } else {
+                        Toast.makeText(Login.this, "Không tồn tại", Toast.LENGTH_SHORT).show();
+                    }
                 }
-                else if (documentSnapshot.getString("authenticate").equals(DEFAULTVALUE.USER))
+                else
                 {
-                    startActivity(new Intent(Login.this, UserInterface.class));
-                    finish();
+                    final String msg = "Tài khoản " + documentSnapshot.getString("email") + " hiện tại đã bị khóa";
+                    Toast.makeText(Login.this, msg, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -328,17 +331,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 } else {
                     String errorCode = ((FirebaseAuthException) task.getException()).getErrorCode();
                     switch (errorCode) {
-                        case "ERROR_INVALID_CUSTOM_TOKEN":
-                            Toast.makeText(Login.this, "The custom token format is incorrect. Please check the documentation.", Toast.LENGTH_LONG).show();
-                            break;
-
-                        case "ERROR_CUSTOM_TOKEN_MISMATCH":
-                            Toast.makeText(Login.this, "The custom token corresponds to a different audience.", Toast.LENGTH_LONG).show();
-                            break;
-
-                        case "ERROR_INVALID_CREDENTIAL":
-                            Toast.makeText(Login.this, "The supplied auth credential is malformed or has expired.", Toast.LENGTH_LONG).show();
-                            break;
                         case "ERROR_INVALID_EMAIL":
                             edtEmail.setError("Định dạng email không phù hợp");
                             edtEmail.requestFocus();
@@ -347,14 +339,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                             edtPassWord.setError("Sai Mật Khẩu");
                             edtPassWord.requestFocus();
                             break;
-                        case "ERROR_USER_MISMATCH":
-                            Toast.makeText(Login.this, "The supplied credentials do not correspond to the previously signed in user.", Toast.LENGTH_LONG).show();
-                            break;
-
-                        case "ERROR_REQUIRES_RECENT_LOGIN":
-                            Toast.makeText(Login.this, "This operation is sensitive and requires recent authentication. Log in again before retrying this request.", Toast.LENGTH_LONG).show();
-                            break;
-
                         case "ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL":
                             Toast.makeText(Login.this, "An account already exists with the same email address but different sign-in credentials. Sign in using a provider associated with this email address.", Toast.LENGTH_LONG).show();
                             break;
@@ -368,22 +352,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                             Toast.makeText(Login.this, "This credential is already associated with a different user account.", Toast.LENGTH_LONG).show();
                             break;
 
-                        case "ERROR_USER_DISABLED":
-                            Toast.makeText(Login.this, "Tài khoản này đã bị cấm bởi admin", Toast.LENGTH_LONG).show();
-                            break;
-
-                        case "ERROR_USER_TOKEN_EXPIRED":
-                            Toast.makeText(Login.this, "The user\\'s credential is no longer valid. The user must sign in again.", Toast.LENGTH_LONG).show();
-                            break;
-
                         case "ERROR_USER_NOT_FOUND":
                             Toast.makeText(Login.this, "Tài khoản không tồn tại , hãy đăng ký tài khoản", Toast.LENGTH_LONG).show();
-                            break;
-                        case "ERROR_INVALID_USER_TOKEN":
-                            Toast.makeText(Login.this, "The user\\'s credential is no longer valid. The user must sign in again.", Toast.LENGTH_LONG).show();
-                            break;
-                        case "ERROR_OPERATION_NOT_ALLOWED":
-                            Toast.makeText(Login.this, "This operation is not allowed. You must enable this service in the console.", Toast.LENGTH_LONG).show();
                             break;
                     }
                 }
