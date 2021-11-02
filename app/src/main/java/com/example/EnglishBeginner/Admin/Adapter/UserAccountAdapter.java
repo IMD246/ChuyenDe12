@@ -59,7 +59,9 @@ public class UserAccountAdapter extends RecyclerView.Adapter<UserAccountAdapter.
         {
             holder.imgBlock.setImageResource(R.drawable.ic_unlock);
             s = "Tạm ngưng hoạt động";
-
+        }
+        else {
+            holder.imgBlock.setImageResource(R.drawable.ic_lock);
         }
         holder.tvEmail.setText("Email: " + userAccount.getEmail());
         holder.tvStaticUser.setText("Trạng thái: "+s);

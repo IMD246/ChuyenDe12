@@ -29,13 +29,14 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DAOUserAccount {
     private List<UserAccount> userAccountList;
     private Context context;
     private CollectionReference collectionReference;
-    private DocumentReference documentReference;
     private FirebaseFirestore firestore;
 
     public List<UserAccount> getUserAccountList() {
@@ -76,39 +77,20 @@ public class DAOUserAccount {
         });
     }
 
-    public void UpdateStatusAccountUser(UserAccount userAccount) {
+    public void UpdateStatusAccountUser(UserAccount userAccount,UserAccountAdapter userAccountAdapter) {
+        if (!userAccount.getDocumentID().isEmpty()) {
+            firestore.collection("users").document(userAccount.getDocumentID()).
+                    set(userAccount).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (userAccount.getBlock().equals(true)) {
+                        Toast.makeText(context, "Đã khóa " + userAccount.getEmail() + " thành công", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Mở khóa " + userAccount.getEmail() + " thành công", Toast.LENGTH_SHORT).show();
+                    }
+                    userAccountAdapter.notifyDataSetChanged();
+                }
+            });
+        }
     }
-
-//    public void editDataToFireBase(Level level, EditText edtLevel) {
-//        boolean[] check = new boolean[2];
-//        for (int i = 0; i < check.length; i++) {
-//            check[i] = true;
-//        }
-//        if (level.getNameLevel()==0) {
-//            check[0] = false;
-//        } else {
-//            for (Level level1 : levelList) {
-//                if (level.getNameLevel() == level1.getNameLevel()) {
-//                    check[1] = false;
-//                    break;
-//                }
-//            }
-//        }
-//        if (check[0] == false) {
-//            edtLevel.setError("Không để trống");
-//            edtLevel.requestFocus();
-//        } else if (check[1] == false) {
-//            edtLevel.setError("Trùng dữ liệu");
-//            edtLevel.requestFocus();
-//        } else {
-//            databaseReference.child(String.valueOf(level.getId())).setValue(level).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                @Override
-//                public void onComplete(@NonNull Task<Void> task) {
-//                    if (task.isComplete()) {
-//                        Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//            });
-//        }
-//    }
 }

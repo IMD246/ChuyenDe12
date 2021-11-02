@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.example.EnglishBeginner.Admin.Adapter.QuestionAdapter;
 import com.example.EnglishBeginner.Admin.Adapter.UserAccountAdapter;
@@ -28,7 +29,9 @@ import com.example.EnglishBeginner.Admin.DTO.UserAccount;
 import com.example.EnglishBeginner.Admin.LearnManagement.QuestionInterface;
 import com.example.EnglishBeginner.DEFAULTVALUE;
 import com.example.EnglishBeginner.R;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
@@ -71,6 +74,7 @@ public class AccountUserManagement extends Fragment {
         getDataFromRealTime();
         return v;
     }
+
     private void initUI(View v) {
         daoUserAccount = new DAOUserAccount(getContext());
         userAccountAdapter = new UserAccountAdapter(getContext());
@@ -100,6 +104,7 @@ public class AccountUserManagement extends Fragment {
             }
         });
     }
+
     private void getDataFromRealTime() {
         daoUserAccount.getDataFromRealTimeToList(userAccountAdapter);
     }
@@ -108,12 +113,19 @@ public class AccountUserManagement extends Fragment {
     private void alertDialog(UserAccount userAccount) {
         if (getContext() != null) {
             AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
-            builder1.setMessage("Bạn có muốn xóa không?");
+            if (userAccount.getBlock() == false) {
+                builder1.setMessage("Bạn có muốn khóa " + userAccount.getEmail() + " không?");
+                userAccount.setBlock(true);
+            } else {
+                builder1.setMessage("Bạn có muốn mở khóa " + userAccount.getEmail() + " không?");
+                userAccount.setBlock(false);
+            }
             builder1.setCancelable(true);
             builder1.setPositiveButton(
                     "Có",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
+                            daoUserAccount.UpdateStatusAccountUser(userAccount,userAccountAdapter);
                         }
                     });
 
