@@ -299,11 +299,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     DEFAULTVALUE.alertDialogMessage("Thông báo",msg,Login.this);
                 }
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(Login.this, "Không thuộc quyền admin", Toast.LENGTH_SHORT).show();
-            }
         });
     }
 
