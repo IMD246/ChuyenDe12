@@ -3,16 +3,15 @@ package com.example.EnglishBeginner.Admin;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.EnglishBeginner.Admin.Adapter.UserAccountAdapter;
 import com.example.EnglishBeginner.Admin.DAO.DAOUserAccount;
@@ -87,9 +86,9 @@ public class AccountUserManagement extends Fragment {
 
     // Xây dựng một Hộp thoại thông báo
     private void alertDialog(UserAccount userAccount) {
-        HashMap<String,Object>hashMap = new HashMap<>();
-        hashMap.put("email",userAccount.getEmail());
-        hashMap.put("authenticate",userAccount.getAuthenticate());
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("email", userAccount.getEmail());
+        hashMap.put("authenticate", userAccount.getAuthenticate());
         if (getContext() != null) {
             AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
             if (userAccount.getBlock() == false) {
@@ -99,13 +98,13 @@ public class AccountUserManagement extends Fragment {
                 builder1.setMessage("Bạn có muốn mở khóa " + userAccount.getEmail() + " không?");
                 userAccount.setBlock(false);
             }
-            hashMap.put("isBlock",userAccount.getBlock());
+            hashMap.put("isBlock", userAccount.getBlock());
             builder1.setCancelable(true);
             builder1.setPositiveButton(
                     "Có",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            daoUserAccount.UpdateStatusAccountUser(userAccount,userAccountAdapter,hashMap);
+                            daoUserAccount.UpdateStatusAccountUser(userAccount, userAccountAdapter, hashMap);
                         }
                     });
 
