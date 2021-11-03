@@ -20,8 +20,6 @@ public class ViewPager2_Adapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         switch (position){
-            case 0:
-                return new LearnFragment();
             case 1:
                 return new AlarmFragment();
             case 2:
@@ -30,6 +28,7 @@ public class ViewPager2_Adapter extends FragmentStateAdapter {
                 return new ProfileFragment();
             case 4:
                 return new SettingMenuFragment();
+            case 0:
             default:
                 return new LearnFragment();
         }

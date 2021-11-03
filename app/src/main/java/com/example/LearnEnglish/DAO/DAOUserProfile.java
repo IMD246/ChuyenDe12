@@ -17,37 +17,11 @@ import java.util.HashMap;
 
 public class DAOUserProfile {
     private DatabaseReference mDatabaseReference;
-    private User user;
     private Context context;
-
     public DAOUserProfile(Context context) {
         this.context = context;
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("users");
-        user = new User();
     }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public void getDataFromRealTime(String uid)
-    {
-        mDatabaseReference.child(uid).
-                addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    user = snapshot.getValue(User.class);
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-    }
-
     public void updateProFileUser(HashMap<String,Object>hashMap, String uid) {
         mDatabaseReference.child(uid).updateChildren(hashMap, new DatabaseReference.CompletionListener() {
             @Override

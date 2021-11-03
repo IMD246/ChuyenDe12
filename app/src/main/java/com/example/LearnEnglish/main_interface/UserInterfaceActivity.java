@@ -1,5 +1,15 @@
 package com.example.LearnEnglish.main_interface;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,16 +17,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
-
-import com.example.LearnEnglish.DAO.DAOUserProfile;
 import com.example.LearnEnglish.DTO.DEFAULTVALUE;
+import com.example.LearnEnglish.DTO.User;
 import com.example.LearnEnglish.Login.Login;
 import com.example.LearnEnglish.R;
 import com.example.LearnEnglish.learn.learning.LearningEnglishFragment;
@@ -25,12 +27,20 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 public class UserInterfaceActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     //Khai báo các trường dữ liệu để lấy data trên firebase
-    private DAOUserProfile daoUserProfile;
-    FirebaseAuth firebaseAuth;
-    FirebaseUser user;
+    FirebaseUser firebaseUser;
+    DatabaseReference databaseReference;
+    private TextView tvUserName,tvUserEmail;
+    private ImageView imgUserName;
+
 
     //khai báo giá trị cho screen
     public static final int FRAGMENT_LEARN = 0;
@@ -60,6 +70,7 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setControl();
+        getProFileFromRealTime();
         checkLogicDrawerLayout();
         processBottomNavigation();
         processViewPager2();
@@ -104,8 +115,6 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
                         navigationView.getMenu().findItem(R.id.nav_logout).setChecked(false);
                         break;
                     case 3:
-                        bottomNavigationView.getMenu().findItem(R.id.bottom_nav_profile).setChecked(true);
-                        break;
                     case 4:
                         bottomNavigationView.getMenu().findItem(R.id.bottom_nav_profile).setChecked(true);
                         break;
@@ -120,32 +129,45 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
     }
     //lấy dữ liệu user
 
-//    private void getDataUser() {
-//        user = FirebaseAuth.getInstance().getCurrentUser();
-//        databaseReference = FirebaseDatabase.getInstance().getReference("users");
-//        databaseReference.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                User us = snapshot.getValue(User.class);
-//                if (us != null) {
-//                    Toast.makeText(UserInterfaceActivity.this, "" + us.getEmail().toString(), Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-//    }
+    private void getProFileFromRealTime() {
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        assert firebaseUser != null;
+        String userId = firebaseUser.getUid();
+        databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                getDataUserProfileToControl(user);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    // khởi gán giá trị tới các view
+    private void getDataUserProfileToControl(User user) {
+        if (user != null) {
+            tvUserName.setText(user.getFullname());
+            tvUserEmail.setText(user.getEmail());
+            if (!(user.getImageUser().trim().length() == 0 && user.getImageUser().isEmpty())) {
+                Picasso.get().load(user.getImageUser()).resize(100, 100).into(imgUserName);
+            }
+        }
+    }
     //Ánh xạ, khởi gán giá trị,...
 
     private void setControl() {
         //drawe layout
         drawerLayout = findViewById(R.id.drawer_layout);
-
-        //navigationview
         navigationView = findViewById(R.id.nav_view);
+        // get view control trong navigationview có chứa drawable
+        View header = navigationView.getHeaderView(0);
+        tvUserEmail = header.findViewById(R.id.tv_username);
+        tvUserName = header.findViewById(R.id.tv_name_user);
+        imgUserName = header.findViewById(R.id.profile_image);
+        //navigationview
         navigationView.setNavigationItemSelectedListener(this);
 
         //bottom navigation
@@ -202,8 +224,8 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
             }
         });
     }
-
     //xử lí bottom Navigation
+    @SuppressLint("NonConstantResourceId")
     private void processBottomNavigation() {
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
@@ -226,6 +248,7 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
     }
 
     //xử lí navigation drawer
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -235,7 +258,7 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
             case R.id.nav_setting:
                 checkLogicScreen(FRAGMENT_SETTING, 4);
                 break;
-            case R.id.nav_help://ấn vào help sẽ chuyển acti
+            case R.id.nav_help://ấn vào help sẽ chuyển activities
                 Toast.makeText(UserInterfaceActivity.this, "click help", Toast.LENGTH_SHORT).show();
                 navigationView.getMenu().findItem(R.id.nav_profile).setChecked(false);
                 navigationView.getMenu().findItem(R.id.nav_setting).setChecked(false);
@@ -278,20 +301,14 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
 
         builder1.setPositiveButton(
                 "Có",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        FirebaseAuth.getInstance().signOut();
-                        startActivity(new Intent(UserInterfaceActivity.this, Login.class));
-                    }
+                (dialog, id) -> {
+                    FirebaseAuth.getInstance().signOut();
+                    startActivity(new Intent(UserInterfaceActivity.this, Login.class));
                 });
 
         builder1.setNegativeButton(
                 "Không",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
+                (dialog, id) -> dialog.cancel());
 
         AlertDialog alert11 = builder1.create();
         alert11.show();

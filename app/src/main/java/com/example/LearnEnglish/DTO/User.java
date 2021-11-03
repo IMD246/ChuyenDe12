@@ -21,8 +21,6 @@ public class User {
     public User() {
     }
 
-
-
     public String getFullname() {
         return fullname;
     }
@@ -74,7 +72,6 @@ public class User {
     public boolean isActivePrivacy() {
         return activePrivacy;
     }
-
 
     public void setExpPerDay(int expPerDay) {
         this.expPerDay = expPerDay;
