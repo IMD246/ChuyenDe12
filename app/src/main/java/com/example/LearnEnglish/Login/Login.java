@@ -1,6 +1,6 @@
 package com.example.LearnEnglish.Login;
 
-import android.content.DialogInterface;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,7 +8,6 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,7 +16,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.LearnEnglish.Admin.AdminInterface;
 import com.example.LearnEnglish.DTO.DEFAULTVALUE;
 import com.example.LearnEnglish.R;
 import com.example.LearnEnglish.main_interface.UserInterfaceActivity;
@@ -35,21 +33,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Arrays;
@@ -57,23 +48,16 @@ import java.util.Objects;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
 
-    private TextView register, tvForgetPassWord;
     private EditText edtEmail, edtPassWord;
     private CallbackManager callbackManager;
     private FirebaseAuth.AuthStateListener authStateListener;
-    private FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
-    private AccessTokenTracker accessTokenTracker;
-    private ImageView imgProfile;
-    private Button btnLogin;
+    private final FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
     FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private LoginButton loginFacebook;
-    private SignInButton loginGoogle;
     private static final String TAO = "FacebookAuthentication";
     private static final String EMAIL = "email";
     private GoogleSignInClient mGoogleSignInClient;
-    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private final static int RC_SIGN_IN = 123;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,18 +85,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void getDataAndTrackerToken() {
-        authStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    updateUI(user);
-                } else {
-                    updateUI(null);
-                }
-            }
+        authStateListener = firebaseAuth -> {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
         };
-        accessTokenTracker = new AccessTokenTracker() {
+        AccessTokenTracker accessTokenTracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
                 if (currentAccessToken == null) {
@@ -136,7 +112,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             }
 
             @Override
-            public void onError(FacebookException error) {
+            public void onError(@NonNull FacebookException error) {
                 Log.d(TAO, "OnError" + error);
             }
         });
@@ -144,25 +120,19 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
     // Ánh xạ tới các view trong layout
     private void setControl() {
-        register = (TextView) findViewById(R.id.tvRegister);
+        TextView register = findViewById(R.id.tvRegister);
         register.setOnClickListener(this);
-        tvForgetPassWord = findViewById(R.id.tvForgotPass);
+        TextView tvForgetPassWord = findViewById(R.id.tvForgotPass);
         tvForgetPassWord.setOnClickListener(this);
-        mDatabase = FirebaseDatabase.getInstance().getReference();
         edtEmail = findViewById(R.id.edtEmail);
         edtPassWord = findViewById(R.id.edtPassword);
-        btnLogin = findViewById(R.id.btnLogin);
+        Button btnLogin = findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(this);
-        loginGoogle = findViewById(R.id.loginGoogle);
+        SignInButton loginGoogle = findViewById(R.id.loginGoogle);
         loginGoogle.setSize(SignInButton.SIZE_STANDARD);
-        loginGoogle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signIn();
-            }
-        });
+        loginGoogle.setOnClickListener(v -> signIn());
         callbackManager = CallbackManager.Factory.create();
-        loginFacebook = (LoginButton) findViewById(R.id.loginFB);
+        loginFacebook = findViewById(R.id.loginFB);
         loginFacebook.setPermissions(Arrays.asList(EMAIL, "public_profile"));
 
     }
@@ -180,20 +150,14 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         builder1.setCancelable(true);
         builder1.setPositiveButton(
                 "Có",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        finish();
-                        System.exit(0);
-                    }
+                (dialog, id) -> {
+                    finish();
+                    System.exit(0);
                 });
 
         builder1.setNegativeButton(
                 "Không",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
+                (dialog, id) -> dialog.cancel());
 
         AlertDialog alert11 = builder1.create();
         alert11.show();
@@ -221,44 +185,29 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mFirebaseAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser user = mFirebaseAuth.getCurrentUser();
-                            updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            updateUI(null);
-                        }
-                    }
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        FirebaseUser user = mFirebaseAuth.getCurrentUser();
+                    }  // If sign in fails, display a message to the user.
+
                 });
     }
 
     private void handleFacebookToken(AccessToken accessToken) {
         Log.d(TAO, "handleFacebookToken" + accessToken);
         AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
-        mFirebaseAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    Log.d(TAO, "Sign in with credential: successful");
-                    FirebaseUser user = mFirebaseAuth.getCurrentUser();
-                    updateUI(user);
-                } else {
-                    Log.d(TAO, "Sign in with credential: failed", task.getException());
-                    Toast.makeText(Login.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
-                    updateUI(null);
-                }
+        mFirebaseAuth.signInWithCredential(credential).addOnCompleteListener(this, task -> {
+            if (task.isSuccessful()) {
+                Log.d(TAO, "Sign in with credential: successful");
+                FirebaseUser user = mFirebaseAuth.getCurrentUser();
+            } else {
+                Log.d(TAO, "Sign in with credential: failed", task.getException());
+                Toast.makeText(Login.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
             }
         });
     }
-
-    private void updateUI(FirebaseUser user) {
-
-    }
-
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -275,19 +224,16 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
     private void checkAuthenticate(String uid) {
         DocumentReference documentReference = firestore.collection("users").document(uid);
-        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (Objects.equals(documentSnapshot.getBoolean("isBlock"), false)) {
-                    if (documentSnapshot.getString("authenticate").equalsIgnoreCase(DEFAULTVALUE.USER)) {
-                        startActivity(new Intent(Login.this, UserInterfaceActivity.class));
-                    } else {
-                        DEFAULTVALUE.alertDialogMessage("Thông báo","Tài khoản không tồn tại",Login.this);
-                    }
+        documentReference.get().addOnSuccessListener(documentSnapshot -> {
+            if (Objects.equals(documentSnapshot.getBoolean("isBlock"), false)) {
+                if (Objects.requireNonNull(documentSnapshot.getString("authenticate")).equalsIgnoreCase(DEFAULTVALUE.USER)) {
+                    startActivity(new Intent(Login.this, UserInterfaceActivity.class));
                 } else {
-                    final String msg = "Tài khoản " + documentSnapshot.getString("email") + " hiện tại đã bị khóa";
-                    DEFAULTVALUE.alertDialogMessage("Thông báo",msg,Login.this);
+                    DEFAULTVALUE.alertDialogMessage("Thông báo","Tài khoản không tồn tại",Login.this);
                 }
+            } else {
+                final String msg = "Tài khoản " + documentSnapshot.getString("email") + " hiện tại đã bị khóa";
+                DEFAULTVALUE.alertDialogMessage("Thông báo",msg,Login.this);
             }
         });
     }
@@ -315,55 +261,53 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             edtPassWord.requestFocus();
             return;
         }
-        mFirebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    FirebaseUser user = mFirebaseAuth.getCurrentUser();
-                    if (user.isEmailVerified()) {
-                        checkAuthenticate(user.getUid());
-                    } else {
-                        user.sendEmailVerification();
-                        DEFAULTVALUE.alertDialogMessage("Thông báo","Hãy xác thực email của bạn!",Login.this);
-                    }
+        mFirebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                FirebaseUser user = mFirebaseAuth.getCurrentUser();
+                assert user != null;
+                if (user.isEmailVerified()) {
+                    checkAuthenticate(user.getUid());
                 } else {
-                    String errorCode = ((FirebaseAuthException) task.getException()).getErrorCode();
-                    switch (errorCode) {
-                        case "ERROR_INVALID_EMAIL":
-                            edtEmail.setError("Định dạng email không phù hợp");
-                            edtEmail.requestFocus();
-                            break;
-                        case "ERROR_WRONG_PASSWORD":
-                            edtPassWord.setError("Sai Mật Khẩu");
-                            edtPassWord.requestFocus();
-                            break;
-                        case "ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL":
-                            Toast.makeText(Login.this, "An account already exists with the same email address but different sign-in credentials. Sign in using a provider associated with this email address.", Toast.LENGTH_LONG).show();
-                            break;
+                    user.sendEmailVerification();
+                    DEFAULTVALUE.alertDialogMessage("Thông báo","Hãy xác thực email của bạn!",Login.this);
+                }
+            } else {
+                String errorCode = ((FirebaseAuthException) Objects.requireNonNull(task.getException())).getErrorCode();
+                switch (errorCode) {
+                    case "ERROR_INVALID_EMAIL":
+                        edtEmail.setError("Định dạng email không phù hợp");
+                        edtEmail.requestFocus();
+                        break;
+                    case "ERROR_WRONG_PASSWORD":
+                        edtPassWord.setError("Sai Mật Khẩu");
+                        edtPassWord.requestFocus();
+                        break;
+                    case "ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL":
+                        Toast.makeText(Login.this, "An account already exists with the same email address but different sign-in credentials. Sign in using a provider associated with this email address.", Toast.LENGTH_LONG).show();
+                        break;
 
-                        case "ERROR_EMAIL_ALREADY_IN_USE":
-                            edtEmail.setError("The email address is already in use by another account.");
-                            edtEmail.requestFocus();
-                            break;
+                    case "ERROR_EMAIL_ALREADY_IN_USE":
+                        edtEmail.setError("The email address is already in use by another account.");
+                        edtEmail.requestFocus();
+                        break;
 
-                        case "ERROR_CREDENTIAL_ALREADY_IN_USE":
-                            edtEmail.setError("Địa chỉ email này đã có người sử dụng");
-                            edtEmail.requestFocus();
-                            break;
-                        case "ERROR_USER_NOT_FOUND":
-                            Toast.makeText(Login.this, "Tài khoản không tồn tại , hãy đăng ký tài khoản", Toast.LENGTH_LONG).show();
-                            break;
+                    case "ERROR_CREDENTIAL_ALREADY_IN_USE":
+                        edtEmail.setError("Địa chỉ email này đã có người sử dụng");
+                        edtEmail.requestFocus();
+                        break;
+                    case "ERROR_USER_NOT_FOUND":
+                        Toast.makeText(Login.this, "Tài khoản không tồn tại , hãy đăng ký tài khoản", Toast.LENGTH_LONG).show();
+                        break;
 
-                        case "ERROR_USER_TOKEN_EXPIRED":
+                    case "ERROR_USER_TOKEN_EXPIRED":
 
-                        case "ERROR_INVALID_USER_TOKEN":
-                            Toast.makeText(Login.this, "The user's credential is no longer valid. The user must sign in again.", Toast.LENGTH_LONG).show();
-                            break;
+                    case "ERROR_INVALID_USER_TOKEN":
+                        Toast.makeText(Login.this, "The user's credential is no longer valid. The user must sign in again.", Toast.LENGTH_LONG).show();
+                        break;
 
-                        case "ERROR_OPERATION_NOT_ALLOWED":
-                            DEFAULTVALUE.alertDialogMessage("Thông báo","Tài khoản không tồn tại , hãy đăng ký tài khoản",Login.this);
-                            break;
-                    }
+                    case "ERROR_OPERATION_NOT_ALLOWED":
+                        DEFAULTVALUE.alertDialogMessage("Thông báo","Tài khoản không tồn tại , hãy đăng ký tài khoản",Login.this);
+                        break;
                 }
             }
         });
