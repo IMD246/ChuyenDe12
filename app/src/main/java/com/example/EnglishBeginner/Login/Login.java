@@ -259,22 +259,18 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         if (email.isEmpty()) {
             edtEmail.setError("Email is required");
             edtEmail.requestFocus();
-            return;
         }
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             edtEmail.setError("Please provide valid email!");
             edtEmail.requestFocus();
-            return;
         }
-        if (password.isEmpty()) {
-            edtPassWord.setError("Password is required");
-            edtPassWord.requestFocus();
-            return;
-        }
-        if (password.length() < 6) {
+        else if (password.isEmpty()) {
+                edtPassWord.setError("Password is required");
+                edtPassWord.requestFocus();
+            }
+        else if (password.length() < 6) {
             edtPassWord.setError("Min password length should be 6 characters");
             edtPassWord.requestFocus();
-            return;
         }
         mFirebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
