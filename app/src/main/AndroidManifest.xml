@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.englishbeginner">
+    package="com.example.testapp2">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -14,25 +14,25 @@
         android:theme="@style/Theme.Menu_Right"
         android:usesCleartextTraffic="true">
         <activity
-            android:name="com.example.englishbeginner.learn.TestWriteActivity"
+            android:name="com.example.testapp2.learn.TestWriteActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.englishbeginner.learn.TestChooseImageActivity"
+            android:name="com.example.testapp2.learn.TestChooseImageActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.englishbeginner.Admin.AdminInterface"
+            android:name="com.example.testapp2.Admin.AdminInterface"
             android:exported="false" />
         <activity
-            android:name="com.example.englishbeginner.Login.ForgetPassword"
+            android:name="com.example.testapp2.Login.ForgetPassword"
             android:exported="false" />
         <activity
-            android:name="com.example.englishbeginner.main_interface.UserInterfaceActivity"
+            android:name="com.example.testapp2.main_interface.UserInterfaceActivity"
             android:exported="true" />
         <activity
-            android:name="com.example.englishbeginner.Login.RegisterUser"
+            android:name="com.example.testapp2.Login.RegisterUser"
             android:exported="true" />
         <activity
-            android:name="com.example.englishbeginner.Login.Login"
+            android:name="com.example.testapp2.Login.Login"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -62,13 +62,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.englishbeginner.learn.TestSelectionEnglishActivity"
+            android:name="com.example.testapp2.learn.TestSelectionEnglishActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.englishbeginner.profile.EditProfileActivity"
+            android:name="com.example.testapp2.profile.EditProfileActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.englishbeginner.learn.LearningEnglishActivity"
+            android:name="com.example.testapp2.learn.LearningEnglishActivity"
             android:exported="false" />
     </application>
 
