@@ -19,8 +19,8 @@ import com.example.testapp2.DAO.DAOUserProfile;
 import com.example.testapp2.DTO.DEFAULTVALUE;
 import com.example.testapp2.Login.Login;
 import com.example.testapp2.R;
-import com.example.testapp2.learn.LearningEnglishActivity;
-import com.example.testapp2.learn.TestSelectionEnglishActivity;
+import com.example.testapp2.learn.learning.LearningEnglishFragment;
+import com.example.testapp2.learn.testing.TestSelectionEnglishFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -300,9 +300,9 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
     //hàm chuyển màn hình
     public void navigationScreen(String string) {
         if (DEFAULTVALUE.LEARNING_SCREEN.equalsIgnoreCase(string)) {
-            startActivity(new Intent(this, LearningEnglishActivity.class));
+            startActivity(new Intent(this, LearningEnglishFragment.class));
         } else if (DEFAULTVALUE.TEST_SCREEN.equalsIgnoreCase(string)) {
-            startActivity(new Intent(this, TestSelectionEnglishActivity.class));
+            startActivity(new Intent(this, TestSelectionEnglishFragment.class));
         }
     }
 }

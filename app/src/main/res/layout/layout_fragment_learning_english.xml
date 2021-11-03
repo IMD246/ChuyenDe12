@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".learn.LearningEnglishActivity">
+    tools:context=".learn.learning.LearningEnglishFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,13 +13,14 @@
         android:layout_margin="4dp"
         android:orientation="horizontal">
 
-        <ImageButton
+        <ImageView
             android:id="@+id/img_btn_exit_learn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
             android:background="@drawable/ct_learn_img_btn_exit"
+            android:clickable="true"
             android:src="@drawable/ic_exit_close" />
 
         <ProgressBar
@@ -164,6 +165,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tv_example_mean_word"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="56dp"

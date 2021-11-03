@@ -14,10 +14,10 @@
         android:theme="@style/Theme.Menu_Right"
         android:usesCleartextTraffic="true">
         <activity
-            android:name="com.example.testapp2.learn.TestWriteActivity"
+            android:name="com.example.testapp2.learn.testing.TestWriteFragment"
             android:exported="false" />
         <activity
-            android:name="com.example.testapp2.learn.TestChooseImageActivity"
+            android:name="com.example.testapp2.learn.testing.TestChooseImageFragment"
             android:exported="false" />
         <activity
             android:name="com.example.testapp2.Admin.AdminInterface"
@@ -62,13 +62,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.testapp2.learn.TestSelectionEnglishActivity"
+            android:name="com.example.testapp2.learn.testing.TestSelectionEnglishFragment"
             android:exported="false" />
         <activity
             android:name="com.example.testapp2.profile.EditProfileActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.testapp2.learn.LearningEnglishActivity"
+            android:name="com.example.testapp2.learn.learning.LearningEnglishFragment"
             android:exported="false" />
     </application>
 

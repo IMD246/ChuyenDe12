@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testapp2.DTO.Topic;
 import com.example.testapp2.R;
-import com.example.testapp2.learn.LearningEnglishActivity;
-import com.example.testapp2.learn.TestSelectionEnglishActivity;
+import com.example.testapp2.learn.learning.LearningEnglishFragment;
+import com.example.testapp2.learn.testing.TestSelectionEnglishFragment;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -80,12 +80,12 @@ public class Topic_Adapter extends RecyclerView.Adapter<Topic_Adapter.TopicViewH
             switch (item.getItemId()) {
                 case R.id.item_menu_learn:
 //                    interface_learn.onClickItemPopup(DEFAULTVALUE.LEARNING_SCREEN);
-                    intent = new Intent(context, LearningEnglishActivity.class);
+                    intent = new Intent(context, LearningEnglishFragment.class);
                     context.startActivity(intent);
                     break;
                 case R.id.item_menu_test:
 //                    interface_learn.onClickItemPopup(DEFAULTVALUE.TEST_SCREEN);
-                    intent = new Intent(context, TestSelectionEnglishActivity.class);
+                    intent = new Intent(context, TestSelectionEnglishFragment.class);
                     context.startActivity(intent);
                     break;
             }

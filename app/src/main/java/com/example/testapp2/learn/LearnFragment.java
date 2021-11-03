@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.testapp2.Adapter.Level_Adapter;
 import com.example.testapp2.DAO.DAOLevel;
 import com.example.testapp2.R;
+import com.example.testapp2.learn.learning.LearningEnglishFragment;
 import com.example.testapp2.main_interface.UserInterfaceActivity;
 
 public class LearnFragment extends Fragment {
@@ -57,7 +58,7 @@ public class LearnFragment extends Fragment {
     }
     //hàm chuyển sang màn hình học tiếng Anh
     private void onClickGoToScreen() {
-        Intent intent = new Intent(getContext(), LearningEnglishActivity.class);
+        Intent intent = new Intent(getContext(), LearningEnglishFragment.class);
         getContext().startActivity(intent);
     }
 }
