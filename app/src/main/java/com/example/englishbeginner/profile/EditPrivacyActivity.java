@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.englishbeginner.R;
 
+
 public class EditPrivacyActivity extends AppCompatActivity {
 
     @Override
