@@ -1,7 +1,5 @@
 package com.example.EnglishBeginner.Login;
 
-import static com.facebook.FacebookSdk.sdkInitialize;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -43,13 +41,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.installations.Utils;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -65,7 +60,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private static final String EMAIL = "email";
     private GoogleSignInClient mGoogleSignInClient;
     private final static int RC_SIGN_IN = 100;
-    private int dem=0;
+    private FirebaseUser current;
+    private int dem = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +74,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         setControl();
         loginFacebookRegister();
     }
+
     private void createRequestGoogle() {
         // Configure Google Sign In
         GoogleSignInOptions gso = new
@@ -88,10 +85,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
+
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
+
     private void loginFacebookRegister() {
         loginFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -164,35 +163,58 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "asd", Toast.LENGTH_SHORT).show();
             }
-        }
-        else
-        {
+        } else {
             callbackManager.onActivityResult(requestCode, resultCode, data);
         }
     }
+
     private void linkWithInWithFirebase(AuthCredential credential) {
-        Objects.requireNonNull(mFirebaseAuth.getCurrentUser()).linkWithCredential(credential).addOnCompleteListener(task -> {
-            if (!task.isSuccessful()) {
-                try {
-                    Tasks.await(mFirebaseAuth.signInWithCredential(credential)).getUser();
-                } catch (Exception e) {
-                    e.printStackTrace();
+        mFirebaseAuth.getCurrentUser().linkWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (!task.isSuccessful()) {
+                    FirebaseUser prevUser = current;
+                    try {
+                        current = Tasks.await(mFirebaseAuth.signInWithCredential(credential)).getUser();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+
                 }
             }
         });
     }
-    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
-        dem++;
-        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-        linkWithInWithFirebase(credential);
-    }
 
+    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+//        linkWithInWithFirebase(credential);
+        mFirebaseAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
+                    checkAuthenticate(firebaseUser.getUid(),dem);
+                    Log.d("signin","GoogleLoginSuccessful");
+                }
+            }
+        });
+    }
     private void handleFacebookToken(@NonNull AccessToken accessToken) {
-        dem++;
         AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
-        linkWithInWithFirebase(credential);
+//        linkWithInWithFirebase(credential);
+        mFirebaseAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
+                    checkAuthenticate(firebaseUser.getUid(),dem);
+                    Log.d("signin","FacebookLoginSuccessful");
+                }
+            }
+        });
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -210,8 +232,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
-    private void checkAuthenticate(String uid,int dem) {
-        if (uid!=null) {
+    private void checkAuthenticate(String uid, int dem) {
+        if (uid != null) {
             DocumentReference documentReference = firestore.collection("users").document(uid);
             documentReference.get().addOnSuccessListener(documentSnapshot -> {
                 if (Objects.equals(documentSnapshot.getBoolean("isBlock"), false)) {
@@ -224,7 +246,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     final String msg = "Tài khoản " + documentSnapshot.getString("email") + " hiện tại đã bị khóa";
                     DEFAULTVALUE.alertDialogMessage("Thông báo", msg, Login.this);
                 } else {
-                    if (dem>0) {
+                    if (dem > 0) {
                         DEFAULTVALUE.alertDialogMessage("Thông báo", "Hãy đăng ký tài khoản", Login.this);
                     }
                 }
@@ -253,8 +275,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 FirebaseUser user = mFirebaseAuth.getCurrentUser();
                 assert user != null;
                 if (user.isEmailVerified()) {
-                    checkAuthenticate(user.getUid(),dem);
                     dem++;
+                    checkAuthenticate(user.getUid(), dem);
                 } else {
                     user.sendEmailVerification();
                     DEFAULTVALUE.alertDialogMessage("Thông báo", "Hãy xác thực email của bạn!", Login.this);
@@ -290,12 +312,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             }
         });
     }
+
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
-        if (firebaseUser != null) {
-            checkAuthenticate(firebaseUser.getUid(),dem);
+        current = mFirebaseAuth.getCurrentUser();
+        if (current != null) {
+            checkAuthenticate(current.getUid(), dem);
             dem++;
         }
     }
