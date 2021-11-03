@@ -173,19 +173,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         }
     }
     private void linkWithInWithFirebase(AuthCredential credential) {
-        mFirebaseAuth.getCurrentUser().linkWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (!task.isSuccessful()) {
-                    FirebaseUser currentUser = mFirebaseAuth.getCurrentUser();
-                    FirebaseUser prevUser = currentUser;
-                    try {
-                        currentUser = Tasks.await(mFirebaseAuth.signInWithCredential(credential)).getUser();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else {
-
+        Objects.requireNonNull(mFirebaseAuth.getCurrentUser()).linkWithCredential(credential).addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                try {
+                    Tasks.await(mFirebaseAuth.signInWithCredential(credential)).getUser();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
