@@ -313,7 +313,6 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         AlertDialog alert11 = builder1.create();
         alert11.show();
     }
-
     //hàm chuyển màn hình
     public void navigationScreen(String string) {
         if (DEFAULTVALUE.LEARNING_SCREEN.equalsIgnoreCase(string)) {
