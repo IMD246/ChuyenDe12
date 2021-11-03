@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.englishbeginner">
+    package="com.example.EnglishBeginner">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
@@ -18,44 +18,44 @@
         android:usesCleartextTraffic="true"
         android:fullBackupContent="true">
         <activity
-            android:name="com.example.englishbeginner.Admin.WordManagement.IetlsManagement"
+            android:name="com.example.EnglishBeginner.Admin.WordManagement.IetlsManagement"
             android:exported="false" />
         <activity
-            android:name="com.example.englishbeginner.Admin.WordManagement.ToeicManagement"
+            android:name="com.example.EnglishBeginner.Admin.WordManagement.ToeicManagement"
             android:exported="false" />
         <activity
-            android:name="com.example.englishbeginner.Admin.LearnManagement.LearnQuestion"
+            android:name="com.example.EnglishBeginner.Admin.LearnManagement.LearnQuestion"
             android:exported="false" />
         <activity
-            android:name="com.example.englishbeginner.Admin.ChangePasswordActivity_Admin"
+            android:name="com.example.EnglishBeginner.Admin.ChangePasswordActivity_Admin"
             android:exported="false" />
         <activity
-            android:name="com.example.englishbeginner.Admin.LearnManagement.QuestionInterface"
+            android:name="com.example.EnglishBeginner.Admin.LearnManagement.QuestionInterface"
             android:exported="false" />
         <activity
-            android:name="com.example.englishbeginner.Admin.LearnManagement.TopicManagement"
+            android:name="com.example.EnglishBeginner.Admin.LearnManagement.TopicManagement"
             android:exported="false" />
         <activity
-            android:name="com.example.englishbeginner.Admin.LearnManagement.TypeQuestionManagement"
+            android:name="com.example.EnglishBeginner.Admin.LearnManagement.TypeQuestionManagement"
             android:exported="false" />
         <activity
-            android:name="com.example.englishbeginner.Admin.LearnManagement.LevelManagement"
+            android:name="com.example.EnglishBeginner.Admin.LearnManagement.LevelManagement"
             android:exported="false" />
         <activity
-            android:name="com.example.englishbeginner.Admin.AdminInterface"
+            android:name="com.example.EnglishBeginner.Admin.AdminInterface"
             android:exported="false">
         </activity>
         <activity
-            android:name="com.example.englishbeginner.Login.ForgetPassword"
+            android:name="com.example.EnglishBeginner.Login.ForgetPassword"
             android:exported="false" />
         <activity
-            android:name="com.example.englishbeginner.User.UserInterface"
+            android:name="com.example.EnglishBeginner.User.UserInterface"
             android:exported="true" />
         <activity
-            android:name="com.example.englishbeginner.Login.RegisterUser"
+            android:name="com.example.EnglishBeginner.Login.RegisterUser"
             android:exported="true" />
         <activity
-            android:name="com.example.englishbeginner.Login.Login"
+            android:name="com.example.EnglishBeginner.Login.Login"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

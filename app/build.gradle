@@ -6,7 +6,7 @@ plugins {
 android {
     compileSdk 30
     defaultConfig {
-        applicationId "com.example.englishbeginner"
+        applicationId "com.example.EnglishBeginner"
         minSdk 26
         targetSdk 30
         versionCode 1
