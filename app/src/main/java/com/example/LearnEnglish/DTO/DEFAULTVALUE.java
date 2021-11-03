@@ -1,5 +1,10 @@
 package com.example.LearnEnglish.DTO;
 
+import android.content.Context;
+import android.content.DialogInterface;
+
+import androidx.appcompat.app.AlertDialog;
+
 public class DEFAULTVALUE {
     final public static String ADMIN = "Admin";
     final public static String USER = "User";
@@ -24,4 +29,20 @@ public class DEFAULTVALUE {
     public static String MALE  = "Male";
     public static String FEMALE  = "Female";
     public static String OTHER  = "Other";
+    public static void alertDialogMessage(String title, String msg, Context context)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setCancelable(true);
+        builder.setTitle(title);
+        builder.setMessage(msg);
+        builder.setNegativeButton(
+                "Đóng",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
 }
