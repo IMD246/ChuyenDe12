@@ -11,10 +11,9 @@
         android:id="@+id/alarm_btnDay"
         android:text="Mondadadaadadaada"
         android:layout_margin="10dp"
-        android:background="@drawable/circle_button"
-        android:layout_width="50dp"
+        android:layout_width="100dp"
         android:gravity="center"
-        android:layout_height="50dp">
+        android:layout_height="100dp">
 
     </Button>
 

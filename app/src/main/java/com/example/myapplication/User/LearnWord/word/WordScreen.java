@@ -54,9 +54,7 @@ public class WordScreen extends AppCompatActivity{
 
 
         prepareSQL();
-
         setControl();
-
         setEvent();
 
         returnButton.setOnClickListener(new View.OnClickListener() {

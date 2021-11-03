@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.User.LearnWord.history.HistoryScreen;
+import com.example.myapplication.User.LearnWord.notification.AlarmScreen;
 import com.example.myapplication.User.LearnWord.practice.PracticeScreen;
 import com.example.myapplication.User.LearnWord.saveWord.SaveScreen;
 import com.example.myapplication.User.LearnWord.word.WordScreen;
@@ -86,6 +87,16 @@ public class VocubularyAapter extends RecyclerView.Adapter<VocubularyAapter.View
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, PracticeScreen.class);
+                    context.startActivity(intent);
+
+                }
+            });
+        }
+        else if(position == 4){
+            holder.container.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, AlarmScreen.class);
                     context.startActivity(intent);
 
                 }

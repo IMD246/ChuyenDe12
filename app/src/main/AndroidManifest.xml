@@ -3,7 +3,8 @@
     package="com.example.myapplication">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -101,10 +102,18 @@
             android:exported="true">
 
         </activity>
+        <activity
+            android:name=".User.LearnWord.notification.AlarmScreen"
+            android:exported="true">
+
+        </activity>
+        <receiver android:name=".User.LearnWord.notification.source.AlarmReceiver"/>
+
     </application>
     <queries>
         <intent>
             <action android:name="android.intent.action.TTS_SERVICE" />
         </intent>
     </queries>
+
 </manifest>

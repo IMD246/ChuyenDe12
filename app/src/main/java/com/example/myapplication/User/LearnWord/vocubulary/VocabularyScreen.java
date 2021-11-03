@@ -2,9 +2,12 @@ package com.example.myapplication.User.LearnWord.vocubulary;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -13,6 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.R;
 import com.example.myapplication.User.LearnWord.WordManagement.IetlsManagement;
 import com.example.myapplication.User.LearnWord.WordManagement.ToeicManagement;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 
 import java.util.ArrayList;
@@ -39,8 +45,24 @@ public class VocabularyScreen extends AppCompatActivity {
         ielts_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), IetlsManagement.class);
-                startActivity(intent);
+                FirebaseMessaging.getInstance().getToken()
+                        .addOnCompleteListener(new OnCompleteListener<String>() {
+                            @Override
+                            public void onComplete(@NonNull Task<String> task) {
+                                if (!task.isSuccessful()) {
+                                    Log.w("ãc", "Fetching FCM registration token failed", task.getException());
+                                    return;
+                                }
+
+                                // Get new FCM registration token
+                                String token = task.getResult();
+
+                                // Log and toast
+//                                String msg = getString(R.string.msg_token_fmt, token);
+                                Log.d("TAG", token);
+                                Toast.makeText(getBaseContext(), token, Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
         });
 
@@ -60,10 +82,12 @@ public class VocabularyScreen extends AppCompatActivity {
         VocubularyItem item2 = new VocubularyItem("lịch sử tra từ",R.drawable.history);
         VocubularyItem item3 = new VocubularyItem("tra từ điển",R.drawable.word);
         VocubularyItem item4 = new VocubularyItem("Luyện tập",R.drawable.practice);
+        VocubularyItem item5 = new VocubularyItem("cài đặt lich học",R.drawable.com_facebook_button_icon);
         vocabularyItems.add(item1);
         vocabularyItems.add(item2);
         vocabularyItems.add(item3);
         vocabularyItems.add(item4);
+        vocabularyItems.add(item5);
     }
 
     private void setControl() {

@@ -1,38 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".alarm.AlarmScreen"
+    tools:context=".User.LearnWord.notification.AlarmScreen"
     android:layout_width="fill_parent"
     android:fillViewport="true"
     android:layout_height="fill_parent"
+    android:background="@drawable/wordbg"
     >
 <LinearLayout
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent">
     <TextView
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="80dp"
         android:text="Alarm"
-        android:textSize="30dp"
-        android:textColor="#C8A12B"
+        android:textSize="40dp"
+        android:textColor="#433511"
         android:gravity="center">
 
     </TextView>
     <TextView
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:text="Chon gio:"
-        android:textSize="16dp"
-        android:gravity="left"/>
-    <TimePicker
-        android:layout_gravity="center"
-        android:id="@+id/simpleTimePicker"
+        android:layout_marginTop="80dp"
+        android:text=" nhớ bật âm thanh thông báo với vô enable setting thông báo của emulator "
+        android:textSize="20dp"
+        android:textColor="#433511"
+        android:gravity="center">
+
+    </TextView>
+    <TextView
+        android:id="@+id/alarm_txtTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:timePickerMode="spinner"/>
+        android:layout_margin="15dp"
+        android:textSize="16dp"
+        android:gravity="left"/>
+
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:text="Chon thoi gian"
+                android:textSize="16dp"
+                android:gravity="left"/>
+            <Button
+                android:id="@+id/alarm_btnTimePickerButton"
+                android:text="click me"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </Button>
+        </LinearLayout>
+
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,81 +81,34 @@
         android:layout_height="wrap_content">
 
     </androidx.recyclerview.widget.RecyclerView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <LinearLayout
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:text="So lan lap:"
-                android:textSize="14dp"
-                android:gravity="left">
-
-            </TextView>
-            <Button
-                android:id="@+id/alarm_btnTimePickerButton"
-                android:text="click me"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-            </Button>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="20dp"
-                android:text="So phut:"
-                android:textSize="14dp"
-                android:layout_gravity="center"
-                android:gravity="left">
-
-            </TextView>
-            <Button
-                android:id="@+id/alarm_btnLoopPickerButton"
-                android:text="click me"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-            </Button>
-        </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
         android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
+
         <Button
-            android:layout_weight="1"
-            android:layout_marginVertical="20dp"
-            android:layout_marginHorizontal="40dp"
             android:id="@+id/alarm_btnSave"
-            android:text="Luu"
-            android:background="#247FA8"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginVertical="20dp"
+
+            android:layout_weight="1"
+            android:text="Luu">
 
         </Button>
+
         <Button
-            android:layout_weight="1"
-            android:layout_marginVertical="20dp"
-            android:layout_marginHorizontal="40dp"
             android:id="@+id/alarm_btnCancel"
-            android:text="Huy"
-            android:background="#ECEAF1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginVertical="20dp"
+
+            android:layout_weight="1"
+            android:text="Huy Thong bao">
 
         </Button>
     </LinearLayout>
