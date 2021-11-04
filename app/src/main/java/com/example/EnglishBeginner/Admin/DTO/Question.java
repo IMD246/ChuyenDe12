@@ -1,7 +1,5 @@
 package com.example.EnglishBeginner.Admin.DTO;
 
-import com.example.EnglishBeginner.DEFAULTVALUE;
-
 import java.io.Serializable;
 
 public class Question implements Serializable {

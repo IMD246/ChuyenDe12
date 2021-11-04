@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.EnglishBeginner.Admin.DTO.LearnItem;
 import com.example.EnglishBeginner.Admin.Adapter.LearnItemAdapter;
-import com.example.EnglishBeginner.DEFAULTVALUE;
+import com.example.EnglishBeginner.Admin.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.R;
 
 import java.util.ArrayList;

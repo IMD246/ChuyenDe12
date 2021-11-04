@@ -1,4 +1,4 @@
-package com.example.EnglishBeginner;
+package com.example.EnglishBeginner.Admin.DTO;
 
 import android.content.Context;
 import android.content.DialogInterface;

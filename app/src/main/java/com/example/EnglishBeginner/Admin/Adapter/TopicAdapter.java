@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.EnglishBeginner.Admin.DTO.Topic;
-import com.example.EnglishBeginner.DEFAULTVALUE;
+import com.example.EnglishBeginner.Admin.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.R;
 import com.squareup.picasso.Picasso;
 
