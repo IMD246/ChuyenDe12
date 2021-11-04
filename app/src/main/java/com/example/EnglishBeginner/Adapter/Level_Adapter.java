@@ -75,11 +75,6 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
             }
         });
     }
-
-    private void onSelectedItemMenu(PopupMenu popupMenu) {
-
-    }
-
     //trả về số phần tử của list
     @Override
     public int getItemCount() {
