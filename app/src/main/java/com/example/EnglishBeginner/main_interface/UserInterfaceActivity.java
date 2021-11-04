@@ -1,11 +1,15 @@
 package com.example.EnglishBeginner.main_interface;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,9 +19,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.EnglishBeginner.Adapter.ProcessTopic_Adapter;
 import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
+import com.example.EnglishBeginner.DTO.ProcessTopicItem;
 import com.example.EnglishBeginner.DTO.User;
 import com.example.EnglishBeginner.Login.Login;
 import com.example.EnglishBeginner.R;
@@ -33,6 +41,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserInterfaceActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     //Khai báo các trường dữ liệu để lấy data trên firebase
@@ -320,5 +331,40 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         } else if (DEFAULTVALUE.TEST_SCREEN.equalsIgnoreCase(string)) {
             startActivity(new Intent(this, TestSelectionEnglishFragment.class));
         }
+    }
+    public void alertDialogTopic()
+    {
+        Dialog dialog = new Dialog(UserInterfaceActivity.this);
+        dialog.setContentView(R.layout.layout_popup_dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        dialog.show();
+        TextView tvLevel = dialog.findViewById(R.id.tv_level_topic);
+        TextView tvTitle = dialog.findViewById(R.id.tv_title_topic);
+        Button learn = dialog.findViewById(R.id.btn_learn_topic);
+        Button test = dialog.findViewById(R.id.btn_test_topic);
+        tvLevel.setText("Cấp độ 1");
+        tvTitle.setText("Hãy cố lên");
+        learn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        List<ProcessTopicItem> processTopicItemList = new ArrayList<>();
+        processTopicItemList.add(new ProcessTopicItem(1, 1, "1"));
+        processTopicItemList.add(new ProcessTopicItem(2, 0, "2"));
+        ProcessTopic_Adapter processTopic_adapter = new ProcessTopic_Adapter(dialog.getContext());
+        RecyclerView rcvLevelTopic = dialog.findViewById(R.id.rcvImageTopic);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(dialog.getContext(),LinearLayoutManager.HORIZONTAL,false);
+        processTopic_adapter.setProcessTopicItemList(processTopicItemList);
+        rcvLevelTopic.setLayoutManager(linearLayoutManager);
+        rcvLevelTopic.setAdapter(processTopic_adapter);
     }
 }

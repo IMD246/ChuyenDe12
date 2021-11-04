@@ -6,62 +6,62 @@
     android:background="@drawable/ct_layout_popup_dialog"
     android:padding="12dp">
 
-    <LinearLayout
-        android:id="@+id/group_img_level"
+<!--    <LinearLayout-->
+<!--        android:id="@+id/group_img_level"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:background="@color/blue1"-->
+<!--        android:gravity="center"-->
+<!--        android:orientation="horizontal">-->
+
+<!--        <RelativeLayout-->
+<!--            android:layout_width="53dp"-->
+<!--            android:layout_height="53dp">-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/level1"-->
+<!--                android:layout_width="53dp"-->
+<!--                android:layout_height="53dp"-->
+<!--                android:src="@drawable/level_blur" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/tv_level1"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_centerInParent="true"-->
+<!--                android:text="1" />-->
+<!--        </RelativeLayout>-->
+
+<!--        <RelativeLayout-->
+<!--            android:layout_width="53dp"-->
+<!--            android:layout_marginStart="24dp"-->
+<!--            android:layout_height="53dp">-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/level2"-->
+<!--                android:layout_width="53dp"-->
+<!--                android:layout_height="53dp"-->
+<!--                android:src="@drawable/level_blur" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/tv_level2"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_centerInParent="true"-->
+<!--                android:text="2" />-->
+<!--        </RelativeLayout>-->
+<!--    </LinearLayout>-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvImageTopic"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:background="@color/blue1"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <RelativeLayout
-            android:layout_width="53dp"
-            android:layout_height="53dp">
-
-            <ImageView
-                android:id="@+id/level1"
-                android:layout_width="53dp"
-                android:layout_height="53dp"
-                android:src="@drawable/level_blur" />
-
-            <TextView
-                android:id="@+id/tv_level1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="1" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="53dp"
-            android:layout_marginStart="24dp"
-            android:layout_height="53dp">
-
-            <ImageView
-                android:id="@+id/level2"
-                android:layout_width="53dp"
-                android:layout_height="53dp"
-                android:src="@drawable/level_blur" />
-
-            <TextView
-                android:id="@+id/tv_level2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="2" />
-        </RelativeLayout>
-
-
-
-    </LinearLayout>
-
+        android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/tv_level_topic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/group_img_level"
+        android:layout_below="@id/rcvImageTopic"
         android:layout_centerHorizontal="true"
 
         android:text="cấp độ 1"

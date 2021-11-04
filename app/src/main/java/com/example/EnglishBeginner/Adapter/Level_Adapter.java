@@ -15,13 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.DTO.Level;
 import com.example.EnglishBeginner.DTO.Topic;
 import com.example.EnglishBeginner.R;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewHolder> {
@@ -126,8 +124,8 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
             }
 
             @Override
-            public void createAlertDialog(Topic topic,Context context) {
-
+            public void createAlertDialog(Topic topic) {
+                interface_learn.createAlertDialog(topic);
             }
         });
     }
@@ -137,6 +135,6 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
 
         public void onClickItemPopup(String string);
 
-
+        public void createAlertDialog(Topic topic);
     }
 }

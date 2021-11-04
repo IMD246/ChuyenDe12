@@ -16,6 +16,7 @@ import com.example.EnglishBeginner.Adapter.Level_Adapter;
 import com.example.EnglishBeginner.DAO.DAOLevel;
 import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.DTO.Level;
+import com.example.EnglishBeginner.DTO.Topic;
 import com.example.EnglishBeginner.R;
 import com.example.EnglishBeginner.learn.learning.LearningEnglishFragment;
 import com.example.EnglishBeginner.main_interface.UserInterfaceActivity;
@@ -56,7 +57,22 @@ public class LearnFragment extends Fragment {
         learnRecyclerView_adapter.setLevelArrayList(daoLevel.getLevelList());
         learnRecyclerView.setAdapter(learnRecyclerView_adapter);
         learnRecyclerView.setLayoutManager(linearLayoutManager);
+        learnRecyclerView_adapter.setInterface_learn(new Level_Adapter.Interface_Learn() {
+            @Override
+            public void onClickItemLearn(Level level) {
 
+            }
+
+            @Override
+            public void onClickItemPopup(String string) {
+
+            }
+
+            @Override
+            public void createAlertDialog(Topic topic) {
+                userInterfaceActivity.alertDialogTopic();
+            }
+        });
     }
     private void getDataFromRealTime() {
         daoLevel.getDataFromRealTimeToList(learnRecyclerView_adapter);
