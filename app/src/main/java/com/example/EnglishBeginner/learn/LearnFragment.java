@@ -14,9 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.EnglishBeginner.Adapter.Level_Adapter;
 import com.example.EnglishBeginner.DAO.DAOLevel;
+import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
+import com.example.EnglishBeginner.DTO.Level;
 import com.example.EnglishBeginner.R;
 import com.example.EnglishBeginner.learn.learning.LearningEnglishFragment;
 import com.example.EnglishBeginner.main_interface.UserInterfaceActivity;
+
+import java.util.ArrayList;
 
 public class LearnFragment extends Fragment {
     private UserInterfaceActivity userInterfaceActivity;
@@ -52,6 +56,7 @@ public class LearnFragment extends Fragment {
         learnRecyclerView_adapter.setLevelArrayList(daoLevel.getLevelList());
         learnRecyclerView.setAdapter(learnRecyclerView_adapter);
         learnRecyclerView.setLayoutManager(linearLayoutManager);
+
     }
     private void getDataFromRealTime() {
         daoLevel.getDataFromRealTimeToList(learnRecyclerView_adapter);

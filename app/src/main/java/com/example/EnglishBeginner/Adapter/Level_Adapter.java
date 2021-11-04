@@ -70,14 +70,11 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<Integer> integers = new ArrayList<>();
-                integers.add(1);
-                integers.add(2);
-                integers.add(3);
-                integers.add(4);
-                integers.add(5);
-                //hiện thị các lựa chọn khi ấn vào nút bài học
-                DEFAULTVALUE.alertDialogTopic("Cấp 1", "cố gắng vướt qua", integers, context);
+//                if (interface_learn!=null)
+//                {
+//                    interface_learn.createAlertDialog(level);
+//                }
+
             }
         });
     }
@@ -117,11 +114,29 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
         topic_adapter.setTopicList(topicList);
         recycler.setLayoutManager(gridLayoutManager);
         recycler.setAdapter(topic_adapter);
+        topic_adapter.setInterface_learn(new Topic_Adapter.Interface_Learn() {
+            @Override
+            public void onClickItemLearn(Topic topic) {
+
+            }
+
+            @Override
+            public void onClickItemPopup(String string) {
+
+            }
+
+            @Override
+            public void createAlertDialog(Topic topic,Context context) {
+
+            }
+        });
     }
 
     public interface Interface_Learn {
         public void onClickItemLearn(Level level);
 
         public void onClickItemPopup(String string);
+
+
     }
 }

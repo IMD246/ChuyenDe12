@@ -7,18 +7,18 @@
     android:padding="12dp">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rsc_level_topic"
+        android:id="@+id/rcv_Level_Topic"
         android:layout_width="match_parent"
         android:layout_height="24dp"
-        android:background="@color/blue1"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:background="@color/blue1" />
 
     <TextView
         android:id="@+id/tv_level_topic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/rsc_level_topic"
+        android:layout_below="@id/rcv_Level_Topic"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:text="cấp độ 1"
@@ -43,8 +43,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_title_topic"
         android:layout_marginTop="20dp"
-        android:backgroundTint="@color/white"
         android:background="@drawable/ct_layout_button1"
+        android:backgroundTint="@color/white"
         android:text="học"
         android:textColor="@color/blue1" />
 

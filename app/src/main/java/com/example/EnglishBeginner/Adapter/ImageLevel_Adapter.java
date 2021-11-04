@@ -4,42 +4,38 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
-import com.example.EnglishBeginner.DTO.Level;
-import com.example.EnglishBeginner.DTO.Topic;
 import com.example.EnglishBeginner.R;
-import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class DAOImageLevel_Adapter extends RecyclerView.Adapter<DAOImageLevel_Adapter.imageViewHolder> {
+public class ImageLevel_Adapter extends RecyclerView.Adapter<ImageLevel_Adapter.imageViewHolder> {
     //khai báo các trường dữ liệu
-    public List<Integer> integerList;
+    public List<String> integerList;
     private Context context;
 
     //hàm constructor
-    public DAOImageLevel_Adapter(Context context) {
+    public ImageLevel_Adapter(Context context) {
         this.context = context;
+        integerList = new ArrayList<>();
     }
 
-    public void setIntegerList(List<Integer> integerList) {
+    public void setIntegerList(List<String> integerList) {
         this.integerList = integerList;
+        notifyDataSetChanged();
     }
 
     //khởi tạo view holder
     @NonNull
     @Override
     public imageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.layout_item_img, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_item_img, parent, false);
         return new imageViewHolder(view);
     }
 
@@ -48,11 +44,7 @@ public class DAOImageLevel_Adapter extends RecyclerView.Adapter<DAOImageLevel_Ad
     public void onBindViewHolder(@NonNull imageViewHolder holder, int position) {
 
         //xử lí khi click item learn:
-        holder.textView.setText(""+integerList.get(position));
-    }
-
-    private void onSelectedItemMenu(PopupMenu popupMenu) {
-
+        holder.textView.setText(integerList.get(position));
     }
 
     //trả về số phần tử của list

@@ -2,11 +2,8 @@ package com.example.EnglishBeginner.DTO;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -14,10 +11,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.EnglishBeginner.Adapter.DAOImageLevel_Adapter;
+import com.example.EnglishBeginner.Adapter.ImageLevel_Adapter;
 import com.example.EnglishBeginner.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DEFAULTVALUE {
     final public static String ADMIN = "Admin";
@@ -56,24 +54,31 @@ public class DEFAULTVALUE {
         alertDialog.show();
     }
 
-    public static void alertDialogTopic(String level, String title, ArrayList<Integer> arrayList, Context context) {
+    public static void alertDialogTopic(String level, String title, Context context) {
         Dialog dialog = new Dialog(context);
-        RecyclerView rscView = dialog.findViewById(R.id.rsc_level_topic);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 5);
-        rscView.setLayoutManager(gridLayoutManager);
-        DAOImageLevel_Adapter daoImageLevel_adapter = new DAOImageLevel_Adapter(context);
-        daoImageLevel_adapter.setIntegerList(arrayList);
-        rscView.setAdapter(daoImageLevel_adapter);
+        dialog.setContentView(R.layout.layout_popup_dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        RecyclerView rscView = dialog.findViewById(R.id.rcv_Level_Topic);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(dialog.getContext(), 5);
+        List<String> integers = new ArrayList<>();
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(dialog.getContext());
+        integers.add("abc");
+        integers.add("abc");
+//        rscView.setLayoutManager(gridLayoutManager);
+        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        ImageLevel_Adapter imageLevel_adapter = new ImageLevel_Adapter(dialog.getContext());
+        imageLevel_adapter.setIntegerList(integers);
+        rscView.setAdapter(imageLevel_adapter);
 
 
-        TextView tvLevel = dialog.findViewById(R.id.tv_level);
-        TextView tvTitle = dialog.findViewById(R.id.tv_title);
+        TextView tvLevel = dialog.findViewById(R.id.tv_level_topic);
+        TextView tvTitle = dialog.findViewById(R.id.tv_title_topic);
 
         tvLevel.setText(level);
         tvTitle.setText(title);
 
-        dialog.setContentView(R.layout.layout_popup_dialog);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+
         dialog.show();
     }
 }

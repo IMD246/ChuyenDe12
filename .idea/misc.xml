@@ -3,16 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/drawable/ct_layout_boder2.xml" value="0.2703125" />
-        <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/drawable/ct_layout_button1.xml" value="0.2703125" />
-        <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/drawable/ct_layout_popup_dialog.xml" value="0.2703125" />
-        <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/layout/layout_fragment_alarm.xml" value="0.24003623188405798" />
-        <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/layout/layout_fragment_learn.xml" value="0.24003623188405798" />
-        <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/layout/layout_fragment_test_listen.xml" value="0.24003623188405798" />
-        <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/layout/layout_item_img.xml" value="0.24456521739130435" />
-        <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/layout/layout_item_level.xml" value="0.24456521739130435" />
-        <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/layout/layout_item_topic.xml" value="0.24003623188405798" />
-        <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/layout/layout_popup_dialog.xml" value="0.264" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/addeditlevel.xml" value="0.1793478260869565" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/addedittopic.xml" value="0.24635416666666668" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/answeritem.xml" value="0.17481884057971014" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/editlearnquestion.xml" value="0.17481884057971014" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/layout_fragment_profile.xml" value="0.24635416666666668" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/layout_item_img.xml" value="0.24635416666666668" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/layout_item_level.xml" value="0.1793478260869565" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/layout_popup_dialog.xml" value="0.24635416666666668" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.20208333333333334" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/drawable/ic_email.xml" value="0.20208333333333334" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/drawable/ic_launcher_background.xml" value="0.20208333333333334" />
