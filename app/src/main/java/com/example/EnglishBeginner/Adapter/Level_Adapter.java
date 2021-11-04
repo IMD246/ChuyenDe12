@@ -68,11 +68,10 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (interface_learn!=null)
-//                {
-//                    interface_learn.createAlertDialog(level);
-//                }
-
+                if (interface_learn!=null)
+                {
+                    interface_learn.onClickItemLearn(level);
+                }
             }
         });
     }
@@ -132,9 +131,6 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
 
     public interface Interface_Learn {
         public void onClickItemLearn(Level level);
-
-        public void onClickItemPopup(String string);
-
         public void createAlertDialog(Topic topic);
     }
 }

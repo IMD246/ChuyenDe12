@@ -10,7 +10,6 @@
             <RelativeLayout
                 android:layout_width="53dp"
                 android:layout_height="53dp">
-
                 <ImageView
                     android:id="@+id/imgProcessTopic"
                     android:layout_width="53dp"
@@ -24,7 +23,3 @@
                     android:text="1" />
             </RelativeLayout>
 </LinearLayout>
-<!--<ImageView-->
-<!--android:layout_width="match_parent"-->
-<!--android:layout_height="match_parent"-->
-<!--android:id="@+id/img_item_rscDialog"/>-->

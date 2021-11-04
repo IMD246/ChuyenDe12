@@ -62,12 +62,6 @@ public class LearnFragment extends Fragment {
             public void onClickItemLearn(Level level) {
 
             }
-
-            @Override
-            public void onClickItemPopup(String string) {
-
-            }
-
             @Override
             public void createAlertDialog(Topic topic) {
                 userInterfaceActivity.alertDialogTopic();
