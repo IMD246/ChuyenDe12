@@ -1,15 +1,11 @@
 package com.example.EnglishBeginner.Adapter;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -22,11 +18,12 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+@SuppressWarnings("StatementWithEmptyBody")
 public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewHolder> {
     //khai báo các trường dữ liệu
     public List<Level> levelArrayList;
     public Interface_Learn interface_learn;
-    private Context context;
+    private final Context context;
 
     //hàm constructor
     public Level_Adapter(Context context) {
@@ -49,7 +46,7 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
         return new LearnViewHolder(view);
     }
 
-    //xử lí giao diện, action cho viewholder
+    //xử lí giao diện, action cho viewHolder
     @Override
     public void onBindViewHolder(@NonNull LearnViewHolder holder, int position) {
         Level level = levelArrayList.get(position);
@@ -65,13 +62,10 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
             setTopicItemRecycler(holder.rcvLevelTopicItem, level.getListTopic());
         }
         //xử lí khi click item learn:
-        holder.layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (interface_learn!=null)
-                {
-                    interface_learn.onClickItemLearn(level);
-                }
+        holder.layout.setOnClickListener(v -> {
+            if (interface_learn!=null)
+            {
+                interface_learn.onClickItemLearn(level);
             }
         });
     }
@@ -83,11 +77,11 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
         }
         return 0;
     }
-    //class ViewHodler
-    public class LearnViewHolder extends RecyclerView.ViewHolder {
-        private ImageView imgLesson;
-        private RecyclerView rcvLevelTopicItem;
-        private LinearLayout layout;
+    //class ViewHolder
+    public static class LearnViewHolder extends RecyclerView.ViewHolder {
+        private final ImageView imgLesson;
+        private final RecyclerView rcvLevelTopicItem;
+        private final LinearLayout layout;
 
         public LearnViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -125,7 +119,7 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
     }
 
     public interface Interface_Learn {
-        public void onClickItemLearn(Level level);
-        public void createAlertDialog(Topic topic);
+        void onClickItemLearn(Level level);
+        void createAlertDialog(Topic topic);
     }
 }
