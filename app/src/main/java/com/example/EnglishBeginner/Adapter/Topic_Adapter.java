@@ -1,28 +1,19 @@
 package com.example.EnglishBeginner.Adapter;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
-import com.example.EnglishBeginner.DTO.Level;
 import com.example.EnglishBeginner.DTO.Topic;
 import com.example.EnglishBeginner.R;
 import com.example.EnglishBeginner.learn.learning.LearningEnglishFragment;
@@ -76,7 +67,10 @@ public class Topic_Adapter extends RecyclerView.Adapter<Topic_Adapter.TopicViewH
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DEFAULTVALUE.alertDialogTopic("Cấp 1", "cố gắng vướt qua", context);
+                List<Integer> listProcess = new ArrayList<>();
+                listProcess.add(1);
+                listProcess.add(1);
+                DEFAULTVALUE.alertDialogTopic("Cấp 1", "Hãy cố gắng vượt qua thử thách này để chứng tỏ khả năng của bản thân!",listProcess, context);
             }
         });
     }

@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -54,28 +55,45 @@ public class DEFAULTVALUE {
         alertDialog.show();
     }
 
-    public static void alertDialogTopic(String level, String title, Context context) {
+    public static void alertDialogTopic(String level, String title, List<Integer> list, Context context) {
         Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.layout_popup_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        RecyclerView rscView = dialog.findViewById(R.id.rcv_Level_Topic);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(dialog.getContext(), 5);
-        List<String> integers = new ArrayList<>();
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(dialog.getContext());
-        integers.add("abc");
-        integers.add("abc");
-//        rscView.setLayoutManager(gridLayoutManager);
-        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-        ImageLevel_Adapter imageLevel_adapter = new ImageLevel_Adapter(dialog.getContext());
-        imageLevel_adapter.setIntegerList(integers);
-        rscView.setAdapter(imageLevel_adapter);
 
 
+        ImageView imglevel1 = dialog.findViewById(R.id.level1);
+        ImageView imglevel2 = dialog.findViewById(R.id.level2);
         TextView tvLevel = dialog.findViewById(R.id.tv_level_topic);
         TextView tvTitle = dialog.findViewById(R.id.tv_title_topic);
+        TextView tvLevel1 = dialog.findViewById(R.id.tv_level1);
+        TextView tvLevel2 = dialog.findViewById(R.id.tv_level2);
 
         tvLevel.setText(level);
         tvTitle.setText(title);
+
+        List<Integer> integerList = new ArrayList<>();
+
+        for (int i = 0; i < list.size(); i++){
+            if (list.get(i) == 0){
+                integerList.add(R.drawable.level_blur);
+            }else {
+                integerList.add(R.drawable.level);
+
+            }
+        }
+        if (list.get(0) == 1){
+            tvLevel1.setText("1");
+        }else{
+            tvLevel1.setText("");
+        }
+        if (list.get(1) == 1){
+            tvLevel2.setText("2");
+        }
+        else{
+            tvLevel2.setText("");
+        }
+        imglevel1.setImageResource(integerList.get(0));
+        imglevel2.setImageResource(integerList.get(1));
 
 
 
