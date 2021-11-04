@@ -1,6 +1,9 @@
 package com.example.EnglishBeginner.Adapter;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +15,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.DTO.Level;
 import com.example.EnglishBeginner.DTO.Topic;
 import com.example.EnglishBeginner.R;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewHolder> {
@@ -65,10 +70,14 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ArrayList<Integer> integers = new ArrayList<>();
+                integers.add(1);
+                integers.add(2);
+                integers.add(3);
+                integers.add(4);
+                integers.add(5);
                 //hiện thị các lựa chọn khi ấn vào nút bài học
-                PopupMenu popupMenu = new PopupMenu(context, holder.imgLesson);
-                popupMenu.getMenuInflater().inflate(R.menu.menu_button_lesson, popupMenu.getMenu());
-                popupMenu.show();
+                DEFAULTVALUE.alertDialogTopic("Cấp 1", "cố gắng vướt qua", integers, context);
             }
         });
     }

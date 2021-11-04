@@ -1,18 +1,27 @@
 package com.example.EnglishBeginner.Adapter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.DTO.Topic;
 import com.example.EnglishBeginner.R;
 import com.example.EnglishBeginner.learn.learning.LearningEnglishFragment;
@@ -66,10 +75,39 @@ public class Topic_Adapter extends RecyclerView.Adapter<Topic_Adapter.TopicViewH
             @Override
             public void onClick(View v) {
                 //hiện thị các lựa chọn khi ấn vào nút bài học
-                PopupMenu popupMenu = new PopupMenu(context, holder.imgTopic);
-                popupMenu.getMenuInflater().inflate(R.menu.menu_button_lesson, popupMenu.getMenu());
-                onSelectedItemMenu(popupMenu);
-                popupMenu.show();
+//                PopupMenu popupMenu = new PopupMenu(context, holder.imgTopic);
+//                popupMenu.getMenuInflater().inflate(R.menu.menu_button_lesson, popupMenu.getMenu());
+//                onSelectedItemMenu(popupMenu);
+//                popupMenu.show();
+
+                Dialog dialog = new Dialog(context);
+                dialog.setContentView(R.layout.layout_popup_dialog);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//                WindowManager.LayoutParams params = new WindowManager.LayoutParams();
+//                params.copyFrom(dialog.getWindow().getAttributes());
+//                params.y = holder.imgTopic.getHeight();
+//                dialog.getWindow().setAttributes(params);
+                dialog.show();
+
+//                PopupWindow popupWindow = new PopupWindow(context);
+//
+//                View view = LayoutInflater.from(context).inflate(R.layout.layout_popup_dialog, null, false);
+//                popupWindow.setContentView(view);
+//
+//                popupWindow.showAsDropDown(holder.imgTopic, 30, 30, Gravity.BOTTOM);
+//                popupWindow.setTouchInterceptor(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        if (event.getAction() == MotionEvent.ACTION_OUTSIDE)
+//                        {
+//                            popupWindow.dismiss();
+//                            return true;
+//                        }
+//
+//                        return false;
+//                    }
+//                });
+//                popupWindow.showAtLocation(holder.imgTopic,Gravity.BOTTOM, 30, 30);
             }
         });
     }
@@ -79,12 +117,10 @@ public class Topic_Adapter extends RecyclerView.Adapter<Topic_Adapter.TopicViewH
             Intent intent;
             switch (item.getItemId()) {
                 case R.id.item_menu_learn:
-//                    interface_learn.onClickItemPopup(DEFAULTVALUE.LEARNING_SCREEN);
                     intent = new Intent(context, LearningEnglishFragment.class);
                     context.startActivity(intent);
                     break;
                 case R.id.item_menu_test:
-//                    interface_learn.onClickItemPopup(DEFAULTVALUE.TEST_SCREEN);
                     intent = new Intent(context, TestSelectionEnglishFragment.class);
                     context.startActivity(intent);
                     break;
