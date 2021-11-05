@@ -21,10 +21,10 @@ public class ViewPageAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position)
         {
-            case 0:return new LearnManagementFragment();
             case 1:return new WordManagementFragment();
             case 2:return new AnalysicUser();
             case 3:return new AccountUserManagement();
+            case 0:
             default:return new LearnManagementFragment();
         }
     }

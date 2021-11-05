@@ -166,7 +166,6 @@ public class DAOTopic {
             });
         }
     }
-
     public void deleteDataToFire(Topic topic) {
         databaseReference.child(String.valueOf(topic.getId())).removeValue(new DatabaseReference.CompletionListener() {
             @Override
