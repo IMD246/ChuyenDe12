@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.EnglishBeginner.Adapter.ProcessTopic_Adapter;
+import com.example.EnglishBeginner.DAO.DAOUserStatusLogin;
 import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.DTO.ProcessTopicItem;
 import com.example.EnglishBeginner.DTO.User;
@@ -43,6 +44,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class UserInterfaceActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -51,6 +53,7 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
     DatabaseReference databaseReference;
     private TextView tvUserName,tvUserEmail;
     private ImageView imgUserName;
+    private DAOUserStatusLogin daoUserStatusLogin;
 
 
     //khai báo giá trị cho screen
@@ -81,10 +84,18 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setControl();
+        updateLoginStatusUser();
         getProFileFromRealTime();
         checkLogicDrawerLayout();
         processBottomNavigation();
         processViewPager2();
+    }
+
+    private void updateLoginStatusUser() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        HashMap<String,Object>hashMap = new HashMap<>();
+        hashMap.put("isOnline",true);
+        daoUserStatusLogin.UpdateStatusAccountUser(hashMap,user.getUid());
     }
 
     //kiểm tra logic khi drawer layout đóng
@@ -170,6 +181,7 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
     //Ánh xạ, khởi gán giá trị,...
 
     private void setControl() {
+        daoUserStatusLogin = new DAOUserStatusLogin(this);
         //drawe layout
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
@@ -192,7 +204,6 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         viewPager2_adapter = new ViewPager2_Adapter(this);
         viewPager2.setAdapter(viewPager2_adapter);
     }
-
     //xử lí Viewpager2
     private void processViewPager2() {
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
@@ -313,10 +324,13 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         builder1.setPositiveButton(
                 "Có",
                 (dialog, id) -> {
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    HashMap<String,Object>hashMap = new HashMap<>();
+                    hashMap.put("isOnline",false);
+                    daoUserStatusLogin.UpdateStatusAccountUser(hashMap,user.getUid());
                     FirebaseAuth.getInstance().signOut();
                     startActivity(new Intent(UserInterfaceActivity.this, Login.class));
                 });
-
         builder1.setNegativeButton(
                 "Không",
                 (dialog, id) -> dialog.cancel());

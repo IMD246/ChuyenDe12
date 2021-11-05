@@ -7,6 +7,7 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Checkable;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,6 +61,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private final static int RC_SIGN_IN = 100;
     private FirebaseUser current;
     private int dem = 0;
+    private Boolean check = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -220,7 +222,21 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 startActivity(new Intent(this, ForgetPassword.class));
         }
     }
-
+    private Boolean checkLogin(String uid) {
+        if (uid != null) {
+            DocumentReference documentReference = firestore.collection("users").document(uid);
+            documentReference.get().addOnSuccessListener(documentSnapshot -> {
+                if (Objects.equals(documentSnapshot.getBoolean("isOnline"), false)) {
+                    check = true;
+                }
+                else
+                {
+                    check = false;
+                }
+            });
+        }
+        return check;
+    }
     private void checkAuthenticate(String uid, int dem) {
         if (uid != null) {
             DocumentReference documentReference = firestore.collection("users").document(uid);
@@ -307,8 +323,15 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         super.onStart();
         current = mFirebaseAuth.getCurrentUser();
         if (current != null) {
-            checkAuthenticate(current.getUid(), dem);
-            dem++;
+            if (checkLogin(current.getUid()))
+            {
+                checkAuthenticate(current.getUid(), dem);
+                dem++;
+            }
+            else
+            {
+                DEFAULTVALUE.alertDialogMessage("Thông báo","Tài khoản đã có người đăng nhập",Login.this);
+            }
         }
     }
 }

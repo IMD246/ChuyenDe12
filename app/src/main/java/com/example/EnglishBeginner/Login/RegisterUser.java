@@ -119,6 +119,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                                         auThenticateUser.put("email",us.getEmail());
                                         auThenticateUser.put("authenticate", DEFAULTVALUE.USER);
                                         auThenticateUser.put("isBlock",false);
+                                        auThenticateUser.put("isOnline",false);
                                         df.set(auThenticateUser);
                                         progressBar.setVisibility(View.VISIBLE);
                                         startActivity(new Intent(RegisterUser.this, Login.class));
