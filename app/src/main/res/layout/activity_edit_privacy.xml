@@ -22,6 +22,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="60dp"
         android:layout_marginRight="20dp"
+        android:layout_marginBottom="260dp"
         android:background="@drawable/ct_layout_boder1"
         android:gravity="center"
         android:orientation="vertical"
@@ -43,4 +44,14 @@
             android:textColor="#DA918D8D"
             android:textStyle="italic" />
     </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_back_pr"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="20dp"
+        android:background="@drawable/ct_layout_button2"
+        android:text="quay lại"
+        android:textColor="@color/white" />
 </LinearLayout>

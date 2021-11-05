@@ -93,6 +93,7 @@ public class User {
         this.activePrivacy = activePrivacy;
     }
 
+
     @Override
     public String toString() {
         return "User{" +

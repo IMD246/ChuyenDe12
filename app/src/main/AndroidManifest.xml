@@ -18,6 +18,9 @@
             android:name=".learn.testing.TestEnglishActivity"
             android:exported="false" />
         <activity
+            android:name=".profile.EditPrivacyActivity"
+            android:exported="false"/>
+        <activity
             android:name=".learn.testing.TestWriteFragment"
             android:exported="false" />
         <activity
