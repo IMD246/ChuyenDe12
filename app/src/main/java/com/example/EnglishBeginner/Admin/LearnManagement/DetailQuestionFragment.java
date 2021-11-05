@@ -305,7 +305,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
                     daoAnswer.setContext(getContext());
                     daoAnswer.editDataToFireBase(answer1, edtAnswer, question.getId());
                 }
-                daoImageStorage.uploadFileImageToAnswer(2, imgAnswer, "Question" + question.getId() + "Answer" + answer1.getId(), answer1, question.getId(), daoAnswer.getQuestion());
+                daoImageStorage.uploadFileImageToAnswer(2, imgAnswer, "Question"+question.getId()+"Answer" + answer1.getId(), answer1, question.getId(), daoAnswer.getQuestion());
             });
         } else if (choice == 1) {
             btnYes.setText("Thêm");

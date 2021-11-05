@@ -42,7 +42,7 @@ public class DAOImageStorage {
     // hàm upload ảnh cho topic
     public void uploadFileImageTopic(int choice,ImageView imageView, String name, Topic topic) {
         if (mImgURL != null) {
-            StorageReference fileReference = storageReference.child(name + " " + topic.getId());
+            StorageReference fileReference = storageReference.child(name+""+topic.getId());
             fileReference.putFile(mImgURL).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
                 public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
@@ -89,7 +89,7 @@ public class DAOImageStorage {
     // hàm upload ảnh cho Level
     public void uploadFileImageLevel(int choice, ImageView imageView, String name, Level level) {
         if (mImgURL != null) {
-            StorageReference fileReference = storageReference.child(name + " " + level.getId());
+            StorageReference fileReference = storageReference.child(name+""+level.getId());
             fileReference.putFile(mImgURL).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
                 public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
