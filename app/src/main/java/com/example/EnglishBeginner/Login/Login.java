@@ -7,7 +7,6 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Checkable;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -190,11 +189,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             if (task.isSuccessful()) {
                 FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
                 assert firebaseUser != null;
-                checkAuthenticate(firebaseUser.getUid(),dem);
-                Log.d("signIn","GoogleLoginSuccessful");
+                checkAuthenticate(firebaseUser.getUid(), dem);
+                Log.d("signIn", "GoogleLoginSuccessful");
             }
         });
     }
+
     private void handleFacebookToken(@NonNull AccessToken accessToken) {
         AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
 //        linkWithInWithFirebase(credential);
@@ -202,8 +202,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             if (task.isSuccessful()) {
                 FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
                 assert firebaseUser != null;
-                checkAuthenticate(firebaseUser.getUid(),dem);
-                Log.d("signIn","FacebookLoginSuccessful");
+                checkAuthenticate(firebaseUser.getUid(), dem);
+                Log.d("signIn", "FacebookLoginSuccessful");
             }
         });
     }
@@ -221,21 +221,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             case R.id.tvForgotPass:
                 startActivity(new Intent(this, ForgetPassword.class));
         }
-    }
-    private Boolean checkLogin(String uid) {
-        if (uid != null) {
-            DocumentReference documentReference = firestore.collection("users").document(uid);
-            documentReference.get().addOnSuccessListener(documentSnapshot -> {
-                if (Objects.equals(documentSnapshot.getBoolean("isOnline"), false)) {
-                    check = true;
-                }
-                else
-                {
-                    check = false;
-                }
-            });
-        }
-        return check;
     }
     private void checkAuthenticate(String uid, int dem) {
         if (uid != null) {
@@ -281,7 +266,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 assert user != null;
                 if (user.isEmailVerified()) {
                     dem++;
-                    checkAuthenticate(user.getUid(), dem);
+                    checkAuthenticate(user.getUid(),dem);
                 } else {
                     user.sendEmailVerification();
                     DEFAULTVALUE.alertDialogMessage("Thông báo", "Hãy xác thực email của bạn!", Login.this);
@@ -323,15 +308,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         super.onStart();
         current = mFirebaseAuth.getCurrentUser();
         if (current != null) {
-            if (checkLogin(current.getUid()))
-            {
-                checkAuthenticate(current.getUid(), dem);
-                dem++;
-            }
-            else
-            {
-                DEFAULTVALUE.alertDialogMessage("Thông báo","Tài khoản đã có người đăng nhập",Login.this);
-            }
+            checkAuthenticate(current.getUid(),dem);
         }
     }
 }
