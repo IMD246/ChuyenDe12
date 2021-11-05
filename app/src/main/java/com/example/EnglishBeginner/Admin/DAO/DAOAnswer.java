@@ -1,17 +1,15 @@
 package com.example.EnglishBeginner.Admin.DAO;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.example.EnglishBeginner.Admin.Adapter.AnswerAdapter;
 import com.example.EnglishBeginner.Admin.DTO.Answer;
 import com.example.EnglishBeginner.Admin.DTO.Question;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,8 +21,8 @@ import java.util.List;
 
 public class DAOAnswer {
     //Fields
-    private DatabaseReference databaseReference;
-    private List<Answer> answerList;
+    private final DatabaseReference databaseReference;
+    private final List<Answer> answerList;
     private Question question;
     private Context context;
 
@@ -51,6 +49,7 @@ public class DAOAnswer {
     // lấy dữ liệu từ firebase dựa theo id của Question
     public void getDataFromFirebase(int idQuestion, AnswerAdapter answerAdapter) {
         databaseReference.child(idQuestion + "/listanswer").addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (answerList != null) {
@@ -58,6 +57,7 @@ public class DAOAnswer {
                 }
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Answer answer = dataSnapshot.getValue(Answer.class);
+                    assert answerList != null;
                     answerList.add(answer);
                 }
                 if (answerAdapter != null) {
@@ -85,8 +85,7 @@ public class DAOAnswer {
 
     // thêm dữ liệu vào firebase
     public void addDataAnswerToFirebaseQuestion(Answer answer1, EditText edtAnswer, int idQuestion) {
-        Boolean check = true;
-        int s = 1;
+        boolean check = true;
         if (answerList.size() > 0) {
             for (Answer answer : answerList) {
                 if (answer.getAnswerQuestion().equalsIgnoreCase(answer1.getAnswerQuestion())) {
@@ -95,23 +94,21 @@ public class DAOAnswer {
                 }
             }
         }
-        if (check == false) {
+        if (!check) {
             edtAnswer.setError("Trùng dữ liệu , hãy kiểm tra lại dữ liệu");
             edtAnswer.requestFocus();
-        } else {
-            databaseReference.child(idQuestion + "/listanswer").child(String.valueOf(answer1.getId())).setValue(answer1).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isComplete()) {
-                        Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
-                    }
+        } else if (check)
+            {
+            databaseReference.child(idQuestion + "/listanswer").child(String.valueOf(answer1.getId())).setValue(answer1).addOnCompleteListener(task -> {
+                if (task.isComplete()) {
+                    Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
                 }
             });
         }
     }
     // sửa dữ liệu
     public void editDataToFireBase(Answer answer1, EditText edtAnswer, int idQuestion) {
-        Boolean check = true;
+        boolean check = true;
         if (answerList.size() > 0) {
             for (Answer answer : answerList) {
                 if (answer.getAnswerQuestion().equalsIgnoreCase(answer1.getAnswerQuestion())) {
@@ -120,27 +117,19 @@ public class DAOAnswer {
                 }
             }
         }
-        if (check == false) {
+        if (!check) {
             edtAnswer.setError("Trùng dữ liệu , hãy kiểm tra lại dữ liệu");
             edtAnswer.requestFocus();
         } else {
-            databaseReference.child(idQuestion + "/listanswer/" + answer1.getId()).setValue(answer1).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isComplete()) {
-                        Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
-                    }
+            databaseReference.child(idQuestion + "/listanswer/" + answer1.getId()).setValue(answer1).addOnCompleteListener(task -> {
+                if (task.isComplete()) {
+                    Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
                 }
             });
         }
     }
     //xóa dữ liệu
     public void deleteDataToFire(Answer answer, int id) {
-        databaseReference.child(id + "/listanswer").child(String.valueOf(answer.getId())).removeValue(new DatabaseReference.CompletionListener() {
-            @Override
-            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
-            }
-        });
+        databaseReference.child(id + "/listanswer").child(String.valueOf(answer.getId())).removeValue((error, ref) -> Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show());
     }
 }

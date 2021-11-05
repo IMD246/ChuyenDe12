@@ -1,21 +1,12 @@
 package com.example.EnglishBeginner.Admin.LearnManagement;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.InputType;
-import android.view.Gravity;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -23,20 +14,25 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.EnglishBeginner.Admin.Adapter.LevelAdapter;
 import com.example.EnglishBeginner.Admin.DAO.DAOImageStorage;
-import com.example.EnglishBeginner.Admin.DTO.Level;
 import com.example.EnglishBeginner.Admin.DAO.DAOLevel;
+import com.example.EnglishBeginner.Admin.DTO.Level;
 import com.example.EnglishBeginner.R;
 import com.squareup.picasso.Picasso;
 
 public class LevelManagement extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
     private LevelAdapter levelAdapter;
-    private SearchView searchView;
     private DAOLevel daoLevel;
-    private ImageView imgAdd,imgLevel;
+    private ImageView imgLevel;
     private DAOImageStorage daoImageStorage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +44,8 @@ public class LevelManagement extends AppCompatActivity {
     private void initUI() {
         daoImageStorage = new DAOImageStorage(this);
         daoLevel = new DAOLevel(this);
-        searchView = findViewById(R.id.svLevel);
-        recyclerView = findViewById(R.id.rcvLevel);
+        SearchView searchView = findViewById(R.id.svLevel);
+        RecyclerView recyclerView = findViewById(R.id.rcvLevel);
         levelAdapter = new LevelAdapter(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
@@ -59,7 +55,7 @@ public class LevelManagement extends AppCompatActivity {
         levelAdapter.setMyDelegationLevel(new LevelAdapter.MyDelegationLevel() {
             @Override
             public void editItem(Level level) {
-                openDialog(Gravity.CENTER,2, level);
+                openDialog(2, level);
             }
 
             @Override
@@ -67,13 +63,8 @@ public class LevelManagement extends AppCompatActivity {
                 alertDialog(level);
             }
         });
-        imgAdd = findViewById(R.id.imgAdd);
-        imgAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDialog(Gravity.CENTER,1,null);
-            }
-        });
+        ImageView imgAdd = findViewById(R.id.imgAdd);
+        imgAdd.setOnClickListener(v -> openDialog(1,null));
         searchView.setInputType(InputType.TYPE_CLASS_NUMBER);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -109,7 +100,8 @@ public class LevelManagement extends AppCompatActivity {
     }
 
     // tạo hộp thoại để thêm và sửa dữ liệu
-    private void openDialog(int center, int choice, Level level) {
+    @SuppressLint("SetTextI18n")
+    private void openDialog(int choice, Level level) {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.addeditlevel);
@@ -121,17 +113,7 @@ public class LevelManagement extends AppCompatActivity {
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         WindowManager.LayoutParams windowAttributes = window.getAttributes();
-        windowAttributes.gravity = center;
         window.setAttributes(windowAttributes);
-
-        if (Gravity.CENTER == center)
-        {
-            dialog.setCancelable(true);
-        }
-        else
-        {
-            dialog.setCancelable(false);
-        }
         EditText edtLevel = dialog.findViewById(R.id.edtLevel);
         edtLevel.setInputType(InputType.TYPE_CLASS_NUMBER);
         TextView tvThemSua = dialog.findViewById(R.id.tvThemSua);
@@ -139,18 +121,8 @@ public class LevelManagement extends AppCompatActivity {
         Button btnYes = dialog.findViewById(R.id.btnYes);
         Button btnNo = dialog.findViewById(R.id.btnNo);
         Button btnPickImage = dialog.findViewById(R.id.btnPickImageLevel);
-        btnPickImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openFileChoose();
-            }
-        });
-        btnNo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        btnPickImage.setOnClickListener(v -> openFileChoose());
+        btnNo.setOnClickListener(v -> dialog.dismiss());
         if (choice == 2)
         {
             if (level.getUrlImage().isEmpty())
@@ -162,49 +134,43 @@ public class LevelManagement extends AppCompatActivity {
             btnYes.setText("Sửa");
             tvThemSua.setText("Sửa dữ liệu");
             edtLevel.setText(String.valueOf(level.getNameLevel()));
-            btnYes.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Level level2 = new Level();
-                    level2.setId(level.getId());
-                    if (edtLevel.getText().toString().isEmpty())
-                    {
-                        level2.setNameLevel(0);
-                    }
-                    else {
-                        level2.setNameLevel(Integer.parseInt(edtLevel.getText().toString()));
-                    }
-                    level2.setUrlImage(level.getUrlImage());
-                    if (level.getNameLevel() != level2.getNameLevel()) {
-                        daoLevel.editDataToFireBase(level2, edtLevel);
-                    }
-                    daoImageStorage.uploadFileImageLevel(choice,imgLevel,"Level",level2);
+            btnYes.setOnClickListener(v -> {
+                Level level2 = new Level();
+                level2.setId(level.getId());
+                if (edtLevel.getText().toString().isEmpty())
+                {
+                    level2.setNameLevel(0);
                 }
+                else {
+                    level2.setNameLevel(Integer.parseInt(edtLevel.getText().toString()));
+                }
+                level2.setUrlImage(level.getUrlImage());
+                if (level.getNameLevel() != level2.getNameLevel()) {
+                    daoLevel.editDataToFireBase(level2, edtLevel);
+                }
+                daoImageStorage.uploadFileImageLevel(choice,imgLevel,"Level",level2);
             });
         }
         else if (choice == 1)
         {
             btnYes.setText("Thêm");
-            btnYes.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Level level1 = new Level();
-                    int i=1;
-                    if (daoLevel.getLevelList().size()>0)
-                    {
-                        i = daoLevel.getLevelList().get(daoLevel.getLevelList().size()-1).getId()+1;
-                    }
-                    level1.setId(i);
-                    if (edtLevel.getText().toString().isEmpty())
-                    {
-                        level1.setNameLevel(0);
-                    }
-                    else {
-                        level1.setNameLevel(Integer.parseInt(edtLevel.getText().toString()));
-                    }
-                    daoLevel.addDataToFireBase(level1,edtLevel);
-                    daoImageStorage.uploadFileImageLevel(choice,imgLevel,"Level",level1);
+            btnYes.setOnClickListener(v -> {
+                Level level1 = new Level();
+                int i=1;
+                if (daoLevel.getLevelList().size()>0)
+                {
+                    i = daoLevel.getLevelList().get(daoLevel.getLevelList().size()-1).getId()+1;
                 }
+                level1.setId(i);
+                if (edtLevel.getText().toString().isEmpty())
+                {
+                    level1.setNameLevel(0);
+                }
+                else {
+                    level1.setNameLevel(Integer.parseInt(edtLevel.getText().toString()));
+                }
+                daoLevel.addDataToFireBase(level1,edtLevel);
+                daoImageStorage.uploadFileImageLevel(choice,imgLevel,"Level",level1);
             });
         }
         dialog.show();
@@ -216,19 +182,11 @@ public class LevelManagement extends AppCompatActivity {
         builder1.setCancelable(true);
         builder1.setPositiveButton(
                 "Có",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        daoLevel.deleteDataToFire(level);
-                    }
-                });
+                (dialog, id) -> daoLevel.deleteDataToFire(level));
 
         builder1.setNegativeButton(
                 "Không",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
+                (dialog, id) -> dialog.cancel());
 
         AlertDialog alert11 = builder1.create();
         alert11.show();

@@ -1,18 +1,12 @@
 package com.example.EnglishBeginner.Admin.LearnManagement;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -27,7 +21,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.EnglishBeginner.Admin.Adapter.AnswerAdapter;
 import com.example.EnglishBeginner.Admin.DAO.DAOAnswer;
@@ -37,7 +37,6 @@ import com.example.EnglishBeginner.Admin.DTO.Answer;
 import com.example.EnglishBeginner.Admin.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.Admin.DTO.Question;
 import com.example.EnglishBeginner.Admin.DTO.Topic;
-import com.example.EnglishBeginner.Admin.DTO.TypeQuestion;
 import com.example.EnglishBeginner.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
@@ -52,10 +51,8 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
     private DAOAnswer daoAnswer;
     private AnswerAdapter answerAdapter;
     private QuestionInterface questionInterface;
-    private FloatingActionButton flAdd, flEdit;
     private DAOQuestion daoQuestion;
     private DAOImageStorage daoImageStorage;
-    private RecyclerView rcvAnswer;
     private ImageView imgAnswer;
     private Question question;
     private TextView tvTitle, tvCorrectAnswer;
@@ -79,11 +76,12 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
     }
 
     // ánh xạ cho các view và set adapter
+    @SuppressLint("SetTextI18n")
     private void initUI() {
         questionInterface = (QuestionInterface) getActivity();
         tvTitle = view.findViewById(R.id.tvTitleQuestionDetail);
@@ -94,10 +92,10 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         daoAnswer = new DAOAnswer(getContext());
         daoImageStorage = new DAOImageStorage(getContext());
         daoQuestion = new DAOQuestion(getContext());
-        rcvAnswer = view.findViewById(R.id.rcvAnswer);
-        flAdd = view.findViewById(R.id.flAdd);
+        RecyclerView rcvAnswer = view.findViewById(R.id.rcvAnswer);
+        FloatingActionButton flAdd = view.findViewById(R.id.flAdd);
         flAdd.setOnClickListener(this);
-        flEdit = view.findViewById(R.id.flEdit);
+        FloatingActionButton flEdit = view.findViewById(R.id.flEdit);
         flEdit.setOnClickListener(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
@@ -119,27 +117,22 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
 
     // hộp thoại để thống báo có xóa dữ liệu hay không
     private void alertDialogtoDelete(Answer answer) {
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
-        builder1.setMessage("Bạn có muốn xóa không?");
-        builder1.setCancelable(true);
-        builder1.setPositiveButton(
-                "Có",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        daoAnswer.deleteDataToFire(answer, question.getId());
-                    }
-                });
+        if (getContext()!=null) {
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
 
-        builder1.setNegativeButton(
-                "Không",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
+            builder1.setMessage("Bạn có muốn xóa không?");
+            builder1.setCancelable(true);
+            builder1.setPositiveButton(
+                    "Có",
+                    (dialog, id) -> daoAnswer.deleteDataToFire(answer, question.getId()));
 
-        AlertDialog alert11 = builder1.create();
-        alert11.show();
+            builder1.setNegativeButton(
+                    "Không",
+                    (dialog, id) -> dialog.cancel());
+
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
+        }
     }
 
     private void getDataFromFirebase() {
@@ -163,18 +156,18 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         }
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
-        getView().setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
-                if (keyEvent.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+        getView().setOnKeyListener((view, keyCode, keyEvent) -> {
+            if (keyEvent.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                if (getActivity()!=null) {
                     getActivity().getSupportFragmentManager().popBackStack();
                     return true;
                 }
-                return false;
             }
+            return false;
         });
     }
     // hộp thoại sửa dữ liệu Question
+    @SuppressLint("SetTextI18n")
     public void openDialogEditQuestion(int center, Question question) {
         final Dialog dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -190,11 +183,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         WindowManager.LayoutParams windowAttributes = window.getAttributes();
         windowAttributes.gravity = center;
         window.setAttributes(windowAttributes);
-        if (Gravity.CENTER == center) {
-            dialog.setCancelable(true);
-        } else {
-            dialog.setCancelable(false);
-        }
+        dialog.setCancelable(Gravity.CENTER == center);
         EditText edtTitle = dialog.findViewById(R.id.edtTitle);
         EditText edtCorrectAnswer = dialog.findViewById(R.id.edtCorrectAnswer);
         TextView tvThemSua = dialog.findViewById(R.id.tvThemSua);
@@ -209,35 +198,30 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         for (Topic topic : questionInterface.daoTopic.getTopicList()) {
             listTopic.add(topic.getNameTopic());
         }
-        spnTopic.setAdapter(new ArrayAdapter<String>(getContext(), R.layout.listoptionitem, R.id.tvOptionItem, listTopic));
-        spnTypeQuestion.setAdapter(new ArrayAdapter<String>(getContext(), R.layout.listoptionitem, R.id.tvOptionItem, listTypeQuestion));
+        spnTopic.setAdapter(new ArrayAdapter<>(getContext(), R.layout.listoptionitem, R.id.tvOptionItem, listTopic));
+        spnTypeQuestion.setAdapter(new ArrayAdapter<>(getContext(), R.layout.listoptionitem, R.id.tvOptionItem, listTypeQuestion));
         if (question != null) {
             spnTopic.setSelection(getSelectedSpinner(spnTopic, question.getNameTopic()));
             spnTypeQuestion.setSelection(getSelectedSpinner(spnTopic, question.getNameTypeQuestion()));
             edtTitle.setText(question.getTitle());
             edtCorrectAnswer.setText(question.getCorrectAnswer());
         }
-        btnNo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        btnYes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Question question1 = new Question();
-                question.setId(question.getId());
-                question.setTitle(edtTitle.getText().toString());
-                question.setCorrectAnswer(edtCorrectAnswer.getText().toString());
-                question.setNameTopic(spnTopic.getSelectedItem().toString());
-                question.setNameTypeQuestion(spnTypeQuestion.getSelectedItem().toString());
-                for (Topic topic : questionInterface.daoTopic.getTopicList()) {
-                    if (question.getNameTopic().equalsIgnoreCase(topic.getNameTopic())) {
-                        question.setIdTopic(topic.getId());
-                        break;
-                    }
+        btnNo.setOnClickListener(v -> dialog.dismiss());
+        btnYes.setOnClickListener(v -> {
+            Question question1 = new Question();
+            assert question != null;
+            question1.setId(question.getId());
+            question1.setTitle(edtTitle.getText().toString());
+            question1.setCorrectAnswer(edtCorrectAnswer.getText().toString());
+            question1.setNameTopic(spnTopic.getSelectedItem().toString());
+            question1.setNameTypeQuestion(spnTypeQuestion.getSelectedItem().toString());
+            for (Topic topic : questionInterface.daoTopic.getTopicList()) {
+                if (question.getNameTopic().equalsIgnoreCase(topic.getNameTopic())) {
+                    question1.setIdTopic(topic.getId());
+                    break;
                 }
+            }
+            if (getContext()!=null) {
                 daoQuestion.setContext(getContext());
                 daoQuestion.editDataToFireBase(question, edtTitle, edtCorrectAnswer, tvTitle, tvCorrectAnswer);
             }
@@ -248,7 +232,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100 && resultCode == getActivity().RESULT_OK && data !=null && data.getData()!=null)
+        if (requestCode == 100 && resultCode == Activity.RESULT_OK && data !=null && data.getData()!=null)
         {
             daoImageStorage.setmImgURL(data.getData());
             imgAnswer.setImageURI(daoImageStorage.getmImgURL());
@@ -262,6 +246,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         startActivityForResult(intent, 100);
     }
     // hộp thoại để thêm và sửa Answer
+    @SuppressLint("SetTextI18n")
     public void openDiaLogAnswer(int center, int choice, Answer answer) {
         final Dialog dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -277,11 +262,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         windowAttributes.gravity = center;
         window.setAttributes(windowAttributes);
 
-        if (Gravity.CENTER == center) {
-            dialog.setCancelable(true);
-        } else {
-            dialog.setCancelable(false);
-        }
+        dialog.setCancelable(Gravity.CENTER == center);
         for (Question question4 : daoQuestion.getQuestionList()) {
             if (question.getId() == question4.getId()) {
                 question2 = question4;
@@ -298,20 +279,10 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
             linearLayout.setVisibility(View.GONE);
         }
         imgAnswer = dialog.findViewById(R.id.imgAnswer);
-        btnPickImageTopic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openFileChoose();
-            }
-        });
+        btnPickImageTopic.setOnClickListener(v -> openFileChoose());
         Button btnYes = dialog.findViewById(R.id.btnYes);
         Button btnNo = dialog.findViewById(R.id.btnNo);
-        btnNo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        btnNo.setOnClickListener(v -> dialog.dismiss());
         if (choice == 2) {
             btnYes.setText("Sửa");
             tvThemSua.setText("Sửa dữ liệu");
@@ -320,49 +291,43 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
             } else {
                 Picasso.get().load(answer.getUrlImage()).resize(100, 100).into(imgAnswer);
             }
-            btnYes.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Answer answer1 = new Answer();
-                    answer1.setId(answer.getId());
-                    answer1.setAnswerQuestion(edtAnswer.getText().toString());
-                    if (!(answer.getUrlImage().isEmpty() || answer.getUrlImage().trim().length() == 0)) {
-                        answer1.setUrlImage(answer.getUrlImage());
-                    }
-                    if (answer.getAnswerQuestion().equalsIgnoreCase(answer1.getAnswerQuestion())) {
-                        edtAnswer.setError("Trùng dữ liệu");
-                        edtAnswer.requestFocus();
-                    } else {
-                        daoAnswer.setContext(getContext());
-                        daoAnswer.editDataToFireBase(answer1, edtAnswer, question.getId());
-                    }
-                    daoImageStorage.uploadFileImageToAnswer(2, imgAnswer, "Question" + question.getId() + "Answer" + answer1.getId(), answer1, question.getId(), daoAnswer.getQuestion());
+            btnYes.setOnClickListener(v -> {
+                Answer answer1 = new Answer();
+                answer1.setId(answer.getId());
+                answer1.setAnswerQuestion(edtAnswer.getText().toString());
+                if (!(answer.getUrlImage().isEmpty() || answer.getUrlImage().trim().length() == 0)) {
+                    answer1.setUrlImage(answer.getUrlImage());
                 }
+                if (answer.getAnswerQuestion().equalsIgnoreCase(answer1.getAnswerQuestion())) {
+                    edtAnswer.setError("Trùng dữ liệu");
+                    edtAnswer.requestFocus();
+                } else {
+                    daoAnswer.setContext(getContext());
+                    daoAnswer.editDataToFireBase(answer1, edtAnswer, question.getId());
+                }
+                daoImageStorage.uploadFileImageToAnswer(2, imgAnswer, "Question" + question.getId() + "Answer" + answer1.getId(), answer1, question.getId(), daoAnswer.getQuestion());
             });
         } else if (choice == 1) {
             btnYes.setText("Thêm");
-            btnYes.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    {
-                        if (question.getNameTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.IMAGE)) {
-                            if (daoAnswer.getAnswerList().size()<4)
-                            {
-                                Answer answer1 = new Answer();
-                                if (daoAnswer.getAnswerList().size() > 0) {
-                                    idAnswer = daoAnswer.getAnswerList().get(daoAnswer.getAnswerList().size() - 1).getId() + 1;
-                                }
-                                answer1.setId(idAnswer);
-                                answer1.setAnswerQuestion(edtAnswer.getText().toString());
-                                answer1.setUrlImage("");
-                                daoAnswer.setContext(getContext());
-                                daoAnswer.addDataAnswerToFirebaseQuestion(answer1, edtAnswer, question.getId());
-                                daoImageStorage.uploadFileImageToAnswer(1, imgAnswer, "Question" + question.getId() + "Answer" + answer1.getId(), answer1, question.getId(), daoAnswer.getQuestion());
+            btnYes.setOnClickListener(v -> {
+                {
+                    if (question.getNameTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.IMAGE)) {
+                        if (daoAnswer.getAnswerList().size()<4)
+                        {
+                            Answer answer1 = new Answer();
+                            if (daoAnswer.getAnswerList().size() > 0) {
+                                idAnswer = daoAnswer.getAnswerList().get(daoAnswer.getAnswerList().size() - 1).getId() + 1;
                             }
-                            else
-                            {
-                                Toast.makeText(getContext(), "Chỉ được thêm 4 câu hỏi ảnh", Toast.LENGTH_SHORT).show();
-                            }
+                            answer1.setId(idAnswer);
+                            answer1.setAnswerQuestion(edtAnswer.getText().toString());
+                            answer1.setUrlImage("");
+                            daoAnswer.setContext(getContext());
+                            daoAnswer.addDataAnswerToFirebaseQuestion(answer1, edtAnswer, question.getId());
+                            daoImageStorage.uploadFileImageToAnswer(1, imgAnswer, "Question" + question.getId() + "Answer" + answer1.getId(), answer1, question.getId(), daoAnswer.getQuestion());
+                        }
+                        else
+                        {
+                            DEFAULTVALUE.alertDialogMessage("Thông báo","Chỉ được thêm 4 câu hỏi ảnh",getContext());
                         }
                     }
                 }
@@ -372,6 +337,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
     }
 
     // hàm onClick cho các view theo id
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

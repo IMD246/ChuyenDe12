@@ -1,33 +1,29 @@
 package com.example.EnglishBeginner.Admin.LearnManagement;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Spinner;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.EnglishBeginner.Admin.Adapter.LearnQuestionAdapter;
 import com.example.EnglishBeginner.Admin.Adapter.TopicSpinnerAdapter;
 import com.example.EnglishBeginner.Admin.Adapter.TypeQuestionSpinnerAdapter;
 import com.example.EnglishBeginner.Admin.DAO.DAOQuestion;
 import com.example.EnglishBeginner.Admin.DAO.DAOTopic;
-import com.example.EnglishBeginner.Admin.DAO.DAOTypeQuestion;
-import com.example.EnglishBeginner.Admin.DTO.Question;
 import com.example.EnglishBeginner.Admin.DTO.DEFAULTVALUE;
+import com.example.EnglishBeginner.Admin.DTO.Question;
 import com.example.EnglishBeginner.R;
 
 import java.util.Arrays;
@@ -37,11 +33,8 @@ import java.util.Map;
 
 public class LearnQuestion extends AppCompatActivity {
 
-    private RecyclerView rcvQuestion;
     private DAOQuestion daoQuestion;
     private DAOTopic daoTopic;
-    private ImageView imgAdd;
-    private SearchView svQuestion;
     private AutoCompleteTextView atcTopic, atcTypeQuestion;
     String topic = DEFAULTVALUE.TOPIC, typeQuestion = DEFAULTVALUE.TYPEQUESTION;
     private LearnQuestionAdapter learnQuestionAdapter;
@@ -58,9 +51,9 @@ public class LearnQuestion extends AppCompatActivity {
         daoQuestion = new DAOQuestion(this);
         daoTopic = new DAOTopic(this);
         learnQuestionAdapter = new LearnQuestionAdapter(this);
-        rcvQuestion = findViewById(R.id.rcvQuestion);
+        RecyclerView rcvQuestion = findViewById(R.id.rcvQuestion);
         atcTopic = findViewById(R.id.atcQuestion_Topic);
-        svQuestion = findViewById(R.id.svQuestion);
+        SearchView svQuestion = findViewById(R.id.svQuestion);
         atcTypeQuestion = findViewById(R.id.atcQuestion_TypeQuestion);
         atcTypeQuestion.setAdapter(new TypeQuestionSpinnerAdapter(this, R.layout.listoptionitem,
                 R.id.tvOptionItem, list));
@@ -70,12 +63,7 @@ public class LearnQuestion extends AppCompatActivity {
         rcvQuestion.setLayoutManager(linearLayoutManager);
         learnQuestionAdapter.setQuestionList(daoQuestion.getQuestionList());
         rcvQuestion.setAdapter(learnQuestionAdapter);
-        learnQuestionAdapter.setMyDelegationLevel(new LearnQuestionAdapter.MyDelegationLevel() {
-            @Override
-            public void editItem(Question question) {
-                openDialog(Gravity.CENTER,question);
-            }
-        });
+        learnQuestionAdapter.setMyDelegationLevel(question -> openDialog(Gravity.CENTER,question));
         svQuestion.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -88,19 +76,13 @@ public class LearnQuestion extends AppCompatActivity {
                 return false;
             }
         });
-        atcTypeQuestion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    typeQuestion = atcTypeQuestion.getText().toString();
-                    learnQuestionAdapter.setListDependOnTopicAndTypeQuestion(topic, typeQuestion);
-            }
+        atcTypeQuestion.setOnItemClickListener((parent, view, position, id) -> {
+                typeQuestion = atcTypeQuestion.getText().toString();
+                learnQuestionAdapter.setListDependOnTopicAndTypeQuestion(topic, typeQuestion);
         });
-        atcTopic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    topic = atcTopic.getText().toString();
-                    learnQuestionAdapter.setListDependOnTopicAndTypeQuestion(topic, typeQuestion);
-            }
+        atcTopic.setOnItemClickListener((parent, view, position, id) -> {
+                topic = atcTopic.getText().toString();
+                learnQuestionAdapter.setListDependOnTopicAndTypeQuestion(topic, typeQuestion);
         });
     }
     private void getDataFromRealTime() {
@@ -131,11 +113,7 @@ public class LearnQuestion extends AppCompatActivity {
         WindowManager.LayoutParams windowAttributes = window.getAttributes();
         windowAttributes.gravity = center;
         window.setAttributes(windowAttributes);
-        if (Gravity.CENTER == center) {
-            dialog.setCancelable(true);
-        } else {
-            dialog.setCancelable(false);
-        }
+        dialog.setCancelable(Gravity.CENTER == center);
         EditText edtWord = dialog.findViewById(R.id.edtWord);
         EditText edtExample = dialog.findViewById(R.id.edtExample);
         EditText edtGrammar = dialog.findViewById(R.id.edtGrammar);
@@ -147,22 +125,14 @@ public class LearnQuestion extends AppCompatActivity {
         }
         Button btnYes = dialog.findViewById(R.id.btnYes);
         Button btnNo = dialog.findViewById(R.id.btnNo);
-        btnNo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        btnYes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Map<String,Object> map =  new HashMap<>();
-                map.put("example",edtExample.getText().toString());
-                map.put("typeWord",spnTypeWord.getSelectedItem().toString());
-                map.put("word",edtWord.getText().toString());
-                map.put("grammar",edtGrammar.getText().toString());
-                daoQuestion.updateLearnQuestion(question.getId(),map,edtWord,edtExample,edtGrammar);
-            }
+        btnNo.setOnClickListener(v -> dialog.dismiss());
+        btnYes.setOnClickListener(v -> {
+            Map<String,Object> map =  new HashMap<>();
+            map.put("example",edtExample.getText().toString());
+            map.put("typeWord",spnTypeWord.getSelectedItem().toString());
+            map.put("word",edtWord.getText().toString());
+            map.put("grammar",edtGrammar.getText().toString());
+            daoQuestion.updateLearnQuestion(question.getId(),map,edtWord,edtExample,edtGrammar);
         });
         dialog.show();
     }
