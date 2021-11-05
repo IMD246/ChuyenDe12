@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,14 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.EnglishBeginner.Adapter.Level_Adapter;
 import com.example.EnglishBeginner.DAO.DAOLevel;
-import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.DTO.Level;
 import com.example.EnglishBeginner.DTO.Topic;
 import com.example.EnglishBeginner.R;
 import com.example.EnglishBeginner.learn.learning.LearningEnglishFragment;
 import com.example.EnglishBeginner.main_interface.UserInterfaceActivity;
-
-import java.util.ArrayList;
 
 public class LearnFragment extends Fragment {
     private UserInterfaceActivity userInterfaceActivity;

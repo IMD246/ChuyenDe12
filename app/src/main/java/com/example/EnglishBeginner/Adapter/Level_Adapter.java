@@ -57,10 +57,9 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
         } else {
             Picasso.get().load(level.getUrlImage()).resize(100, 100).into(holder.imgLesson);
         }
-        if (level.getListTopic().size() > 0) {
-            holder.rcvLevelTopicItem.getRecycledViewPool().setMaxRecycledViews(1,0);
-            setTopicItemRecycler(holder.rcvLevelTopicItem, level.getListTopic());
-        }
+//        if (level.getListtopic().size() > 0) {
+//            setTopicItemRecycler(holder.rcvLevelTopicItem, level.getListtopic());
+//        }
         //xử lí khi click item learn:
         holder.layout.setOnClickListener(v -> {
             if (interface_learn!=null)

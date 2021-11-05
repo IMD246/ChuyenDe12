@@ -1,13 +1,11 @@
 package com.example.EnglishBeginner.DTO;
 
 public class Topic {
-    private int id,idLevel,level;
+    private int id,idLevel=0,level=0;
     String nameTopic,urlImage="";
 
-    public Topic(int id, int idLevel, int level, String nameTopic, String urlImage) {
+    public Topic(int id, String nameTopic, String urlImage) {
         this.id = id;
-        this.idLevel = idLevel;
-        this.level = level;
         this.nameTopic = nameTopic;
         this.urlImage = urlImage;
     }
@@ -27,17 +25,10 @@ public class Topic {
     public Topic() {
     }
 
-    public void setIdLevel(int idLevel) {
-        this.idLevel = idLevel;
-    }
-
     public int getLevel() {
         return level;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
-    }
 
     public int getId() {
         return id;

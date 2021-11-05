@@ -1,36 +1,38 @@
 package com.example.EnglishBeginner.DTO;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Level {
     int id;
     int nameLevel;
     String urlImage = "";
-    List<Topic> listTopic;
+    //HashMap<String,Topic>hashMap = new HashMap<>();
+//    List<Topic> listtopic;
     public Level(int id, int nameLevel) {
-        listTopic = new ArrayList<>();
+//        listtopic = new ArrayList<>();
         this.id = id;
         this.nameLevel = nameLevel;
     }
 
     public Level(int id, int nameLevel, String urlImage) {
-        listTopic = new ArrayList<>();
+//        listtopic = new ArrayList<>();
         this.id = id;
         this.nameLevel = nameLevel;
         this.urlImage = urlImage;
     }
     public Level() {
-        listTopic = new ArrayList<>();
+//        listtopic = new ArrayList<>();
     }
 
-    public Level(int id, int nameLevel, String urlImage, List<Topic> listTopic) {
-        listTopic = new ArrayList<>();
-        this.id = id;
-        this.nameLevel = nameLevel;
-        this.urlImage = urlImage;
-        this.listTopic = listTopic;
-    }
+//    public Level(int id, int nameLevel, String urlImage,HashMap<String,Topic>hashMap) {
+//        this.id = id;
+//        this.nameLevel = nameLevel;
+//        this.urlImage = urlImage;
+////        this.listtopic = listtopic;
+//        this.hashMap = hashMap;
+//    }
 
     public void setId(int id) {
         this.id = id;
@@ -56,11 +58,19 @@ public class Level {
         this.nameLevel = nameLevel;
     }
 
-    public List<Topic> getListTopic() {
-        return listTopic;
-    }
+//    public List<Topic> getListtopic() {
+//        return listtopic;
+//    }
+//
+//    public void setListtopic(List<Topic> listtopic) {
+//        this.listtopic = listtopic;
+//    }
 
-    public void setListTopic(List<Topic> listTopic) {
-        this.listTopic = listTopic;
-    }
+//    public HashMap<String, Topic> getHashMap() {
+//        return hashMap;
+//    }
+//
+//    public void setHashMap(HashMap<String, Topic> hashMap) {
+//        this.hashMap = hashMap;
+//    }
 }
