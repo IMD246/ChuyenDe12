@@ -354,9 +354,6 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
                         answer1.setUrlImage("");
                         daoAnswer.setContext(getContext());
                         daoAnswer.addDataAnswerToFirebaseQuestion(answer1, edtAnswer, question.getId());
-                        if (daoAnswer.getQuestion() != null) {
-                            daoAnswer.addDataAnswerForQuestionInFirebaseTopic(answer1, edtAnswer, question.getId(), daoAnswer.getQuestion());
-                        }
                         daoImageStorage.uploadFileImageToAnswer(1, imgAnswer, "Question" + question.getId() + "Answer" + answer1.getId(), answer1, question.getId(), daoAnswer.getQuestion());
                     }
                 }

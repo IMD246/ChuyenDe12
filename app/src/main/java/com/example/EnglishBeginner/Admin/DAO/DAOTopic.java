@@ -8,9 +8,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.EnglishBeginner.Admin.Adapter.TopicAdapter;
 import com.example.EnglishBeginner.Admin.DTO.Question;
 import com.example.EnglishBeginner.Admin.DTO.Topic;
-import com.example.EnglishBeginner.Admin.Adapter.TopicAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -105,13 +105,14 @@ public class DAOTopic {
             DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("listlevel");
             databaseReference1.child(topic.getIdLevel() + "/listtopic").child(String.valueOf(topic.getId())).updateChildren(hashMap)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    Toast.makeText(context, "Thêm Topic tới Level thành công", Toast.LENGTH_SHORT).show();
-                }
-            });
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(context, "Thêm Topic tới Level thành công", Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
     }
+
     public void editDataToFireBase(Topic topic, EditText edtTopic) {
         boolean[] check = new boolean[2];
         int s = 1;
@@ -150,12 +151,12 @@ public class DAOTopic {
                         Log.d("child", dataSnapshot.getKey());
                         Question question = dataSnapshot.getValue(Question.class);
                         assert question != null;
-                        if (question.getIdTopic() == topic.getId())
-                        {
+                        if (question.getIdTopic() == topic.getId()) {
                             databaseReference1.child(Objects.requireNonNull(dataSnapshot.getKey())).updateChildren(hashMap).isComplete();
                         }
                     }
                 }
+
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                 }
@@ -170,7 +171,26 @@ public class DAOTopic {
             });
         }
     }
+
     public void deleteDataToFire(Topic topic) {
+        DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("listquestion");
+        databaseReference1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d("parent", snapshot.getKey());
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Log.d("child", dataSnapshot.getKey());
+                    Question question = dataSnapshot.getValue(Question.class);
+                    assert question != null;
+                    if (question.getIdTopic() == topic.getId()) {
+                        databaseReference1.child(Objects.requireNonNull(dataSnapshot.getKey())).removeValue().isComplete();
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
         databaseReference.child(String.valueOf(topic.getId())).removeValue(new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {

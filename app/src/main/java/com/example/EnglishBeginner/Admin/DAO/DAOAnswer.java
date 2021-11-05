@@ -109,34 +109,6 @@ public class DAOAnswer {
             });
         }
     }
-
-    // thêm dữ liệu vào firebase
-    public void addDataAnswerForQuestionInFirebaseTopic(Answer answer1, EditText edtAnswer, int idQuestion,Question question1) {
-        Boolean check = true;
-        if (answerList.size() > 0) {
-            for (Answer answer : answerList) {
-                if (answer.getAnswerQuestion().equalsIgnoreCase(answer1.getAnswerQuestion())) {
-                    check = false;
-                    break;
-                }
-            }
-        }
-        if (check == false) {
-            edtAnswer.setError("Trùng dữ liệu , hãy kiểm tra lại dữ liệu");
-            edtAnswer.requestFocus();
-        } else {
-            DatabaseReference databaseReference1 =  FirebaseDatabase.getInstance().getReference("listtopic/"+question1.getIdTopic()+"/listquestion");
-            databaseReference1.child(idQuestion + "/listanswer").child(String.valueOf(answer1.getId())).setValue(answer1).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isComplete()) {
-                        Toast.makeText(context, "Thêm Answer cho Question trong Topic thành công", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-        }
-    }
-
     // sửa dữ liệu
     public void editDataToFireBase(Answer answer1, EditText edtAnswer, int idQuestion) {
         Boolean check = true;
@@ -162,7 +134,6 @@ public class DAOAnswer {
             });
         }
     }
-
     //xóa dữ liệu
     public void deleteDataToFire(Answer answer, int id) {
         databaseReference.child(id + "/listanswer").child(String.valueOf(answer.getId())).removeValue(new DatabaseReference.CompletionListener() {

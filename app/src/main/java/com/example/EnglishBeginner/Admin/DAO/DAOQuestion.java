@@ -1,34 +1,32 @@
 package com.example.EnglishBeginner.Admin.DAO;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.example.EnglishBeginner.Admin.Adapter.LearnQuestionAdapter;
 import com.example.EnglishBeginner.Admin.Adapter.QuestionAdapter;
 import com.example.EnglishBeginner.Admin.DTO.Question;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class DAOQuestion {
-    private List<Question> questionList;
-    private DatabaseReference databaseReference;
+    private final List<Question> questionList;
+    private final DatabaseReference databaseReference;
     private Context context;
 
     public DAOQuestion(Context context) {
@@ -47,6 +45,7 @@ public class DAOQuestion {
 
     public void getDataFromRealTimeToList(QuestionAdapter questionAdapter, LearnQuestionAdapter learnQuestionAdapter) {
         databaseReference.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (questionList != null) {
@@ -54,24 +53,25 @@ public class DAOQuestion {
                 }
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Question question = dataSnapshot.getValue(Question.class);
+                    assert questionList != null;
                     questionList.add(question);
                 }
-                if (questionAdapter != null)
-                {
+                if (questionAdapter != null) {
                     questionAdapter.notifyDataSetChanged();
                 }
-                if (learnQuestionAdapter != null)
-                {
+                if (learnQuestionAdapter != null) {
                     learnQuestionAdapter.notifyDataSetChanged();
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(context, "Get list question failed", Toast.LENGTH_SHORT).show();
             }
         });
     }
-//public void getDataFromRealTimeToList(QuestionAdapter questionAdapter, LearnQuestionAdapter learnQuestionAdapter) {
+
+    //public void getDataFromRealTimeToList(QuestionAdapter questionAdapter, LearnQuestionAdapter learnQuestionAdapter) {
 //    databaseReference.addValueEventListener(new ValueEventListener() {
 //        @Override
 //        public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -115,153 +115,116 @@ public class DAOQuestion {
 //}
     public void addDataToFireBase(Question question, EditText edtTitle, EditText edtCorrectAnswer) {
         boolean[] check = new boolean[3];
-        int s=1;
-        for (int i = 0; i < check.length; i++) {
-            check[i] = true;
-        }
+        Arrays.fill(check, true);
         if (question.getTitle().isEmpty() || question.getTitle().length() == 0) {
             check[0] = false;
-        }
-        else if (question.getCorrectAnswer().isEmpty() || question.getCorrectAnswer().length() == 0) {
+        } else if (question.getCorrectAnswer().isEmpty() || question.getCorrectAnswer().length() == 0) {
             check[1] = false;
-        }
-        else {
-            if (questionList.size() > 0)
-            {
+        } else {
+            if (questionList.size() > 0) {
                 for (Question question1 : questionList) {
-                    if (question1.getNameTopic().equalsIgnoreCase(question.getNameTopic())&&
-                            question1.getNameTypeQuestion().equalsIgnoreCase(question.getNameTypeQuestion())&&
-                            question1.getTitle().equalsIgnoreCase(question.getTitle()))
-                    {
+                    if (question1.getNameTopic().equalsIgnoreCase(question.getNameTopic()) &&
+                            question1.getNameTypeQuestion().equalsIgnoreCase(question.getNameTypeQuestion()) &&
+                            question1.getTitle().equalsIgnoreCase(question.getTitle())) {
                         check[2] = false;
                         break;
                     }
                 }
             }
         }
-        if (check[0] == false) {
+        if (!check[0]) {
             edtTitle.setError("Không để trống");
             edtTitle.requestFocus();
-        }
-        else if (check[1] == false) {
+        } else if (!check[1]) {
             edtCorrectAnswer.setError("Không để trống");
             edtCorrectAnswer.requestFocus();
-        }
-        else if (check[2] == false) {
+        } else if (!check[2]) {
             edtTitle.setError("Trùng dữ liệu , hãy kiểm tra lại dữ liệu");
             edtTitle.requestFocus();
         } else {
-            databaseReference.child(String.valueOf(question.getId())).setValue(question).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isComplete()) {
-                        Toast.makeText(context,"Thêm thành công", Toast.LENGTH_SHORT).show();
-                    }
+            databaseReference.child(String.valueOf(question.getId())).setValue(question).addOnCompleteListener(task -> {
+                if (task.isComplete()) {
+                    Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
                 }
             });
-            HashMap<String,Object>hashMap = new HashMap<>();
-            hashMap.put("id",question.getId());
-            hashMap.put("title",question.getTitle());
-            hashMap.put("nameTypeQuestion",question.getNameTypeQuestion());
-            DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("listtopic/"+question.getIdTopic());
-            databaseReference1.child("listquestion/"+question.getId()).updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isComplete()) {
-                        Toast.makeText(context,"Thêm Question vào Topic thành công", Toast.LENGTH_SHORT).show();
-                    }
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("id", question.getId());
+            hashMap.put("title", question.getTitle());
+            hashMap.put("nameTypeQuestion", question.getNameTypeQuestion());
+            hashMap.put("correctAnswer", question.getCorrectAnswer());
+            DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("listtopic/" + question.getIdTopic());
+            databaseReference1.child("listquestion/" + question.getId()).updateChildren(hashMap).addOnCompleteListener(task -> {
+                if (task.isComplete()) {
+                    Toast.makeText(context, "Thêm Question vào Topic thành công", Toast.LENGTH_SHORT).show();
                 }
             });
         }
-    }
-    public void editDataToFireBase(Question question, EditText edtTitle, EditText edtCorrectAnswer, TextView tvTitle,TextView tvCorrect) {
-        boolean[] check = new boolean[3];
-        int s=1;
-        for (int i = 0; i < check.length; i++) {
-            check[i] = true;
-        }
-        if (question.getTitle().isEmpty() || question.getTitle().length() == 0) {
-            check[0] = false;
-        }
-        else if (question.getCorrectAnswer().isEmpty() || question.getCorrectAnswer().length() == 0) {
-            check[1] = false;
-        }
-        else {
-            if (questionList.size() > 0)
-            {
-                for (Question question1 : questionList) {
-                    if (question1.getNameTopic().equalsIgnoreCase(question.getNameTopic())&&
-                            question1.getNameTypeQuestion().equalsIgnoreCase(question.getNameTypeQuestion())&&
-                            question1.getTitle().equalsIgnoreCase(question.getTitle()))
-                    {
-                        check[2] = false;
-                        break;
-                    }
-                }
-            }
-        }
-        if (check[0] == false) {
-            edtTitle.setError("Không để trống");
-            edtTitle.requestFocus();
-        }
-        else if (check[1] == false) {
-            edtCorrectAnswer.setError("Không để trống");
-            edtCorrectAnswer.requestFocus();
-        }
-        else if (check[2] == false) {
-            edtTitle.setError("Trùng dữ liệu , hãy kiểm tra lại dữ liệu");
-            edtTitle.requestFocus();
-        } else {
-            tvTitle.setText("Câu hỏi: "+question.getTitle());
-            tvCorrect.setText("Câu Trả Lời Chính xác: "+question.getCorrectAnswer());
-            databaseReference.child(String.valueOf(question.getId())).setValue(question).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isComplete()) {
-                        Toast.makeText(context,"Sửa thành công", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-        }
-    }
-    public void deleteDataToFire(Question question) {
-        databaseReference.child(String.valueOf(question.getId())).removeValue(new DatabaseReference.CompletionListener() {
-            @Override
-            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
-    public void updateLearnQuestion(int idQuestion,Map<String, Object> map, EditText edtWord, EditText edtExample, EditText edtGrammar) {
-        boolean check[] = new boolean[3];
-        for (int i=0;i<check.length;i++)
-        {
-            check[i] = true;
+    @SuppressLint("SetTextI18n")
+    public void editDataToFireBase(Question question, EditText edtTitle, EditText edtCorrectAnswer, TextView tvTitle, TextView tvCorrect) {
+        boolean[] check = new boolean[3];
+        Arrays.fill(check, true);
+        if (question.getTitle().isEmpty() || question.getTitle().length() == 0) {
+            check[0] = false;
+        } else if (question.getCorrectAnswer().isEmpty() || question.getCorrectAnswer().length() == 0) {
+            check[1] = false;
+        } else {
+            if (questionList.size() > 0) {
+                for (Question question1 : questionList) {
+                    if (question1.getNameTopic().equalsIgnoreCase(question.getNameTopic()) &&
+                            question1.getNameTypeQuestion().equalsIgnoreCase(question.getNameTypeQuestion()) &&
+                            question1.getTitle().equalsIgnoreCase(question.getTitle())) {
+                        check[2] = false;
+                        break;
+                    }
+                }
+            }
         }
-        if (map.get("example").toString().isEmpty() ||map.get("example").toString().trim().length()==0)
-        {
-            edtExample.setError("Không để trống");
-            edtExample.requestFocus();
-        }
-        else if (map.get("word").toString().isEmpty() ||map.get("word").toString().trim().length()==0)
-        {
-            edtWord.setError("Không để trống");
-            edtExample.requestFocus();
-        }
-        else if (map.get("grammar").toString().isEmpty() ||map.get("grammar").toString().trim().length()==0)
-        {
-            edtGrammar.setError("Không để trống");
-            edtGrammar.requestFocus();
-        }
-        else
-        {
-            databaseReference.child(String.valueOf(idQuestion)).updateChildren(map, new DatabaseReference.CompletionListener() {
-                @Override
-                public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+        if (!check[0]) {
+            edtTitle.setError("Không để trống");
+            edtTitle.requestFocus();
+        } else if (!check[1]) {
+            edtCorrectAnswer.setError("Không để trống");
+            edtCorrectAnswer.requestFocus();
+        } else if (!check[2]) {
+            edtTitle.setError("Trùng dữ liệu , hãy kiểm tra lại dữ liệu");
+            edtTitle.requestFocus();
+        } else {
+            tvTitle.setText("Câu hỏi: " + question.getTitle());
+            tvCorrect.setText("Câu Trả Lời Chính xác: " + question.getCorrectAnswer());
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("id", question.getId());
+            hashMap.put("nameTypeQuestion", question.getNameTypeQuestion());
+            hashMap.put("title", question.getTitle());
+            hashMap.put("correctAnswer", question.getCorrectAnswer());
+            DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("listtopic");
+            databaseReference1.child(question.getIdTopic() + "/listquestion/" + question.getId()).updateChildren(hashMap).isComplete();
+
+            databaseReference.child(String.valueOf(question.getId())).setValue(question).addOnCompleteListener(task -> {
+                if (task.isComplete()) {
                     Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
                 }
             });
+        }
+    }
+
+    public void deleteDataToFire(Question question) {
+        databaseReference.child(String.valueOf(question.getId())).removeValue((error, ref) -> Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show());
+    }
+
+    public void updateLearnQuestion(int idQuestion, Map<String, Object> map, EditText edtWord, EditText edtExample, EditText edtGrammar) {
+        if (Objects.requireNonNull(map.get("example")).toString().isEmpty() || Objects.requireNonNull(map.get("example")).toString().trim().length() == 0) {
+            edtExample.setError("Không để trống");
+            edtExample.requestFocus();
+        } else if (Objects.requireNonNull(map.get("word")).toString().isEmpty() || Objects.requireNonNull(map.get("word")).toString().trim().length() == 0) {
+            edtWord.setError("Không để trống");
+            edtExample.requestFocus();
+        } else if (Objects.requireNonNull(map.get("grammar")).toString().isEmpty() || Objects.requireNonNull(map.get("grammar")).toString().trim().length() == 0) {
+            edtGrammar.setError("Không để trống");
+            edtGrammar.requestFocus();
+        } else {
+            databaseReference.child(String.valueOf(idQuestion)).updateChildren(map, (error, ref) -> Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show());
         }
     }
 }

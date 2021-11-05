@@ -7,14 +7,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.example.EnglishBeginner.Admin.Adapter.LevelAdapter;
 import com.example.EnglishBeginner.Admin.DTO.Level;
 import com.example.EnglishBeginner.Admin.DTO.Question;
 import com.example.EnglishBeginner.Admin.DTO.Topic;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -141,7 +138,7 @@ public class DAOLevel {
                 public void onCancelled(@NonNull DatabaseError error) {
                 }
             });
-            databaseReference.child(String.valueOf(level.getId())).child("listTopic").addValueEventListener(new ValueEventListener() {
+            databaseReference.child(String.valueOf(level.getId())).child("listtopic").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -153,12 +150,9 @@ public class DAOLevel {
 
                 }
             });
-            databaseReference.child(String.valueOf(level.getId())).setValue(level).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isComplete()) {
-                        Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
-                    }
+            databaseReference.child(String.valueOf(level.getId())).setValue(level).addOnCompleteListener(task -> {
+                if (task.isComplete()) {
+                    Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -172,6 +166,7 @@ public class DAOLevel {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Log.d("child", dataSnapshot.getKey());
                     Topic topic = dataSnapshot.getValue(Topic.class);
+                    assert topic != null;
                     if (topic.getIdLevel() == level.getId())
                     {
                         DatabaseReference databaseReference2 = FirebaseDatabase.getInstance().getReference("listquestion");
@@ -181,9 +176,10 @@ public class DAOLevel {
                                 for (DataSnapshot dataSnapshot1 : snapshot.getChildren())
                                 {
                                     Question question = dataSnapshot1.getValue(Question.class);
+                                    assert question != null;
                                     if (question.getIdTopic() == topic.getId())
                                     {
-                                        databaseReference2.child(dataSnapshot1.getKey()).removeValue().isComplete();
+                                        databaseReference2.child(Objects.requireNonNull(dataSnapshot1.getKey())).removeValue().isComplete();
                                     }
                                 }
                             }
@@ -193,7 +189,7 @@ public class DAOLevel {
 
                             }
                         });
-                        databaseReference1.child(dataSnapshot.getKey()).removeValue().isComplete();
+                        databaseReference1.child(Objects.requireNonNull(dataSnapshot.getKey())).removeValue().isComplete();
                     }
                 }
             }
@@ -202,11 +198,6 @@ public class DAOLevel {
 
             }
         });
-        databaseReference.child(String.valueOf(level.getId())).removeValue(new DatabaseReference.CompletionListener() {
-            @Override
-            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
-            }
-        });
+        databaseReference.child(String.valueOf(level.getId())).removeValue((error, ref) -> Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show());
     }
 }
