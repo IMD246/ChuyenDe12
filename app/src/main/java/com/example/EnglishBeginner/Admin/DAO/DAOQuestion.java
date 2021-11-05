@@ -98,7 +98,6 @@ public void getDataFromRealTimeToList(QuestionAdapter questionAdapter, LearnQues
                             learnQuestionAdapter.notifyDataSetChanged();
                         }
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
 
