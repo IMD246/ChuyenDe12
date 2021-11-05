@@ -41,6 +41,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class DetailQuestionFragment extends Fragment implements View.OnClickListener {
@@ -198,16 +199,13 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         Spinner spnTopic = dialog.findViewById(R.id.spnQuestion_Topic);
         Spinner spnTypeQuestion = dialog.findViewById(R.id.spnQuestion_TypeQuestion);
         List<String> listTopic = new ArrayList<>();
-        List<String> listTypeQuestion = new ArrayList<>();
+        List<String>listTypeQuestion = Arrays.asList(getResources().getStringArray(R.array.typeQuestion));
         Button btnYes = dialog.findViewById(R.id.btnYes);
         Button btnNo = dialog.findViewById(R.id.btnNo);
         btnYes.setText("Sửa");
         tvThemSua.setText("Sửa dữ liệu");
         for (Topic topic : questionInterface.daoTopic.getTopicList()) {
             listTopic.add(topic.getNameTopic());
-        }
-        for (TypeQuestion typeQuestion : questionInterface.daoTypeQuestion.getTypeQuestionList()) {
-            listTypeQuestion.add(typeQuestion.getTypeQuestionName());
         }
         spnTopic.setAdapter(new ArrayAdapter<String>(getContext(), R.layout.listoptionitem, R.id.tvOptionItem, listTopic));
         spnTypeQuestion.setAdapter(new ArrayAdapter<String>(getContext(), R.layout.listoptionitem, R.id.tvOptionItem, listTypeQuestion));
@@ -235,12 +233,6 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
                 for (Topic topic : questionInterface.daoTopic.getTopicList()) {
                     if (question.getNameTopic().equalsIgnoreCase(topic.getNameTopic())) {
                         question.setIdTopic(topic.getId());
-                        break;
-                    }
-                }
-                for (TypeQuestion typeQuestion : questionInterface.daoTypeQuestion.getTypeQuestionList()) {
-                    if (question.getNameTypeQuestion().equalsIgnoreCase(typeQuestion.getTypeQuestionName())) {
-                        question.setIdTypeQuestion(typeQuestion.getId());
                         break;
                     }
                 }

@@ -30,14 +30,15 @@ import com.example.EnglishBeginner.Admin.DTO.Question;
 import com.example.EnglishBeginner.Admin.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.R;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class LearnQuestion extends AppCompatActivity {
 
     private RecyclerView rcvQuestion;
     private DAOQuestion daoQuestion;
-    private DAOTypeQuestion daoTypeQuestion;
     private DAOTopic daoTopic;
     private ImageView imgAdd;
     private SearchView svQuestion;
@@ -53,8 +54,8 @@ public class LearnQuestion extends AppCompatActivity {
         getDataFromRealTime();
     }
     private void initUI() {
+        List<String> list = Arrays.asList(getResources().getStringArray(R.array.typeQuestion));
         daoQuestion = new DAOQuestion(this);
-        daoTypeQuestion = new DAOTypeQuestion(this);
         daoTopic = new DAOTopic(this);
         learnQuestionAdapter = new LearnQuestionAdapter(this);
         rcvQuestion = findViewById(R.id.rcvQuestion);
@@ -62,7 +63,7 @@ public class LearnQuestion extends AppCompatActivity {
         svQuestion = findViewById(R.id.svQuestion);
         atcTypeQuestion = findViewById(R.id.atcQuestion_TypeQuestion);
         atcTypeQuestion.setAdapter(new TypeQuestionSpinnerAdapter(this, R.layout.listoptionitem,
-                R.id.tvOptionItem, daoTypeQuestion.getTypeQuestionList()));
+                R.id.tvOptionItem, list));
         atcTopic.setAdapter(new TopicSpinnerAdapter(this, R.layout.listoptionitem, R.id.tvOptionItem, daoTopic.getTopicList()));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
@@ -105,7 +106,6 @@ public class LearnQuestion extends AppCompatActivity {
     private void getDataFromRealTime() {
         daoQuestion.getDataFromRealTimeToList(null,learnQuestionAdapter);
         daoTopic.getDataFromRealTimeFirebase(null);
-        daoTypeQuestion.getDataFromRealTimeToList(null);
     }
     private int setSelectedSpinner(Spinner spinner , String o)
     {

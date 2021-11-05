@@ -1,12 +1,14 @@
 package com.example.EnglishBeginner.Admin.DAO;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.EnglishBeginner.Admin.DTO.Question;
 import com.example.EnglishBeginner.Admin.DTO.Topic;
 import com.example.EnglishBeginner.Admin.Adapter.TopicAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -18,7 +20,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class DAOTopic {
     private List<Topic> topicList;
@@ -94,38 +98,16 @@ public class DAOTopic {
                     }
                 }
             });
-        }
-    }
-    public void addTopicToFireBaseLevel(Topic topic, EditText edtTopic) {
-        boolean[] check = new boolean[2];
-        int s = 1;
-        for (int i = 0; i < check.length; i++) {
-            check[i] = true;
-        }
-        if (topic.getNameTopic().isEmpty() || topic.getNameTopic().length() == 0) {
-            check[0] = false;
-        } else {
-            if (topicList.size() > 0) {
-                for (Topic topic1 : topicList) {
-                    if (topic.getNameTopic().equalsIgnoreCase(topic1.getNameTopic()) && topic1.getLevel() == topic.getLevel()) {
-                        check[1] = false;
-                        break;
-                    }
-                }
-            }
-        }
-        if (check[0] == false) {
-            edtTopic.setError("Không để trống");
-            edtTopic.requestFocus();
-        } else if (check[1] == false) {
-            edtTopic.setError("Trùng dữ liệu , hãy kiểm tra lại dữ liệu");
-            edtTopic.requestFocus();
-        } else {
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listlevel");
-            databaseReference.child(String.valueOf(topic.getIdLevel()) + "/listtopic").child(String.valueOf(topic.getId())).setValue(topic).addOnCompleteListener(new OnCompleteListener<Void>() {
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("id", topic.getId());
+            hashMap.put("nameTopic", topic.getNameTopic());
+            hashMap.put("urlImage", topic.getUrlImage());
+            DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("listlevel");
+            databaseReference1.child(topic.getIdLevel() + "/listtopic").child(String.valueOf(topic.getId())).updateChildren(hashMap)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    Toast.makeText(context, "Thêm Topic vào Level thành công", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Thêm Topic tới Level thành công", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -156,6 +138,28 @@ public class DAOTopic {
             edtTopic.setError("Trùng dữ liệu , hãy kiểm tra lại dữ liệu");
             edtTopic.requestFocus();
         } else {
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("idTopic", topic.getId());
+            hashMap.put("nameTopic", topic.getNameTopic());
+            DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("listquestion");
+            databaseReference1.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Log.d("parent", snapshot.getKey());
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Log.d("child", dataSnapshot.getKey());
+                        Question question = dataSnapshot.getValue(Question.class);
+                        assert question != null;
+                        if (question.getIdTopic() == topic.getId())
+                        {
+                            databaseReference1.child(Objects.requireNonNull(dataSnapshot.getKey())).updateChildren(hashMap).isComplete();
+                        }
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
             databaseReference.child(String.valueOf(topic.getId())).setValue(topic).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {

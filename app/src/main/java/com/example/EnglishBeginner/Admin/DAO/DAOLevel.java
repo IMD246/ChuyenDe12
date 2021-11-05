@@ -1,5 +1,6 @@
 package com.example.EnglishBeginner.Admin.DAO;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.widget.EditText;
@@ -10,6 +11,7 @@ import androidx.annotation.Nullable;
 
 import com.example.EnglishBeginner.Admin.Adapter.LevelAdapter;
 import com.example.EnglishBeginner.Admin.DTO.Level;
+import com.example.EnglishBeginner.Admin.DTO.Question;
 import com.example.EnglishBeginner.Admin.DTO.Topic;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -20,19 +22,20 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
 public class DAOLevel {
-    private List<Level> levelList;
-    private DatabaseReference databaseReference;
+    private final List<Level> levelList;
+    private final DatabaseReference databaseReference;
 
     public List<Level> getLevelList() {
         return levelList;
     }
 
-    private Context context;
+    private final Context context;
 
     public DAOLevel(Context context) {
         this.context = context;
@@ -42,6 +45,7 @@ public class DAOLevel {
 
     public void getDataFromRealTimeToList(LevelAdapter levelAdapter) {
         databaseReference.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (levelList != null) {
@@ -49,6 +53,7 @@ public class DAOLevel {
                 }
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Level level = dataSnapshot.getValue(Level.class);
+                    assert levelList != null;
                     levelList.add(level);
                 }
                 if (levelAdapter != null) {
@@ -65,11 +70,7 @@ public class DAOLevel {
 
     public void addDataToFireBase(Level level, EditText editText) {
         boolean[] check = new boolean[2];
-        int s = 1;
-        String namelevel = editText.getText().toString().trim();
-        for (int i = 0; i < check.length; i++) {
-            check[i] = true;
-        }
+        Arrays.fill(check, true);
         if (level.getNameLevel() == 0) {
             check[0] = false;
         } else {
@@ -82,22 +83,17 @@ public class DAOLevel {
                 }
             }
         }
-        if (check[0] == false) {
+        if (!check[0]) {
             editText.setError("Không để trống");
             editText.requestFocus();
-        } else if (check[1] == false) {
+        } else if (!check[1]) {
             editText.setError("Trùng dữ liệu");
             editText.requestFocus();
         } else {
-            if (levelList.size() > 0) {
-                s = levelList.get(levelList.size() - 1).getId() + 1;
-            }
-            databaseReference.child(String.valueOf(level.getId())).setValue(level).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isComplete()) {
-                        Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
-                    }
+            levelList.size();
+            databaseReference.child(String.valueOf(level.getId())).setValue(level).addOnCompleteListener(task -> {
+                if (task.isComplete()) {
+                    Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -105,9 +101,7 @@ public class DAOLevel {
 
     public void editDataToFireBase(Level level, EditText edtLevel) {
         boolean[] check = new boolean[2];
-        for (int i = 0; i < check.length; i++) {
-            check[i] = true;
-        }
+        Arrays.fill(check, true);
         if (level.getNameLevel() == 0) {
             check[0] = false;
         } else {
@@ -118,10 +112,10 @@ public class DAOLevel {
                 }
             }
         }
-        if (check[0] == false) {
+        if (!check[0]) {
             edtLevel.setError("Không để trống");
             edtLevel.requestFocus();
-        } else if (check[1] == false) {
+        } else if (!check[1]) {
             edtLevel.setError("Trùng dữ liệu");
             edtLevel.requestFocus();
         } else {
@@ -136,19 +130,13 @@ public class DAOLevel {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Log.d("child", dataSnapshot.getKey());
                         Topic topic = dataSnapshot.getValue(Topic.class);
+                        assert topic != null;
                         if (topic.getIdLevel() == level.getId())
                         {
-                            databaseReference1.child(dataSnapshot.getKey()).updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isComplete())
-                                    { }
-                                }
-                            });
+                            databaseReference1.child(Objects.requireNonNull(dataSnapshot.getKey())).updateChildren(hashMap).isComplete();
                         }
                     }
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                 }
@@ -158,10 +146,8 @@ public class DAOLevel {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Log.d("child", dataSnapshot.getKey());
-//                        databaseReference.child(dataSnapshot.getKey()).updateChildren(hashMap);
                     }
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
 
@@ -188,13 +174,26 @@ public class DAOLevel {
                     Topic topic = dataSnapshot.getValue(Topic.class);
                     if (topic.getIdLevel() == level.getId())
                     {
-                        databaseReference1.child(dataSnapshot.getKey()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        DatabaseReference databaseReference2 = FirebaseDatabase.getInstance().getReference("listquestion");
+                        databaseReference2.addValueEventListener(new ValueEventListener() {
                             @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isComplete())
-                                { }
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for (DataSnapshot dataSnapshot1 : snapshot.getChildren())
+                                {
+                                    Question question = dataSnapshot1.getValue(Question.class);
+                                    if (question.getIdTopic() == topic.getId())
+                                    {
+                                        databaseReference2.child(dataSnapshot1.getKey()).removeValue().isComplete();
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
                             }
                         });
+                        databaseReference1.child(dataSnapshot.getKey()).removeValue().isComplete();
                     }
                 }
             }

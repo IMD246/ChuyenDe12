@@ -47,4 +47,10 @@
         <item>Adjective</item>
         <item>Adverb</item>
     </array>
+    <array name="typeQuestion">
+        <item>Read</item>
+        <item>Write</item>
+        <item>Listen</item>
+        <item>Image</item>
+    </array>
 </resources>

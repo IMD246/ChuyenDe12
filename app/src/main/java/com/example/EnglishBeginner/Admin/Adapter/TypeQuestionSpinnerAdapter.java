@@ -17,24 +17,23 @@ import com.example.EnglishBeginner.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TypeQuestionSpinnerAdapter extends ArrayAdapter<TypeQuestion> {
+public class TypeQuestionSpinnerAdapter extends ArrayAdapter<String> {
 
-    private List<TypeQuestion> typeQuestionList;
+    private List<String> typeQuestionList;
 
-    public TypeQuestionSpinnerAdapter(@NonNull Context context, int resource, int textViewResourceId, @NonNull List<TypeQuestion> objects) {
+    public TypeQuestionSpinnerAdapter(@NonNull Context context, int resource, int textViewResourceId, @NonNull List<String> objects) {
         super(context, resource, textViewResourceId, objects);
-        typeQuestionList = new ArrayList<>(objects);
+        typeQuestionList = objects;
     }
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        if (convertView ==null)
+        if (convertView == null)
         {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.listoptionitem,parent,false);
         }
-        TypeQuestion typeQuestion = getItem(position);
         TextView tvOption = convertView.findViewById(R.id.tvOptionItem);
-        tvOption.setText(String.valueOf(typeQuestion.getTypeQuestionName()));
+        tvOption.setText(typeQuestionList.get(position));
 
         return convertView;
     }
@@ -44,7 +43,7 @@ public class TypeQuestionSpinnerAdapter extends ArrayAdapter<TypeQuestion> {
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-                List<TypeQuestion> list = new ArrayList<>();
+                List<String> list = new ArrayList<>();
                 if (constraint == null || constraint.length() ==0)
                 {
                     list.addAll(typeQuestionList);
@@ -52,11 +51,11 @@ public class TypeQuestionSpinnerAdapter extends ArrayAdapter<TypeQuestion> {
                 else
                 {
                     String keyword = constraint.toString().toLowerCase();
-                    for (TypeQuestion typeQuestion : typeQuestionList)
+                    for (String s : typeQuestionList)
                     {
-                        if (typeQuestion.getTypeQuestionName().toLowerCase().contains(keyword))
+                        if (s.toLowerCase().contains(keyword))
                         {
-                            list.add(typeQuestion);
+                            list.add(s);
                         }
                     }
                 }
@@ -69,13 +68,13 @@ public class TypeQuestionSpinnerAdapter extends ArrayAdapter<TypeQuestion> {
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 clear();
-//                addAll((List<TypeQuestion>)results.values);
+                addAll((List<String>)results.values);
                 notifyDataSetChanged();
             }
 
             @Override
             public CharSequence convertResultToString(Object resultValue) {
-                return ((TypeQuestion) resultValue).getTypeQuestionName();
+                return ((String) resultValue);
             }
         };
     }

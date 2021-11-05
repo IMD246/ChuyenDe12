@@ -37,9 +37,6 @@
             android:name="com.example.EnglishBeginner.Admin.LearnManagement.TopicManagement"
             android:exported="false" />
         <activity
-            android:name="com.example.EnglishBeginner.Admin.LearnManagement.TypeQuestionManagement"
-            android:exported="false" />
-        <activity
             android:name="com.example.EnglishBeginner.Admin.LearnManagement.LevelManagement"
             android:exported="false" />
         <activity

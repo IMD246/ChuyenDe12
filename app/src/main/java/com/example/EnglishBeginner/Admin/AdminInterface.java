@@ -22,13 +22,11 @@ import com.example.EnglishBeginner.Admin.LearnManagement.LearnQuestion;
 import com.example.EnglishBeginner.Admin.LearnManagement.LevelManagement;
 import com.example.EnglishBeginner.Admin.LearnManagement.QuestionInterface;
 import com.example.EnglishBeginner.Admin.LearnManagement.TopicManagement;
-import com.example.EnglishBeginner.Admin.LearnManagement.TypeQuestionManagement;
 import com.example.EnglishBeginner.Admin.WordManagement.IetlsManagement;
 import com.example.EnglishBeginner.Admin.WordManagement.ToeicManagement;
 import com.example.EnglishBeginner.Admin.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.Login.Login;
 import com.example.EnglishBeginner.R;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -217,8 +215,6 @@ public class AdminInterface extends AppCompatActivity {
     public void Transaction(LearnItem learnItem) {
         if (learnItem.getName().equals(DEFAULTVALUE.LEVEL)) {
             startActivity(new Intent(AdminInterface.this, LevelManagement.class));
-        } else if (learnItem.getName().equals(DEFAULTVALUE.TYPEQUESTION)) {
-            startActivity(new Intent(AdminInterface.this, TypeQuestionManagement.class));
         } else if (learnItem.getName().equals(DEFAULTVALUE.TOPIC)) {
             startActivity(new Intent(AdminInterface.this, TopicManagement.class));
         } else if (learnItem.getName().equals(DEFAULTVALUE.QUESTION)) {

@@ -249,7 +249,6 @@ public class TopicManagement extends AppCompatActivity {
                             }
                         }
                         daoTopic.addDataToFireBase(topic,edtTopic);
-                        daoTopic.addTopicToFireBaseLevel(topic,edtTopic);
                     daoImageStorage.uploadFileImageTopic(imgTopic,"Topic",topic);
                 }
             });

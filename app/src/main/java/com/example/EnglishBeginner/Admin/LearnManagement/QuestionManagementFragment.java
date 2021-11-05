@@ -36,7 +36,9 @@ import com.example.EnglishBeginner.Admin.DTO.TypeQuestion;
 import com.example.EnglishBeginner.Admin.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.R;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -69,8 +71,9 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
     @Override
     public void onResume() {
         super.onResume();
+        List<String>list = Arrays.asList(getResources().getStringArray(R.array.typeQuestion));
         atcTypeQuestion.setAdapter(new TypeQuestionSpinnerAdapter(getContext(), R.layout.listoptionitem,
-                R.id.tvOptionItem, questionInterface.daoTypeQuestion.getTypeQuestionList()));
+                R.id.tvOptionItem, list));
         atcTopic.setAdapter(new TopicSpinnerAdapter(getContext(), R.layout.listoptionitem,
                 R.id.tvOptionItem, questionInterface.daoTopic.getTopicList()));
     }
@@ -197,18 +200,15 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
         Spinner spnTopic = dialog.findViewById(R.id.spnQuestion_Topic);
         Spinner spnTypeQuestion = dialog.findViewById(R.id.spnQuestion_TypeQuestion);
         List<String> listTopic = new ArrayList<>();
-        List<String> listTypeQuestion = new ArrayList<>();
+        List<String>list = Arrays.asList(getResources().getStringArray(R.array.typeQuestion));
         Button btnYes = dialog.findViewById(R.id.btnYes);
         Button btnNo = dialog.findViewById(R.id.btnNo);
         btnYes.setText("Add");
         for (Topic topic : questionInterface.daoTopic.getTopicList()) {
             listTopic.add(topic.getNameTopic());
         }
-        for (TypeQuestion typeQuestion : questionInterface.daoTypeQuestion.getTypeQuestionList()) {
-            listTypeQuestion.add(typeQuestion.getTypeQuestionName());
-        }
-        spnTopic.setAdapter(new ArrayAdapter<String>(getContext(), R.layout.listoptionitem, R.id.tvOptionItem, listTopic));
-        spnTypeQuestion.setAdapter(new ArrayAdapter<String>(getContext(), R.layout.listoptionitem, R.id.tvOptionItem, listTypeQuestion));
+        spnTopic.setAdapter(new ArrayAdapter<>(getContext(), R.layout.listoptionitem, R.id.tvOptionItem, listTopic));
+        spnTypeQuestion.setAdapter(new ArrayAdapter<>(getContext(), R.layout.listoptionitem, R.id.tvOptionItem, list));
         btnNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -235,16 +235,8 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
                         break;
                     }
                 }
-                for (TypeQuestion typeQuestion : questionInterface.daoTypeQuestion.getTypeQuestionList()) {
-                    if (question.getNameTypeQuestion().equalsIgnoreCase(typeQuestion.getTypeQuestionName())) {
-                        question.setIdTypeQuestion(typeQuestion.getId());
-                        break;
-                    }
-                }
                 daoQuestion.setContext(getContext());
                 daoQuestion.addDataToFireBase(question, edtTitle,edtCorrectAnswer);
-                daoQuestion.addDataQuestionToFireBaseTopic(question,edtTitle,edtCorrectAnswer);
-                daoQuestion.addDataQuestionToFireBaseTypeQuestion(question,edtTitle,edtCorrectAnswer);
             }
         });
         dialog.show();

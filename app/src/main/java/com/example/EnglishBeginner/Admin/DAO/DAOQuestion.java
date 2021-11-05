@@ -22,6 +22,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +33,7 @@ public class DAOQuestion {
 
     public DAOQuestion(Context context) {
         questionList = new ArrayList<>();
-        databaseReference = FirebaseDatabase.getInstance().getReference("listtopic");
+        databaseReference = FirebaseDatabase.getInstance().getReference("listquestion");
         this.context = context;
     }
 
@@ -44,74 +45,74 @@ public class DAOQuestion {
         return questionList;
     }
 
-//    public void getDataFromRealTimeToList(QuestionAdapter questionAdapter, LearnQuestionAdapter learnQuestionAdapter) {
-//        databaseReference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if (questionList != null) {
-//                    questionList.clear();
-//                }
-//                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-//                    Question question = dataSnapshot.getValue(Question.class);
-//                    questionList.add(question);
-//                }
-//                if (questionAdapter != null)
-//                {
-//                    questionAdapter.notifyDataSetChanged();
-//                }
-//                if (learnQuestionAdapter != null)
-//                {
-//                    learnQuestionAdapter.notifyDataSetChanged();
-//                }
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Toast.makeText(context, "Get list question failed", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
-public void getDataFromRealTimeToList(QuestionAdapter questionAdapter, LearnQuestionAdapter learnQuestionAdapter) {
-    databaseReference.addValueEventListener(new ValueEventListener() {
-        @Override
-        public void onDataChange(@NonNull DataSnapshot snapshot) {
-            if (questionList != null) {
-                questionList.clear();
+    public void getDataFromRealTimeToList(QuestionAdapter questionAdapter, LearnQuestionAdapter learnQuestionAdapter) {
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (questionList != null) {
+                    questionList.clear();
+                }
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Question question = dataSnapshot.getValue(Question.class);
+                    questionList.add(question);
+                }
+                if (questionAdapter != null)
+                {
+                    questionAdapter.notifyDataSetChanged();
+                }
+                if (learnQuestionAdapter != null)
+                {
+                    learnQuestionAdapter.notifyDataSetChanged();
+                }
             }
-            Log.d("Parent",snapshot.getKey());
-            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                databaseReference.child(dataSnapshot.getKey()+"/listquestion").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Log.d("Parent1",snapshot.getKey());
-                        for (DataSnapshot snapshot1 : snapshot.getChildren())
-                        {
-                            Log.d("child1",snapshot1.getKey());
-                            Question question = snapshot1.getValue(Question.class);
-                            questionList.add(question);
-                        }
-                        if (questionAdapter != null)
-                        {
-                            questionAdapter.notifyDataSetChanged();
-                        }
-                        if (learnQuestionAdapter != null)
-                        {
-                            learnQuestionAdapter.notifyDataSetChanged();
-                        }
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(context, "Get list question failed", Toast.LENGTH_SHORT).show();
             }
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError error) {
-
-        }
-    });
-}
+        });
+    }
+//public void getDataFromRealTimeToList(QuestionAdapter questionAdapter, LearnQuestionAdapter learnQuestionAdapter) {
+//    databaseReference.addValueEventListener(new ValueEventListener() {
+//        @Override
+//        public void onDataChange(@NonNull DataSnapshot snapshot) {
+//            if (questionList != null) {
+//                questionList.clear();
+//            }
+//            Log.d("Parent",snapshot.getKey());
+//            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+//                databaseReference.child(dataSnapshot.getKey()+"/listquestion").addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                        Log.d("Parent1",snapshot.getKey());
+//                        for (DataSnapshot snapshot1 : snapshot.getChildren())
+//                        {
+//                            Log.d("child1",snapshot1.getKey());
+//                            Question question = snapshot1.getValue(Question.class);
+//                            questionList.add(question);
+//                        }
+//                        if (questionAdapter != null)
+//                        {
+//                            questionAdapter.notifyDataSetChanged();
+//                        }
+//                        if (learnQuestionAdapter != null)
+//                        {
+//                            learnQuestionAdapter.notifyDataSetChanged();
+//                        }
+//                    }
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError error) {
+//
+//                    }
+//                });
+//            }
+//        }
+//
+//        @Override
+//        public void onCancelled(@NonNull DatabaseError error) {
+//
+//        }
+//    });
+//}
     public void addDataToFireBase(Question question, EditText edtTitle, EditText edtCorrectAnswer) {
         boolean[] check = new boolean[3];
         int s=1;
@@ -158,101 +159,16 @@ public void getDataFromRealTimeToList(QuestionAdapter questionAdapter, LearnQues
                     }
                 }
             });
-        }
-    }
-    public void addDataQuestionToFireBaseTopic(Question question, EditText edtTitle, EditText edtCorrectAnswer) {
-        boolean[] check = new boolean[3];
-        int s=1;
-        for (int i = 0; i < check.length; i++) {
-            check[i] = true;
-        }
-        if (question.getTitle().isEmpty() || question.getTitle().length() == 0) {
-            check[0] = false;
-        }
-        else if (question.getCorrectAnswer().isEmpty() || question.getCorrectAnswer().length() == 0) {
-            check[1] = false;
-        }
-        else {
-            if (questionList.size() > 0)
-            {
-                for (Question question1 : questionList) {
-                    if (question1.getNameTopic().equalsIgnoreCase(question.getNameTopic())&&
-                            question1.getNameTypeQuestion().equalsIgnoreCase(question.getNameTypeQuestion())&&
-                            question1.getTitle().equalsIgnoreCase(question.getTitle()))
-                    {
-                        check[2] = false;
-                        break;
-                    }
-                }
-            }
-        }
-        if (check[0] == false) {
-            edtTitle.setError("Không để trống");
-            edtTitle.requestFocus();
-        }
-        else if (check[1] == false) {
-            edtCorrectAnswer.setError("Không để trống");
-            edtCorrectAnswer.requestFocus();
-        }
-        else if (check[2] == false) {
-            edtTitle.setError("Trùng dữ liệu , hãy kiểm tra lại dữ liệu");
-            edtTitle.requestFocus();
-        } else {
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listtopic/"+question.getIdTopic());
-            databaseReference.child("listquestion/"+question.getId()).setValue(question).addOnCompleteListener(new OnCompleteListener<Void>() {
+            HashMap<String,Object>hashMap = new HashMap<>();
+            hashMap.put("id",question.getId());
+            hashMap.put("title",question.getTitle());
+            hashMap.put("nameTypeQuestion",question.getNameTypeQuestion());
+            DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("listtopic/"+question.getIdTopic());
+            databaseReference1.child("listquestion/"+question.getId()).updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isComplete()) {
                         Toast.makeText(context,"Thêm Question vào Topic thành công", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-        }
-    }
-    public void addDataQuestionToFireBaseTypeQuestion(Question question, EditText edtTitle, EditText edtCorrectAnswer) {
-        boolean[] check = new boolean[3];
-        int s=1;
-        for (int i = 0; i < check.length; i++) {
-            check[i] = true;
-        }
-        if (question.getTitle().isEmpty() || question.getTitle().length() == 0) {
-            check[0] = false;
-        }
-        else if (question.getCorrectAnswer().isEmpty() || question.getCorrectAnswer().length() == 0) {
-            check[1] = false;
-        }
-        else {
-            if (questionList.size() > 0)
-            {
-                for (Question question1 : questionList) {
-                    if (question1.getNameTopic().equalsIgnoreCase(question.getNameTopic())&&
-                            question1.getNameTypeQuestion().equalsIgnoreCase(question.getNameTypeQuestion())&&
-                            question1.getTitle().equalsIgnoreCase(question.getTitle()))
-                    {
-                        check[2] = false;
-                        break;
-                    }
-                }
-            }
-        }
-        if (check[0] == false) {
-            edtTitle.setError("Không để trống");
-            edtTitle.requestFocus();
-        }
-        else if (check[1] == false) {
-            edtCorrectAnswer.setError("Không để trống");
-            edtCorrectAnswer.requestFocus();
-        }
-        else if (check[2] == false) {
-            edtTitle.setError("Trùng dữ liệu , hãy kiểm tra lại dữ liệu");
-            edtTitle.requestFocus();
-        } else {
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listtypequestion/"+question.getIdTypeQuestion());
-            databaseReference.child("listquestion/"+question.getId()).setValue(question).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isComplete()) {
-                        Toast.makeText(context,"Thêm Question vào TypeQuestion thành công", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
