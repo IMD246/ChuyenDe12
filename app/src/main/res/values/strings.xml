@@ -49,8 +49,8 @@
     <string name="cb_study_mode_remind">Nhắc nhở luyện tập</string>
     <string name="tv_study_mode_medium">Vừa</string>
     <string name="tv_study_mode_basic">Cơ bản</string>
-    <string name="tv_study_mode_hard">Cơ bản</string>
-    <string name="tv_study_mode_superhard">Cơ bản</string>
+    <string name="tv_study_mode_hard">Khó</string>
+    <string name="tv_study_mode_superhard">Cực khó</string>
     <string name="tv_study_mode_xp_basic">30 điểm XP mỗi ngày</string>
     <string name="tv_study_mode_xp_medium">50 điểm XP mỗi ngày</string>
     <string name="tv_study_mode_xp_hard">80 điểm XP mỗi ngày</string>
