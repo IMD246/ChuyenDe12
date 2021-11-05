@@ -37,7 +37,6 @@ public class LearnManagementFragment extends Fragment{
     {
         learnItemList = new ArrayList<>();
         learnItemList.add(new LearnItem(DEFAULTVALUE.LEVEL,R.drawable.level));
-        learnItemList.add(new LearnItem(DEFAULTVALUE.TYPEQUESTION,R.drawable.type));
         learnItemList.add(new LearnItem(DEFAULTVALUE.TOPIC,R.drawable.topic));
         learnItemList.add(new LearnItem(DEFAULTVALUE.QUESTION,R.drawable.question));
         learnItemList.add(new LearnItem(DEFAULTVALUE.LEARNTOPIC, R.drawable.learn));

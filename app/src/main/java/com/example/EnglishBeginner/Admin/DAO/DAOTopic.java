@@ -169,6 +169,11 @@ public class DAOTopic {
                     }
                 }
             });
+            HashMap<String, Object> hashMap1 = new HashMap<>();
+            hashMap1.put("id", topic.getId());
+            hashMap1.put("nameTopic", topic.getNameTopic());
+            DatabaseReference databaseReference2 = FirebaseDatabase.getInstance().getReference("listlevel");
+            databaseReference2.child(topic.getIdLevel() + "/listtopic").child(String.valueOf(topic.getId())).updateChildren(hashMap).isComplete();
         }
     }
 
@@ -197,5 +202,7 @@ public class DAOTopic {
                 Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
             }
         });
+        DatabaseReference databaseReference2 = FirebaseDatabase.getInstance().getReference("listlevel");
+        databaseReference2.child(topic.getIdLevel() + "/listtopic").child(String.valueOf(topic.getId())).removeValue().isComplete();
     }
 }
