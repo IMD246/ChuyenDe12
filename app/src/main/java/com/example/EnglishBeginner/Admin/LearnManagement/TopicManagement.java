@@ -190,12 +190,11 @@ public class TopicManagement extends AppCompatActivity {
                         break;
                     }
                 }
-                if (topic.getNameTopic().equalsIgnoreCase(topic1.getNameTopic())&&topic.getIdLevel() == topic1.getIdLevel())
-                { }
-                else {
+                if (!(topic.getNameTopic().equalsIgnoreCase(topic1.getNameTopic())&&topic.getIdLevel() == topic1.getIdLevel()))
+                {
                     daoTopic.editDataToFireBase(topic1, edtTopic);
                 }
-                daoImageStorage.uploadFileImageTopic(imgTopic,"Topic ",topic1);
+                daoImageStorage.uploadFileImageTopic(choice,imgTopic,"Topic ",topic1);
             });
         }
         else if (choice == 1)
@@ -216,7 +215,7 @@ public class TopicManagement extends AppCompatActivity {
                         }
                     }
                     daoTopic.addDataToFireBase(topic12,edtTopic);
-                daoImageStorage.uploadFileImageTopic(imgTopic,"Topic", topic12);
+                    daoImageStorage.uploadFileImageTopic(choice,imgTopic,"Topic", topic12);
             });
         }
         dialog.show();

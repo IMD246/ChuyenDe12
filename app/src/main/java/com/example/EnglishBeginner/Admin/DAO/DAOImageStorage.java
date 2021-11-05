@@ -40,7 +40,7 @@ public class DAOImageStorage {
     }
 
     // hàm upload ảnh cho topic
-    public void uploadFileImageTopic(ImageView imageView, String name, Topic topic) {
+    public void uploadFileImageTopic(int choice,ImageView imageView, String name, Topic topic) {
         if (mImgURL != null) {
             StorageReference fileReference = storageReference.child(name + " " + topic.getId());
             fileReference.putFile(mImgURL).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -55,7 +55,9 @@ public class DAOImageStorage {
                 @Override
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful()) {
-                        imageView.setImageURI(null);
+                        if (choice == 1) {
+                            imageView.setImageURI(null);
+                        }
                         mImgURL = task.getResult();
                         topic.setUrlImage(mImgURL.toString());
                         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listtopic");
@@ -80,6 +82,7 @@ public class DAOImageStorage {
                     }
                 }
             });
+            mImgURL = null;
         }
     }
 
@@ -117,6 +120,7 @@ public class DAOImageStorage {
                     }
                 }
             });
+            mImgURL = null;
         }
     }
 
@@ -153,6 +157,7 @@ public class DAOImageStorage {
                     }
                 }
             });
+            mImgURL = null;
         }
     }
 }

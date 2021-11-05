@@ -27,12 +27,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.EnglishBeginner.Admin.Adapter.AnswerAdapter;
 import com.example.EnglishBeginner.Admin.DAO.DAOAnswer;
 import com.example.EnglishBeginner.Admin.DAO.DAOImageStorage;
 import com.example.EnglishBeginner.Admin.DAO.DAOQuestion;
 import com.example.EnglishBeginner.Admin.DTO.Answer;
+import com.example.EnglishBeginner.Admin.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.Admin.DTO.Question;
 import com.example.EnglishBeginner.Admin.DTO.Topic;
 import com.example.EnglishBeginner.Admin.DTO.TypeQuestion;
@@ -292,8 +294,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         TextView tvThemSua = dialog.findViewById(R.id.tvThemSua);
         Button btnPickImageTopic = dialog.findViewById(R.id.btnPickImageTopic);
         LinearLayout linearLayout = dialog.findViewById(R.id.lnpickimage);
-        if (question.getNameTypeQuestion().equalsIgnoreCase("Image")) {
-        } else {
+        if (!(question.getNameTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.IMAGE))) {
             linearLayout.setVisibility(View.GONE);
         }
         imgAnswer = dialog.findViewById(R.id.imgAnswer);
@@ -325,8 +326,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
                     Answer answer1 = new Answer();
                     answer1.setId(answer.getId());
                     answer1.setAnswerQuestion(edtAnswer.getText().toString());
-                    if (answer.getUrlImage().isEmpty() || answer.getUrlImage().trim().length() == 0) {
-                    } else {
+                    if (!(answer.getUrlImage().isEmpty() || answer.getUrlImage().trim().length() == 0)) {
                         answer1.setUrlImage(answer.getUrlImage());
                     }
                     if (answer.getAnswerQuestion().equalsIgnoreCase(answer1.getAnswerQuestion())) {
@@ -345,16 +345,25 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
                 @Override
                 public void onClick(View v) {
                     {
-                        Answer answer1 = new Answer();
-                        if (daoAnswer.getAnswerList().size() > 0) {
-                            idAnswer = daoAnswer.getAnswerList().get(daoAnswer.getAnswerList().size() - 1).getId() + 1;
+                        if (question.getNameTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.IMAGE)) {
+                            if (daoAnswer.getAnswerList().size()<4)
+                            {
+                                Answer answer1 = new Answer();
+                                if (daoAnswer.getAnswerList().size() > 0) {
+                                    idAnswer = daoAnswer.getAnswerList().get(daoAnswer.getAnswerList().size() - 1).getId() + 1;
+                                }
+                                answer1.setId(idAnswer);
+                                answer1.setAnswerQuestion(edtAnswer.getText().toString());
+                                answer1.setUrlImage("");
+                                daoAnswer.setContext(getContext());
+                                daoAnswer.addDataAnswerToFirebaseQuestion(answer1, edtAnswer, question.getId());
+                                daoImageStorage.uploadFileImageToAnswer(1, imgAnswer, "Question" + question.getId() + "Answer" + answer1.getId(), answer1, question.getId(), daoAnswer.getQuestion());
+                            }
+                            else
+                            {
+                                Toast.makeText(getContext(), "Chỉ được thêm 4 câu hỏi ảnh", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                        answer1.setId(idAnswer);
-                        answer1.setAnswerQuestion(edtAnswer.getText().toString());
-                        answer1.setUrlImage("");
-                        daoAnswer.setContext(getContext());
-                        daoAnswer.addDataAnswerToFirebaseQuestion(answer1, edtAnswer, question.getId());
-                        daoImageStorage.uploadFileImageToAnswer(1, imgAnswer, "Question" + question.getId() + "Answer" + answer1.getId(), answer1, question.getId(), daoAnswer.getQuestion());
                     }
                 }
             });

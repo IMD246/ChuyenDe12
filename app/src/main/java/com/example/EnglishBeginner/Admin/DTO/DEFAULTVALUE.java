@@ -24,6 +24,7 @@ public class DEFAULTVALUE {
     final public static String TOEIC = "Toeic";
     final public static String IETLS = "Ietls";
     final public static String TYPEWORD = "Loại từ vựng";
+    final public static String IMAGE = "Image";
     public static void alertDialogMessage(String title, String msg, Context context)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);

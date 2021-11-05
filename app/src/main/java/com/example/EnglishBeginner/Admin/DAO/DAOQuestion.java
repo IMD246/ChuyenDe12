@@ -200,7 +200,6 @@ public class DAOQuestion {
             hashMap.put("correctAnswer", question.getCorrectAnswer());
             DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("listtopic");
             databaseReference1.child(question.getIdTopic() + "/listquestion/" + question.getId()).updateChildren(hashMap).isComplete();
-
             databaseReference.child(String.valueOf(question.getId())).setValue(question).addOnCompleteListener(task -> {
                 if (task.isComplete()) {
                     Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
