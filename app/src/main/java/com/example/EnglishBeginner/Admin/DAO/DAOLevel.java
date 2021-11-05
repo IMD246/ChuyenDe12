@@ -157,7 +157,6 @@ public class DAOLevel {
             });
         }
     }
-
     public void deleteDataToFire(Level level) {
         DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("listtopic");
         databaseReference1.addValueEventListener(new ValueEventListener() {
