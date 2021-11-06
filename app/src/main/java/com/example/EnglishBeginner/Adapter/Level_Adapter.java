@@ -16,12 +16,13 @@ import com.example.EnglishBeginner.DTO.Topic;
 import com.example.EnglishBeginner.R;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("StatementWithEmptyBody")
 public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewHolder> {
     //khai báo các trường dữ liệu
     public List<Level> levelArrayList;
+    public List<Topic> topicList;
     public Interface_Learn interface_learn;
     private final Context context;
 
@@ -36,6 +37,10 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
 
     public void setInterface_learn(Interface_Learn interface_learn) {
         this.interface_learn = interface_learn;
+    }
+
+    public void setTopicList(List<Topic> topicList) {
+        this.topicList = topicList;
     }
 
     //khởi tạo view holder
@@ -57,9 +62,20 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
         } else {
             Picasso.get().load(level.getUrlImage()).resize(100, 100).into(holder.imgLesson);
         }
-//        if (level.getListtopic().size() > 0) {
-//            setTopicItemRecycler(holder.rcvLevelTopicItem, level.getListtopic());
-//        }
+        List<Topic> listTopicNew = new ArrayList<>();
+        if (topicList.size()>0)
+        {
+            for (int i=0;i<topicList.size();i++)
+            {
+                if (level.getId() == topicList.get(i).getIdLevel())
+                {
+                    listTopicNew.add(topicList.get(i));
+                }
+            }
+        }
+        if (listTopicNew.size()>0) {
+            setTopicItemRecycler(holder.rcvLevelTopicItem, listTopicNew);
+        }
         //xử lí khi click item learn:
         holder.layout.setOnClickListener(v -> {
             if (interface_learn!=null)
@@ -96,7 +112,6 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
         Topic_Adapter topic_adapter = new Topic_Adapter(context);
         topic_adapter.setTopicList(topicList);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2);
-        topic_adapter.setTopicList(topicList);
         recycler.setLayoutManager(gridLayoutManager);
         recycler.setAdapter(topic_adapter);
         topic_adapter.setInterface_learn(new Topic_Adapter.Interface_Learn() {

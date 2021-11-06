@@ -1,8 +1,8 @@
 package com.example.EnglishBeginner.DTO;
 
 public class Topic {
-    private int id,idLevel=0,level=0;
-    String nameTopic,urlImage="";
+    private int id,idLevel,level;
+    private String nameTopic,urlImage="";
 
     public Topic(int id, String nameTopic, String urlImage) {
         this.id = id;
@@ -10,32 +10,39 @@ public class Topic {
         this.urlImage = urlImage;
     }
 
-    public String getUrlImage() {
-        return urlImage;
+    public Topic(int id, int idLevel, int level, String nameTopic, String urlImage) {
+        this.id = id;
+        this.idLevel = idLevel;
+        this.level = level;
+        this.nameTopic = nameTopic;
+        this.urlImage = urlImage;
     }
 
-    public void setUrlImage(String urlImage) {
-        this.urlImage = urlImage;
+    public Topic() {
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public Topic() {
+    public int getIdLevel() {
+        return idLevel;
+    }
+
+    public void setIdLevel(int idLevel) {
+        this.idLevel = idLevel;
     }
 
     public int getLevel() {
         return level;
     }
 
-
-    public int getId() {
-        return id;
-    }
-
-    public int getIdLevel() {
-        return idLevel;
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     public String getNameTopic() {
@@ -44,5 +51,13 @@ public class Topic {
 
     public void setNameTopic(String nameTopic) {
         this.nameTopic = nameTopic;
+    }
+
+    public String getUrlImage() {
+        return urlImage;
+    }
+
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
     }
 }

@@ -58,8 +58,7 @@ public class Topic_Adapter extends RecyclerView.Adapter<Topic_Adapter.TopicViewH
         if (topic == null) {
             return;
         }
-        if (topic.getUrlImage().trim().isEmpty() || topic.getUrlImage().trim().length() == 0) {
-        } else {
+        if (!(topic.getUrlImage().trim().isEmpty() || topic.getUrlImage().trim().length() == 0)) {
             Picasso.get().load(topic.getUrlImage()).resize(100, 100).into(holder.imgTopic);
         }
         holder.tvNameTopic.setText(topic.getNameTopic());

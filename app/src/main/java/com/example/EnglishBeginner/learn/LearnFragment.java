@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.EnglishBeginner.Adapter.Level_Adapter;
 import com.example.EnglishBeginner.DAO.DAOLevel;
+import com.example.EnglishBeginner.DAO.DAOTopic;
 import com.example.EnglishBeginner.DTO.Level;
 import com.example.EnglishBeginner.DTO.Topic;
 import com.example.EnglishBeginner.R;
@@ -29,6 +30,7 @@ public class LearnFragment extends Fragment {
     RecyclerView learnRecyclerView;
     Level_Adapter learnRecyclerView_adapter;
     DAOLevel daoLevel;
+    DAOTopic daoTopic;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -46,7 +48,9 @@ public class LearnFragment extends Fragment {
     //Ánh xạ, xử lí view của list
     private void setControl() {
         daoLevel = new DAOLevel(getContext());
+        daoTopic = new DAOTopic(getContext());
         learnRecyclerView_adapter = new Level_Adapter(getContext());
+        learnRecyclerView_adapter.setTopicList(daoTopic.getTopicList());
         learnRecyclerView = myView.findViewById(R.id.rcvLevel);
         userInterfaceActivity = (UserInterfaceActivity) getActivity();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -68,6 +72,7 @@ public class LearnFragment extends Fragment {
     }
     private void getDataFromRealTime() {
         daoLevel.getDataFromRealTimeToList(learnRecyclerView_adapter);
+        daoTopic.getDataFromRealTimeFirebase();
     }
     //hàm chuyển sang màn hình học tiếng Anh
     private void onClickGoToScreen() {

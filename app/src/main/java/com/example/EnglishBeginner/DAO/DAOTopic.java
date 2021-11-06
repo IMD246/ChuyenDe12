@@ -25,7 +25,7 @@ public class DAOTopic {
     private DAOQuestion daoQuestion;
     public DAOTopic(Context context) {
         this.context = context;
-        daoQuestion = new DAOQuestion(context);
+        topicList = new ArrayList<>();
         databaseReference = FirebaseDatabase.getInstance().getReference("listtopic");
     }
     public void getDataFromRealTimeFirebase()
