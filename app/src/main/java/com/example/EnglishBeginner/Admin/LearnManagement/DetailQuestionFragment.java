@@ -29,6 +29,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.EnglishBeginner.Admin.Adapter.AnswerAdapter;
 import com.example.EnglishBeginner.Admin.DAO.DAOAnswer;
 import com.example.EnglishBeginner.Admin.DAO.DAOImageStorage;
@@ -39,7 +40,6 @@ import com.example.EnglishBeginner.Admin.DTO.Question;
 import com.example.EnglishBeginner.Admin.DTO.Topic;
 import com.example.EnglishBeginner.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -289,7 +289,9 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
             edtAnswer.setText(answer.getAnswerQuestion());
             if (answer.getUrlImage().isEmpty()) {
             } else {
-                Picasso.get().load(answer.getUrlImage()).resize(100, 100).into(imgAnswer);
+                if (getContext()!=null) {
+                    Glide.with(getContext()).load(answer.getUrlImage()).into(imgAnswer);
+                }
             }
             btnYes.setOnClickListener(v -> {
                 Answer answer1 = new Answer();

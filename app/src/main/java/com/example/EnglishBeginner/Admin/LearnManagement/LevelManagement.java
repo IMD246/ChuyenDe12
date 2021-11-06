@@ -21,12 +21,13 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.example.EnglishBeginner.Admin.AccountUserManagement;
 import com.example.EnglishBeginner.Admin.Adapter.LevelAdapter;
 import com.example.EnglishBeginner.Admin.DAO.DAOImageStorage;
 import com.example.EnglishBeginner.Admin.DAO.DAOLevel;
 import com.example.EnglishBeginner.Admin.DTO.Level;
 import com.example.EnglishBeginner.R;
-import com.squareup.picasso.Picasso;
 
 public class LevelManagement extends AppCompatActivity {
 
@@ -129,7 +130,7 @@ public class LevelManagement extends AppCompatActivity {
             { }
             else
             {
-                Picasso.get().load(level.getUrlImage()).resize(100, 100).into(imgLevel);
+                Glide.with(getApplicationContext()).load(level.getUrlImage()).into(imgLevel);
             }
             btnYes.setText("Sửa");
             tvThemSua.setText("Sửa dữ liệu");

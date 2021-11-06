@@ -23,6 +23,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.EnglishBeginner.Admin.Adapter.LevelSpinnerAdapter;
 import com.example.EnglishBeginner.Admin.Adapter.TopicAdapter;
 import com.example.EnglishBeginner.Admin.DAO.DAOImageStorage;
@@ -31,7 +32,6 @@ import com.example.EnglishBeginner.Admin.DAO.DAOTopic;
 import com.example.EnglishBeginner.Admin.DTO.Level;
 import com.example.EnglishBeginner.Admin.DTO.Topic;
 import com.example.EnglishBeginner.R;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -174,7 +174,7 @@ public class TopicManagement extends AppCompatActivity {
             }
             else
             {
-                Picasso.get().load(topic.getUrlImage()).resize(100, 100).into(imgTopic);
+                Glide.with(getApplicationContext()).load(topic.getUrlImage()).into(imgTopic);
             }
             btnYes.setOnClickListener(v -> {
                 Topic topic1 = new Topic();

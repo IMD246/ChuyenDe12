@@ -12,9 +12,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.EnglishBeginner.Admin.DTO.Level;
 import com.example.EnglishBeginner.R;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +55,7 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHol
         }
         if (level.getUrlImage().isEmpty()) {
         } else {
-            Picasso.get().load(level.getUrlImage()).resize(100, 100).into(holder.imgLevel);
+            Glide.with(context).load(level.getUrlImage()).into(holder.imgLevel);
         }
         holder.tvName.setText("Level: " + String.valueOf(level.getNameLevel()));
         holder.onClickListener = new View.OnClickListener() {

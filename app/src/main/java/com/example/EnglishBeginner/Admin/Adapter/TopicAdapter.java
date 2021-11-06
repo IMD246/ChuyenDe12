@@ -12,10 +12,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.EnglishBeginner.Admin.DTO.Topic;
 import com.example.EnglishBeginner.Admin.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.R;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +75,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
         }
         if (topic.getUrlImage().isEmpty()) {
         } else {
-            Picasso.get().load(topic.getUrlImage()).resize(100, 100).into(holder.imgTopic);
+            Glide.with(context).load(topic.getUrlImage()).into(holder.imgTopic);
         }
         holder.tvLevel.setText("Level: " + String.valueOf(topic.getLevel()));
         holder.tvNameTopic.setText("Topic: " + topic.getNameTopic());

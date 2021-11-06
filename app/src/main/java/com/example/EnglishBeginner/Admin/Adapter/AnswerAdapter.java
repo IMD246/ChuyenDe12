@@ -10,10 +10,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.EnglishBeginner.Admin.DTO.Answer;
 import com.example.EnglishBeginner.R;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -60,7 +60,7 @@ public class AnswerAdapter extends RecyclerView.Adapter<AnswerAdapter.AnswerView
             holder.imgAnswer.setVisibility(View.GONE);
         } else {
             holder.imgAnswer.setVisibility(View.VISIBLE);
-            Picasso.get().load(answer.getUrlImage()).resize(100, 100).into(holder.imgAnswer);
+            Glide.with(context).load(answer.getUrlImage()).into(holder.imgAnswer);
         }
         holder.tvAnswerQuestion.setText("Câu trả lời: " + answer.getAnswerQuestion());
         holder.onClickListener = new View.OnClickListener() {
