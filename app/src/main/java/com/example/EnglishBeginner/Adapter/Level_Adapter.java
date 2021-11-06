@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.EnglishBeginner.DTO.Level;
 import com.example.EnglishBeginner.DTO.Topic;
 import com.example.EnglishBeginner.R;
@@ -60,7 +61,7 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
         }
         if (level.getUrlImage().trim().isEmpty() || level.getUrlImage().trim().length() == 0) {
         } else {
-            Picasso.get().load(level.getUrlImage()).resize(100, 100).into(holder.imgLesson);
+            Glide.with(context).load(level.getUrlImage()).into(holder.imgLesson);
         }
         List<Topic> listTopicNew = new ArrayList<>();
         if (topicList.size()>0)

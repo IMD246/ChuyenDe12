@@ -1,6 +1,5 @@
 package com.example.EnglishBeginner.Adapter;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -12,9 +11,10 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.EnglishBeginner.DTO.Topic;
 import com.example.EnglishBeginner.R;
 import com.example.EnglishBeginner.learn.learning.LearningEnglishFragment;
@@ -58,8 +58,12 @@ public class Topic_Adapter extends RecyclerView.Adapter<Topic_Adapter.TopicViewH
         if (topic == null) {
             return;
         }
-        if (!(topic.getUrlImage().trim().isEmpty() || topic.getUrlImage().trim().length() == 0)) {
-            Picasso.get().load(topic.getUrlImage()).resize(100, 100).into(holder.imgTopic);
+        if (topic.getUrlImage().trim().isEmpty()) {
+
+        }
+        else
+        {
+            Glide.with(context).load(topic.getUrlImage()).into(holder.imgTopic);
         }
         holder.tvNameTopic.setText(topic.getNameTopic());
         //xử lí khi click item learn:
