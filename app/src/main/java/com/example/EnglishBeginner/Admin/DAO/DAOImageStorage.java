@@ -70,15 +70,6 @@ public class DAOImageStorage {
                                 }
                             }
                         });
-                        DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("listlevel");
-                        databaseReference1.child(String.valueOf(topic.getIdLevel()) + "/listtopic").child(topic.getId() + "/urlImage").
-                                setValue(topic.getUrlImage()).
-                                addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        Toast.makeText(context, "Cập nhật ảnh cho Topic của Level thành công", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
                     }
                 }
             });

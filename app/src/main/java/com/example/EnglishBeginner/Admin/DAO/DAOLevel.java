@@ -120,10 +120,9 @@ public class DAOLevel {
             hashMap.put("idLevel", level.getId());
             hashMap.put("level", level.getNameLevel());
             DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("listtopic");
-            databaseReference1.addValueEventListener(new ValueEventListener() {
+            databaseReference1.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    Log.d("parent", snapshot.getKey());
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Log.d("child", dataSnapshot.getKey());
                         Topic topic = dataSnapshot.getValue(Topic.class);
@@ -134,17 +133,7 @@ public class DAOLevel {
                         }
                     }
                 }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                }
-            });
-            databaseReference.child(String.valueOf(level.getId())).child("listtopic").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        Log.d("child", dataSnapshot.getKey());
-                    }
-                }
+
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
 
@@ -159,7 +148,7 @@ public class DAOLevel {
     }
     public void deleteDataToFire(Level level) {
         DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("listtopic");
-        databaseReference1.addValueEventListener(new ValueEventListener() {
+        databaseReference1.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -169,7 +158,7 @@ public class DAOLevel {
                     if (topic.getIdLevel() == level.getId())
                     {
                         DatabaseReference databaseReference2 = FirebaseDatabase.getInstance().getReference("listquestion");
-                        databaseReference2.addValueEventListener(new ValueEventListener() {
+                        databaseReference2.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 for (DataSnapshot dataSnapshot1 : snapshot.getChildren())
@@ -192,6 +181,7 @@ public class DAOLevel {
                     }
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
