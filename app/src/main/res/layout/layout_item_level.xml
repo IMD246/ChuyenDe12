@@ -30,9 +30,9 @@
                 android:id="@+id/imgLevel"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-                android:layout_marginBottom="48dp"
                 android:layout_marginStart="10dp"
-                android:src="@drawable/level"/>
+                android:layout_marginBottom="48dp"
+                android:src="@drawable/level_user" />
             <TextView
                 android:id="@+id/tvTitleLevel"
                 android:layout_width="wrap_content"
