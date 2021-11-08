@@ -41,14 +41,16 @@ public class DAOLevel {
     }
 
     public void getDataFromRealTimeToList(LevelAdapter levelAdapter) {
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.orderByChild("nameLevel").addValueEventListener(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (levelList != null) {
                     levelList.clear();
                 }
+                Log.d("parent",snapshot.getKey());
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Log.d("child",dataSnapshot.getKey());
                     Level level = dataSnapshot.getValue(Level.class);
                     assert levelList != null;
                     levelList.add(level);

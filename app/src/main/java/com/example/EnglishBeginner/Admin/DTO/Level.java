@@ -1,5 +1,7 @@
 package com.example.EnglishBeginner.Admin.DTO;
 
+import java.util.Collection;
+
 public class Level {
     private int id;
     private int nameLevel;

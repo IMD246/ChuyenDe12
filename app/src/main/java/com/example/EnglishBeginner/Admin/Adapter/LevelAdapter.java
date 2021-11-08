@@ -30,6 +30,10 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHol
         this.myDelegationLevel = myDelegationLevel;
     }
 
+    public List<Level> getListLevel() {
+        return listLevel;
+    }
+
     public LevelAdapter(Context context) {
         this.context = context;
     }
