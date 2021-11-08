@@ -52,6 +52,7 @@
             <TextView
                 android:id="@+id/tv_edit_study_mode_basic"
                 android:layout_width="0dp"
+                android:duplicateParentState="true"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/mgl_tv_study_mode"
@@ -67,6 +68,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:duplicateParentState="true"
                 android:layout_weight="1"
                 android:text="@string/tv_study_mode_xp_basic"
                 android:textColor="@color/grey"

@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.bumptech.glide.Glide;
 import com.example.EnglishBeginner.Adapter.ProcessTopic_Adapter;
 import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.DTO.ProcessTopicItem;
@@ -40,7 +41,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -163,7 +163,7 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
             tvUserName.setText(user.getFullname());
             tvUserEmail.setText(user.getEmail());
             if (!(user.getImageUser().trim().length() == 0 && user.getImageUser().isEmpty())) {
-                Picasso.get().load(user.getImageUser()).resize(100, 100).into(imgUserName);
+                Glide.with(UserInterfaceActivity.this).load(user.getImageUser()).into(imgUserName);
             }
         }
     }
@@ -200,22 +200,18 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
                 super.onPageSelected(position);
                 switch (position) {
                     case 0:
-                        Log.d("bạn đang ở màn hình thứ", "0");
                         myCurrentViewpager2 = FRAGMENT_LEARN;
                         bottomNavigationView.getMenu().findItem(R.id.bottom_nav_learn).setChecked(true);
                         break;
                     case 1:
-                        Log.d("bạn đang ở màn hình thứ", "1");
                         myCurrentViewpager2 = FRAGMENT_ALARM;
                         bottomNavigationView.getMenu().findItem(R.id.bottom_nav_alarm).setChecked(true);
                         break;
                     case 2:
-                        Log.d("bạn đang ở màn hình thứ", "2");
                         myCurrentViewpager2 = FRAGMENT_VOCABULARY;
                         bottomNavigationView.getMenu().findItem(R.id.bottom_nav_vocabulary).setChecked(true);
                         break;
                     case 3:
-                        Log.d("bạn đang ở màn hình thứ", "3");
                         myCurrentViewpager2 = FRAGMENT_PROFILE;
                         navigationView.getMenu().findItem(R.id.nav_profile).setChecked(true);
                         navigationView.getMenu().findItem(R.id.nav_setting).setChecked(false);
@@ -223,7 +219,6 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
                         navigationView.getMenu().findItem(R.id.nav_logout).setChecked(false);
                         break;
                     case 4:
-                        Log.d("bạn đang ở màn hình thứ", "4");
                         myCurrentViewpager2 = FRAGMENT_SETTING;
                         navigationView.getMenu().findItem(R.id.nav_setting).setChecked(true);
                         navigationView.getMenu().findItem(R.id.nav_profile).setChecked(false);

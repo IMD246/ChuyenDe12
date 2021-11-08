@@ -21,6 +21,12 @@
             android:name=".profile.EditPrivacyActivity"
             android:exported="false"/>
         <activity
+            android:name=".profile.EditAccountActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".profile.EditStudyModeActivity"
+            android:exported="false"/>
+        <activity
             android:name=".learn.testing.TestWriteFragment"
             android:exported="false" />
         <activity
@@ -71,9 +77,6 @@
         </activity>
         <activity
             android:name=".learn.testing.TestSelectionEnglishFragment"
-            android:exported="false" />
-        <activity
-            android:name=".profile.EditProfileActivity"
             android:exported="false" />
         <activity
             android:name=".learn.learning.LearningEnglishFragment"

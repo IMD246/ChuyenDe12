@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 
+import com.bumptech.glide.Glide;
 import com.example.EnglishBeginner.DAO.DAOImageStorage;
 import com.example.EnglishBeginner.DAO.DAOUserProfile;
 import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
@@ -25,7 +26,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
@@ -78,7 +78,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
             edtFullName.setText(user.getFullname());
             edtAge.setText(String.valueOf(user.getAge()));
             if (!(user.getImageUser().trim().length() == 0 && user.getImageUser().isEmpty())) {
-                Picasso.get().load(user.getImageUser()).resize(100, 100).into(imgUser);
+                Glide.with(EditProfileActivity.this).load(user.getImageUser()).into(imgUser);
             }
         }
     }

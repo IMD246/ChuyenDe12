@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.EnglishBeginner.DAO.DAOUserProfile;
 import com.example.EnglishBeginner.DTO.User;
 import com.example.EnglishBeginner.R;
@@ -23,7 +24,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 public class ProfileFragment extends Fragment {
     //khai báo
@@ -95,7 +95,7 @@ public class ProfileFragment extends Fragment {
             tvAge.setText(String.valueOf(user.getAge()));
             tvGender.setText(user.getGender());
             if (!(user.getImageUser().trim().length() == 0 && user.getImageUser().isEmpty())) {
-                Picasso.get().load(user.getImageUser()).resize(100, 100).into(imgAvatar);
+                Glide.with(getContext()).load(user.getImageUser()).into(imgAvatar);
             }
             tvTotalEXP.setText(String.valueOf(user.getTotalExp()));
         }

@@ -37,6 +37,7 @@ public class SettingMenuFragment extends Fragment {
     }
 
     private void setEvent() {
+
         btn_setting_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,19 +49,20 @@ public class SettingMenuFragment extends Fragment {
                 }
             }
         });
+
         btn_setting_account.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    Intent intent = new Intent(activity.getApplicationContext(), EditAccountActivity.class);
-                    startActivity(intent);
+                    Intent intent = new Intent(getContext(), EditAccountActivity.class);
+                    getContext().startActivity(intent);
                 }catch (Exception e){
-                    Log.d("ACBHD", e.getMessage());
                     Toast.makeText(getContext(), "ko đúng", Toast.LENGTH_SHORT).show();
                 }
 
             }
         });
+
         btn_setting_study_mode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,6 +74,7 @@ public class SettingMenuFragment extends Fragment {
                 }
             }
         });
+
         btn_setting_privacy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
