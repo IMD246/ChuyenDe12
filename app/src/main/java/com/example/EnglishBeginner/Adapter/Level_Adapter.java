@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -58,6 +59,7 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
         if (level == null) {
             return;
         }
+        holder.tvTitleLevel.setText(String.valueOf(level.getNameLevel()));
         if (level.getUrlImage().trim().isEmpty() || level.getUrlImage().trim().length() == 0) {
         } else {
             Glide.with(context).load(level.getUrlImage()).into(holder.imgLesson);
@@ -97,12 +99,14 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
         private final ImageView imgLesson;
         private final RecyclerView rcvLevelTopicItem;
         private final LinearLayout layout;
+        private final TextView tvTitleLevel;
 
         public LearnViewHolder(@NonNull View itemView) {
             super(itemView);
             imgLesson = itemView.findViewById(R.id.imgLevel);
             rcvLevelTopicItem = itemView.findViewById(R.id.rcvLevelTopicItem);
             layout = itemView.findViewById(R.id.layout_btn_lesson);
+            tvTitleLevel = itemView.findViewById(R.id.tvTitleLevel);
         }
     }
 

@@ -18,6 +18,7 @@
     <color name="pink">#75ED64DB</color>
     <color name="grey">#E1BCBABA</color>
     <color name="grey1">#afafaf</color>
+    <color name="grey2">#E8888787</color>
     <color name="d_grey">#80222222</color>
     <color name="l_grey">#B4DDDDDD</color>
 </resources>

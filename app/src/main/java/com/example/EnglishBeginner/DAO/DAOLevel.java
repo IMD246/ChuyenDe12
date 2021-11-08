@@ -32,7 +32,7 @@ public class DAOLevel {
         databaseReference = FirebaseDatabase.getInstance().getReference("listlevel");
     }
     public void getDataFromRealTimeToList(Level_Adapter level_adapter) {
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.orderByChild("nameLevel").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (levelList != null) {

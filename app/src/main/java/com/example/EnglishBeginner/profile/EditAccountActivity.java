@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.EnglishBeginner.R;
+import com.example.EnglishBeginner.main_interface.UserInterfaceActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,24 +33,24 @@ public class EditAccountActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ViewPager2.class);
-                getApplication().startActivity(intent);
+                Intent intent = new Intent(EditAccountActivity.this, UserInterfaceActivity.class);
+                EditAccountActivity.this.startActivity(intent);
             }
         });
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String currentPass = ipCurrentPass.getText().toString();
-
-                changePassWord();
-            }
-        });
+//        btnSave.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String currentPass = ipCurrentPass.getText().toString();
+//
+//                changePassWord();
+//            }
+//        });
     }
 
     private void setControl() {
         btnBack = findViewById(R.id.btn_edit_account_back);
         btnSave = findViewById(R.id.btn_edit_account_save);
-//        user = FirebaseAuth.getInstance().getCurrentUser();
+////        user = FirebaseAuth.getInstance().getCurrentUser();
         ipCurrentPass = findViewById(R.id.ip_curent_pass);
         ipNewPass = findViewById(R.id.ip_new_pass);
         ipVerify = findViewById(R.id.ip_verify);
