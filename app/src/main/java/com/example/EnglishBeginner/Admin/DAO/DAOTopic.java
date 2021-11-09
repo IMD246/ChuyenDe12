@@ -39,7 +39,7 @@ public class DAOTopic {
     }
 
     public void getDataFromRealTimeFirebase(TopicAdapter topicAdapter) {
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.orderByChild("level").addValueEventListener(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

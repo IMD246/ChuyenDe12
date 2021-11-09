@@ -44,7 +44,7 @@ public class DAOQuestion {
     }
 
     public void getDataFromRealTimeToList(QuestionAdapter questionAdapter, LearnQuestionAdapter learnQuestionAdapter) {
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.orderByChild("nameTopic").addValueEventListener(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -145,17 +145,6 @@ public class DAOQuestion {
             databaseReference.child(String.valueOf(question.getId())).setValue(question).addOnCompleteListener(task -> {
                 if (task.isComplete()) {
                     Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
-                }
-            });
-            HashMap<String, Object> hashMap = new HashMap<>();
-            hashMap.put("id", question.getId());
-            hashMap.put("title", question.getTitle());
-            hashMap.put("nameTypeQuestion", question.getNameTypeQuestion());
-            hashMap.put("correctAnswer", question.getCorrectAnswer());
-            DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("listtopic/" + question.getIdTopic());
-            databaseReference1.child("listquestion/" + question.getId()).updateChildren(hashMap).addOnCompleteListener(task -> {
-                if (task.isComplete()) {
-                    Toast.makeText(context, "Thêm Question vào Topic thành công", Toast.LENGTH_SHORT).show();
                 }
             });
         }
