@@ -21,13 +21,14 @@ import com.example.EnglishBeginner.Admin.AdminInterface;
 import com.example.EnglishBeginner.Admin.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.R;
 import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -54,7 +55,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private CallbackManager callbackManager;
     private FirebaseAuth mFirebaseAuth;
     private final FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-    private LoginButton loginFacebook;
+    private Button loginFacebook;
     private static final String TAO = "FacebookAuthentication";
     private static final String EMAIL = "email";
     private GoogleSignInClient mGoogleSignInClient;
@@ -71,7 +72,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         createRequestGoogle();
         mFirebaseAuth = FirebaseAuth.getInstance();
         setControl();
-        loginFacebookRegister();
     }
 
     private void createRequestGoogle() {
@@ -84,14 +84,14 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
-
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     private void loginFacebookRegister() {
-        loginFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        LoginManager.getInstance().logInWithReadPermissions(Login.this,Arrays.asList(EMAIL,"public_profile"));
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 handleFacebookToken(loginResult.getAccessToken());
@@ -111,8 +111,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
     // Ánh xạ tới các view trong layout
     private void setControl() {
-        SignInButton loginGoogle = findViewById(R.id.loginGoogle);
-        loginGoogle.setSize(SignInButton.SIZE_STANDARD);
+        Button loginGoogle = findViewById(R.id.loginGoogle);
         TextView register = findViewById(R.id.tvRegister);
         register.setOnClickListener(this);
         TextView tvForgetPassWord = findViewById(R.id.tvForgotPass);
@@ -123,17 +122,16 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         btnLogin.setOnClickListener(this);
         callbackManager = CallbackManager.Factory.create();
         loginFacebook = findViewById(R.id.loginFB);
-        loginFacebook.setPermissions(Arrays.asList(EMAIL, "public_profile"));
+        loginFacebook.setOnClickListener(this);
         loginGoogle.setOnClickListener(v -> signIn());
     }
-
     // Dùng hàm xử lý nút quay lại của thiết bị
     @Override
     public void onBackPressed() {
         alertDialog();
     }
-
     // Xây dựng một Hộp thoại thông báo
+
     public void alertDialog() {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         builder1.setMessage("Bạn có muốn thoát khỏi ứng dụng không?");
@@ -181,7 +179,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             }
         });
     }
-
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
 //        linkWithInWithFirebase(credential);
@@ -194,6 +191,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             }
         });
     }
+
     private void handleFacebookToken(@NonNull AccessToken accessToken) {
         AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
 //        linkWithInWithFirebase(credential);
@@ -217,6 +215,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             case R.id.btnLogin:
                 Handlelogin();
                 break;
+            case R.id.loginFB:loginFacebookRegister();break;
             case R.id.tvForgotPass:
                 startActivity(new Intent(this, ForgetPassword.class));
         }

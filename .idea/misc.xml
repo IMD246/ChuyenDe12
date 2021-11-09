@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/drawable-v24/custom_google_button.xml" value="0.1" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/drawable/custom_fb_button.xml" value="0.26205128205128203" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/drawable/ic_facebook.xml" value="0.26205128205128203" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/drawable/ic_google.xml" value="0.1" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/addeditlevel.xml" value="0.1793478260869565" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/addedittopic.xml" value="0.24635416666666668" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/answeritem.xml" value="0.17481884057971014" />
