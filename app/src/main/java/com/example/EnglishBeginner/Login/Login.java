@@ -1,6 +1,7 @@
 package com.example.EnglishBeginner.Login;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -140,7 +141,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         builder1.setPositiveButton(
                 "Có",
                 (dialog, id) -> {
-                    finish();
+                    Login.this.finish();
                     System.exit(0);
                 });
 
