@@ -295,7 +295,7 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
             drawerLayout.closeDrawer(GravityCompat.END);
         } else {
-            super.onBackPressed();
+            alertDialog();
         }
     }
 
