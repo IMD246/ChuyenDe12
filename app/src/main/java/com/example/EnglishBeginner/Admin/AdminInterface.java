@@ -184,7 +184,7 @@ public class AdminInterface extends AppCompatActivity {
         if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
             drawerLayout.closeDrawer(GravityCompat.END);
         } else {
-            super.onBackPressed();
+            alertDialog();
         }
     }
 
