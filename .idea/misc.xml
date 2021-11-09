@@ -3,19 +3,56 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/drawable-v24/custom_google_button.xml" value="0.1" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/drawable/custom_fb_button.xml" value="0.26205128205128203" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/drawable/ic_facebook.xml" value="0.26205128205128203" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/drawable/ic_google.xml" value="0.1" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/addeditlevel.xml" value="0.1793478260869565" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/addedittopic.xml" value="0.24635416666666668" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/answeritem.xml" value="0.17481884057971014" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/editlearnquestion.xml" value="0.17481884057971014" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/layout_item_img.xml" value="0.11980749746707194" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/layout_item_level.xml" value="0.11980749746707194" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/layout_item_topic.xml" value="0.17844202898550723" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/layout_popup_dialog.xml" value="0.11980749746707194" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/login.xml" value="0.11980749746707194" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/drawable-v24/ct_layout_boder1.xml" value="0.2703125" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/drawable-v24/ct_layout_boder3.xml" value="0.24027777777777778" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/drawable-v24/ct_layout_boder4.xml" value="0.24027777777777778" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/drawable-v24/ct_privacy_boder.xml" value="0.2703125" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/drawable-v24/ic_email.xml" value="0.24027777777777778" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/drawable/ct_layout_boder2.xml" value="0.24027777777777778" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/drawable/ct_layout_bottom_line1.xml" value="0.24027777777777778" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/drawable/ct_layout_item_recycleview_learn.xml" value="0.2703125" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/drawable/ct_learn_img_btn_exit.xml" value="0.2703125" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/drawable/ct_profile_boder_itemstatistic.xml" value="0.2703125" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/drawable/ct_select_icon_password.xml" value="0.2703125" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/activity_admin_interface.xml" value="0.1793478260869565" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/activity_edit_account.xml" value="0.13020833333333334" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/activity_edit_privacy.xml" value="0.1793478260869565" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/activity_edit_profile.xml" value="0.1793478260869565" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/activity_edit_study_mode.xml" value="0.1793478260869565" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/activity_forget_password.xml" value="0.23694779116465864" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/activity_learning_english.xml" value="0.264" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/activity_test_choose_image.xml" value="0.22592592592592592" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/activity_test_english.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/activity_test_write.xml" value="0.22592592592592592" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/activity_user_interface.xml" value="0.1793478260869565" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/layout_fragment_alarm.xml" value="0.1793478260869565" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/layout_fragment_learn.xml" value="0.17300724637681159" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/layout_fragment_learning_english.xml" value="0.22592592592592592" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/layout_fragment_profile.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/layout_fragment_setting_menu.xml" value="0.22592592592592592" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/layout_fragment_test_choose_image.xml" value="0.22592592592592592" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/layout_fragment_test_listen.xml" value="0.22592592592592592" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/layout_fragment_test_selection_english.xml" value="0.22592592592592592" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/layout_fragment_test_write.xml" value="0.22592592592592592" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/layout_header_nav.xml" value="0.264" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/layout_item_level.xml" value="0.22592592592592592" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/layout_item_recycleview_learn.xml" value="0.264" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/layout_item_test_choose_image.xml" value="0.22592592592592592" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/layout/layout_item_topic.xml" value="0.22592592592592592" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/menu/menu_bottom_navigation.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/menu/menu_button_lesson.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/menu/menu_nav_menu.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/menu/menu_navigation.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/drawable/boder.xml" value="0.2222222222222222" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/drawable/ic_lock.xml" value="0.2222222222222222" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/activity_forget_password.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/activity_main.xml" value="0.24635416666666668" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/layout_header_nav.xml" value="0.24635416666666668" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/layout_item_topic.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/login.xml" value="0.2453125" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/register_user.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/menu/menu_navigation.xml" value="0.24635416666666668" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.20208333333333334" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/drawable/ic_email.xml" value="0.20208333333333334" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/drawable/ic_launcher_background.xml" value="0.20208333333333334" />
