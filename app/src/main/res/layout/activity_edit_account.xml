@@ -29,16 +29,13 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/current_pass"
-            app:passwordToggleDrawable="@drawable/ct_select_icon_password"
-            app:passwordToggleEnabled="true"
-            app:passwordToggleTint="@color/black">
+            android:hint="@string/current_pass">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/ip_curent_pass"
+                android:id="@+id/ip_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword" />
+                android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout

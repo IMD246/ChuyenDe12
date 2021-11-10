@@ -1,6 +1,7 @@
 package com.example.EnglishBeginner.main_interface;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -32,6 +33,9 @@ import com.example.EnglishBeginner.Login.Login;
 import com.example.EnglishBeginner.R;
 import com.example.EnglishBeginner.learn.learning.LearningEnglishFragment;
 import com.example.EnglishBeginner.learn.testing.TestSelectionEnglishFragment;
+import com.example.EnglishBeginner.profile.EditAccountActivity;
+import com.example.EnglishBeginner.profile.EditProfileActivity;
+import com.example.EnglishBeginner.profile.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -359,5 +363,10 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         processTopic_adapter.setProcessTopicItemList(processTopicItemList);
         rcvLevelTopic.setLayoutManager(linearLayoutManager);
         rcvLevelTopic.setAdapter(processTopic_adapter);
+    }
+
+    //Hàm chuyển màn hình
+    public Activity getActivity() {
+        return this;
     }
 }

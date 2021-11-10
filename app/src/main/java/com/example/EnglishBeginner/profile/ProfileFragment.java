@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.example.EnglishBeginner.DAO.DAOUserProfile;
 import com.example.EnglishBeginner.DTO.User;
 import com.example.EnglishBeginner.R;
+import com.example.EnglishBeginner.main_interface.UserInterfaceActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -100,8 +101,7 @@ public class ProfileFragment extends Fragment {
             tvTotalEXP.setText(String.valueOf(user.getTotalExp()));
         }
     }
-
-    private void onClickGoToEditProfileScreen() {
+    public void onClickGoToEditProfileScreen() {
         Intent intent = new Intent(getContext(), EditProfileActivity.class);
         getContext().startActivity(intent);
     }

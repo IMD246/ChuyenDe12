@@ -33,7 +33,7 @@
 
     <!--màn hình edit account-->
     <string name="title_account"><u>Tài khoản</u></string>
-    <string name="current_pass">Nhập mậu khẩu hiện tại</string>
+    <string name="current_pass">Nhập địa chỉ email xác thực</string>
     <string name="new_pass">Nhập mật khẩu mới</string>
     <string name="re_pass">Nhập lại mật khẩu mới</string>
     <string name="btn_back">Quay lại</string>

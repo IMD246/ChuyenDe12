@@ -25,6 +25,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -53,7 +54,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private CallbackManager callbackManager;
     private FirebaseAuth mFirebaseAuth;
     private final FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-    private LoginButton loginFacebook;
     private static final String TAO = "FacebookAuthentication";
     private static final String EMAIL = "email";
     private GoogleSignInClient mGoogleSignInClient;
@@ -61,6 +61,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private FirebaseUser current;
     private int dem = 0;
     private Boolean check = false;
+    private Button loginFacebook;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +72,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         createRequestGoogle();
         mFirebaseAuth = FirebaseAuth.getInstance();
         setControl();
-        loginFacebookRegister();
     }
 
     private void createRequestGoogle() {
@@ -91,7 +91,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void loginFacebookRegister() {
-        loginFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        LoginManager.getInstance().logInWithReadPermissions(Login.this,Arrays.asList(EMAIL,"public_profile"));
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 handleFacebookToken(loginResult.getAccessToken());
@@ -111,8 +112,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
     // Ánh xạ tới các view trong layout
     private void setControl() {
-        SignInButton loginGoogle = findViewById(R.id.loginGoogle);
-        loginGoogle.setSize(SignInButton.SIZE_STANDARD);
+        Button loginGoogle = findViewById(R.id.loginGoogle);
         TextView register = findViewById(R.id.tvRegister);
         register.setOnClickListener(this);
         TextView tvForgetPassWord = findViewById(R.id.tvForgotPass);
@@ -123,8 +123,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         btnLogin.setOnClickListener(this);
         callbackManager = CallbackManager.Factory.create();
         loginFacebook = findViewById(R.id.loginFB);
-        loginFacebook.setPermissions(Arrays.asList(EMAIL, "public_profile"));
         loginGoogle.setOnClickListener(v -> signIn());
+        loginFacebook = findViewById(R.id.loginFB);
+        loginFacebook.setOnClickListener(this);
     }
 
     // Dùng hàm xử lý nút quay lại của thiết bị
@@ -218,6 +219,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             case R.id.btnLogin:
                 Handlelogin();
                 break;
+            case R.id.loginFB:loginFacebookRegister();break;
             case R.id.tvForgotPass:
                 startActivity(new Intent(this, ForgetPassword.class));
         }

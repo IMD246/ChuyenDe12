@@ -18,7 +18,6 @@ import com.example.EnglishBeginner.R;
 import com.example.EnglishBeginner.main_interface.UserInterfaceActivity;
 
 public class SettingMenuFragment extends Fragment {
-    UserInterfaceActivity activity;
     private Context context;
     public View myView;
     //khai báo
@@ -45,7 +44,7 @@ public class SettingMenuFragment extends Fragment {
                     Intent intent = new Intent(getContext(), EditProfileActivity.class);
                     getContext().startActivity(intent);
                 }catch (Exception e){
-                    Toast.makeText(getContext(), "ko đúng", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "ko đúng:"+e, Toast.LENGTH_LONG).show();
                 }
             }
         });

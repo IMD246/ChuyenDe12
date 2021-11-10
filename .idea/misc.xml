@@ -44,15 +44,23 @@
         <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/menu/menu_button_lesson.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/menu/menu_nav_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/WIN 10/didong2/LearnEnglish/app/src/main/res/menu/menu_navigation.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/drawable-v24/border.xml" value="0.2703125" />
         <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/drawable-v24/ct_layout_boder3.xml" value="0.2703125" />
         <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/drawable-v24/ct_select_icon_password.xml" value="0.2703125" />
+        <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/drawable-v24/custom_fb_button.xml" value="0.14635416666666667" />
+        <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/drawable-v24/ic_facebook.xml" value="0.14635416666666667" />
+        <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/drawable-v24/ic_google.xml" value="0.2703125" />
+        <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/drawable-v24/ic_lock.xml" value="0.2703125" />
         <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/drawable/ct_layout_answer_to_choose.xml" value="0.2703125" />
         <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/drawable/ct_select_icon_password.xml" value="0.2703125" />
         <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/drawable/ct_study_mode_border_basic.xml" value="0.2703125" />
         <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/layout/activity_edit_account.xml" value="0.264" />
         <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/layout/activity_edit_study_mode.xml" value="0.1331521739130435" />
+        <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/layout/activity_forget_password.xml" value="0.24592391304347827" />
+        <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/layout/activity_test_english.xml" value="0.20471014492753623" />
         <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/layout/layout_fragment_learn.xml" value="0.2210144927536232" />
         <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/layout/layout_fragment_learning_english.xml" value="0.264" />
+        <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/layout/layout_fragment_profile.xml" value="0.20471014492753623" />
         <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/layout/layout_fragment_setting_menu.xml" value="0.2210144927536232" />
         <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/layout/layout_fragment_test_choose_image.xml" value="0.2210144927536232" />
         <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/layout/layout_fragment_test_listen.xml" value="0.2210144927536232" />
@@ -66,6 +74,8 @@
         <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/layout/layout_item_topic.xml" value="0.1331521739130435" />
         <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/layout/layout_popup_dialog.xml" value="0.1331521739130435" />
         <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/layout/layout_popup_dialog_level.xml" value="0.1331521739130435" />
+        <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/layout/login.xml" value="0.24592391304347827" />
+        <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/layout/register_user.xml" value="0.24592391304347827" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/activity_main.xml" value="0.24635416666666668" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/layout_header_nav.xml" value="0.24635416666666668" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/layout_item_topic.xml" value="0.24427083333333333" />

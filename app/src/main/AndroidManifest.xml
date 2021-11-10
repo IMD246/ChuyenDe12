@@ -27,11 +27,8 @@
             android:name=".profile.EditStudyModeActivity"
             android:exported="false"/>
         <activity
-            android:name=".learn.testing.TestWriteFragment"
-            android:exported="false" />
-        <activity
-            android:name=".learn.testing.TestChooseImageFragment"
-            android:exported="false" />
+            android:name=".profile.EditProfileActivity"
+            android:exported="false"/>
         <activity
             android:name=".Admin.AdminInterface"
             android:exported="false" />
@@ -75,12 +72,6 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".learn.testing.TestSelectionEnglishFragment"
-            android:exported="false" />
-        <activity
-            android:name=".learn.learning.LearningEnglishFragment"
-            android:exported="false" />
     </application>
 
 </manifest>

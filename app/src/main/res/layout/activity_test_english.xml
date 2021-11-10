@@ -1,9 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".learn.testing.TestEnglishActivity">
+    android:orientation="vertical"
+    tools:context=".learn.learning.LearningEnglishFragment">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="4dp"
+        android:layout_weight="0.3"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/img_btn_exit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="4dp"
+            android:background="@drawable/ct_learn_img_btn_exit"
+            android:clickable="true"
+            android:src="@drawable/ic_exit_close" />
+
+        <ProgressBar
+            android:id="@+id/learn_progress_bar"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </LinearLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6.75"
+        android:id="@+id/framlayout_fragment"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.75"
+        android:gravity="center"
+        android:layout_marginBottom="28dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_pass"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:backgroundTint="@color/l_grey"
+            android:text="Bỏ qua" />
+
+        <Button
+            android:id="@+id/btn_continute"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="44dp"
+            android:backgroundTint="@color/green"
+            android:text="Tiếp tục" />
+    </LinearLayout>
+</LinearLayout>

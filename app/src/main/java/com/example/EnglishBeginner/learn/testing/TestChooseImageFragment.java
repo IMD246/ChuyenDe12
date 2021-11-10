@@ -20,7 +20,6 @@ public class TestChooseImageFragment extends Fragment {
     //khai báo
     private View myView;
 
-    private Button btnPass, btnSubmit;
     private ImageView imgExit, imgSpeak;
     private TextView tvQuestion;
     private RecyclerView recyclerViewAnswer;
@@ -36,12 +35,9 @@ public class TestChooseImageFragment extends Fragment {
     //Ánh xạ, khởi tạo,...
     private void setControl() {
         //ánh xạ các view
-        btnPass = myView.findViewById(R.id.btn_pass_test);
-        btnSubmit = myView.findViewById(R.id.btn_continute_test);
-        imgExit = myView.findViewById(R.id.img_exit_test);
+
         imgSpeak = myView.findViewById(R.id.img_listen);
         tvQuestion = myView.findViewById(R.id.tv_question);
         recyclerViewAnswer = myView.findViewById(R.id.recycle_view_button_answer);
-        progressBar = myView.findViewById(R.id.test_progress_bar);
     }
 }
