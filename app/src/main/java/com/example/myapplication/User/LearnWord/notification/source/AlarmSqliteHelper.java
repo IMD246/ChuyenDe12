@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.example.myapplication.User.LearnWord.history.HistoryItem;
 
@@ -25,7 +26,7 @@ public class AlarmSqliteHelper extends SQLiteOpenHelper {
     String column_day = "day";
     String column_status = "status";
     String column_picker = "picker";
-
+    String column_statusOfNotification = "toggle";
 
     public AlarmSqliteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -40,8 +41,12 @@ public class AlarmSqliteHelper extends SQLiteOpenHelper {
                 column_day + " TEXT, " +
                 column_status + " INTEGER ); ";
 
+
+
+
         String query2 = "CREATE TABLE " + table_name2 +
-                " (" + column_picker + " TEXT ); ";
+                " (" + column_picker + " TEXT, " +
+                column_statusOfNotification + " INTEGER ); ";
 
         db.execSQL(query);
         db.execSQL(query2);
@@ -77,13 +82,13 @@ public class AlarmSqliteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db=this.getWritableDatabase();
         //list of day in the week
         ArrayList<DayItem> list = new ArrayList<DayItem>();
-        list.add(new DayItem(2, "Monday", 0));
-        list.add(new DayItem(3, "Tuesday", 0));
-        list.add(new DayItem(4, "Wednesdays", 0));
-        list.add(new DayItem(5, "Thursday", 0));
-        list.add(new DayItem(6, "Friday", 0));
-        list.add(new DayItem(7, "Saturday", 0));
-        list.add(new DayItem(1, "Sunday", 0));
+        list.add(new DayItem(2, "2", 0));
+        list.add(new DayItem(3, "3", 0));
+        list.add(new DayItem(4, "4", 0));
+        list.add(new DayItem(5, "5", 0));
+        list.add(new DayItem(6, "6", 0));
+        list.add(new DayItem(7, "7", 0));
+        list.add(new DayItem(1, "CN", 0));
         //add default day
         for (DayItem dayItem : list) {
             ContentValues cv = new ContentValues();
@@ -96,11 +101,11 @@ public class AlarmSqliteHelper extends SQLiteOpenHelper {
         //add default time
         ContentValues cv2 = new ContentValues();
         cv2.put(column_picker,"bạn chưa chọn mốc thời gian nào");
-
+        cv2.put(column_statusOfNotification,0);
         db.insert(table_name2, null, cv2);
 
     }
-    public void fetchData(ArrayList<DayItem> list, TextView txt_time) {
+    public void fetchData(ArrayList<DayItem> list, TextView txt_gio, TextView txt_phut, ToggleButton toggleButton) {
         list.clear();
         try {
             SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
@@ -119,7 +124,16 @@ public class AlarmSqliteHelper extends SQLiteOpenHelper {
 
                 if (cursor2!=null) {
                     while (cursor2.moveToNext()) {
-                    txt_time.setText(cursor2.getString(0));}
+                       String[] temp = cursor2.getString(0).split("_");
+                       txt_gio.setText(temp[0]);
+                       txt_phut.setText(temp[1]);
+                       if(cursor2.getInt(1)==0){
+                           toggleButton.setChecked(false);
+                       }
+                      else{
+                           toggleButton.setChecked(true);
+                       }
+                    }
                 }
 
                 cursor.close();
@@ -142,7 +156,13 @@ public class AlarmSqliteHelper extends SQLiteOpenHelper {
     }
     public void editTime(String time){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        String queue = "UPDATE "+table_name2+" SET "+column_picker+" = "+time;
+        String queue = "UPDATE "+table_name2+" SET "+column_picker+" = "+"'"+time+"'";
+        sqLiteDatabase.execSQL(queue);
+        sqLiteDatabase.close();
+    }
+    public void editToggle(int toggle){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        String queue = "UPDATE "+table_name2+" SET "+column_statusOfNotification+" = "+toggle;
         sqLiteDatabase.execSQL(queue);
         sqLiteDatabase.close();
     }

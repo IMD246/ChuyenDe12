@@ -14,8 +14,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,7 +47,8 @@ public class AlarmScreen extends AppCompatActivity {
     private AlarmManager alarmManager;
     private PendingIntent pendingIntent;
     private Button save,cancel,pickTime;
-    private TextView txt_time;
+    private TextView txt_gio,txtphut;
+    ToggleButton stateToggle;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +68,10 @@ public class AlarmScreen extends AppCompatActivity {
     }
 
     private void setEvent() {
-        alarmSqliteHelper.fetchData(dayItems,txt_time);
+        alarmSqliteHelper.fetchData(dayItems,txt_gio,txtphut,stateToggle);
         if(dayItems.size()==0){
             alarmSqliteHelper.addDefaultFirstTime();
-            alarmSqliteHelper.fetchData(dayItems,txt_time);
+            alarmSqliteHelper.fetchData(dayItems,txt_gio,txtphut,stateToggle);
         }
         adapter.notifyDataSetChanged();
 
@@ -78,36 +81,37 @@ public class AlarmScreen extends AppCompatActivity {
                 shotTimePicker();
             }
         });
-
-        save.setOnClickListener(new View.OnClickListener() {
+        stateToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
-                setAlarm();
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+             if(isChecked){
+                 setAlarm();
+                 alarmSqliteHelper.editToggle(1);
+             }
+             else{
+                 Intent intent = new Intent(getBaseContext(), AlarmReceiver.class);
+                 pendingIntent = PendingIntent.getBroadcast(getBaseContext(),0,intent,0);
+
+                 if(alarmManager == null){
+                     alarmManager = (AlarmManager)   getSystemService(Context.ALARM_SERVICE);
+                 }
+
+                 alarmManager.cancel(pendingIntent);
+                 Toast.makeText(getBaseContext(), "alarm canceled", Toast.LENGTH_SHORT).show();
+
+             }
             }
         });
-
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), AlarmReceiver.class);
-                pendingIntent = PendingIntent.getBroadcast(getBaseContext(),0,intent,0);
-
-                if(alarmManager == null){
-                    alarmManager = (AlarmManager)   getSystemService(Context.ALARM_SERVICE);
-                }
-
-                alarmManager.cancel(pendingIntent);
-                Toast.makeText(getBaseContext(), "alarm canceled", Toast.LENGTH_SHORT).show();
-
-            }
-        });
+//
     }
 
     private void setControl() {
-        save=findViewById(R.id.alarm_btnSave);
-        cancel=findViewById(R.id.alarm_btnCancel);
+        stateToggle = findViewById(R.id.alarm_toggle_state);
+//        save=findViewById(R.id.alarm_btnSave);
+//        cancel=findViewById(R.id.alarm_btnCancel);
         pickTime=findViewById(R.id.alarm_btnTimePickerButton);
-        txt_time = findViewById(R.id.alarm_txtTime);
+        txt_gio = findViewById(R.id.alarm_txt_gio);
+        txtphut = findViewById(R.id.alarm_txt_phut);
 
         RecyclerView rcl=(RecyclerView)findViewById(R.id.alarm_rclButton);
         // tao ra mot doi tuong adapter
@@ -121,12 +125,20 @@ public class AlarmScreen extends AppCompatActivity {
     }
 
     private void setAlarm() {
-        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(getBaseContext(),AlarmReceiver.class);
-        pendingIntent = PendingIntent.getBroadcast(getBaseContext(),0,intent,0);
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),
-                alarmManager.INTERVAL_DAY,pendingIntent);
-        Toast.makeText(getBaseContext(), "alarm set successfully", Toast.LENGTH_SHORT).show();
+        try {
+
+
+            alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(getBaseContext(), AlarmReceiver.class);
+            pendingIntent = PendingIntent.getBroadcast(getBaseContext(), 0, intent, 0);
+            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                    alarmManager.INTERVAL_DAY, pendingIntent);
+            Toast.makeText(getBaseContext(), "alarm set successfully", Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception ex){
+            Toast.makeText(getBaseContext(), "xin ban chon thoi gian truoc khi cai dat", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private void shotTimePicker() {
@@ -141,7 +153,9 @@ public class AlarmScreen extends AppCompatActivity {
         picker.addOnPositiveButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                txt_time.setText(picker.getHour()+" : "+picker.getMinute() );
+
+                txt_gio.setText(picker.getHour()+"" );
+                txtphut.setText(picker.getMinute()+"");
                 calendar = Calendar.getInstance();
                 calendar.set(Calendar.HOUR_OF_DAY,picker.getHour());
                 calendar.set(Calendar.MINUTE,picker.getMinute());
@@ -155,6 +169,7 @@ public class AlarmScreen extends AppCompatActivity {
                         calendar.set(Calendar.DAY_OF_WEEK, item.getId());
                     }
                 }
+                alarmSqliteHelper.editTime(picker.getHour()+"_"+picker.getMinute());
             if(tempCount==0){
                 AlertDialog alertDialog = new AlertDialog.Builder(getBaseContext()).create();
                 alertDialog.setTitle("bạn chưa chọn ngày muốn thông báo ");

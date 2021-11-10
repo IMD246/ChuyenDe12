@@ -57,7 +57,6 @@ public class DAOToeic {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(context, "Get list question failed", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -94,7 +93,6 @@ public class DAOToeic {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isComplete()) {
-                        Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -134,7 +132,6 @@ public class DAOToeic {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isComplete()) {
-                        Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -145,7 +142,6 @@ public class DAOToeic {
         databaseReference.child(String.valueOf(word.getId())).removeValue(new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
             }
         });
     }

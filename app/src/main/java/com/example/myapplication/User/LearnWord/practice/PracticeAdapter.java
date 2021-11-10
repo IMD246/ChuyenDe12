@@ -2,6 +2,8 @@ package com.example.myapplication.User.LearnWord.practice;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,9 +34,15 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewHo
     ArrayList<String> listAnswer;
     ArrayList<Boolean> listResult;
     int resultPos;
+    Boolean hadChoose = false;
 
+    submitEvent submitEventTemp;
 
-    public PracticeAdapter(Context context, ArrayList<String> listAnswer, int resultPos, ArrayList<Boolean> listResult) {
+    public void setSubmitEventTemp(submitEvent submitEventTemp) {
+        this.submitEventTemp = submitEventTemp;
+    }
+
+    public PracticeAdapter(Context context, ArrayList<String> listAnswer, int resultPos, ArrayList<Boolean> listResult ) {
         this.context = context;
         this.listAnswer = listAnswer;
         this.resultPos = resultPos;
@@ -53,7 +61,19 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        PracticeScreen practiceScreen = new PracticeScreen();
+
         holder.tvAnswer.setText(listAnswer.get(position));
+        if (hadChoose == true) {
+
+            Log.d("acxczxc", "onClick: "+hadChoose);
+            if (holder.getAdapterPosition() == resultPos) {
+                holder.layoutAnswer.setBackgroundColor(Color.GREEN);
+                submitEventTemp.delayAndPushDataWhenSubmit();
+
+            }
+
+        }
         if (listAnswer.size() > 3) {
             holder.layoutAnswer.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -61,11 +81,12 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewHo
                     if (holder.getAdapterPosition() == resultPos) {
                         holder.layoutAnswer.setBackgroundColor(Color.GREEN);
                         listResult.add(true);
-//                        int curentProgress = holder.progressBar.getProgress();
-//                        holder.progressBar.setProgress(curentProgress+10);
+                        hadChoose = true;
+
                     } else {
                         holder.layoutAnswer.setBackgroundColor(Color.RED);
                         listResult.add(false);
+                        hadChoose = true;
                     }
                     holder.layoutAnswer.setEnabled(false);
                     notifyDataSetChanged();
@@ -95,5 +116,8 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewHo
         }
     }
 
+    interface submitEvent {
+        void delayAndPushDataWhenSubmit();
+    }
 
 }

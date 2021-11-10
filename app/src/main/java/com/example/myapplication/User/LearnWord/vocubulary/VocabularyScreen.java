@@ -45,24 +45,8 @@ public class VocabularyScreen extends AppCompatActivity {
         ielts_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseMessaging.getInstance().getToken()
-                        .addOnCompleteListener(new OnCompleteListener<String>() {
-                            @Override
-                            public void onComplete(@NonNull Task<String> task) {
-                                if (!task.isSuccessful()) {
-                                    Log.w("ãc", "Fetching FCM registration token failed", task.getException());
-                                    return;
-                                }
-
-                                // Get new FCM registration token
-                                String token = task.getResult();
-
-                                // Log and toast
-//                                String msg = getString(R.string.msg_token_fmt, token);
-                                Log.d("TAG", token);
-                                Toast.makeText(getBaseContext(), token, Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                Intent intent = new Intent(getBaseContext(), IetlsManagement.class);
+                startActivity(intent);
             }
         });
 

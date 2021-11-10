@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -78,7 +79,7 @@ public class PracticeScreen extends AppCompatActivity {
 
         setControl();
         setEvent();
-        AddItem();
+        AddItem(currentpos);
         progressBar.setMax(listItem.size());
         if (listItem.size() == 0) {
             ifDataIsNull();
@@ -87,28 +88,26 @@ public class PracticeScreen extends AppCompatActivity {
 
 
     private void setEvent() {
-        AddItem();
-
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    if (currentpos < listItem.size() - 1 && currentpos < 10) {
-                        currentpos = currentpos + 1;
-//                        listAnswer.clear();
-                        AddItem();
-
-                    } else {
-                        //  listAnswer.clear();
-                        setAdapter(1);
-                        afterThePractice();
-                    }
-                } catch (Exception ex) {
-
-                }
-
-            }
-        });
+        AddItem(currentpos);
+//        submitButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                try {
+//                    if (currentpos < listItem.size() - 1 && currentpos < 10) {
+//                        currentpos = currentpos + 1;
+////                        listAnswer.clear();
+//                        AddItem(currentpos);
+//                    } else {
+//                        //  listAnswer.clear();
+//                        setAdapter(1);
+//                        afterThePractice();
+//                    }
+//                } catch (Exception ex) {
+//
+//                }
+//
+//            }
+//        });
 
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,16 +145,45 @@ public class PracticeScreen extends AppCompatActivity {
     private void setAdapter(int resultPos) {
         adapter = new PracticeAdapter(getBaseContext(), listAnswer, resultPos, listOfResult);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);// Tạo layout manager
-
-
         danhsach.setLayoutManager(layoutManager);// Gán layout manager cho recyclerview
         danhsach.setAdapter(adapter);//gán adapter cho Recyclerview.
 
+        adapter.setSubmitEventTemp(new PracticeAdapter.submitEvent() {
+            @Override
+            public void delayAndPushDataWhenSubmit() {
+                new CountDownTimer(3000, 1000) {
+                    public void onFinish() {
+
+                        try {
+
+                            if (currentpos < listItem.size() - 1 && currentpos < 10) {
+                                currentpos = currentpos + 1;
+//                        listAnswer.clear();
+
+                                AddItem(currentpos);
+
+                            } else {
+                                //  listAnswer.clear();
+                                setAdapter(1);
+                                afterThePractice();
+                            }
+                        } catch (Exception ex) {
+
+                        }
+                    }
+
+                    public void onTick(long millisUntilFinished) {
+                    }
+                }.start();
+
+
+            }
+        });
     }
 
-    private void AddItem() {
+    public void AddItem(int currentpos) {
         try {
-            progressBar.setProgress(currentpos);
+            progressBar.setProgress(currentpos+1);
             //reset the hint
             //save word get from sqlite to listitem
             TranslateText translateText = new TranslateText();
@@ -165,7 +193,6 @@ public class PracticeScreen extends AppCompatActivity {
             listAnswer.add(listItem.get(currentpos).getWord());
             Collections.shuffle(listAnswer);
             Toast.makeText(getBaseContext(), listAnswer.get(0), Toast.LENGTH_SHORT).show();
-
             setAdapter(getResultPos(listAnswer, listItem.get(currentpos).getWord()));
             //set am thanh
             speakerIcon.setOnClickListener(new View.OnClickListener() {
