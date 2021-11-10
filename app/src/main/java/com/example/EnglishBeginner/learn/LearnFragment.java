@@ -66,7 +66,7 @@ public class LearnFragment extends Fragment {
             }
             @Override
             public void createAlertDialog(Topic topic) {
-                userInterfaceActivity.alertDialogTopic();
+                userInterfaceActivity.alertDialogTopic(topic);
             }
         });
     }

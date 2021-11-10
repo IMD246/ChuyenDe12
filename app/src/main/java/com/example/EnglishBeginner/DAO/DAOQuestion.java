@@ -1,6 +1,7 @@
 package com.example.EnglishBeginner.DAO;
 
 import android.content.Context;
+import android.os.Parcelable;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -9,17 +10,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.EnglishBeginner.DTO.Question;
+import com.example.EnglishBeginner.DTO.Topic;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class DAOQuestion {
+public class DAOQuestion implements Serializable {
     private List<Question> questionList;
     private DatabaseReference databaseReference;
     private Context context;
@@ -30,40 +36,32 @@ public class DAOQuestion {
         this.context = context;
     }
 
-    public void setContext(Context context) {
-        this.context = context;
-    }
-
     public List<Question> getQuestionList() {
         return questionList;
     }
 
-//    public void getDataFromRealTimeToList(QuestionAdapter questionAdapter, LearnQuestionAdapter learnQuestionAdapter) {
-//        databaseReference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if (questionList != null) {
-//                    questionList.clear();
-//                }
-//                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-//                    Question question = dataSnapshot.getValue(Question.class);
-//                    questionList.add(question);
-//                }
-//                if (questionAdapter != null)
-//                {
-//                    questionAdapter.notifyDataSetChanged();
-//                }
-//                if (learnQuestionAdapter != null)
-//                {
-//                    learnQuestionAdapter.notifyDataSetChanged();
-//                }
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Toast.makeText(context, "Get list question failed", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public void getDataFromRealTimeToList(Topic topic) {
+        databaseReference.orderByChild("idTopic").equalTo(topic.getId()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (questionList != null) {
+                    questionList.clear();
+                }
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Question question = dataSnapshot.getValue(Question.class);
+                    questionList.add(question);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(context, "Get list question failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
     public void addDataToFireBase(Question question, EditText edtTitle, EditText edtCorrectAnswer) {
         boolean[] check = new boolean[3];
         int s=1;

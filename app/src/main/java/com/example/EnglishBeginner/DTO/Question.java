@@ -1,23 +1,24 @@
 package com.example.EnglishBeginner.DTO;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 
 public class Question implements Serializable {
-    private int id,idTopic,idTypeQuestion;
+    private int id,idTopic;
     private String title,nameTopic,nameTypeQuestion,correctAnswer,
             example= DEFAULTVALUE.DEFAULTVALUE,word = DEFAULTVALUE.DEFAULTVALUE,
             typeWord = DEFAULTVALUE.DEFAULTVALUE,grammar= DEFAULTVALUE.DEFAULTVALUE;
-    public Question(int id, int idTopic, int idTypeQuestion, String title, String nameTopic, String nameTypeQuestion,
+    public Question(int id, int idTopic, String title, String nameTopic, String nameTypeQuestion,
                     String correctAnswer) {
         this.id = id;
         this.idTopic = idTopic;
-        this.idTypeQuestion = idTypeQuestion;
         this.title = title;
         this.nameTopic = nameTopic;
         this.nameTypeQuestion = nameTypeQuestion;
         this.correctAnswer = correctAnswer;
     }
-
     public String getExample() {
         return example;
     }
@@ -75,14 +76,6 @@ public class Question implements Serializable {
 
     public void setIdTopic(int idTopic) {
         this.idTopic = idTopic;
-    }
-
-    public int getIdTypeQuestion() {
-        return idTypeQuestion;
-    }
-
-    public void setIdTypeQuestion(int idTypeQuestion) {
-        this.idTypeQuestion = idTypeQuestion;
     }
 
     public String getTitle() {

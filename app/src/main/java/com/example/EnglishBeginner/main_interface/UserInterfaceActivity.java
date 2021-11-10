@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -26,16 +25,16 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.example.EnglishBeginner.Adapter.ProcessTopic_Adapter;
+import com.example.EnglishBeginner.DAO.DAOQuestion;
 import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.DTO.ProcessTopicItem;
+import com.example.EnglishBeginner.DTO.Topic;
 import com.example.EnglishBeginner.DTO.User;
 import com.example.EnglishBeginner.Login.Login;
 import com.example.EnglishBeginner.R;
 import com.example.EnglishBeginner.learn.learning.LearningEnglishFragment;
+import com.example.EnglishBeginner.learn.testing.TestEnglishActivity;
 import com.example.EnglishBeginner.learn.testing.TestSelectionEnglishFragment;
-import com.example.EnglishBeginner.profile.EditAccountActivity;
-import com.example.EnglishBeginner.profile.EditProfileActivity;
-import com.example.EnglishBeginner.profile.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,6 +45,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +55,7 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
     DatabaseReference databaseReference;
     private TextView tvUserName,tvUserEmail;
     private ImageView imgUserName;
+    private DAOQuestion daoQuestion;
 
 
     //khai báo giá trị cho screen
@@ -329,13 +330,16 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
             startActivity(new Intent(this, TestSelectionEnglishFragment.class));
         }
     }
-    public void alertDialogTopic()
+    public void alertDialogTopic(Topic topic)
     {
+        daoQuestion = new DAOQuestion(this);
+        if (topic!=null)
+        {
+            daoQuestion.getDataFromRealTimeToList(topic);
+        }
         Dialog dialog = new Dialog(UserInterfaceActivity.this);
         dialog.setContentView(R.layout.layout_popup_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        dialog.show();
         TextView tvLevel = dialog.findViewById(R.id.tv_level_topic);
         TextView tvTitle = dialog.findViewById(R.id.tv_title_topic);
         Button learn = dialog.findViewById(R.id.btn_learn_topic);
@@ -351,7 +355,17 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+
+                if (daoQuestion.getQuestionList().size()>0)
+                {
+                    Intent intent = new Intent(UserInterfaceActivity.this, TestEnglishActivity.class);
+                    intent.putExtra("listQuestion",(Serializable) daoQuestion.getQuestionList());
+                    startActivity(intent);
+                }
+                else
+                {
+                    DEFAULTVALUE.alertDialogMessage("Thông báo","Chủ đề này hiện không có câu hỏi",UserInterfaceActivity.this);
+                }
             }
         });
         List<ProcessTopicItem> processTopicItemList = new ArrayList<>();
@@ -363,6 +377,7 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         processTopic_adapter.setProcessTopicItemList(processTopicItemList);
         rcvLevelTopic.setLayoutManager(linearLayoutManager);
         rcvLevelTopic.setAdapter(processTopic_adapter);
+        dialog.show();
     }
 
     //Hàm chuyển màn hình

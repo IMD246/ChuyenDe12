@@ -262,49 +262,50 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             edtPassWord.setError("Min password length should be 6 characters");
             edtPassWord.requestFocus();
         }
-        mFirebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                FirebaseUser user = mFirebaseAuth.getCurrentUser();
-                assert user != null;
-                if (user.isEmailVerified()) {
-                    dem++;
-                    checkAuthenticate(user.getUid(),dem);
+        else {
+            mFirebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    FirebaseUser user = mFirebaseAuth.getCurrentUser();
+                    assert user != null;
+                    if (user.isEmailVerified()) {
+                        dem++;
+                        checkAuthenticate(user.getUid(), dem);
+                    } else {
+                        user.sendEmailVerification();
+                        DEFAULTVALUE.alertDialogMessage("Thông báo", "Hãy xác thực email của bạn!", Login.this);
+                    }
                 } else {
-                    user.sendEmailVerification();
-                    DEFAULTVALUE.alertDialogMessage("Thông báo", "Hãy xác thực email của bạn!", Login.this);
+                    String errorCode = ((FirebaseAuthException) Objects.requireNonNull(task.getException())).getErrorCode();
+                    switch (errorCode) {
+                        case "ERROR_INVALID_EMAIL":
+                            edtEmail.setError("Định dạng email không phù hợp");
+                            edtEmail.requestFocus();
+                            break;
+                        case "ERROR_WRONG_PASSWORD":
+                            edtPassWord.setError("Sai Mật Khẩu");
+                            edtPassWord.requestFocus();
+                            break;
+                        case "ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL":
+                            Toast.makeText(Login.this, "An account already exists with the same email address but different sign-in credentials. Sign in using a provider associated with this email address.", Toast.LENGTH_LONG).show();
+                            break;
+
+                        case "ERROR_EMAIL_ALREADY_IN_USE":
+                            edtEmail.setError("Địa chỉ email này đã có người sử dụng");
+                            edtEmail.requestFocus();
+                            break;
+
+                        case "ERROR_CREDENTIAL_ALREADY_IN_USE":
+                            Toast.makeText(Login.this, "This credential is already associated with a different user account.", Toast.LENGTH_LONG).show();
+                            break;
+
+                        case "ERROR_USER_NOT_FOUND":
+                            DEFAULTVALUE.alertDialogMessage("Thông báo", "Tài khoản không tồn tại , hãy đăng ký tài khoản", Login.this);
+                            break;
+                    }
                 }
-            } else {
-                String errorCode = ((FirebaseAuthException) Objects.requireNonNull(task.getException())).getErrorCode();
-                switch (errorCode) {
-                    case "ERROR_INVALID_EMAIL":
-                        edtEmail.setError("Định dạng email không phù hợp");
-                        edtEmail.requestFocus();
-                        break;
-                    case "ERROR_WRONG_PASSWORD":
-                        edtPassWord.setError("Sai Mật Khẩu");
-                        edtPassWord.requestFocus();
-                        break;
-                    case "ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL":
-                        Toast.makeText(Login.this, "An account already exists with the same email address but different sign-in credentials. Sign in using a provider associated with this email address.", Toast.LENGTH_LONG).show();
-                        break;
-
-                    case "ERROR_EMAIL_ALREADY_IN_USE":
-                        edtEmail.setError("Địa chỉ email này đã có người sử dụng");
-                        edtEmail.requestFocus();
-                        break;
-
-                    case "ERROR_CREDENTIAL_ALREADY_IN_USE":
-                        Toast.makeText(Login.this, "This credential is already associated with a different user account.", Toast.LENGTH_LONG).show();
-                        break;
-
-                    case "ERROR_USER_NOT_FOUND":
-                        DEFAULTVALUE.alertDialogMessage("Thông báo", "Tài khoản không tồn tại , hãy đăng ký tài khoản", Login.this);
-                        break;
-                }
-            }
-        });
+            });
+        }
     }
-
     @Override
     protected void onStart() {
         super.onStart();

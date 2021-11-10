@@ -51,7 +51,9 @@ public class DEFAULTVALUE {
         builder.setMessage(msg);
         builder.setNegativeButton(
                 "Đóng",
-                (dialog, id) -> dialog.cancel());
+                (dialog, id) -> {
+                    dialog.cancel();
+                });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
