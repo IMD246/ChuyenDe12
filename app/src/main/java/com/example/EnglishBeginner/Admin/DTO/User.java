@@ -1,4 +1,4 @@
-package com.example.EnglishBeginner.Login;
+package com.example.EnglishBeginner.Admin.DTO;
 
 public class User {
     private String fullname,email;

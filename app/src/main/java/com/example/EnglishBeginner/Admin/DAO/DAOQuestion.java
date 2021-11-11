@@ -70,49 +70,6 @@ public class DAOQuestion {
             }
         });
     }
-
-    //public void getDataFromRealTimeToList(QuestionAdapter questionAdapter, LearnQuestionAdapter learnQuestionAdapter) {
-//    databaseReference.addValueEventListener(new ValueEventListener() {
-//        @Override
-//        public void onDataChange(@NonNull DataSnapshot snapshot) {
-//            if (questionList != null) {
-//                questionList.clear();
-//            }
-//            Log.d("Parent",snapshot.getKey());
-//            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-//                databaseReference.child(dataSnapshot.getKey()+"/listquestion").addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                        Log.d("Parent1",snapshot.getKey());
-//                        for (DataSnapshot snapshot1 : snapshot.getChildren())
-//                        {
-//                            Log.d("child1",snapshot1.getKey());
-//                            Question question = snapshot1.getValue(Question.class);
-//                            questionList.add(question);
-//                        }
-//                        if (questionAdapter != null)
-//                        {
-//                            questionAdapter.notifyDataSetChanged();
-//                        }
-//                        if (learnQuestionAdapter != null)
-//                        {
-//                            learnQuestionAdapter.notifyDataSetChanged();
-//                        }
-//                    }
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
-//
-//                    }
-//                });
-//            }
-//        }
-//
-//        @Override
-//        public void onCancelled(@NonNull DatabaseError error) {
-//
-//        }
-//    });
-//}
     public void addDataToFireBase(Question question, EditText edtTitle, EditText edtCorrectAnswer) {
         boolean[] check = new boolean[3];
         Arrays.fill(check, true);

@@ -1,5 +1,6 @@
 package com.example.EnglishBeginner.Admin.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.EnglishBeginner.Admin.DTO.Question;
 import com.example.EnglishBeginner.Admin.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.R;
@@ -21,26 +23,27 @@ import java.util.List;
 
 public class LearnQuestionAdapter extends RecyclerView.Adapter<LearnQuestionAdapter.LearnQuestionViewHolder> implements Filterable {
 
-    private Context context;
     private List<Question> questionList;
     private List<Question> questionListOld;
 
     private MyDelegationLevel myDelegationLevel;
-
+    private final Context context;
     public void setMyDelegationLevel(MyDelegationLevel myDelegationLevel) {
         this.myDelegationLevel = myDelegationLevel;
     }
 
     public LearnQuestionAdapter(Context context) {
-        this.context = context;
+        this.context =context;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setQuestionList(List<Question> questionList) {
         this.questionList = questionList;
         questionListOld = questionList;
         notifyDataSetChanged();
     }
-    // tìm kiếm dữ liệu dựa vào các options của menu
+    // Tìm kiếm dữ liệu dựa vào các options của menu
+    @SuppressLint("NotifyDataSetChanged")
     public void setListDependOnTopicAndTypeQuestion(@NonNull String topic, @NonNull String typeQuestion) {
         if (questionList.size() == 0) {
             questionList = questionListOld;
@@ -66,10 +69,11 @@ public class LearnQuestionAdapter extends RecyclerView.Adapter<LearnQuestionAdap
     @NonNull
     @Override
     public LearnQuestionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.learnquestionitem, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.learnquestionitem, parent, false);
         return new LearnQuestionViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull LearnQuestionViewHolder holder, int position) {
         Question question = questionList.get(position);
@@ -79,30 +83,19 @@ public class LearnQuestionAdapter extends RecyclerView.Adapter<LearnQuestionAdap
         holder.tvTitle.setText("Câu hỏi: " + question.getTitle());
         holder.tvNameTopic.setText("Chủ đề: " + question.getNameTopic());
         holder.tvTypeQuestion.setText("Loại câu hỏi: " + question.getNameTypeQuestion());
-        if (question.getTypeWord().equalsIgnoreCase(null) && question.getWord().equalsIgnoreCase(null)) {
-            holder.tvWord.setText("Từ vựng: " + DEFAULTVALUE.DEFAULTVALUE + " (" + DEFAULTVALUE.DEFAULTVALUE + ")");
-        } else {
-            holder.tvWord.setText("Từ vựng: " + question.getWord() + " (" + question.getTypeWord() + ")");
+        holder.tvWord.setText("Từ vựng: " + question.getWord() + " (" + question.getTypeWord() + ")");
+        holder.tvWordMeaning.setText("Nghĩa của từ: " + question.getWordMeaning());
+        holder.tvExample.setText("Ví dụ: " + question.getExample());
+        holder.tvExampleMeaning.setText("Nghĩa ví dụ: " + question.getExampleMeaning());
+        holder.tvGrammar.setText("Ngữ pháp: " + question.getGrammar());
+        if (question.getUrlImage().trim().length()>0||!(question.getUrlImage().isEmpty()))
+        {
+            Glide.with(context).load(question.getUrlImage()).into(holder.imgLearnQuestion);
         }
-        if (question.getExample().equalsIgnoreCase(null)) {
-            holder.tvExample.setText("Ví dụ: " + DEFAULTVALUE.DEFAULTVALUE);
-        } else {
-            holder.tvExample.setText("Ví dụ: " + question.getExample());
-        }
-        if (question.getGrammar().equalsIgnoreCase(null)) {
-            holder.tvGrammar.setText("Ngữ pháp: " + DEFAULTVALUE.DEFAULTVALUE);
-        } else {
-            holder.tvGrammar.setText("Ngữ pháp: " + question.getGrammar());
-        }
-        holder.onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (myDelegationLevel != null) {
-                    switch (v.getId()) {
-                        case R.id.imgEdit_LearnQuestion:
-                            myDelegationLevel.editItem(question);
-                            break;
-                    }
+        holder.onClickListener = v -> {
+            if (myDelegationLevel != null) {
+                if (v.getId() == R.id.imgEdit_LearnQuestion) {
+                    myDelegationLevel.editItem(question);
                 }
             }
         };
@@ -122,7 +115,7 @@ public class LearnQuestionAdapter extends RecyclerView.Adapter<LearnQuestionAdap
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 String strSearch = constraint.toString();
-                if (strSearch.isEmpty() || strSearch.length() == 0) {
+                if (strSearch.isEmpty()) {
                     if (questionList.size() == 0) {
                         questionList = questionListOld;
                     }
@@ -139,7 +132,7 @@ public class LearnQuestionAdapter extends RecyclerView.Adapter<LearnQuestionAdap
                 filterResults.values = questionList;
                 return filterResults;
             }
-
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 questionList = (List<Question>) results.values;
@@ -149,9 +142,16 @@ public class LearnQuestionAdapter extends RecyclerView.Adapter<LearnQuestionAdap
     }
 
     public static class LearnQuestionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView tvTitle, tvNameTopic, tvTypeQuestion, tvExample, tvWord, tvGrammar;
-        private ImageView imgEdit;
-        View.OnClickListener onClickListener;
+        private final TextView tvTitle;
+        private final TextView tvNameTopic;
+        private final TextView tvTypeQuestion;
+        private final TextView tvExample;
+        private final TextView tvWord;
+        private final TextView tvGrammar;
+        private final TextView tvWordMeaning;
+        private final TextView tvExampleMeaning;
+        private final ImageView imgLearnQuestion;
+        private View.OnClickListener onClickListener;
 
         public void setOnClickListener(View.OnClickListener onClickListener) {
             this.onClickListener = onClickListener;
@@ -165,7 +165,10 @@ public class LearnQuestionAdapter extends RecyclerView.Adapter<LearnQuestionAdap
             tvExample = itemView.findViewById(R.id.tvExampleLearnQuestion);
             tvWord = itemView.findViewById(R.id.tvWordLearnQuestion);
             tvGrammar = itemView.findViewById(R.id.tvGrammar);
-            imgEdit = itemView.findViewById(R.id.imgEdit_LearnQuestion);
+            tvWordMeaning = itemView.findViewById(R.id.tvWordMeaning);
+            tvExampleMeaning = itemView.findViewById(R.id.tvExampleMeaning);
+            imgLearnQuestion = itemView.findViewById(R.id.imgLearnQuestion);
+            ImageView imgEdit = itemView.findViewById(R.id.imgEdit_LearnQuestion);
             imgEdit.setOnClickListener(this);
         }
 
@@ -176,6 +179,6 @@ public class LearnQuestionAdapter extends RecyclerView.Adapter<LearnQuestionAdap
     }
 
     public interface MyDelegationLevel {
-        public void editItem(Question question);
+        void editItem(Question question);
     }
 }

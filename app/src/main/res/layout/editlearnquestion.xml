@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
@@ -15,7 +13,7 @@
         android:background="@drawable/bg_yellow_corner_16_top_left_top_right"
         android:gravity="center"
         android:padding="12dp"
-        android:text="Sửa dữ liệu"
+        android:text="Cập nhật dữ liệu"
         android:textColor="@color/black"
         android:textSize="16sp" />
 
@@ -34,23 +32,35 @@
             android:hint="Nhập vào từ vựng"
             android:padding="12dp"
             android:textAlignment="center" />
+
+        <EditText
+            android:id="@+id/edtMeaningWord"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_white_corner_10_border_gray"
+            android:hint="Nhập vào nghĩa từ vựng"
+            android:padding="12dp"
+            android:textAlignment="center" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Chọn loại từ vựng"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
+
             <Spinner
                 android:id="@+id/spnTypeWordLearnQuestion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:entries="@array/typeWord"
-                />
+                android:entries="@array/typeWord" />
         </LinearLayout>
 
         <EditText
@@ -62,6 +72,17 @@
             android:hint="Nhập vào ví dụ"
             android:padding="12dp"
             android:textAlignment="center" />
+
+        <EditText
+            android:id="@+id/edtExampleMeaning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_white_corner_10_border_gray"
+            android:hint="Nhập vào nghĩa ví dụ"
+            android:padding="12dp"
+            android:textAlignment="center" />
+
         <EditText
             android:id="@+id/edtGrammar"
             android:layout_width="match_parent"
@@ -77,6 +98,31 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imgEditQuestion"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="120dp"
+                android:src="@drawable/ic_search" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnPickImageQuestion"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/bg_yellow_corner_10"
+                android:text="@string/ch_n_nh"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
             <Button
                 android:id="@+id/btnYes"
                 android:layout_width="0dp"
@@ -84,9 +130,10 @@
                 android:layout_weight="1"
                 android:background="@drawable/bg_yellow_corner_10"
                 android:backgroundTint="@color/white"
-                android:text="Sửa"
+                android:text="Cập nhật"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
+
             <Button
                 android:id="@+id/btnNo"
                 android:layout_width="0dp"

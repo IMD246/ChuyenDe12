@@ -5,8 +5,8 @@ import java.io.Serializable;
 public class Question implements Serializable {
     private int id,idTopic;
     private String title,nameTopic,nameTypeQuestion,correctAnswer,
-            example= DEFAULTVALUE.DEFAULTVALUE,word = DEFAULTVALUE.DEFAULTVALUE,
-            typeWord = DEFAULTVALUE.DEFAULTVALUE,grammar= DEFAULTVALUE.DEFAULTVALUE;
+            example= DEFAULTVALUE.DEFAULTVALUE,exampleMeaning=DEFAULTVALUE.DEFAULTVALUE,word = DEFAULTVALUE.DEFAULTVALUE,wordMeaning = DEFAULTVALUE.DEFAULTVALUE,
+            typeWord = DEFAULTVALUE.DEFAULTVALUE,grammar= DEFAULTVALUE.DEFAULTVALUE,urlImage="";
     public Question(int id, int idTopic, String title, String nameTopic, String nameTypeQuestion,
                     String correctAnswer) {
         this.id = id;
@@ -17,6 +17,30 @@ public class Question implements Serializable {
         this.correctAnswer = correctAnswer;
     }
     public Question() {
+    }
+
+    public String getExampleMeaning() {
+        return exampleMeaning;
+    }
+
+    public String getUrlImage() {
+        return urlImage;
+    }
+
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
+    }
+
+    public void setExampleMeaning(String exampleMeaning) {
+        this.exampleMeaning = exampleMeaning;
+    }
+
+    public String getWordMeaning() {
+        return wordMeaning;
+    }
+
+    public void setWordMeaning(String wordMeaning) {
+        this.wordMeaning = wordMeaning;
     }
 
     public int getId() {

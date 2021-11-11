@@ -3,14 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/activity_test_english.xml" value="0.2391304347826087" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/addedittopic.xml" value="0.12158054711246201" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/layout_fragment_learning_english.xml" value="0.2391304347826087" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/layout_fragment_test_choose_image.xml" value="0.12158054711246201" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/layout_fragment_test_listen.xml" value="0.2391304347826087" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/layout_fragment_test_selection_english.xml" value="0.2391304347826087" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/layout_fragment_test_write.xml" value="0.2391304347826087" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/layout_fragment_vocabulary.xml" value="0.2391304347826087" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/addeditlevel.xml" value="0.22509057971014493" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/addeditword.xml" value="0.22509057971014493" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/editlearnquestion.xml" value="0.22509057971014493" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/layout_custom_dialog.xml" value="0.23822463768115942" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/layout_fragment_learning_english.xml" value="0.2246376811594203" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/layout_item_learn_management.xml" value="0.22509057971014493" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/layout_item_vocabulary_management.xml" value="0.22509057971014493" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/learnquestionitem.xml" value="0.22509057971014493" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.20208333333333334" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/drawable/ic_email.xml" value="0.20208333333333334" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/drawable/ic_launcher_background.xml" value="0.20208333333333334" />

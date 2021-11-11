@@ -36,6 +36,7 @@
             android:inputType="number"
             android:padding="12dp"
             tools:ignore="TextContrastCheck" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,7 +58,7 @@
                 android:text="@string/ch_n_nh"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
-            </LinearLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -74,8 +75,7 @@
                 android:text="@string/c"
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                tools:ignore="DuplicateSpeakableTextCheck"
-                 />
+                tools:ignore="DuplicateSpeakableTextCheck" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnNo"
@@ -88,8 +88,7 @@
                 android:text="@string/kh_ng"
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                tools:ignore="DuplicateSpeakableTextCheck"
-                />
+                tools:ignore="DuplicateSpeakableTextCheck" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -1,25 +1,31 @@
 package com.example.EnglishBeginner.Admin.LearnManagement;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Spinner;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.EnglishBeginner.Admin.Adapter.LearnQuestionAdapter;
 import com.example.EnglishBeginner.Admin.Adapter.TopicSpinnerAdapter;
 import com.example.EnglishBeginner.Admin.Adapter.TypeQuestionSpinnerAdapter;
+import com.example.EnglishBeginner.Admin.DAO.DAOImageStorage;
 import com.example.EnglishBeginner.Admin.DAO.DAOQuestion;
 import com.example.EnglishBeginner.Admin.DAO.DAOTopic;
 import com.example.EnglishBeginner.Admin.DTO.DEFAULTVALUE;
@@ -35,9 +41,11 @@ public class LearnQuestion extends AppCompatActivity {
 
     private DAOQuestion daoQuestion;
     private DAOTopic daoTopic;
+    private DAOImageStorage daoImageStorage;
     private AutoCompleteTextView atcTopic, atcTypeQuestion;
     String topic = DEFAULTVALUE.TOPIC, typeQuestion = DEFAULTVALUE.TYPEQUESTION;
     private LearnQuestionAdapter learnQuestionAdapter;
+    private ImageView imgEditQuestion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +56,7 @@ public class LearnQuestion extends AppCompatActivity {
     }
     private void initUI() {
         List<String> list = Arrays.asList(getResources().getStringArray(R.array.typeQuestion));
+        daoImageStorage = new DAOImageStorage(this);
         daoQuestion = new DAOQuestion(this);
         daoTopic = new DAOTopic(this);
         learnQuestionAdapter = new LearnQuestionAdapter(this);
@@ -100,7 +109,24 @@ public class LearnQuestion extends AppCompatActivity {
         }
         return 0;
     }
-    public void openDialog(int center,Question question) {
+    public void openFileChoose()
+    {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, 100);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100 && resultCode == RESULT_OK && data !=null && data.getData()!=null)
+        {
+            daoImageStorage.setmImgURL(data.getData());
+            imgEditQuestion.setImageURI(daoImageStorage.getmImgURL());
+        }
+    }
+
+    public void openDialog(int center, Question question) {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.editlearnquestion);
@@ -117,12 +143,27 @@ public class LearnQuestion extends AppCompatActivity {
         EditText edtWord = dialog.findViewById(R.id.edtWord);
         EditText edtExample = dialog.findViewById(R.id.edtExample);
         EditText edtGrammar = dialog.findViewById(R.id.edtGrammar);
+        EditText edtWordMeaning = dialog.findViewById(R.id.edtMeaningWord);
+        EditText edtExampleMeaning = dialog.findViewById(R.id.edtExampleMeaning);
+        Button btnPickImage = dialog.findViewById(R.id.btnPickImageQuestion);
+        imgEditQuestion = dialog.findViewById(R.id.imgEditQuestion);
+        edtWord.setText(question.getWord());
+        edtWordMeaning.setText(question.getWordMeaning());
+        edtExample.setText(question.getExample());
+        edtExampleMeaning.setText(question.getExampleMeaning());
+        edtGrammar.setText(question.getGrammar());
+        if (question.getUrlImage().trim().length()>0||!(question.getUrlImage().isEmpty()))
+        {
+            Glide.with(getBaseContext()).load(question.getUrlImage()).into(imgEditQuestion);
+        }
         Spinner spnTypeWord = dialog.findViewById(R.id.spnTypeWordLearnQuestion);
-        if (question.getTypeWord().isEmpty() || question.getTypeWord().equalsIgnoreCase(DEFAULTVALUE.DEFAULTVALUE)){}
+        if (question.getTypeWord().isEmpty() || question.getTypeWord().equalsIgnoreCase(DEFAULTVALUE.DEFAULTVALUE)){
+        }
         else
         {
             spnTypeWord.setSelection(setSelectedSpinner(spnTypeWord,question.getTypeWord()));
         }
+        btnPickImage.setOnClickListener(v -> openFileChoose());
         Button btnYes = dialog.findViewById(R.id.btnYes);
         Button btnNo = dialog.findViewById(R.id.btnNo);
         btnNo.setOnClickListener(v -> dialog.dismiss());
@@ -132,7 +173,19 @@ public class LearnQuestion extends AppCompatActivity {
             map.put("typeWord",spnTypeWord.getSelectedItem().toString());
             map.put("word",edtWord.getText().toString());
             map.put("grammar",edtGrammar.getText().toString());
-            daoQuestion.updateLearnQuestion(question.getId(),map,edtWord,edtExample,edtGrammar);
+            map.put("wordMeaning",edtWordMeaning.getText().toString());
+            map.put("exampleMeaning",edtExampleMeaning.getText().toString());
+            if (question.getWord().equalsIgnoreCase(edtWord.getText().toString())&&
+            question.getWordMeaning().equalsIgnoreCase(edtWordMeaning.getText().toString())&&
+            question.getNameTypeQuestion().equalsIgnoreCase(spnTypeWord.getSelectedItem().toString())&&
+                    question.getExampleMeaning().equalsIgnoreCase(edtExampleMeaning.getText().toString())&&
+                    question.getExample().equalsIgnoreCase(edtExample.getText().toString()))
+            { }
+            else
+            {
+                daoQuestion.updateLearnQuestion(question.getId(),map,edtWord,edtExample,edtGrammar);
+            }
+            daoImageStorage.uploadFileImageToQuestion(imgEditQuestion,"Question"+question.getId(),question);
         });
         dialog.show();
     }
