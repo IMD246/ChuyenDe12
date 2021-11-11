@@ -26,7 +26,7 @@ import com.example.EnglishBeginner.DTO.Word;
 import com.example.EnglishBeginner.R;
 import com.example.EnglishBeginner.fragment.LearnWord.practice.source.TranslateText;
 import com.example.EnglishBeginner.fragment.LearnWord.saveWord.source.SaveSqliteHelper;
-import com.example.EnglishBeginner.fragment.LearnWord.vocubulary.VocabularyScreen;
+import com.example.EnglishBeginner.fragment.LearnWord.vocubulary.VocabularyFragment;
 import com.example.EnglishBeginner.fragment.LearnWord.word.source.MySingleton;
 import com.example.EnglishBeginner.fragment.LearnWord.word.source.SqlLiteHelper;
 import com.google.firebase.FirebaseApp;
@@ -238,7 +238,7 @@ public class PracticeScreen extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), VocabularyScreen.class);
+                Intent intent = new Intent(getBaseContext(), VocabularyFragment.class);
                 startActivity(intent);
             }
         });
@@ -263,7 +263,7 @@ public class PracticeScreen extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), VocabularyScreen.class);
+                Intent intent = new Intent(getBaseContext(), VocabularyFragment.class);
                 startActivity(intent);
             }
         });

@@ -1,4 +1,4 @@
-package com.example.EnglishBeginner.fragment;
+package com.example.EnglishBeginner.fragment.LearnWord.vocubulary;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -61,7 +61,7 @@ public class VocabularyFragment extends Fragment {
         VocubularyItem item2 = new VocubularyItem("lịch sử tra từ", R.drawable.history);
         VocubularyItem item3 = new VocubularyItem("tra từ điển", R.drawable.word);
         VocubularyItem item4 = new VocubularyItem("Luyện tập", R.drawable.practice);
-        VocubularyItem item5 = new VocubularyItem("cài đặt lich học", R.drawable.com_facebook_button_icon);
+        VocubularyItem item5 = new VocubularyItem("cài đặt lich học", R.drawable.settingic);
         vocabularyItems.add(item1);
         vocabularyItems.add(item2);
         vocabularyItems.add(item3);

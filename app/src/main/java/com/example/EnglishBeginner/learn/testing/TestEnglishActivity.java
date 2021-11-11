@@ -153,9 +153,11 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
         else {
             if (answer.equalsIgnoreCase(correctQuestion)) {
                 alertDialog("Trả lời đúng");
+                answer = null;
                 countCorrect++;
             } else {
-                alertDialog("Trả lời đúng");
+                alertDialog("Trả lời sai");
+                answer = null;
             }
         }
         count++;

@@ -11,7 +11,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.EnglishBeginner.R;
-import com.example.EnglishBeginner.fragment.LearnWord.vocubulary.VocabularyScreen;
+import com.example.EnglishBeginner.fragment.LearnWord.vocubulary.VocabularyFragment;
 
 
 public class AlarmReceiver extends BroadcastReceiver {
@@ -19,7 +19,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Intent i = new Intent(context, VocabularyScreen.class);
+        Intent i = new Intent(context, VocabularyFragment.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context,0,i,0);
         Uri sound = Uri. parse (ContentResolver. SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/raw/oniichan_2.mp3" ) ;
@@ -31,7 +31,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 .setAutoCancel(true)
                 .setSound(sound)
                 .setContentIntent(PendingIntent.getActivity(context,0
-                        ,new Intent(context.getApplicationContext(),VocabularyScreen.class),PendingIntent.FLAG_UPDATE_CURRENT))
+                        ,new Intent(context.getApplicationContext(),VocabularyFragment.class),PendingIntent.FLAG_UPDATE_CURRENT))
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
 

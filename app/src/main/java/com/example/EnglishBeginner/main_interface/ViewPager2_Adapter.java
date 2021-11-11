@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.EnglishBeginner.fragment.AlarmFragment;
-import com.example.EnglishBeginner.fragment.VocabularyFragment;
+import com.example.EnglishBeginner.fragment.LearnWord.vocubulary.VocabularyFragment;
 import com.example.EnglishBeginner.learn.LearnFragment;
 import com.example.EnglishBeginner.profile.ProfileFragment;
 import com.example.EnglishBeginner.profile.SettingMenuFragment;
