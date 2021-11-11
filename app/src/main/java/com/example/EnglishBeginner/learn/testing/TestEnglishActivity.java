@@ -4,13 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,22 +17,17 @@ import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.DTO.Question;
 import com.example.EnglishBeginner.R;
 import com.example.EnglishBeginner.main_interface.UserInterfaceActivity;
-import com.google.android.gms.dynamic.IFragmentWrapper;
 
 import java.util.List;
 
 public class TestEnglishActivity extends AppCompatActivity implements View.OnClickListener {
-    private ImageView imgExit;
     private ProgressBar progressBar;
+    @SuppressLint("StaticFieldLeak")
     public static Button btnPass, btnSubmit;
     private List<Question> arrayListQuestion;
     private int count = 0;
-    private int countCorrect = 0;
-    private int min = 0;
     private int max = 0;
-    private int randomQuestion = 0;
     public String correctQuestion = null, answer = null;
-    private FrameLayout frameLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,25 +40,22 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
         if (arrayListQuestion != null && arrayListQuestion.size() > 0) {
             max = arrayListQuestion.size() - 1;
         }
-        imgExit = findViewById(R.id.img_btn_exit);
+        ImageView imgExit = findViewById(R.id.img_btn_exit);
         btnPass = findViewById(R.id.btn_pass);
         btnSubmit = findViewById(R.id.btn_continute);
         btnSubmit.setOnClickListener(this);
         progressBar = findViewById(R.id.learn_progress_bar);
-        frameLayout = findViewById(R.id.frameLayout_Fragment);
         //Sử kiện nút trở lại
-        imgExit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(TestEnglishActivity.this, UserInterfaceActivity.class);
-                startActivity(intent);
-            }
+        imgExit.setOnClickListener(v -> {
+            Intent intent1 = new Intent(TestEnglishActivity.this, UserInterfaceActivity.class);
+            startActivity(intent1);
         });
         processLearn();
     }
 
     private void processLearn() {
-        randomQuestion = (int) Math.floor(Math.random() * (max - min + 1) + min);
+        int min = 0;
+        int randomQuestion = (int) Math.floor(Math.random() * (max - min + 1) + min);
         Question question = arrayListQuestion.get(randomQuestion);
         if (arrayListQuestion.size() < 10) {
             progressBar.setMax(arrayListQuestion.size());
@@ -139,10 +128,8 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_continute:
-                submitResult();
-                break;
+        if (v.getId() == R.id.btn_continute) {
+            submitResult();
         }
     }
     private void submitResult() {
@@ -153,12 +140,10 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
         else {
             if (answer.equalsIgnoreCase(correctQuestion)) {
                 alertDialog("Trả lời đúng");
-                answer = null;
-                countCorrect++;
             } else {
                 alertDialog("Trả lời sai");
-                answer = null;
             }
+            answer = null;
         }
         count++;
         progressBar.setProgress(count,true);
@@ -197,9 +182,7 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
         builder1.setCancelable(true);
         builder1.setPositiveButton(
                 "Tiếp tục",
-                (dialog, id) -> {
-                    startActivity(new Intent(TestEnglishActivity.this,UserInterfaceActivity.class));
-                });
+                (dialog, id) -> startActivity(new Intent(TestEnglishActivity.this,UserInterfaceActivity.class)));
         AlertDialog alert11 = builder1.create();
         alert11.show();
     }
