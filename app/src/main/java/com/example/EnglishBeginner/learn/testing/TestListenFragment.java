@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -21,7 +22,8 @@ public class TestListenFragment extends Fragment {
     //khai báo
     private View myView;
     private ImageView imgSpeak;
-    private RecyclerView recyclerViewAnswer, recyclerViewDisplay;
+    private EditText edtAnswerListen;
+//    private RecyclerView recyclerViewAnswer, recyclerViewDisplay;
 
     @Nullable
     @Override
@@ -39,7 +41,8 @@ public class TestListenFragment extends Fragment {
     private void setControl() {
         //ánh xạ các view
         imgSpeak = myView.findViewById(R.id.img_listen);
-        recyclerViewAnswer = myView.findViewById(R.id.recycle_view_button_answer);
-        recyclerViewDisplay = myView.findViewById(R.id.recycle_view_show_answer);
+        edtAnswerListen = myView.findViewById(R.id.edt_answerListen);
+//        recyclerViewAnswer = myView.findViewById(R.id.recycle_view_button_answer);
+//        recyclerViewDisplay = myView.findViewById(R.id.recycle_view_show_answer);
     }
 }

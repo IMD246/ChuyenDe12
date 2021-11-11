@@ -46,24 +46,38 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycle_view_show_answer"
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_weight="1.5"
-        android:background="@drawable/ct_layout_boder1" />
+        android:layout_margin="12dp"
+        android:layout_weight="2.5"
+        android:hint="Viết lại câu hỏi bằng tiếng Anh.">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycle_view_button_answer"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-        android:layout_weight="1.5"
-        android:background="@drawable/ct_layout_boder1" />
+        <EditText
+            android:id="@+id/edt_answerListen"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:hint="Viết lại câu hỏi bằng tiếng Anh."/>
+    </com.google.android.material.textfield.TextInputLayout>
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/recycle_view_show_answer"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_marginStart="20dp"-->
+<!--        android:layout_marginEnd="20dp"-->
+<!--        android:layout_weight="1.5"-->
+<!--        android:background="@drawable/ct_layout_boder1" />-->
+
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/recycle_view_button_answer"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_marginStart="20dp"-->
+<!--        android:layout_marginTop="12dp"-->
+<!--        android:layout_marginEnd="20dp"-->
+<!--        android:layout_marginBottom="20dp"-->
+<!--        android:layout_weight="1.5"-->
+<!--        android:background="@drawable/ct_layout_boder1" />-->
 </LinearLayout>

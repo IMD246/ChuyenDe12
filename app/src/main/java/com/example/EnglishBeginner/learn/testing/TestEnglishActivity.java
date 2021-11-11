@@ -126,10 +126,16 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void submitResult() {
-        if (answer.equalsIgnoreCase(correctQuestion)) {
-            Log.d("test", "Đúng");
-        } else {
+        if (answer == null)
+        {
             Log.d("test", "Sai");
+        }
+        else {
+            if (answer.equalsIgnoreCase(correctQuestion)) {
+                Log.d("test", "Đúng");
+            } else {
+                Log.d("test", "Sai");
+            }
         }
     }
 }

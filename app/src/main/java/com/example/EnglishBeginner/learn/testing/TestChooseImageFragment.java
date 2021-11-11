@@ -47,7 +47,7 @@ public class TestChooseImageFragment extends Fragment {
     //Ánh xạ, khởi tạo,...
     private void setControl() {
         //ánh xạ các view
-        daoAnswer = new DAOAnswer(testEnglishActivity.getApplicationContext());
+        daoAnswer = new DAOAnswer(getContext());
         testEnglishActivity = (TestEnglishActivity) getActivity();
         testChooseImageItem_adapter = new TestChooseImageItem_Adapter(testEnglishActivity.getApplicationContext());
         testChooseImageItem_adapter.setAnswerList(daoAnswer.getAnswerList());
