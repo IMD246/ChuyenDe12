@@ -3,8 +3,6 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/layout_custom_dialog.xml" value="0.23822463768115942" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/layout_fragment_learning_english.xml" value="0.2246376811594203" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.20208333333333334" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/drawable/ic_email.xml" value="0.20208333333333334" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/drawable/ic_launcher_background.xml" value="0.20208333333333334" />
@@ -17,6 +15,8 @@
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/layout/login.xml" value="0.25" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/layout/register_user.xml" value="0.264" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/mipmap-anydpi-v26/ic_email.xml" value="0.26205128205128203" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/layout_fragment_learn.xml" value="0.2318840579710145" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/layout_fragment_learning_english.xml" value="0.2318840579710145" />
       </map>
     </option>
   </component>
