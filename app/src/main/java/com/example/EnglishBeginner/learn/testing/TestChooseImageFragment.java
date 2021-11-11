@@ -57,7 +57,7 @@ public class TestChooseImageFragment extends Fragment {
         imgSpeak = myView.findViewById(R.id.img_listen);
         tvQuestion = myView.findViewById(R.id.tv_question);
         recyclerViewAnswer = myView.findViewById(R.id.recycle_view_button_answer);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(testEnglishActivity.getApplicationContext(),4);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(testEnglishActivity.getApplicationContext(),2);
         recyclerViewAnswer.setLayoutManager(gridLayoutManager);
         recyclerViewAnswer.setAdapter(testChooseImageItem_adapter);
         testChooseImageItem_adapter.setInterface_learn(new TestChooseImageItem_Adapter.interface_Test() {
