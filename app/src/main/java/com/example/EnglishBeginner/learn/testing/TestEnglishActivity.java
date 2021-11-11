@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.DTO.Question;
 import com.example.EnglishBeginner.R;
+import com.example.EnglishBeginner.learn.learning.LearningEnglishFragment;
 import com.example.EnglishBeginner.main_interface.UserInterfaceActivity;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
     private int count = 0;
     private int max = 0;
     public String correctQuestion = null, answer = null;
+    private String typeLearn = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,7 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
         Intent intent = getIntent();
         if (intent != null) {
             arrayListQuestion = (List<Question>) intent.getSerializableExtra("listQuestion");
+            typeLearn = intent.getStringExtra("learn");
         }
         if (arrayListQuestion != null && arrayListQuestion.size() > 0) {
             max = arrayListQuestion.size() - 1;
@@ -64,7 +67,12 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
             }
             else
             {
-                alertDialogComplete("Hoàn thành bài học");
+                if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.TEST)) {
+                    alertDialogComplete("Hoàn thành bài học");
+                }
+                else if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.LEARN)) {
+                    alertDialogComplete("Chúc bạn làm bài test tốt");
+                }
             }
         }
         else {
@@ -74,7 +82,12 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
             }
             else
             {
-                alertDialogComplete("Hoàn thành bài học");
+                if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.TEST)) {
+                    alertDialogComplete("Hoàn thành bài học");
+                }
+                else if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.LEARN)) {
+                    alertDialogComplete("Chúc bạn làm bài test tốt");
+                }
             }
         }
     }
@@ -82,7 +95,7 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
     @SuppressLint("ResourceType")
     private void transactionFragment(Question question) {
         FragmentTransaction fragmentTransaction;
-        if (count <0) {
+        if (count <=0) {
             fragmentTransaction = getSupportFragmentManager().beginTransaction();
         }
         else
@@ -92,36 +105,46 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
         Bundle bundle = new Bundle();
         bundle.putSerializable("question", question);
         correctQuestion = question.getCorrectAnswer();
-        if (question.getNameTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.IMAGE)) {
-            TestChooseImageFragment testChooseImageFragment = new TestChooseImageFragment();
-            testChooseImageFragment.setArguments(bundle);
-            if (count == 0) {
-                fragmentTransaction.add(R.id.frameLayout_Fragment, testChooseImageFragment).commit();
-            }
-            else
-            {
-                fragmentTransaction.replace(R.id.frameLayout_Fragment, testChooseImageFragment).commit();
-            }
-        } else if (question.getNameTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.LISTEN)) {
-            TestListenFragment testListenFragment = new TestListenFragment();
-            testListenFragment.setArguments(bundle);
-            if (count == 0) {
-                fragmentTransaction.add(R.id.frameLayout_Fragment, testListenFragment).commit();
-            }
-            else
-            {
-                fragmentTransaction.replace(R.id.frameLayout_Fragment, testListenFragment).commit();
-            }
+        if (typeLearn!=null || typeLearn.trim().length()>0) {
+            if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.TEST)) {
+                btnPass.setVisibility(View.VISIBLE);
+                if (question.getNameTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.IMAGE)) {
+                    TestChooseImageFragment testChooseImageFragment = new TestChooseImageFragment();
+                    testChooseImageFragment.setArguments(bundle);
+                    if (count == 0) {
+                        fragmentTransaction.add(R.id.frameLayout_Fragment, testChooseImageFragment).commit();
+                    } else {
+                        fragmentTransaction.replace(R.id.frameLayout_Fragment, testChooseImageFragment).commit();
+                    }
+                } else if (question.getNameTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.LISTEN)) {
+                    TestListenFragment testListenFragment = new TestListenFragment();
+                    testListenFragment.setArguments(bundle);
+                    if (count == 0) {
+                        fragmentTransaction.add(R.id.frameLayout_Fragment, testListenFragment).commit();
+                    } else {
+                        fragmentTransaction.replace(R.id.frameLayout_Fragment, testListenFragment).commit();
+                    }
 
-        } else if (question.getNameTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.WRITE)) {
-            TestWriteFragment testWriteFragment = new TestWriteFragment();
-            testWriteFragment.setArguments(bundle);
-            if (count == 0) {
-                fragmentTransaction.add(R.id.frameLayout_Fragment, testWriteFragment).commit();
+                } else if (question.getNameTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.WRITE)) {
+                    TestWriteFragment testWriteFragment = new TestWriteFragment();
+                    testWriteFragment.setArguments(bundle);
+                    if (count == 0) {
+                        fragmentTransaction.add(R.id.frameLayout_Fragment, testWriteFragment).commit();
+                    } else {
+                        fragmentTransaction.replace(R.id.frameLayout_Fragment, testWriteFragment).commit();
+                    }
+                }
             }
-            else
+            else if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.LEARN))
             {
-                fragmentTransaction.replace(R.id.frameLayout_Fragment, testWriteFragment).commit();
+                btnPass.setVisibility(View.GONE);
+                LearningEnglishFragment learningEnglishFragment = new LearningEnglishFragment();
+                learningEnglishFragment.setArguments(bundle);
+                if (count == 0) {
+                    fragmentTransaction.add(R.id.frameLayout_Fragment, learningEnglishFragment).commit();
+                } else {
+                    fragmentTransaction.replace(R.id.frameLayout_Fragment, learningEnglishFragment).commit();
+                }
             }
         }
     }
@@ -133,17 +156,21 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
         }
     }
     private void submitResult() {
-        if (answer == null)
-        {
-            alertDialog("Trả lời sai");
-        }
-        else {
-            if (answer.equalsIgnoreCase(correctQuestion)) {
-                alertDialog("Trả lời đúng");
-            } else {
+        if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.TEST)) {
+            if (answer == null) {
                 alertDialog("Trả lời sai");
+            } else {
+                if (answer.equalsIgnoreCase(correctQuestion)) {
+                    alertDialog("Trả lời đúng");
+                } else {
+                    alertDialog("Trả lời sai");
+                }
+                answer = null;
             }
-            answer = null;
+        }
+        else if  (typeLearn.equalsIgnoreCase(DEFAULTVALUE.LEARN))
+        {
+            alertDialog("Đã hoàn thành phần học");
         }
         count++;
         progressBar.setProgress(count,true);
@@ -158,12 +185,14 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
                 (dialog, id) -> {
                     if (count>0) {
                         new CountDownTimer(2000, 1000) {
-
                             public void onTick(long millisUntilFinished) {
-
+                                btnPass.setEnabled(false);
+                                btnSubmit.setEnabled(false);
                             }
 
                             public void onFinish() {
+                                btnPass.setEnabled(true);
+                                btnSubmit.setEnabled(true);
                                 processLearn();
                             }
                         }.start();

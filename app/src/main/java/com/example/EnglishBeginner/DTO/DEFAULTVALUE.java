@@ -42,6 +42,8 @@ public class DEFAULTVALUE {
     final public static String WRITE = "Write";
     final public static String READ = "Read";
     final public static String LISTEN = "Listen";
+    final public static String TEST = "Test";
+    final public static String LEARN = "Learn";
     public static String LEARNING_SCREEN = "LearningEnglishActivity";
     public static String TEST_SCREEN = "TestEnglishActivity";
     public static String MALE = "Male";

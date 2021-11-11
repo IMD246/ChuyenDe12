@@ -349,17 +349,27 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         learn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                if (daoQuestion.getQuestionList().size()>0)
+                {
+                    Intent intent = new Intent(UserInterfaceActivity.this, TestEnglishActivity.class);
+                    intent.putExtra("listQuestion",(Serializable) daoQuestion.getQuestionList());
+                    intent.putExtra("learn",DEFAULTVALUE.LEARN);
+                    startActivity(intent);
+                }
+                else
+                {
+                    DEFAULTVALUE.alertDialogMessage("Thông báo","Chủ đề này hiện không có câu hỏi",UserInterfaceActivity.this);
+                }
             }
         });
         test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (daoQuestion.getQuestionList().size()>0)
                 {
                     Intent intent = new Intent(UserInterfaceActivity.this, TestEnglishActivity.class);
                     intent.putExtra("listQuestion",(Serializable) daoQuestion.getQuestionList());
+                    intent.putExtra("learn",DEFAULTVALUE.TEST);
                     startActivity(intent);
                 }
                 else
