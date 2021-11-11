@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_IeltsToeic"
+    android:layout_width="match_parent"
+    android:layout_height="68dp"
+    android:gravity="center"
+    android:layout_marginTop="1dp"
+    android:layout_marginStart="1dp"
+    android:layout_marginEnd="1dp"
+    android:layout_marginBottom="2dp"
+    android:background="@drawable/bg_white_corner_16dp"
+    android:clickable="true"
+    android:orientation="horizontal">
+
+    <TextView
+        android:layout_marginStart="12dp"
+        android:id="@+id/fragment_history_word"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="Từ vựng (Loại từ vựng)"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/fragment_history_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nghĩa: "
+        android:textColor="@color/darkgray"
+        android:textStyle="bold" />
+
+</LinearLayout>

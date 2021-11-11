@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".User.LearnWord.notification.AlarmScreen"
+    android:layout_width="fill_parent"
+    android:fillViewport="true"
+    android:layout_height="fill_parent"
+    android:background="#EDEFEB"
+    >
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+    <TextView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:text="Alarm"
+        android:textSize="40dp"
+        android:textColor="#433511"
+        android:gravity="center">
+
+    </TextView>
+
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/alarm_txt_gio"
+            android:background="@color/black"
+            android:text="20"
+            android:textSize="30dp"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+        <TextView
+            android:background="@color/black"
+            android:text="giờ"
+            android:textSize="15dp"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+        <TextView
+            android:id="@+id/alarm_txt_phut"
+            android:background="@color/black"
+            android:text="20"
+            android:textSize="30dp"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+        <TextView
+            android:background="@color/black"
+            android:text="phút"
+            android:textSize="15dp"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+    </LinearLayout>
+
+    <Button
+        android:layout_gravity="center"
+        android:id="@+id/alarm_btnTimePickerButton"
+        android:text="đổi thời gian"
+        android:background="#203850"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </Button>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:text="Chon ngay:"
+        android:textSize="16dp"
+        android:gravity="left">
+
+    </TextView>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/alarm_rclButton"
+        android:background="@android:color/transparent"
+        android:layout_width="match_parent"
+        android:layout_marginVertical="20dp"
+        android:layout_height="wrap_content">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+        <TextView
+            android:text="Trang thai"
+            android:textSize="30dp"
+            android:layout_margin="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+        <ToggleButton
+            android:id="@+id/alarm_toggle_state"
+            android:hint="Trang thai"
+            android:checked="false"
+            android:layout_width="80dp"
+            android:layout_height="80dp">
+
+        </ToggleButton>
+<!--        <Button-->
+<!--            android:id="@+id/alarm_btnSave"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginHorizontal="40dp"-->
+<!--            android:layout_marginVertical="20dp"-->
+
+<!--            android:layout_weight="1"-->
+<!--            android:text="Luu">-->
+
+<!--        </Button>-->
+<!--    <Button-->
+<!--        android:id="@+id/alarm_btnCancel"-->
+<!--        android:layout_width="50dp"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:layout_marginHorizontal="40dp"-->
+<!--        android:layout_marginVertical="20dp"-->
+<!--        android:text="Huy Thong bao">-->
+
+<!--    </Button>-->
+
+    </LinearLayout>
+</LinearLayout></ScrollView>

@@ -1,19 +1,22 @@
 package com.example.EnglishBeginner.DAO;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-
+import com.example.EnglishBeginner.Adapter.WordToeicIetlsAdapter;
 import com.example.EnglishBeginner.DTO.Word;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,30 +40,56 @@ public class DAOIetls {
         return wordList;
     }
 
-//    public void getDataFromRealTimeToList(WordToeicIetlsAdapter wordToeicIetlsAdapter) {
-//        databaseReference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if (wordList != null) {
-//                    wordList.clear();
-//                }
-//                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-//                    Word word = dataSnapshot.getValue(Word.class);
-//                    wordList.add(word);
-//                }
-//                if (wordToeicIetlsAdapter != null) {
-//                    wordToeicIetlsAdapter.notifyDataSetChanged();
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Toast.makeText(context, "Get list question failed", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
+    public void getDataFromRealTimeToList(WordToeicIetlsAdapter wordToeicIetlsAdapter) {
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-    public void addDataToFireBase(Word word, EditText edtWord,EditText edtMeaning) {
+                    wordList.clear();
+
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Word word = dataSnapshot.getValue(Word.class);
+                    wordList.add(word);
+                    Log.e("firebase", word.getWord() );
+                }
+                if (wordToeicIetlsAdapter != null) {
+                    wordToeicIetlsAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(context, "Get list question failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    public void getDataForSearch(String letter,WordToeicIetlsAdapter wordToeicIetlsAdapter){
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                wordList.clear();
+
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+
+                    Word word = dataSnapshot.getValue(Word.class);
+                    if(word.getWord().equals(letter)){
+                        wordList.add(word);
+                    }
+                    Log.e("firebase", word.getWord() );
+                }
+                if (wordToeicIetlsAdapter != null) {
+                    wordToeicIetlsAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(context, "Get list question failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    public void addDataToFireBase(Word word, EditText edtWord) {
         boolean[] check = new boolean[2];
         int s = 1;
         for (int i = 0; i < check.length; i++) {
@@ -92,8 +121,6 @@ public class DAOIetls {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isComplete()) {
-                        edtWord.setText("");
-                        edtMeaning.setText("");
                         Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
                     }
                 }

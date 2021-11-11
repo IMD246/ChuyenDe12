@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".User.LearnWord.practice.PracticeScreen">
+
+    <ProgressBar
+        android:id="@+id/practice_progress_bar"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:max="70"
+        android:progress="10"
+        android:backgroundTint="@color/green"
+        android:theme="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:backgroundTintMode="multiply"
+        android:progressBackgroundTint="@color/green"
+        android:progressBackgroundTintMode="src_atop"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="Luyện tập"
+        android:textColor="@color/d_blue"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="12dp">
+
+        <ImageView
+            android:id="@+id/practice_imgSpeak"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/speakericon"
+            android:clickable="true" />
+
+        <TextView
+            android:id="@+id/practice_txt_hint"
+            android:layout_width="290dp"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:text="Money"
+            android:textColor="@color/black"
+            android:textSize="20dp">
+
+        </TextView>
+
+        <ImageView
+            android:id="@+id/practice_imgShowHint"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/ic_baseline_remove_red_eye_24"
+            android:clickable="true" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/bg_bottomboder_blue">
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/practice_rclAnswer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layoutAnimation="@anim/layout_animation"
+        android:layout_margin="20dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/practice_btn_return"
+            android:layout_width="145dp"
+            android:layout_height="64dp"
+            android:text="Thoát" />
+
+        <Button
+            android:id="@+id/practice_btnSubmit"
+            android:layout_width="145dp"
+            android:layout_height="64dp"
+            android:layout_marginStart="24dp"
+            android:text="Tiếp tục" />
+    </LinearLayout>
+</LinearLayout>

@@ -23,4 +23,7 @@
     <color name="l_grey">#B4DDDDDD</color>
     <color name="color">#00cba9</color>
     <color name="fbcolor">#3b5999</color>
+    <color name="l_blue">#941797F8</color>
+    <color name="light_grey">#AED5D2D2</color>
+    <color name="darkgray">#8c827d</color>
 </resources>

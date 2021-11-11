@@ -4,6 +4,8 @@
     package="com.example.EnglishBeginner">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
 
     <application
         android:allowBackup="true"
@@ -13,7 +15,8 @@
         android:roundIcon="@drawable/logo3"
         android:supportsRtl="true"
         android:theme="@style/Theme.Menu_Right"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        tools:ignore="AllowBackup">
         <activity
             android:name=".learn.testing.TestEnglishActivity"
             android:exported="false" />
@@ -29,9 +32,6 @@
         <activity
             android:name=".profile.EditProfileActivity"
             android:exported="false"/>
-        <activity
-            android:name=".Admin.AdminInterface"
-            android:exported="false" />
         <activity
             android:name=".Login.ForgetPassword"
             android:exported="false" />
@@ -72,6 +72,52 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-    </application>
+        <activity
+            android:name=".fragment.LearnWord.word.WordScreen"
+            android:exported="true">
 
+        </activity>
+
+        <activity
+            android:name=".fragment.LearnWord.saveWord.SaveScreen"
+            android:exported="true"/>
+        <activity
+            android:name=".fragment.LearnWord.practice.PracticeScreen"
+            android:exported="true">
+
+        </activity>
+        <activity
+            android:name=".fragment.LearnWord.history.HistoryScreen"
+            android:exported="true">
+
+        </activity>
+
+        <activity
+            android:name=".fragment.LearnWord.word.WordItemDetail"
+            android:exported="true">
+
+        </activity>
+        <activity
+            android:name=".fragment.LearnWord.WordManagement.ToeicManagement"
+            android:exported="true">
+
+        </activity>
+        <activity
+            android:name=".fragment.LearnWord.WordManagement.IetlsManagement"
+            android:exported="true">
+
+        </activity>
+        <activity
+            android:name=".fragment.LearnWord.notification.AlarmScreen"
+            android:exported="true">
+
+        </activity>
+        <receiver android:name=".fragment.LearnWord.notification.source.AlarmReceiver"/>
+
+    </application>
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+    </queries>
 </manifest>
