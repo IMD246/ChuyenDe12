@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.EnglishBeginner.Adapter.TestChooseImageItem_Adapter;
 import com.example.EnglishBeginner.DAO.DAOAnswer;
+import com.example.EnglishBeginner.DTO.Answer;
 import com.example.EnglishBeginner.DTO.Question;
 import com.example.EnglishBeginner.R;
 
@@ -31,17 +32,19 @@ public class TestChooseImageFragment extends Fragment {
     private DAOAnswer daoAnswer;
     private TestChooseImageItem_Adapter testChooseImageItem_adapter;
     private TestEnglishActivity testEnglishActivity;
+    private Question question;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.layout_fragment_test_choose_image, container, false);
-        setControl();
         Bundle bundle = getArguments();
+        setControl();
         if (bundle!=null)
         {
-            Question question = (Question) bundle.get("question");
+            question = (Question) bundle.get("question");
             getDataAnswer(question.getId());
-         }
+            tvQuestion.setText(question.getTitle());
+        }
         return myView;
     }
     //Ánh xạ, khởi tạo,...
@@ -57,6 +60,15 @@ public class TestChooseImageFragment extends Fragment {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(testEnglishActivity.getApplicationContext(),4);
         recyclerViewAnswer.setLayoutManager(gridLayoutManager);
         recyclerViewAnswer.setAdapter(testChooseImageItem_adapter);
+        testChooseImageItem_adapter.setInterface_learn(new TestChooseImageItem_Adapter.interface_Test() {
+            @Override
+            public void onClickItemLearn(Answer answer) {
+                if (answer!=null)
+                {
+                    testEnglishActivity.answer = answer.getAnswerQuestion();
+                }
+            }
+        });
     }
     private void getDataAnswer(int idQuestion)
     {

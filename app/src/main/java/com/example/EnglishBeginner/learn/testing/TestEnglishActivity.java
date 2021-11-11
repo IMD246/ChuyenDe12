@@ -1,14 +1,18 @@
 package com.example.EnglishBeginner.learn.testing;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -44,12 +48,11 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
         if (arrayListQuestion != null && arrayListQuestion.size() > 0) {
             max = arrayListQuestion.size() - 1;
         }
-        processLearn();
         imgExit = findViewById(R.id.img_btn_exit);
         btnPass = findViewById(R.id.btn_pass);
         btnSubmit = findViewById(R.id.btn_continute);
         btnSubmit.setOnClickListener(this);
-        progressBar = findViewById(R.id.progress_bar);
+        progressBar = findViewById(R.id.learn_progress_bar);
         frameLayout = findViewById(R.id.frameLayout_Fragment);
         //Sử kiện nút trở lại
         imgExit.setOnClickListener(new View.OnClickListener() {
@@ -59,26 +62,44 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
                 startActivity(intent);
             }
         });
+        processLearn();
     }
 
     private void processLearn() {
+        randomQuestion = (int) Math.floor(Math.random() * (max - min + 1) + min);
+        Question question = arrayListQuestion.get(randomQuestion);
         if (arrayListQuestion.size() < 10) {
-            if (count <= arrayListQuestion.size()) {
-                randomQuestion = (int) Math.floor(Math.random() * (max - min + 1) + min);
-                Question question = arrayListQuestion.get(randomQuestion);
+            progressBar.setMax(arrayListQuestion.size());
+            if (count < arrayListQuestion.size()) {
                 transactionFragment(question);
             }
-        } else {
-            if (count <= 10) {
-                randomQuestion = (int) Math.floor(Math.random() * (max - min + 1) + min);
-                Question question = arrayListQuestion.get(randomQuestion);
+            else
+            {
+                alertDialogComplete("Hoàn thành bài học");
+            }
+        }
+        else {
+            progressBar.setMax(10);
+            if (count < 10) {
                 transactionFragment(question);
+            }
+            else
+            {
+                alertDialogComplete("Hoàn thành bài học");
             }
         }
     }
 
+    @SuppressLint("ResourceType")
     private void transactionFragment(Question question) {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction fragmentTransaction;
+        if (count <0) {
+            fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        }
+        else
+        {
+            fragmentTransaction = getSupportFragmentManager().beginTransaction().setCustomAnimations(R.transition.transisionfragmentlearn,R.transition.transisionfragmentlearn);
+        }
         Bundle bundle = new Bundle();
         bundle.putSerializable("question", question);
         correctQuestion = question.getCorrectAnswer();
@@ -124,18 +145,60 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
                 break;
         }
     }
-
     private void submitResult() {
         if (answer == null)
         {
-            Log.d("test", "Sai");
+            alertDialog("Trả lời sai");
         }
         else {
             if (answer.equalsIgnoreCase(correctQuestion)) {
-                Log.d("test", "Đúng");
+                alertDialog("Trả lời đúng");
+                countCorrect++;
             } else {
-                Log.d("test", "Sai");
+                alertDialog("Trả lời đúng");
             }
         }
+        count++;
+        progressBar.setProgress(count,true);
+    }
+    // Xây dựng một Hộp thoại thông báo
+    public void alertDialog(String msg) {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+        builder1.setMessage(msg);
+        builder1.setCancelable(true);
+        builder1.setPositiveButton(
+                "Tiếp tục",
+                (dialog, id) -> {
+                    if (count>0) {
+                        new CountDownTimer(2000, 1000) {
+
+                            public void onTick(long millisUntilFinished) {
+
+                            }
+
+                            public void onFinish() {
+                                processLearn();
+                            }
+                        }.start();
+                    }
+                    else
+                    {
+                        processLearn();
+                    }
+                });
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+    }
+    public void alertDialogComplete(String msg) {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+        builder1.setMessage(msg);
+        builder1.setCancelable(true);
+        builder1.setPositiveButton(
+                "Tiếp tục",
+                (dialog, id) -> {
+                    startActivity(new Intent(TestEnglishActivity.this,UserInterfaceActivity.class));
+                });
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
     }
 }
