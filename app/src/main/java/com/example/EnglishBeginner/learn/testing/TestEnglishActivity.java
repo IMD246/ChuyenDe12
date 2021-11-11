@@ -124,7 +124,6 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
                     } else {
                         fragmentTransaction.replace(R.id.frameLayout_Fragment, testListenFragment).commit();
                     }
-
                 } else if (question.getNameTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.WRITE)) {
                     TestWriteFragment testWriteFragment = new TestWriteFragment();
                     testWriteFragment.setArguments(bundle);
