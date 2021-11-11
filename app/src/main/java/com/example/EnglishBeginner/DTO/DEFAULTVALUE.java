@@ -38,6 +38,10 @@ public class DEFAULTVALUE {
     final public static String TOEIC = "Toeic";
     final public static String IETLS = "Ietls";
     final public static String TYPEWORD = "Loại từ vựng";
+    final public static String IMAGE = "Image";
+    final public static String WRITE = "Write";
+    final public static String READ = "Read";
+    final public static String LISTEN = "Listen";
     public static String LEARNING_SCREEN = "LearningEnglishActivity";
     public static String TEST_SCREEN = "TestEnglishActivity";
     public static String MALE = "Male";

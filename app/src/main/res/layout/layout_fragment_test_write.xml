@@ -57,21 +57,12 @@
                 android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
+    <EditText
         android:id="@+id/edt_answer"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="12dp"
         android:layout_weight="2.5"
-        android:hint="Viết lại câu hỏi bằng tiếng Anh.">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="textPassword" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+        android:hint="Viết lại câu hỏi bằng tiếng Anh."/>
 
 </LinearLayout>
