@@ -6,9 +6,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +25,9 @@ import com.example.EnglishBeginner.DTO.Question;
 import com.example.EnglishBeginner.R;
 import com.example.EnglishBeginner.main_interface.UserInterfaceActivity;
 
-public class TestWriteFragment extends Fragment{
+import java.util.Locale;
+
+public class TestWriteFragment extends Fragment implements TextToSpeech.OnInitListener{
     //khai báo
     private View myView;
 
@@ -30,10 +35,9 @@ public class TestWriteFragment extends Fragment{
     private TextView tvQuestion;
     private EditText edtAnswer;
     private TestEnglishActivity testEnglishActivity;
-    private ProgressBar progressBar;
-    private RecyclerView recyclerViewAnswer, recyclerViewDisplay;
     private String answer = null;
     private Question question;
+    private TextToSpeech textToSpeech;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -48,8 +52,9 @@ public class TestWriteFragment extends Fragment{
     }
     private void setControl() {
         //ánh xạ các view
+        textToSpeech = new TextToSpeech(getContext(),this);
         testEnglishActivity = (TestEnglishActivity) getActivity();
-        imgSpeak = myView.findViewById(R.id.img_listen);
+        imgSpeak = myView.findViewById(R.id.img_btn_Listen);
         tvQuestion = myView.findViewById(R.id.tv_question);
         tvQuestion.setText(question.getTitle());
         edtAnswer = myView.findViewById(R.id.edt_answer);
@@ -71,5 +76,41 @@ public class TestWriteFragment extends Fragment{
             public void afterTextChanged(Editable s) {
             }
         });
+        imgSpeak.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                texttoSpeak();
+            }
+        });
+    }
+    @Override
+    public void onInit(int status) {
+        if (status == TextToSpeech.SUCCESS) {
+            int result = textToSpeech.setLanguage(Locale.US);
+            textToSpeech.setSpeechRate(1.0f);
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Log.e("error", "This Language is not supported");
+            } else {
+                texttoSpeak();
+            }
+        } else {
+            Log.e("error", "Failed to Initialize");
+        }
+    }
+    @Override
+    public void onDestroy() {
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
+        super.onDestroy();
+    }
+    private void texttoSpeak() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            textToSpeech.speak(question.getTitle(), TextToSpeech.QUEUE_FLUSH, null, null);
+        }
+        else {
+            textToSpeech.speak(question.getTitle(), TextToSpeech.QUEUE_FLUSH, null);
+        }
     }
 }

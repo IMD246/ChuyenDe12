@@ -6,7 +6,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.EnglishBeginner.Adapter.TestChooseImageItem_Adapter;
 import com.example.EnglishBeginner.DAO.DAOAnswer;
@@ -21,7 +25,9 @@ import com.example.EnglishBeginner.DTO.Answer;
 import com.example.EnglishBeginner.DTO.Question;
 import com.example.EnglishBeginner.R;
 
-public class TestChooseImageFragment extends Fragment {
+import java.util.Locale;
+
+public class TestChooseImageFragment extends Fragment implements TextToSpeech.OnInitListener{
     //khai báo
     private View myView;
 
@@ -33,6 +39,7 @@ public class TestChooseImageFragment extends Fragment {
     private TestChooseImageItem_Adapter testChooseImageItem_adapter;
     private TestEnglishActivity testEnglishActivity;
     private Question question;
+    private TextToSpeech textToSpeech;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -50,6 +57,7 @@ public class TestChooseImageFragment extends Fragment {
     //Ánh xạ, khởi tạo,...
     private void setControl() {
         //ánh xạ các view
+        textToSpeech = new TextToSpeech(getContext(),this);
         daoAnswer = new DAOAnswer(getContext());
         testEnglishActivity = (TestEnglishActivity) getActivity();
         testChooseImageItem_adapter = new TestChooseImageItem_Adapter(testEnglishActivity.getApplicationContext());
@@ -69,9 +77,45 @@ public class TestChooseImageFragment extends Fragment {
                 }
             }
         });
+        imgSpeak.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                texttoSpeak();
+            }
+        });
     }
     private void getDataAnswer(int idQuestion)
     {
         daoAnswer.getDataFromFirebase(idQuestion,testChooseImageItem_adapter);
+    }
+    @Override
+    public void onInit(int status) {
+        if (status == TextToSpeech.SUCCESS) {
+            int result = textToSpeech.setLanguage(Locale.US);
+            textToSpeech.setSpeechRate(1.0f);
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Log.e("error", "This Language is not supported");
+            } else {
+                texttoSpeak();
+            }
+        } else {
+            Log.e("error", "Failed to Initialize");
+        }
+    }
+    @Override
+    public void onDestroy() {
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
+        super.onDestroy();
+    }
+    private void texttoSpeak() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            textToSpeech.speak(question.getTitle(), TextToSpeech.QUEUE_FLUSH, null, null);
+        }
+        else {
+            textToSpeech.speak(question.getTitle(), TextToSpeech.QUEUE_FLUSH, null);
+        }
     }
 }
