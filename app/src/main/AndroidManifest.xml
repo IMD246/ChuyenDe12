@@ -111,6 +111,7 @@
             android:exported="true">
 
         </activity>
+
         <receiver android:name=".fragment.LearnWord.notification.source.AlarmReceiver"/>
 
     </application>

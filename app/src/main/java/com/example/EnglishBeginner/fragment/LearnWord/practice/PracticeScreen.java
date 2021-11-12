@@ -136,7 +136,6 @@ public class PracticeScreen extends AppCompatActivity implements TextToSpeech.On
         progressBar = findViewById(R.id.practice_progress_bar);
         speakerIcon = findViewById(R.id.practice_imgSpeak);
         showHint = findViewById(R.id.practice_imgShowHint);
-        submitButton = findViewById(R.id.practice_btnSubmit);
         hintText = findViewById(R.id.practice_txt_hint);
         //checkingText = findViewById(R.id.practice_txtCheckAnswer);
         danhsach = (RecyclerView) findViewById(R.id.practice_rclAnswer);

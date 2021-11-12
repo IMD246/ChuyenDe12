@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".User.LearnWord.practice.PracticeScreen">
+    tools:context=".fragment.LearnWord.practice.PracticeScreen">
 
     <ProgressBar
         android:id="@+id/practice_progress_bar"
@@ -96,11 +96,6 @@
             android:layout_height="64dp"
             android:text="Thoát" />
 
-        <Button
-            android:id="@+id/practice_btnSubmit"
-            android:layout_width="145dp"
-            android:layout_height="64dp"
-            android:layout_marginStart="24dp"
-            android:text="Tiếp tục" />
+
     </LinearLayout>
 </LinearLayout>
