@@ -53,6 +53,7 @@
                 android:textColor="@color/colorBlacky"
                 android:textSize="20sp" />
 
+
             <TextView
                 android:id="@+id/txtDesc"
                 android:layout_width="wrap_content"
@@ -64,7 +65,6 @@
                 android:paddingEnd="12dp"
                 android:text="kinh ngiem ban nhan dc la 30xp"
                 android:textColor="@color/colorBlacky" />
-
 
             <LinearLayout
                 android:layout_width="match_parent"

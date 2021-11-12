@@ -19,13 +19,4 @@
         android:layout_height="wrap_content"
         android:src="@drawable/congratolate"/>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:layout_width="180dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Tiếp tục"
-        android:background="@drawable/ct_layout_button3"
-        android:textColor="@color/white"
-        android:id="@+id/btn_continute_finish"/>
-
 </LinearLayout>

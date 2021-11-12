@@ -1,25 +1,34 @@
 package com.example.EnglishBeginner.learn.testing;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.DTO.Question;
 import com.example.EnglishBeginner.R;
+import com.example.EnglishBeginner.learn.FinishEnglishFragment;
 import com.example.EnglishBeginner.learn.learning.LearningEnglishFragment;
 import com.example.EnglishBeginner.main_interface.UserInterfaceActivity;
-
 import java.util.List;
+
+import pl.droidsonroids.gif.GifImageView;
 
 public class TestEnglishActivity extends AppCompatActivity implements View.OnClickListener {
     private ProgressBar progressBar;
@@ -60,6 +69,7 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
         int min = 0;
         int randomQuestion = (int) Math.floor(Math.random() * (max - min + 1) + min);
         Question question = arrayListQuestion.get(randomQuestion);
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         if (arrayListQuestion.size() < 10) {
             progressBar.setMax(arrayListQuestion.size());
             if (count < arrayListQuestion.size()) {
@@ -68,10 +78,10 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
             else
             {
                 if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.TEST)) {
-                    alertDialogComplete("Hoàn thành bài học");
+                    fragmentTransaction.replace(R.id.frameLayout_Fragment, new FinishEnglishFragment()).commit();
                 }
                 else if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.LEARN)) {
-                    alertDialogComplete("Chúc bạn làm bài test tốt");
+                    fragmentTransaction.replace(R.id.frameLayout_Fragment, new FinishEnglishFragment()).commit();
                 }
             }
         }
@@ -83,10 +93,10 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
             else
             {
                 if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.TEST)) {
-                    alertDialogComplete("Hoàn thành bài học");
+                    fragmentTransaction.replace(R.id.frameLayout_Fragment, new FinishEnglishFragment()).commit();
                 }
                 else if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.LEARN)) {
-                    alertDialogComplete("Chúc bạn làm bài test tốt");
+                    fragmentTransaction.replace(R.id.frameLayout_Fragment, new FinishEnglishFragment()).commit();
                 }
             }
         }
@@ -105,45 +115,43 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
         Bundle bundle = new Bundle();
         bundle.putSerializable("question", question);
         correctQuestion = question.getCorrectAnswer();
-        if (typeLearn!=null || typeLearn.trim().length()>0) {
-            if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.TEST)) {
-                btnPass.setVisibility(View.VISIBLE);
-                if (question.getNameTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.IMAGE)) {
-                    TestChooseImageFragment testChooseImageFragment = new TestChooseImageFragment();
-                    testChooseImageFragment.setArguments(bundle);
-                    if (count == 0) {
-                        fragmentTransaction.add(R.id.frameLayout_Fragment, testChooseImageFragment).commit();
-                    } else {
-                        fragmentTransaction.replace(R.id.frameLayout_Fragment, testChooseImageFragment).commit();
-                    }
-                } else if (question.getNameTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.LISTEN)) {
-                    TestListenFragment testListenFragment = new TestListenFragment();
-                    testListenFragment.setArguments(bundle);
-                    if (count == 0) {
-                        fragmentTransaction.add(R.id.frameLayout_Fragment, testListenFragment).commit();
-                    } else {
-                        fragmentTransaction.replace(R.id.frameLayout_Fragment, testListenFragment).commit();
-                    }
-                } else if (question.getNameTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.WRITE)) {
-                    TestWriteFragment testWriteFragment = new TestWriteFragment();
-                    testWriteFragment.setArguments(bundle);
-                    if (count == 0) {
-                        fragmentTransaction.add(R.id.frameLayout_Fragment, testWriteFragment).commit();
-                    } else {
-                        fragmentTransaction.replace(R.id.frameLayout_Fragment, testWriteFragment).commit();
-                    }
+        if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.TEST)) {
+            btnPass.setVisibility(View.VISIBLE);
+            if (question.getNameTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.IMAGE)) {
+                TestChooseImageFragment testChooseImageFragment = new TestChooseImageFragment();
+                testChooseImageFragment.setArguments(bundle);
+                if (count == 0) {
+                    fragmentTransaction.add(R.id.frameLayout_Fragment, testChooseImageFragment).commit();
+                } else {
+                    fragmentTransaction.replace(R.id.frameLayout_Fragment, testChooseImageFragment).commit();
+                }
+            } else if (question.getNameTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.LISTEN)) {
+                TestListenFragment testListenFragment = new TestListenFragment();
+                testListenFragment.setArguments(bundle);
+                if (count == 0) {
+                    fragmentTransaction.add(R.id.frameLayout_Fragment, testListenFragment).commit();
+                } else {
+                    fragmentTransaction.replace(R.id.frameLayout_Fragment, testListenFragment).commit();
+                }
+            } else if (question.getNameTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.WRITE)) {
+                TestWriteFragment testWriteFragment = new TestWriteFragment();
+                testWriteFragment.setArguments(bundle);
+                if (count == 0) {
+                    fragmentTransaction.add(R.id.frameLayout_Fragment, testWriteFragment).commit();
+                } else {
+                    fragmentTransaction.replace(R.id.frameLayout_Fragment, testWriteFragment).commit();
                 }
             }
-            else if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.LEARN))
-            {
-                btnPass.setVisibility(View.GONE);
-                LearningEnglishFragment learningEnglishFragment = new LearningEnglishFragment();
-                learningEnglishFragment.setArguments(bundle);
-                if (count == 0) {
-                    fragmentTransaction.add(R.id.frameLayout_Fragment, learningEnglishFragment).commit();
-                } else {
-                    fragmentTransaction.replace(R.id.frameLayout_Fragment, learningEnglishFragment).commit();
-                }
+        }
+        else if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.LEARN))
+        {
+            btnPass.setVisibility(View.GONE);
+            LearningEnglishFragment learningEnglishFragment = new LearningEnglishFragment();
+            learningEnglishFragment.setArguments(bundle);
+            if (count == 0) {
+                fragmentTransaction.add(R.id.frameLayout_Fragment, learningEnglishFragment).commit();
+            } else {
+                fragmentTransaction.replace(R.id.frameLayout_Fragment, learningEnglishFragment).commit();
             }
         }
     }
@@ -155,63 +163,73 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
         }
     }
     private void submitResult() {
-        if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.TEST)) {
-            if (answer == null) {
-                alertDialog("Trả lời sai");
-            } else {
-                if (answer.equalsIgnoreCase(correctQuestion)) {
-                    alertDialog("Trả lời đúng");
+        if (count < arrayListQuestion.size() && count<10) {
+            if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.TEST)) {
+                if (answer == null) {
+                    alertDialog("Không chính xác", false);
                 } else {
-                    alertDialog("Trả lời sai");
+                    if (answer.equalsIgnoreCase(correctQuestion)) {
+                        alertDialog("Chính xác", true);
+                    } else {
+                        alertDialog("Không chính xác", false);
+                    }
+                    answer = null;
                 }
-                answer = null;
+            } else if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.LEARN)) {
+                alertDialog("Đã hoàn thành phần học", true);
             }
         }
-        else if  (typeLearn.equalsIgnoreCase(DEFAULTVALUE.LEARN))
-        {
-            alertDialog("Đã hoàn thành phần học");
+        else {
+            startActivity(new Intent(TestEnglishActivity.this, UserInterfaceActivity.class));
         }
         count++;
         progressBar.setProgress(count,true);
     }
     // Xây dựng một Hộp thoại thông báo
-    public void alertDialog(String msg) {
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-        builder1.setMessage(msg);
-        builder1.setCancelable(true);
-        builder1.setPositiveButton(
-                "Tiếp tục",
-                (dialog, id) -> {
-                    if (count>0) {
-                        new CountDownTimer(2000, 1000) {
-                            public void onTick(long millisUntilFinished) {
-                                btnPass.setEnabled(false);
-                                btnSubmit.setEnabled(false);
-                            }
-
-                            public void onFinish() {
-                                btnPass.setEnabled(true);
-                                btnSubmit.setEnabled(true);
-                                processLearn();
-                            }
-                        }.start();
+    public void alertDialog(String msg,Boolean check) {
+        Dialog dialog = new Dialog(TestEnglishActivity.this);
+        dialog.setContentView(R.layout.layout_notify_answer_correct);
+        dialog.setCanceledOnTouchOutside(false);
+        Window window = dialog.getWindow();
+        window.setGravity(Gravity.BOTTOM);
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        WindowManager.LayoutParams windowAttributes = window.getAttributes();
+        window.setAttributes(windowAttributes);
+        RelativeLayout relativeLayout = dialog.findViewById(R.id.rltCheckAnswer);
+        GifImageView imgResult = dialog.findViewById(R.id.imgResult);
+        if (!check) {
+            imgResult.setImageResource(R.drawable.correct);
+            relativeLayout.setBackgroundResource(R.color.red);
+        }
+        else
+        {
+            imgResult.setImageResource(R.drawable.correct);
+            relativeLayout.setBackgroundResource(R.color.greenResult);
+        }
+        TextView tvCorrect = dialog.findViewById(R.id.id_corect_title);
+        tvCorrect.setText(msg);
+        Button btnContinue = dialog.findViewById(R.id.btn_continute_notify);
+        btnContinue.setOnClickListener(v -> {
+            if (count>0) {
+                new CountDownTimer(2000, 1000) {
+                    public void onTick(long millisUntilFinished) {
+                        btnPass.setEnabled(false);
+                        btnSubmit.setEnabled(false);
                     }
-                    else
-                    {
+                    public void onFinish() {
+                        btnPass.setEnabled(true);
+                        btnSubmit.setEnabled(true);
                         processLearn();
                     }
-                });
-        AlertDialog alert11 = builder1.create();
-        alert11.show();
-    }
-    public void alertDialogComplete(String msg) {
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-        builder1.setMessage(msg);
-        builder1.setCancelable(true);
-        builder1.setPositiveButton(
-                "Tiếp tục",
-                (dialog, id) -> startActivity(new Intent(TestEnglishActivity.this,UserInterfaceActivity.class)));
-        AlertDialog alert11 = builder1.create();
-        alert11.show();
+                }.start();
+            }
+            else
+            {
+                processLearn();
+            }
+            dialog.dismiss();
+        });
+        dialog.show();
     }
 }
