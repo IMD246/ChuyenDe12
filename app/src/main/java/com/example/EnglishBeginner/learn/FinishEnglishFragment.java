@@ -27,7 +27,7 @@ public class FinishEnglishFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        myView = inflater.inflate(R.layout.layout_fragment_test_choose_image, container, false);
+        myView = inflater.inflate(R.layout.layout_fragment_finish_english, container, false);
         setControl();
         return myView;
     }
