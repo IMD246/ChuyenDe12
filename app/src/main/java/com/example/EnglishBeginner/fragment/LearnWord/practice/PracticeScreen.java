@@ -3,8 +3,10 @@ package com.example.EnglishBeginner.fragment.LearnWord.practice;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -36,8 +38,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Locale;
 
-public class PracticeScreen extends AppCompatActivity {
+public class PracticeScreen extends AppCompatActivity implements TextToSpeech.OnInitListener{
 
     private RecyclerView danhsach;
 
@@ -50,14 +53,14 @@ public class PracticeScreen extends AppCompatActivity {
     private SaveSqliteHelper sqliteHelper;
     private SqlLiteHelper databaseHelper;
     private PracticeAdapter adapter;
-    private MediaPlayer player;
+
     private ProgressBar progressBar;
     private ImageView speakerIcon, showHint;
     private Button submitButton, returnButton;
     private TextView hintText, questionText;
     int currentpos = 0;
     FirebaseApp firebaseApp;
-
+    private TextToSpeech textToSpeech;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +68,7 @@ public class PracticeScreen extends AppCompatActivity {
 //        firebaseApp.getApplicationContext();
         setContentView(R.layout.practive_screen);
 
-
+        textToSpeech = new TextToSpeech(getBaseContext(),this);
         sqliteHelper = new SaveSqliteHelper(getBaseContext());
         //lay du lieu saveword trong sqlite roi dua vao list
         sqliteHelper.fetchData(listItem);
@@ -197,7 +200,7 @@ public class PracticeScreen extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     try {
-                        getAudioLink(listItem.get(currentpos).getWord());
+                        texttoSpeak(listItem.get(currentpos).getWord());
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
@@ -269,65 +272,6 @@ public class PracticeScreen extends AppCompatActivity {
         });
     }
 
-    private void getAudioLink(String word) {
-        //lay ra chuoi trong search view
-        String url = "https://api.dictionaryapi.dev/api/v2/entries/en/" + word;
-
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONArray>() {
-
-                    @Override
-                    public void onResponse(JSONArray response) {
-
-                        try {
-                            JSONObject jsonObject = response.getJSONObject(0);
-                            JSONArray jsonArray = jsonObject.getJSONArray("phonetics");
-                            JSONObject jsonObject1 = jsonArray.getJSONObject(0);
-                            String audio = jsonObject1.getString("audio");
-
-                            PlaySong(audio);
-
-                        } catch (Exception exception) {
-                            Toast.makeText(getBaseContext(), "bug found.", Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getBaseContext(), "am thanh khong co san....", Toast.LENGTH_SHORT).show();
-
-            }
-        });
-        MySingleton.getInstance(getBaseContext()).addToRequestQueue(jsonArrayRequest);
-
-        //goi len api
-
-        //yeu cau api gui ve file json
-
-
-    }
-
-    private void PlaySong(String url) {
-        try {
-            Toast.makeText(getBaseContext(), url, Toast.LENGTH_SHORT).show();
-            Uri uri = Uri.parse("https:" + url);
-            player = new MediaPlayer();
-            player.setDataSource(getBaseContext(), uri);
-            player.prepare();
-            player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    mp.start();
-                }
-            });
-        } catch (Exception exception) {
-            Log.d(exception.toString(), "PlaySong: ");
-        }
-
-    }
-
-
     private int getResultPos(ArrayList<String> list, String answer) {
         int pos = 0;
         for (String i : list) {
@@ -339,5 +283,34 @@ public class PracticeScreen extends AppCompatActivity {
 
         }
         return pos;
+    }
+
+    @Override
+    public void onInit(int status) {
+        if (status == TextToSpeech.SUCCESS) {
+            int result = textToSpeech.setLanguage(Locale.US);
+            textToSpeech.setSpeechRate(0.5f);
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Log.e("error", "This Language is not supported");
+            }
+        } else {
+            Log.e("error", "Failed to Initialize");
+        }
+    }
+    @Override
+    public void onDestroy() {
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
+        super.onDestroy();
+    }
+    private void texttoSpeak(String text) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+        }
+        else {
+            textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+        }
     }
 }

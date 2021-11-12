@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,12 +43,12 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
     ArrayList<Word> listWord;
     SqlLiteHelper databaseHelper;
     MediaPlayer player;
-
-    public WordAdapter(Context context, ArrayList<Word> listWord, SqlLiteHelper databaseHelper) {
+    TextToSpeech textToSpeech;
+    public WordAdapter(Context context, ArrayList<Word> listWord, SqlLiteHelper databaseHelper,TextToSpeech textToSpeech) {
         this.context = context;
         this.listWord = listWord;
         this.databaseHelper = databaseHelper;
-
+        this.textToSpeech = textToSpeech;
     }
 
 
@@ -71,7 +73,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
         holder.img_speech.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getAudioLink(listWord.get(holder.getAdapterPosition()).getWord().toString().trim());
+                textToSpeak(listWord.get(holder.getAdapterPosition()).getWord().toString().trim());
             }
         });
         //save tu
@@ -131,67 +133,13 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
         }
     }
 
-    //lay ra meaning cua tu` tren api
-    private void getAudioLink(String word) {
-        //lay ra chuoi trong search view
-        String url = "https://api.dictionaryapi.dev/api/v2/entries/en/" + word;
 
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONArray>() {
-
-                    @Override
-                    public void onResponse(JSONArray response) {
-
-                        try {
-                            JSONObject jsonObject = response.getJSONObject(0);
-
-
-                            JSONArray jsonArray = jsonObject.getJSONArray("phonetics");
-                            JSONObject jsonObject1 = jsonArray.getJSONObject(0);
-                            String audio = jsonObject1.getString("audio");
-
-                            PlaySong(audio);
-
-                        } catch (Exception exception) {
-                            Toast.makeText(context, "bug found.", Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, "am thanh khong co san....", Toast.LENGTH_SHORT).show();
-
-            }
-        });
-        MySingleton.getInstance(context).addToRequestQueue(jsonArrayRequest);
-
-        //goi len api
-
-        //yeu cau api gui ve file json
-
-
-    }
-
-    private void PlaySong(String url) {
-        try {
-            Toast.makeText(context, url, Toast.LENGTH_SHORT).show();
-            Uri uri = Uri.parse("https:" + url);
-            player = new MediaPlayer();
-            player.setDataSource(context, uri);
-            player.prepare();
-            player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-
-                    mp.start();
-                    Toast.makeText(context, "playing", Toast.LENGTH_SHORT).show();
-                }
-            });
-        } catch (Exception exception) {
-            Log.d(exception.toString(), "PlaySong: ");
+    public void textToSpeak(String text) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
         }
-
+        else {
+            textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+        }
     }
-
 }

@@ -1,8 +1,11 @@
 package com.example.EnglishBeginner.fragment.LearnWord.word;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -19,8 +22,9 @@ import com.example.EnglishBeginner.R;
 import com.example.EnglishBeginner.fragment.LearnWord.word.source.SqlLiteHelper;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
-public class WordScreen extends AppCompatActivity {
+public class WordScreen extends AppCompatActivity implements TextToSpeech.OnInitListener{
 
 
     private Button prevPage, nextPage, searchButton, returnButton;
@@ -32,12 +36,13 @@ public class WordScreen extends AppCompatActivity {
 
     WordAdapter adapter;
     SqlLiteHelper databaseHelper;
-
+    private TextToSpeech textToSpeech;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.word_screen);
 
+        textToSpeech = new TextToSpeech(getBaseContext(),this);
 
         prepareSQL();
         setControl();
@@ -179,7 +184,7 @@ public class WordScreen extends AppCompatActivity {
     }
 
     private void setAdapterForListView(ArrayList<Word> listToSetAdapter) {
-        adapter = new WordAdapter(getBaseContext(), listToSetAdapter, databaseHelper);
+        adapter = new WordAdapter(getBaseContext(), listToSetAdapter, databaseHelper,textToSpeech);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 1);// Tạo layout manager
         danhsach.setItemAnimator(new DefaultItemAnimator());// Gán hiệu ứng cho Recyclerview
         danhsach.setLayoutManager(layoutManager);// Gán layout manager cho recyclerview
@@ -193,6 +198,26 @@ public class WordScreen extends AppCompatActivity {
                 listItem);
         autoCompleteTextView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+    }
+    @Override
+    public void onInit(int status) {
+        if (status == TextToSpeech.SUCCESS) {
+            int result = textToSpeech.setLanguage(Locale.US);
+            textToSpeech.setSpeechRate(1.0f);
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Log.e("error", "This Language is not supported");
+            }
+        } else {
+            Log.e("error", "Failed to Initialize");
+        }
+    }
+    @Override
+    public void onDestroy() {
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
+        super.onDestroy();
     }
 
 

@@ -3,6 +3,8 @@ package com.example.EnglishBeginner.fragment.LearnWord.saveWord;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,11 +37,12 @@ public class SaveAdapter extends RecyclerView.Adapter<SaveAdapter.ViewHolder> {
     ArrayList<Word> listSave ;
     MediaPlayer player;
     SaveSqliteHelper sqlLiteHelper;
-
-    public SaveAdapter(Context context, ArrayList<Word> listSave, SaveSqliteHelper sqlLiteHelper) {
+    TextToSpeech textToSpeech;
+    public SaveAdapter(Context context, ArrayList<Word> listSave, SaveSqliteHelper sqlLiteHelper,TextToSpeech textToSpeech) {
         this.context = context;
         this.listSave = listSave;
         this.sqlLiteHelper = sqlLiteHelper;
+        this.textToSpeech=textToSpeech;
     }
 
 
@@ -62,7 +65,7 @@ public class SaveAdapter extends RecyclerView.Adapter<SaveAdapter.ViewHolder> {
         holder.speech.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getAudioLink(listSave.get(holder.getAdapterPosition()).getWord().toString().trim());
+                texttoSpeak(listSave.get(holder.getAdapterPosition()).getWord().toString().trim());
             }
         });
 
@@ -92,58 +95,13 @@ public class SaveAdapter extends RecyclerView.Adapter<SaveAdapter.ViewHolder> {
             this.speech = itemView.findViewById(R.id.img_save_speach);
         }
     }
-    private void getAudioLink(String word) {
-        //lay ra chuoi trong search view
-        String url = "https://api.dictionaryapi.dev/api/v2/entries/en/" + word;
 
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONArray>() {
-
-                    @Override
-                    public void onResponse(JSONArray response) {
-
-                        try {
-                            JSONObject jsonObject = response.getJSONObject(0);
-                            JSONArray jsonArray = jsonObject.getJSONArray("phonetics");
-                            JSONObject jsonObject1 = jsonArray.getJSONObject(0);
-                            String audio = jsonObject1.getString("audio");
-
-                            PlaySong(audio);
-
-                        } catch (Exception exception) {
-                            Toast.makeText(context, "bug found.", Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, "am thanh khong co san....", Toast.LENGTH_SHORT).show();
-
-            }
-        });
-        MySingleton.getInstance(context).addToRequestQueue(jsonArrayRequest);
-
-    }
-
-    private void PlaySong(String url) {
-        try {
-            Toast.makeText(context, url, Toast.LENGTH_SHORT).show();
-            Uri uri = Uri.parse("https:" + url);
-            player = new MediaPlayer();
-            player.setDataSource(context, uri);
-            player.prepare();
-            player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    mp.start();
-                }
-            });
-        } catch (Exception exception) {
-            Log.d(exception.toString(), "PlaySong: ");
+    private void texttoSpeak(String text) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
         }
-
+        else {
+            textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+        }
     }
-
-
 }

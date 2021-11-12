@@ -2,7 +2,9 @@ package com.example.EnglishBeginner.fragment.LearnWord.WordManagement;
 
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,7 +34,9 @@ import com.example.EnglishBeginner.fragment.LearnWord.word.source.MySingleton;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class IetlsManagement extends AppCompatActivity {
+import java.util.Locale;
+
+public class IetlsManagement extends AppCompatActivity implements TextToSpeech.OnInitListener {
 
     private RecyclerView rcvIetls;
 
@@ -43,11 +47,12 @@ public class IetlsManagement extends AppCompatActivity {
     MediaPlayer player;
     private WordToeicIetlsAdapter wordToeicIetlsAdapter;
     private DAOIetls daoIetls;
-
+    TextToSpeech textToSpeech;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ietls_management);
+        textToSpeech =new TextToSpeech(getBaseContext(),this);
         initUI();
         getDataFirebase();
     }
@@ -72,7 +77,8 @@ public class IetlsManagement extends AppCompatActivity {
 
             @Override
             public void speechItem(Word word) {
-                getAudioLink(word.getWord());
+
+                texttoSpeak(word.getWord());
             }
         });
 
@@ -103,55 +109,7 @@ public class IetlsManagement extends AppCompatActivity {
     private void getDataFirebase() {
         daoIetls.getDataFromRealTimeToList(wordToeicIetlsAdapter);
     }
-    private void getAudioLink(String word) {
-        //lay ra chuoi trong search view
-        String url = "https://api.dictionaryapi.dev/api/v2/entries/en/" + word;
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONArray>() {
 
-                    @Override
-                    public void onResponse(JSONArray response) {
-
-                        try {
-                            JSONObject jsonObject = response.getJSONObject(0);
-                            JSONArray jsonArray = jsonObject.getJSONArray("phonetics");
-                            JSONObject jsonObject1 = jsonArray.getJSONObject(0);
-                            String audio = jsonObject1.getString("audio");
-
-                            PlaySong(audio);
-
-                        } catch (Exception exception) {
-                            Toast.makeText(getBaseContext(), "bug found.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getBaseContext(), "am thanh khong co san....", Toast.LENGTH_SHORT).show();
-
-            }
-        });
-        MySingleton.getInstance(getBaseContext()).addToRequestQueue(jsonArrayRequest);
-
-    }
-
-    private void PlaySong(String url) {
-        try {
-            Uri uri = Uri.parse("https:" + url);
-            player = new MediaPlayer();
-            player.setDataSource(getBaseContext(), uri);
-            player.prepare();
-            player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    mp.start();
-                }
-            });
-        } catch (Exception exception) {
-            Log.d(exception.toString(), "PlaySong: ");
-        }
-
-    }
 
     private int getSelectedSpinner(Spinner spnTypeWord, String valueOf) {
         for (int i=0; i< spnTypeWord.getCount();i++)
@@ -170,5 +128,32 @@ public class IetlsManagement extends AppCompatActivity {
         Toast.makeText(this, "w", Toast.LENGTH_SHORT).show();
         sqliteHelper.addSaveWordByButtonFirebase(word);
     }
-
+    @Override
+    public void onInit(int status) {
+        if (status == TextToSpeech.SUCCESS) {
+            int result = textToSpeech.setLanguage(Locale.US);
+            textToSpeech.setSpeechRate(0.5f);
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Log.e("error", "This Language is not supported");
+            }
+        } else {
+            Log.e("error", "Failed to Initialize");
+        }
+    }
+    @Override
+    public void onDestroy() {
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
+        super.onDestroy();
+    }
+    private void texttoSpeak(String text) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+        }
+        else {
+            textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+        }
+    }
 }

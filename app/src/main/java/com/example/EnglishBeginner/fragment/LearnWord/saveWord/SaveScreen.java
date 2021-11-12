@@ -1,8 +1,11 @@
 package com.example.EnglishBeginner.fragment.LearnWord.saveWord;
 
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,8 +27,9 @@ import com.google.firebase.FirebaseApp;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Locale;
 
-public class SaveScreen extends AppCompatActivity {
+public class SaveScreen extends AppCompatActivity implements TextToSpeech.OnInitListener{
     private FloatingActionButton flAdd;
 
     private RecyclerView rcl;
@@ -33,13 +37,13 @@ public class SaveScreen extends AppCompatActivity {
     private SaveAdapter adapter;
     private SaveSqliteHelper sqliteHelper;
     private Button returnButton;
-
+    private TextToSpeech textToSpeech;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.saveword_screen);
         FirebaseApp.initializeApp(getBaseContext());
-
+        textToSpeech = new TextToSpeech(getBaseContext(),this);
         sqliteHelper = new SaveSqliteHelper(getBaseContext());
         AddItem();
         setControl();
@@ -125,7 +129,7 @@ public class SaveScreen extends AppCompatActivity {
         flAdd = findViewById(R.id.flAdd);
 
         // tao ra mot doi tuong adapter
-        adapter = new SaveAdapter(getBaseContext(), listItem, sqliteHelper);
+        adapter = new SaveAdapter(getBaseContext(), listItem, sqliteHelper,textToSpeech);
         //manager de custom hien thi len recycle view
         LinearLayoutManager manager = new GridLayoutManager(this, 1);
 
@@ -135,4 +139,25 @@ public class SaveScreen extends AppCompatActivity {
         rcl.setLayoutManager(manager);
 
     }
+    @Override
+    public void onInit(int status) {
+        if (status == TextToSpeech.SUCCESS) {
+            int result = textToSpeech.setLanguage(Locale.US);
+            textToSpeech.setSpeechRate(0.5f);
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Log.e("error", "This Language is not supported");
+            }
+        } else {
+            Log.e("error", "Failed to Initialize");
+        }
+    }
+    @Override
+    public void onDestroy() {
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
+        super.onDestroy();
+    }
+
 }
