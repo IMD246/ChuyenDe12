@@ -39,7 +39,7 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
     private int max = 0;
     public String correctQuestion = null, answer = null;
     private String typeLearn = null;
-
+    @SuppressWarnings("unchecked")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +101,6 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
             }
         }
     }
-
     @SuppressLint("ResourceType")
     private void transactionFragment(Question question) {
         FragmentTransaction fragmentTransaction;
@@ -186,7 +185,8 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
         progressBar.setProgress(count,true);
     }
     // Xây dựng một Hộp thoại thông báo
-    public void alertDialog(String msg,Boolean check) {
+    @SuppressLint("UseCompatLoadingForDrawables")
+    public void alertDialog(String msg, Boolean check) {
         Dialog dialog = new Dialog(TestEnglishActivity.this);
         dialog.setContentView(R.layout.layout_notify_answer_correct);
         dialog.setCanceledOnTouchOutside(false);
@@ -198,7 +198,7 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
         window.setAttributes(windowAttributes);
         RelativeLayout relativeLayout = dialog.findViewById(R.id.rltCheckAnswer);
         GifImageView imgResult = dialog.findViewById(R.id.imgResult);
-        TextView tvtitle = dialog.findViewById(R.id.id_corect_title);
+        @SuppressLint("CutPasteId") TextView tvtitle = dialog.findViewById(R.id.id_corect_title);
         Button btnContinute = dialog.findViewById(R.id.btn_continute_notify);
         if (!check) {
             imgResult.setImageResource(R.drawable.incorrect);
@@ -213,9 +213,9 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
             tvtitle.setTextColor(Color.parseColor("#58a700"));
             btnContinute.setBackground(getResources().getDrawable(R.drawable.ct_layout_button3, null));
         }
-        TextView tvCorrect = dialog.findViewById(R.id.id_corect_title);
+        @SuppressLint("CutPasteId") TextView tvCorrect = dialog.findViewById(R.id.id_corect_title);
         tvCorrect.setText(msg);
-        Button btnContinue = dialog.findViewById(R.id.btn_continute_notify);
+        @SuppressLint("CutPasteId") Button btnContinue = dialog.findViewById(R.id.btn_continute_notify);
         btnContinue.setOnClickListener(v -> {
             if (count>0) {
                 new CountDownTimer(2000, 1000) {

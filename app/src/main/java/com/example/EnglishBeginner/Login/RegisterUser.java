@@ -13,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.EnglishBeginner.DAO.DAOTopic;
+import com.example.EnglishBeginner.DTO.ProcessTopicItem;
 import com.example.EnglishBeginner.Login.Login;
 import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.DTO.User;
@@ -23,7 +25,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -35,13 +41,15 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     private EditText edtextEmail, edtextPassword;
     private ProgressBar progressBar;
     private FirebaseAuth mAuth;
-    FirebaseFirestore firestore;
+    private FirebaseFirestore firestore;
+    private DAOTopic daoTopic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_user);
-
+        daoTopic = new DAOTopic(this);
+        daoTopic.getDataFromRealTimeFirebase();
         mAuth = FirebaseAuth.getInstance();
         registeruser = (Button) findViewById(R.id.btnRegister);
         registeruser.setOnClickListener(this);
@@ -49,7 +57,6 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
         edtextEmail = (EditText) findViewById(R.id.edtEmail);
         edtextPassword = (EditText) findViewById(R.id.edtPassword);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-
     }
 
     @Override
@@ -114,6 +121,14 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                                     if (task.isSuccessful()) {
                                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                                         Toast.makeText(RegisterUser.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+                                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listProcessUser/"+user.getUid()+"/listTopic");
+                                        for (int i=0;i<daoTopic.getTopicList().size();i++)
+                                        {
+                                            for (int j=1;j<=2;j++) {
+                                                ProcessTopicItem processTopicItem = new ProcessTopicItem(j,0,daoTopic.getTopicList().get(i).getId());
+                                                databaseReference.child(daoTopic.getTopicList().get(i).getId()+"/listProcess/"+processTopicItem.getProcess()).setValue(processTopicItem).isComplete();
+                                            }
+                                        }
                                         DocumentReference df = firestore.collection("users").document(user.getUid());
                                         HashMap<String,Object> auThenticateUser = new HashMap<>();
                                         auThenticateUser.put("email",us.getEmail());

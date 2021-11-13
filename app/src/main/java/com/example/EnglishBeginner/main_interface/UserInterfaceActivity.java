@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +26,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.example.EnglishBeginner.Adapter.ProcessTopic_Adapter;
+import com.example.EnglishBeginner.DAO.DAOProcessUser;
 import com.example.EnglishBeginner.DAO.DAOQuestion;
 import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.DTO.ProcessTopicItem;
@@ -56,7 +58,7 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
     private TextView tvUserName,tvUserEmail;
     private ImageView imgUserName;
     private DAOQuestion daoQuestion;
-
+    private DAOProcessUser daoProcessUser;
 
     //khai báo giá trị cho screen
     public static final int FRAGMENT_LEARN = 0;
@@ -177,6 +179,7 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
     private void setControl() {
         //drawe layout
         drawerLayout = findViewById(R.id.drawer_layout);
+        daoProcessUser = new DAOProcessUser(this);
         navigationView = findViewById(R.id.nav_view);
         // get view control trong navigationview có chứa drawable
         View header = navigationView.getHeaderView(0);
@@ -332,7 +335,9 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
     }
     public void alertDialogTopic(Topic topic)
     {
+        List<ProcessTopicItem>processTopicItemList = new ArrayList<>();
         daoQuestion = new DAOQuestion(this);
+
         if (topic!=null)
         {
             daoQuestion.getDataFromRealTimeToList(topic);
@@ -344,8 +349,10 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         TextView tvTitle = dialog.findViewById(R.id.tv_title_topic);
         Button learn = dialog.findViewById(R.id.btn_learn_topic);
         Button test = dialog.findViewById(R.id.btn_test_topic);
-        tvLevel.setText("Cấp độ 1");
-        tvTitle.setText("Hãy cố lên");
+        tvTitle.setText("Hãy cố gắng lên");
+        tvLevel.setText("Level: 1");
+        ProcessTopic_Adapter processTopic_adapter = new ProcessTopic_Adapter(dialog.getContext());
+        daoProcessUser.getDataFromRealTimeFirebase(firebaseUser.getUid(),topic.getId(),processTopicItemList,processTopic_adapter,tvTitle,tvLevel);
         learn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -378,10 +385,6 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
                 }
             }
         });
-        List<ProcessTopicItem> processTopicItemList = new ArrayList<>();
-        processTopicItemList.add(new ProcessTopicItem(1, 1, "1"));
-        processTopicItemList.add(new ProcessTopicItem(2, 0, "2"));
-        ProcessTopic_Adapter processTopic_adapter = new ProcessTopic_Adapter(dialog.getContext());
         RecyclerView rcvLevelTopic = dialog.findViewById(R.id.rcvImageTopic);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(dialog.getContext(),LinearLayoutManager.HORIZONTAL,false);
         processTopic_adapter.setProcessTopicItemList(processTopicItemList);

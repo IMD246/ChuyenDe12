@@ -75,9 +75,7 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
                 }
             }
         }
-        if (listTopicNew.size()>0) {
-            setTopicItemRecycler(holder.rcvLevelTopicItem, listTopicNew);
-        }
+        setTopicItemRecycler(holder.rcvLevelTopicItem, listTopicNew);
         //xử lí khi click item learn:
         holder.layout.setOnClickListener(v -> {
             if (interface_learn!=null)
@@ -109,15 +107,14 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
             tvTitleLevel = itemView.findViewById(R.id.tvTitleLevel);
         }
     }
-
     private void setTopicItemRecycler(RecyclerView recycler, List<Topic> topicList) {
-        recycler.setHasFixedSize(true);
-        recycler.setNestedScrollingEnabled(false);
         Topic_Adapter topic_adapter = new Topic_Adapter(context);
         topic_adapter.setTopicList(topicList);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(context.getApplicationContext(), 2);
         recycler.setLayoutManager(gridLayoutManager);
         recycler.setAdapter(topic_adapter);
+        recycler.setHasFixedSize(true);
+        recycler.setNestedScrollingEnabled(false);
         topic_adapter.setInterface_learn(new Topic_Adapter.Interface_Learn() {
             @Override
             public void onClickItemLearn(Topic topic) {

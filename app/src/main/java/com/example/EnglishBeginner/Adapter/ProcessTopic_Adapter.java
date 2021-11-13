@@ -29,6 +29,7 @@ public class ProcessTopic_Adapter extends RecyclerView.Adapter<ProcessTopic_Adap
 
     public void setProcessTopicItemList(List<ProcessTopicItem> processTopicItemList) {
         this.processTopicItemList = processTopicItemList;
+        notifyDataSetChanged();
     }
     //khởi tạo view holder
     @NonNull
@@ -42,13 +43,15 @@ public class ProcessTopic_Adapter extends RecyclerView.Adapter<ProcessTopic_Adap
     @Override
     public void onBindViewHolder(@NonNull ProcessTopicViewHolder holder, int position) {
         ProcessTopicItem processTopicItem = processTopicItemList.get(position);
-        if (processTopicItem.getProcess() == 0) {
+        if (processTopicItem.getProgress() == 0) {
             holder.imgProcessTopic.setImageResource(R.drawable.level_blur);
             holder.tvTitleProcessTopic.setText("");
         }
-        else if (processTopicItem.getProcess() == 1) {
-            holder.imgProcessTopic.setImageResource(R.drawable.level);
-            holder.tvTitleProcessTopic.setText(processTopicItem.getProcessTopic());
+        else {
+            if (processTopicItem.getProgress() == 2) {
+                holder.imgProcessTopic.setImageResource(R.drawable.level);
+                holder.tvTitleProcessTopic.setText(""+processTopicItem.getProcess());
+            }
         }
     }
 

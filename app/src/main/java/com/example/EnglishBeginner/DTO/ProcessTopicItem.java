@@ -1,18 +1,16 @@
 package com.example.EnglishBeginner.DTO;
 
 public class ProcessTopicItem {
-    private int idTopic,process;
-    private String processTopic;
+    private int process,progress,idTopic;
 
-    public ProcessTopicItem(int idTopic, int process, String processTopic) {
-        this.idTopic = idTopic;
+    public ProcessTopicItem(int process, int progress, int idTopic) {
         this.process = process;
-        this.processTopic = processTopic;
+        this.progress = progress;
+        this.idTopic = idTopic;
     }
 
     public ProcessTopicItem() {
     }
-
     public int getProcess() {
         return process;
     }
@@ -21,19 +19,19 @@ public class ProcessTopicItem {
         this.process = process;
     }
 
+    public int getProgress() {
+        return progress;
+    }
+
+    public void setProgress(int progress) {
+        this.progress = progress;
+    }
+
     public int getIdTopic() {
         return idTopic;
     }
 
     public void setIdTopic(int idTopic) {
         this.idTopic = idTopic;
-    }
-
-    public String getProcessTopic() {
-        return processTopic;
-    }
-
-    public void setProcessTopic(String processTopic) {
-        this.processTopic = processTopic;
     }
 }
