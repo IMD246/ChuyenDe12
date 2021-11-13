@@ -1,13 +1,11 @@
 package com.example.EnglishBeginner.main_interface;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -34,9 +32,7 @@ import com.example.EnglishBeginner.DTO.Topic;
 import com.example.EnglishBeginner.DTO.User;
 import com.example.EnglishBeginner.Login.Login;
 import com.example.EnglishBeginner.R;
-import com.example.EnglishBeginner.learn.learning.LearningEnglishFragment;
 import com.example.EnglishBeginner.learn.testing.TestEnglishActivity;
-import com.example.EnglishBeginner.learn.testing.TestSelectionEnglishFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -55,7 +51,7 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
     //Khai báo các trường dữ liệu để lấy data trên firebase
     public FirebaseUser firebaseUser;
     public DatabaseReference databaseReference;
-    private TextView tvUserName,tvUserEmail;
+    private TextView tvUserName, tvUserEmail;
     private ImageView imgUserName;
     private DAOQuestion daoQuestion;
     private DAOProcessUser daoProcessUser;
@@ -158,12 +154,14 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
                 User user = snapshot.getValue(User.class);
                 getDataUserProfileToControl(user);
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
     }
+
     // khởi gán giá trị tới các view
     private void getDataUserProfileToControl(User user) {
         if (user != null) {
@@ -174,8 +172,8 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
             }
         }
     }
-    //Ánh xạ, khởi gán giá trị,...
 
+    //Ánh xạ, khởi gán giá trị,...
     private void setControl() {
         //drawe layout
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -200,6 +198,7 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         viewPager2_adapter = new ViewPager2_Adapter(this);
         viewPager2.setAdapter(viewPager2_adapter);
     }
+
     //xử lí Viewpager2
     private void processViewPager2() {
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
@@ -237,6 +236,7 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
             }
         });
     }
+
     //xử lí bottom Navigation
     @SuppressLint("NonConstantResourceId")
     private void processBottomNavigation() {
@@ -325,21 +325,13 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         AlertDialog alert11 = builder1.create();
         alert11.show();
     }
-    //hàm chuyển màn hình
-    public void navigationScreen(String string) {
-        if (DEFAULTVALUE.LEARNING_SCREEN.equalsIgnoreCase(string)) {
-            startActivity(new Intent(this, LearningEnglishFragment.class));
-        } else if (DEFAULTVALUE.TEST_SCREEN.equalsIgnoreCase(string)) {
-            startActivity(new Intent(this, TestSelectionEnglishFragment.class));
-        }
-    }
-    public void alertDialogTopic(Topic topic)
-    {
-        List<ProcessTopicItem>processTopicItemList = new ArrayList<>();
+
+    @SuppressLint("SetTextI18n")
+    public void alertDialogTopic(Topic topic) {
+        List<ProcessTopicItem> processTopicItemList = new ArrayList<>();
         daoQuestion = new DAOQuestion(this);
 
-        if (topic!=null)
-        {
+        if (topic != null) {
             daoQuestion.getDataFromRealTimeToList(topic);
         }
         Dialog dialog = new Dialog(UserInterfaceActivity.this);
@@ -352,51 +344,36 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         tvTitle.setText("Hãy cố gắng lên");
         tvLevel.setText("Level: 1");
         ProcessTopic_Adapter processTopic_adapter = new ProcessTopic_Adapter(dialog.getContext());
-        daoProcessUser.getDataFromRealTimeFirebase(firebaseUser.getUid(),topic.getId(),processTopicItemList,processTopic_adapter,tvTitle,tvLevel);
-        learn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (daoQuestion.getQuestionList().size()>0)
-                {
-                    Intent intent = new Intent(UserInterfaceActivity.this, TestEnglishActivity.class);
-                    intent.putExtra("listQuestion",(Serializable) daoQuestion.getQuestionList());
-                    intent.putExtra("learn",DEFAULTVALUE.LEARN);
-                    startActivity(intent);
-                }
-                else
-                {
-                    DEFAULTVALUE.alertDialogMessage("Thông báo","Chủ đề này hiện không có câu hỏi",UserInterfaceActivity.this);
-                }
+        assert topic != null;
+        daoProcessUser.getDataFromRealTimeFirebase(firebaseUser.getUid(), topic.getId(), processTopicItemList, processTopic_adapter, tvTitle, tvLevel);
+        learn.setOnClickListener(v -> {
+            if (daoQuestion.getQuestionList().size() > 0) {
+                Intent intent = new Intent(UserInterfaceActivity.this, TestEnglishActivity.class);
+                intent.putExtra("listQuestion", (Serializable) daoQuestion.getQuestionList());
+                intent.putExtra("learn", DEFAULTVALUE.LEARN);
+                startActivity(intent);
+            } else {
+                DEFAULTVALUE.alertDialogMessage("Thông báo", "Chủ đề này hiện không có câu hỏi", UserInterfaceActivity.this);
             }
         });
-        test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (daoQuestion.getQuestionList().size()>0)
-                {
-                    Intent intent = new Intent(UserInterfaceActivity.this, TestEnglishActivity.class);
-                    intent.putExtra("listQuestion",(Serializable) daoQuestion.getQuestionList());
-                    intent.putExtra("learn",DEFAULTVALUE.TEST);
-                    intent.putExtra("idTopic",topic.getId());
-                    intent.putExtra("userID",firebaseUser.getUid());
-                    startActivity(intent);
-                }
-                else
-                {
-                    DEFAULTVALUE.alertDialogMessage("Thông báo","Chủ đề này hiện không có câu hỏi",UserInterfaceActivity.this);
-                }
+        test.setOnClickListener(v -> {
+            if (daoQuestion.getQuestionList().size() > 0) {
+                Intent intent = new Intent(UserInterfaceActivity.this, TestEnglishActivity.class);
+                intent.putExtra("listQuestion", (Serializable) daoQuestion.getQuestionList());
+                intent.putExtra("learn", DEFAULTVALUE.TEST);
+                intent.putExtra("idTopic", topic.getId());
+                intent.putExtra("userID", firebaseUser.getUid());
+                startActivity(intent);
+            } else {
+                DEFAULTVALUE.alertDialogMessage("Thông báo", "Chủ đề này hiện không có câu hỏi", UserInterfaceActivity.this);
             }
         });
         RecyclerView rcvLevelTopic = dialog.findViewById(R.id.rcvImageTopic);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(dialog.getContext(),LinearLayoutManager.HORIZONTAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(dialog.getContext(), LinearLayoutManager.HORIZONTAL, false);
         processTopic_adapter.setProcessTopicItemList(processTopicItemList);
         rcvLevelTopic.setLayoutManager(linearLayoutManager);
         rcvLevelTopic.setAdapter(processTopic_adapter);
         dialog.show();
     }
 
-    //Hàm chuyển màn hình
-    public Activity getActivity() {
-        return this;
-    }
 }
