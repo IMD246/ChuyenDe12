@@ -204,14 +204,14 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
             imgResult.setImageResource(R.drawable.incorrect);
             relativeLayout.setBackgroundResource(R.color.red_incorrect);
             tvtitle.setTextColor(Color.parseColor("#ea2b2b"));
-            btnContinute.setBackgroundColor(Color.parseColor("#ff4b4b"));
+            btnContinute.setBackground(getResources().getDrawable(R.drawable.ct_layout_button4, null));
         }
         else
         {
             imgResult.setImageResource(R.drawable.correct);
             relativeLayout.setBackgroundResource(R.color.greenResult);
             tvtitle.setTextColor(Color.parseColor("#58a700"));
-            btnContinute.setBackgroundColor(Color.parseColor("#58cc02"));
+            btnContinute.setBackground(getResources().getDrawable(R.drawable.ct_layout_button3, null));
         }
         TextView tvCorrect = dialog.findViewById(R.id.id_corect_title);
         tvCorrect.setText(msg);
