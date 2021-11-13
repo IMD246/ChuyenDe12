@@ -43,15 +43,13 @@ public class ProcessTopic_Adapter extends RecyclerView.Adapter<ProcessTopic_Adap
     @Override
     public void onBindViewHolder(@NonNull ProcessTopicViewHolder holder, int position) {
         ProcessTopicItem processTopicItem = processTopicItemList.get(position);
-        if (processTopicItem.getProgress() == 0) {
+        if (processTopicItem.getProgress() < 2) {
             holder.imgProcessTopic.setImageResource(R.drawable.level_blur);
             holder.tvTitleProcessTopic.setText("");
         }
         else {
-            if (processTopicItem.getProgress() == 2) {
-                holder.imgProcessTopic.setImageResource(R.drawable.level);
-                holder.tvTitleProcessTopic.setText(""+processTopicItem.getProcess());
-            }
+            holder.imgProcessTopic.setImageResource(R.drawable.level);
+            holder.tvTitleProcessTopic.setText(""+processTopicItem.getProcess());
         }
     }
 
