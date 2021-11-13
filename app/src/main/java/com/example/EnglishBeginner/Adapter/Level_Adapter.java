@@ -115,6 +115,7 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
         recycler.setAdapter(topic_adapter);
         recycler.setHasFixedSize(true);
         recycler.setNestedScrollingEnabled(false);
+        topic_adapter.notifyDataSetChanged();
         topic_adapter.setInterface_learn(new Topic_Adapter.Interface_Learn() {
             @Override
             public void onClickItemLearn(Topic topic) {
