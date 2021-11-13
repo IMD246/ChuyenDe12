@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -20,12 +21,18 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.EnglishBeginner.DAO.DAOProcessUser;
 import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
+import com.example.EnglishBeginner.DTO.ProcessTopicItem;
 import com.example.EnglishBeginner.DTO.Question;
 import com.example.EnglishBeginner.R;
 import com.example.EnglishBeginner.learn.FinishEnglishFragment;
 import com.example.EnglishBeginner.learn.learning.LearningEnglishFragment;
 import com.example.EnglishBeginner.main_interface.UserInterfaceActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import pl.droidsonroids.gif.GifImageView;
@@ -35,19 +42,26 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
     @SuppressLint("StaticFieldLeak")
     public static Button btnPass, btnSubmit;
     private List<Question> arrayListQuestion;
-    private int count = 0;
+    private int count = 0,countcorrect = 0;
     private int max = 0;
     public String correctQuestion = null, answer = null;
     private String typeLearn = null;
+    private int idTopic;
+    private String userID;
+    private DAOProcessUser daoProcessUser;
+    private List<ProcessTopicItem>processTopicItemList;
     @SuppressWarnings("unchecked")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_english);
+        daoProcessUser = new DAOProcessUser(this);
         Intent intent = getIntent();
         if (intent != null) {
             arrayListQuestion = (List<Question>) intent.getSerializableExtra("listQuestion");
             typeLearn = intent.getStringExtra("learn");
+            idTopic = intent.getIntExtra("idTopic",-1);
+            userID = intent.getStringExtra("userID");
         }
         if (arrayListQuestion != null && arrayListQuestion.size() > 0) {
             max = arrayListQuestion.size() - 1;
@@ -77,6 +91,10 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
             }
             else
             {
+                if (countcorrect >= arrayListQuestion.size())
+                {
+                    daoProcessUser.updateProcess(userID,idTopic);
+                }
                 if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.TEST)) {
                     fragmentTransaction.replace(R.id.frameLayout_Fragment, new FinishEnglishFragment()).commit();
                 }
@@ -92,10 +110,12 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
             }
             else
             {
+                if (countcorrect >= 8) {
+                    daoProcessUser.updateProcess(userID,idTopic);
+                }
                 if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.TEST)) {
                     fragmentTransaction.replace(R.id.frameLayout_Fragment, new FinishEnglishFragment()).commit();
-                }
-                else if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.LEARN)) {
+                } else if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.LEARN)) {
                     fragmentTransaction.replace(R.id.frameLayout_Fragment, new FinishEnglishFragment()).commit();
                 }
             }
@@ -169,12 +189,14 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
                 } else {
                     if (answer.equalsIgnoreCase(correctQuestion)) {
                         alertDialog("Chính xác", true);
+                        countcorrect++;
                     } else {
                         alertDialog("Không chính xác", false);
                     }
                     answer = null;
                 }
             } else if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.LEARN)) {
+                countcorrect++;
                 alertDialog("Đã hoàn thành phần học", true);
             }
         }

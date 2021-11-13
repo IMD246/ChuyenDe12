@@ -53,8 +53,8 @@ import java.util.List;
 
 public class UserInterfaceActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     //Khai báo các trường dữ liệu để lấy data trên firebase
-    FirebaseUser firebaseUser;
-    DatabaseReference databaseReference;
+    public FirebaseUser firebaseUser;
+    public DatabaseReference databaseReference;
     private TextView tvUserName,tvUserEmail;
     private ImageView imgUserName;
     private DAOQuestion daoQuestion;
@@ -377,6 +377,8 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
                     Intent intent = new Intent(UserInterfaceActivity.this, TestEnglishActivity.class);
                     intent.putExtra("listQuestion",(Serializable) daoQuestion.getQuestionList());
                     intent.putExtra("learn",DEFAULTVALUE.TEST);
+                    intent.putExtra("idTopic",topic.getId());
+                    intent.putExtra("userID",firebaseUser.getUid());
                     startActivity(intent);
                 }
                 else

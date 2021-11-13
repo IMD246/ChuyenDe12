@@ -1,7 +1,7 @@
 package com.example.EnglishBeginner.DTO;
 
 public class ProcessTopicItem {
-    private int process,progress,idTopic;
+    private int process=0,progress=0,idTopic=0;
 
     public ProcessTopicItem(int process, int progress, int idTopic) {
         this.process = process;

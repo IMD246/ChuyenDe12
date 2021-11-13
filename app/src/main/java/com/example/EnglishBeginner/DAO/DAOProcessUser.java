@@ -9,7 +9,9 @@ import androidx.annotation.NonNull;
 
 import com.example.EnglishBeginner.Adapter.ProcessTopic_Adapter;
 import com.example.EnglishBeginner.DTO.ProcessTopicItem;
-import com.example.EnglishBeginner.DTO.Topic;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,40 +24,74 @@ import java.util.List;
 public class DAOProcessUser {
     private DatabaseReference databaseReference;
     private Context context;
-    public static String path;
+    private List<ProcessTopicItem> processTopicItem1;
+
     public DAOProcessUser(Context context) {
         this.context = context;
+        processTopicItem1 = new ArrayList<>();
         databaseReference = FirebaseDatabase.getInstance().getReference("listProcessUser");
     }
-    public void getDataFromRealTimeFirebase(String uid, int idTopic, List<ProcessTopicItem>processTopicItemList, ProcessTopic_Adapter processTopic_adapter, TextView tvTitle,TextView tvLevel)
-    {
-        databaseReference.child(uid).child("listTopic/"+idTopic+"/listProcess").
+
+    public void getDataFromRealTimeFirebase(String uid, int idTopic, List<ProcessTopicItem> processTopicItemList, ProcessTopic_Adapter processTopic_adapter, TextView tvTitle, TextView tvLevel) {
+        databaseReference.child(uid).child("listTopic/" + idTopic + "/listProcess").
                 addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (processTopicItemList!=null)
-                {
-                    processTopicItemList.clear();
-                }
-                for (DataSnapshot dataSnapshot : snapshot.getChildren())
-                {
-                    ProcessTopicItem processTopicItem = dataSnapshot.getValue(ProcessTopicItem.class);
-                    processTopicItemList.add(processTopicItem);
-                }
-                if (processTopic_adapter!=null)
-                {
-                    processTopic_adapter.notifyDataSetChanged();
-                }
-                if (processTopicItemList.get(processTopicItemList.size()-1).getProgress()==2)
-                {
-                    tvLevel.setText("Level: Huyền thoại");
-                    tvTitle.setText("Bạn đã thông thạo kỹ năng này!");
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(context, "Get list Process Topic failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (processTopicItemList != null) {
+                            processTopicItemList.clear();
+                        }
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            ProcessTopicItem processTopicItem = dataSnapshot.getValue(ProcessTopicItem.class);
+                            processTopicItemList.add(processTopicItem);
+                        }
+                        if (processTopic_adapter != null) {
+                            processTopic_adapter.notifyDataSetChanged();
+                        }
+                        if (processTopicItemList.get(processTopicItemList.size() - 1).getProgress() == 2) {
+                            if (tvLevel != null && tvTitle != null) {
+                                tvLevel.setText("Level: Huyền thoại");
+                                tvTitle.setText("Bạn đã thông thạo kỹ năng này!");
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(context, "Get list Process Topic failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+    public void updateProcess(String uid, int idTopic) {
+        databaseReference.child(uid).child("listTopic/" + idTopic + "/listProcess").
+                addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (processTopicItem1 != null) {
+                            processTopicItem1.clear();
+                        }
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            ProcessTopicItem processTopicItem = dataSnapshot.getValue(ProcessTopicItem.class);
+                            processTopicItem1.add(processTopicItem);
+                        }
+                        ProcessTopicItem processTopicItem = new ProcessTopicItem();
+                        for (int i = 0; i < processTopicItem1.size(); i++) {
+                            if (processTopicItem1.get(i).getProgress() < 2) {
+                                processTopicItem.setProcess(processTopicItem1.get(i).getProcess());
+                                processTopicItem.setIdTopic(processTopicItem1.get(i).getIdTopic());
+                                processTopicItem.setProgress(processTopicItem1.get(i).getProgress());
+                                break;
+                            }
+                        }
+                        if (processTopicItem.getProgress()<2) {
+                            databaseReference.child(uid).child("listTopic/" + idTopic + "/listProcess/" + processTopicItem.getProcess() + "/progress").setValue(processTopicItem.getProgress() + 1).addOnSuccessListener(unused -> {
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(context, "Get list Process Topic failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

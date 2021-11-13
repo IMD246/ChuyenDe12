@@ -61,15 +61,16 @@ public class TestWriteFragment extends Fragment implements TextToSpeech.OnInitLi
         edtAnswer.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 answer = edtAnswer.getText().toString();
                 if (answer!=null || answer.trim().length()>0)
                 {
                     testEnglishActivity.answer = answer;
                 }
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
 
             @Override
