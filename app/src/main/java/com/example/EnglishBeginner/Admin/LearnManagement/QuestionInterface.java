@@ -7,12 +7,10 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.EnglishBeginner.Admin.DAO.DAOTopic;
-import com.example.EnglishBeginner.Admin.DAO.DAOTypeQuestion;
 import com.example.EnglishBeginner.Admin.DTO.Question;
 import com.example.EnglishBeginner.R;
 
 public class QuestionInterface extends AppCompatActivity {
-    public DAOTypeQuestion daoTypeQuestion;
     public DAOTopic daoTopic;
 
     @Override
@@ -29,9 +27,7 @@ public class QuestionInterface extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         daoTopic = new DAOTopic(this);
-        daoTypeQuestion = new DAOTypeQuestion(this);
         daoTopic.getDataFromRealTimeFirebase(null);
-        daoTypeQuestion.getDataFromRealTimeToList(null);
     }
 
     private void transactionFragment() {

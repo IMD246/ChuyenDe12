@@ -179,6 +179,18 @@ public class DAOLevel {
 
                             }
                         });
+                        DatabaseReference databaseReference3 = FirebaseDatabase.getInstance().getReference("listProcessUser");
+                        databaseReference3.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for (DataSnapshot dataSnapshot1 : snapshot.getChildren())
+                                {
+                                    databaseReference3.child(dataSnapshot1.getKey()+"/listTopic/"+topic.getId()).removeValue().isComplete();
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) { }
+                        });
                         databaseReference1.child(Objects.requireNonNull(dataSnapshot.getKey())).removeValue().isComplete();
                     }
                 }

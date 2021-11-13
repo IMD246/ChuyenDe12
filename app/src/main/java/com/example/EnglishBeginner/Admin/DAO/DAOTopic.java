@@ -9,8 +9,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.EnglishBeginner.Admin.Adapter.TopicAdapter;
+import com.example.EnglishBeginner.Admin.DTO.ProcessTopicItem;
 import com.example.EnglishBeginner.Admin.DTO.Question;
 import com.example.EnglishBeginner.Admin.DTO.Topic;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -90,6 +92,26 @@ public class DAOTopic {
                     Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
                 }
             });
+            ProcessTopicItem processTopicItem = new ProcessTopicItem(1,0,topic.getId());
+            ProcessTopicItem processTopicItem1 = new ProcessTopicItem(2,0,topic.getId());
+            DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("listProcessUser");
+            databaseReference1.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot dataSnapshot1 : snapshot.getChildren())
+                    {
+                        databaseReference1.child(dataSnapshot1.getKey()+"/listTopic").
+                                child(topic.getId()+"/listProcess/"+processTopicItem.getProcess()).setValue(processTopicItem).isSuccessful();
+                        databaseReference1.child(dataSnapshot1.getKey()+"/listTopic").
+                                child(topic.getId()+"/listProcess/"+processTopicItem1.getProcess()).setValue(processTopicItem1).isSuccessful();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
         }
     }
 
@@ -161,6 +183,19 @@ public class DAOTopic {
                     }
                 }
             }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) { }
+        });
+        DatabaseReference databaseReference2 = FirebaseDatabase.getInstance().getReference("listProcessUser");
+        databaseReference2.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot1 : snapshot.getChildren())
+                {
+                    databaseReference2.child(dataSnapshot1.getKey()+"/listTopic/"+topic.getId()).removeValue().isComplete();
+                }
+            }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 

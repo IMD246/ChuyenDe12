@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.EnglishBeginner.Admin.DTO.TypeQuestion;
 import com.example.EnglishBeginner.R;
 
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ import java.util.List;
 
 public class TypeQuestionSpinnerAdapter extends ArrayAdapter<String> {
 
-    private List<String> typeQuestionList;
+    private final List<String> typeQuestionList;
 
     public TypeQuestionSpinnerAdapter(@NonNull Context context, int resource, int textViewResourceId, @NonNull List<String> objects) {
         super(context, resource, textViewResourceId, objects);
@@ -64,7 +63,7 @@ public class TypeQuestionSpinnerAdapter extends ArrayAdapter<String> {
                 filterResults.count = list.size();
                 return null;
             }
-
+            @SuppressWarnings("unchecked")
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 clear();

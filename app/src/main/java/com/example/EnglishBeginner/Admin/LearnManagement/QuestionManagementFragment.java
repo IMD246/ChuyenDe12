@@ -32,11 +32,9 @@ import com.example.EnglishBeginner.Admin.Adapter.TypeQuestionSpinnerAdapter;
 import com.example.EnglishBeginner.Admin.DAO.DAOQuestion;
 import com.example.EnglishBeginner.Admin.DTO.Question;
 import com.example.EnglishBeginner.Admin.DTO.Topic;
-import com.example.EnglishBeginner.Admin.DTO.TypeQuestion;
 import com.example.EnglishBeginner.Admin.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.R;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
