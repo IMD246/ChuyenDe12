@@ -198,14 +198,20 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
         window.setAttributes(windowAttributes);
         RelativeLayout relativeLayout = dialog.findViewById(R.id.rltCheckAnswer);
         GifImageView imgResult = dialog.findViewById(R.id.imgResult);
+        TextView tvtitle = dialog.findViewById(R.id.id_corect_title);
+        Button btnContinute = dialog.findViewById(R.id.btn_continute_notify);
         if (!check) {
-            imgResult.setImageResource(R.drawable.correct);
-            relativeLayout.setBackgroundResource(R.color.red);
+            imgResult.setImageResource(R.drawable.incorrect);
+            relativeLayout.setBackgroundResource(R.color.red_incorrect);
+            tvtitle.setTextColor(Color.parseColor("#ea2b2b"));
+            btnContinute.setBackgroundColor(Color.parseColor("#ff4b4b"));
         }
         else
         {
             imgResult.setImageResource(R.drawable.correct);
             relativeLayout.setBackgroundResource(R.color.greenResult);
+            tvtitle.setTextColor(Color.parseColor("#58a700"));
+            btnContinute.setBackgroundColor(Color.parseColor("#58cc02"));
         }
         TextView tvCorrect = dialog.findViewById(R.id.id_corect_title);
         tvCorrect.setText(msg);

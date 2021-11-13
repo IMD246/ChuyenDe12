@@ -3,18 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/ChuyenDe123/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.14322916666666666" />
-        <entry key="..\:/ChuyenDe123/app/src/main/res/layout/alarm_button_item.xml" value="0.12708333333333333" />
-        <entry key="..\:/ChuyenDe123/app/src/main/res/layout/alarm_notifyscreen.xml" value="0.11979166666666667" />
-        <entry key="..\:/ChuyenDe123/app/src/main/res/layout/alarm_screen.xml" value="0.16" />
-        <entry key="..\:/ChuyenDe123/app/src/main/res/layout/dialog_numberpicker_alarm.xml" value="0.12158054711246201" />
-        <entry key="..\:/ChuyenDe123/app/src/main/res/layout/history_screen.xml" value="0.1" />
-        <entry key="..\:/ChuyenDe123/app/src/main/res/layout/layout_fragment_learning_english.xml" value="0.12158054711246201" />
-        <entry key="..\:/ChuyenDe123/app/src/main/res/layout/practice_answeritem.xml" value="0.1" />
-        <entry key="..\:/ChuyenDe123/app/src/main/res/layout/practive_screen.xml" value="0.1105072463768116" />
-        <entry key="..\:/ChuyenDe123/app/src/main/res/layout/saveword_screen.xml" value="0.12708333333333333" />
-        <entry key="..\:/ChuyenDe123/app/src/main/res/layout/vocubulary_screen.xml" value="0.1068840579710145" />
-        <entry key="..\:/ChuyenDe123/app/src/main/res/layout/word_screen.xml" value="0.12158054711246201" />
+        <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/drawable/ct_layout_button3.xml" value="0.2703125" />
+        <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/layout/layout_fragment_finish_english.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/WIN 10/didong2/chuyende2/app/src/main/res/layout/layout_notify_answer_correct.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.20208333333333334" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/drawable/ic_email.xml" value="0.20208333333333334" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/drawable/ic_launcher_background.xml" value="0.20208333333333334" />
@@ -27,6 +18,8 @@
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/layout/login.xml" value="0.25" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/layout/register_user.xml" value="0.264" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/mipmap-anydpi-v26/ic_email.xml" value="0.26205128205128203" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/layout_fragment_learn.xml" value="0.2318840579710145" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/layout_fragment_learning_english.xml" value="0.2318840579710145" />
       </map>
     </option>
   </component>
