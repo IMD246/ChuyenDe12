@@ -6,6 +6,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -24,6 +25,14 @@ public class DAOUserProfile {
             @Override
             public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                 Toast.makeText(context, "Cập nhật hồ sơ thành công", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    public void updatePassWordUser(HashMap<String,Object>hashMap,String uid) {
+        mDatabaseReference.child(uid).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(@NonNull Void unused) {
+                Toast.makeText(context, "Cập nhật mậu khẩu mới vào hồ sơ thành công", Toast.LENGTH_SHORT).show();
             }
         });
     }

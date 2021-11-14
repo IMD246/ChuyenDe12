@@ -1,16 +1,15 @@
 package com.example.EnglishBeginner.DTO;
 
 public class User {
-    private String fullname,email = "",gender = "",keyPass= "",passWord= "";
-    private int age,expPerDay,totalExp,idTypeProceedPerDay,countLogin = 0;
+    private String fullname,email = "",gender = "",passWord= "";
+    private int age,expPerDay,totalExp,idTypeProceedPerDay;
     private String imageUser = "";
     private boolean activePrivacy;
 
-    public User(String fullname, String email, String gender, String keyPass, int age, int expPerDay, int totalExp, int idTypeProceedPerDay, String imageUser, boolean activePrivacy) {
+    public User(String fullname, String email, String gender,int age, int expPerDay, int totalExp, int idTypeProceedPerDay, String imageUser, boolean activePrivacy) {
         this.fullname = fullname;
         this.email = email;
         this.gender = gender;
-        this.keyPass = keyPass;
         this.age = age;
         this.expPerDay = expPerDay;
         this.totalExp = totalExp;
@@ -18,26 +17,8 @@ public class User {
         this.imageUser = imageUser;
         this.activePrivacy = activePrivacy;
     }
-
-    public int getCountLogin() {
-        return countLogin;
-    }
-
-    public void setCountLogin(int countLogin) {
-        this.countLogin = countLogin;
-    }
-
     public User() {
     }
-
-    public String getKeyPass() {
-        return keyPass;
-    }
-
-    public void setKeyPass(String keyPass) {
-        this.keyPass = keyPass;
-    }
-
     public String getPassWord() {
         return passWord;
     }

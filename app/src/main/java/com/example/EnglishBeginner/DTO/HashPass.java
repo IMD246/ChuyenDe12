@@ -31,11 +31,11 @@ public class HashPass {
         return secretKeySpec;
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
-    final public static String decryptPass(String outPutString, String uidUser) throws Exception{
+    final public static String decryptPass(String encryptPassWord, String uidUser) throws Exception{
         SecretKeySpec keySpec = generateKey(uidUser);
         Cipher cipher = Cipher.getInstance(AES);
         cipher.init(Cipher.DECRYPT_MODE,keySpec);
-        byte [] decrypt = Base64.getDecoder().decode(outPutString);
+        byte [] decrypt = Base64.getDecoder().decode(encryptPassWord);
         byte [] decValue = cipher.doFinal(decrypt);
         String decryptValue = new String(decValue);
         return  decryptValue;

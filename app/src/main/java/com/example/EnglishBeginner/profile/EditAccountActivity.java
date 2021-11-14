@@ -1,6 +1,8 @@
 package com.example.EnglishBeginner.profile;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,21 +11,17 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.EnglishBeginner.DAO.DAOImageStorage;
 import com.example.EnglishBeginner.DAO.DAOUserProfile;
 import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
+import com.example.EnglishBeginner.DTO.HashPass;
 import com.example.EnglishBeginner.DTO.User;
 import com.example.EnglishBeginner.R;
 import com.example.EnglishBeginner.main_interface.UserInterfaceActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.EmailAuthCredential;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -32,38 +30,56 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+
 
 public class EditAccountActivity extends AppCompatActivity implements View.OnClickListener {
     private Button btnBack, btnSave;
-    private EditText ipEmail, ipNewPass, ipVerify;
+    private EditText ipCurrentPass, ipNewPass, ipVerify;
     private FirebaseUser user;
-
     private DatabaseReference databaseReference;
     private FirebaseUser firebaseUser;
     private DAOUserProfile daoUserProfile;
     private String userId;
     private String gender = DEFAULTVALUE.OTHER;
-    private DAOImageStorage daoImageStorage;
-    private User userOld = new User();
+    private User userOld;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_account);
         setControl();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        userId = firebaseUser.getUid();
+        databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                userOld = user;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void setControl() {
         btnBack = findViewById(R.id.btn_edit_account_back);
+        daoUserProfile = new DAOUserProfile(this);
         btnBack.setOnClickListener(this);
         btnSave = findViewById(R.id.btn_edit_account_save);
         btnSave.setOnClickListener(this);
         user = FirebaseAuth.getInstance().getCurrentUser();
-        ipEmail = findViewById(R.id.ip_email);
+        ipCurrentPass = findViewById(R.id.edtCurrentPass);
         ipNewPass = findViewById(R.id.ip_new_pass);
         ipVerify = findViewById(R.id.ip_verify);
     }
 
+    @SuppressLint("NewApi")
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -72,23 +88,26 @@ public class EditAccountActivity extends AppCompatActivity implements View.OnCli
                 EditAccountActivity.this.startActivity(intent);
                 break;
             case R.id.btn_edit_account_save:
-                changePassWord();
+                try {
+                    changePassWord();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
         }
     }
 
     // hàm này dùng để đổi mật khẩu
-    private void changePassWord() {
-        String Email = ipEmail.getText().toString();
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void changePassWord() throws Exception {
+        String current = ipCurrentPass.getText().toString();
         String newPass = ipNewPass.getText().toString();
         String verify = ipVerify.getText().toString();
-        if (Email.isEmpty()) {
-            ipEmail.setError("Không bỏ trống");
-            ipEmail.requestFocus();
-        }else if (!user.getEmail().equalsIgnoreCase(Email)){
-            ipEmail.setError("địa chỉ email không chính xác");
-            ipEmail.requestFocus();
-        } else if (newPass.isEmpty()) {
+        if (current.isEmpty()) {
+            ipCurrentPass.setError("Không bỏ trống");
+            ipCurrentPass.requestFocus();
+        }
+        else if (newPass.isEmpty()) {
             ipNewPass.setError("Không bỏ trống");
             ipNewPass.requestFocus();
         }
@@ -107,17 +126,30 @@ public class EditAccountActivity extends AppCompatActivity implements View.OnCli
         }
         else
         {
-            user.updatePassword(newPass).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void unused) {
+            String decryptCurrentPass = HashPass.decryptPass(userOld.getPassWord(),firebaseUser.getUid());
+            Log.d("test", decryptCurrentPass);
+            if (!(decryptCurrentPass.equalsIgnoreCase(current))) {
+                ipCurrentPass.setError("Mật khẩu hiện tại không chính xác");
+                ipCurrentPass.requestFocus();
+            }
+            else {
+                user.updatePassword(newPass).addOnSuccessListener(unused -> {
                     Toast.makeText(EditAccountActivity.this, "Đổi mật khẩu thành công", Toast.LENGTH_SHORT).show();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(EditAccountActivity.this, "Đổi mật khẩu không thành công", Toast.LENGTH_SHORT).show();
-                }
-            });
+                    HashMap<String,Object>hashMap = new HashMap<>();
+                    try {
+                        String encryptPass = HashPass.encryptPass(user.getUid(),newPass);
+                        hashMap.put("passWord",encryptPass);
+                        daoUserProfile.updatePassWordUser(hashMap,user.getUid());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(EditAccountActivity.this, "Đổi mật khẩu không thành công", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         }
     }
 

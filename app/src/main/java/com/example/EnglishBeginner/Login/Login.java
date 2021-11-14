@@ -2,6 +2,7 @@ package com.example.EnglishBeginner.Login;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -17,6 +18,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
+import com.example.EnglishBeginner.DTO.HashPass;
 import com.example.EnglishBeginner.DTO.User;
 import com.example.EnglishBeginner.R;
 import com.example.EnglishBeginner.main_interface.UserInterfaceActivity;
@@ -33,7 +35,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.AuthCredential;
@@ -273,10 +274,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     if (user.isEmailVerified()) {
                         dem++;
                         checkAuthenticate(user.getUid(), dem);
-                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users/"+user.getUid());
-                        if (userProfile.getCountLogin()<=0) {
-                            databaseReference.child("countLogin").setValue(userProfile.getCountLogin() + 1).isSuccessful();
-                        }
                     } else {
                         user.sendEmailVerification();
                         DEFAULTVALUE.alertDialogMessage("Thông báo", "Hãy xác thực email của bạn!", Login.this);
@@ -316,16 +313,30 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onStart() {
         super.onStart();
-        current = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        current = firebaseAuth.getCurrentUser();
         if (current != null) {
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users/"+current.getUid());
             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     userProfile = snapshot.getValue(User.class);
-                    if (userProfile.getCountLogin()>0)
-                    {
-                        checkAuthenticate(current.getUid(),dem);
+                    try {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            assert userProfile != null;
+                            firebaseAuth.signInWithEmailAndPassword(userProfile.getEmail(),
+                                    HashPass.decryptPass(userProfile.getPassWord(),current.getUid())).addOnCompleteListener(task -> {
+                                if (current.isEmailVerified()) {
+                                    dem++;
+                                    checkAuthenticate(current.getUid(), dem);
+                                } else {
+                                    current.sendEmailVerification();
+                                    DEFAULTVALUE.alertDialogMessage("Thông báo", "Hãy xác thực email của bạn!", Login.this);
+                                }
+                            });
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
                 @Override

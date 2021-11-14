@@ -108,9 +108,9 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
             } else {
                 FirebaseUser firebaseUser = mAuth.getCurrentUser();
                 assert firebaseUser != null;
-                User us = new User("",email,"other",firebaseUser.getUid(),0, 0, 0, 0, "", true);
+                User us = new User("",email,"other",0, 0, 0, 0, "", true);
                 try {
-                    us.setPassWord(HashPass.encryptPass(us.getKeyPass(),edtPassword.getText().toString()));
+                    us.setPassWord(HashPass.encryptPass(firebaseUser.getUid(),edtPassword.getText().toString()));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -146,7 +146,6 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
 
     private void getProFileFromRealTime() {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        assert firebaseUser != null;
         String userId = firebaseUser.getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
         databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {

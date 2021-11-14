@@ -24,18 +24,20 @@
         android:gravity="center"
         android:orientation="vertical"
         android:padding="30dp">
-
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/current_pass">
+            android:hint="@string/current_pass"
+            app:passwordToggleDrawable="@drawable/ct_select_icon_password"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/black">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/ip_email"
+                android:id="@+id/edtCurrentPass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
