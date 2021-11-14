@@ -17,6 +17,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
+import com.example.EnglishBeginner.DTO.User;
 import com.example.EnglishBeginner.R;
 import com.example.EnglishBeginner.main_interface.UserInterfaceActivity;
 import com.facebook.AccessToken;
@@ -32,6 +33,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.AuthCredential;
@@ -40,6 +42,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -58,6 +65,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private final static int RC_SIGN_IN = 100;
     private FirebaseUser current;
     private int dem = 0;
+    private User userProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -265,6 +273,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     if (user.isEmailVerified()) {
                         dem++;
                         checkAuthenticate(user.getUid(), dem);
+                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users/"+user.getUid());
+                        if (userProfile.getCountLogin()<=0) {
+                            databaseReference.child("countLogin").setValue(userProfile.getCountLogin() + 1).isSuccessful();
+                        }
                     } else {
                         user.sendEmailVerification();
                         DEFAULTVALUE.alertDialogMessage("Thông báo", "Hãy xác thực email của bạn!", Login.this);
@@ -304,9 +316,22 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onStart() {
         super.onStart();
-        current = mFirebaseAuth.getCurrentUser();
+        current = FirebaseAuth.getInstance().getCurrentUser();
         if (current != null) {
-            checkAuthenticate(current.getUid(),dem);
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users/"+current.getUid());
+            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    userProfile = snapshot.getValue(User.class);
+                    if (userProfile.getCountLogin()>0)
+                    {
+                        checkAuthenticate(current.getUid(),dem);
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
         }
     }
 }

@@ -1,6 +1,8 @@
 package com.example.EnglishBeginner.Login;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -10,10 +12,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.EnglishBeginner.DAO.DAOTopic;
 import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
+import com.example.EnglishBeginner.DTO.HashPass;
 import com.example.EnglishBeginner.DTO.ProcessTopicItem;
 import com.example.EnglishBeginner.DTO.User;
 import com.example.EnglishBeginner.R;
@@ -51,6 +55,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
     }
 
+    @SuppressLint("NewApi")
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btnRegister) {
@@ -63,6 +68,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
         startActivity(new Intent(RegisterUser.this, Login.class));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void registerUser() {
         firestore = FirebaseFirestore.getInstance();
         String email = edtEmail.getText().toString();
@@ -100,12 +106,20 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                     progressBar.setVisibility(View.GONE);
                 }
             } else {
-                User us = new User("",email,"other",0, 0, 0, 0, "", true);
-                FirebaseDatabase.getInstance().getReference("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).setValue(us)
+                FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                assert firebaseUser != null;
+                User us = new User("",email,"other",firebaseUser.getUid(),0, 0, 0, 0, "", true);
+                try {
+                    us.setPassWord(HashPass.encryptPass(us.getKeyPass(),edtPassword.getText().toString()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                FirebaseDatabase.getInstance().getReference("users").child(Objects.requireNonNull(firebaseUser.getUid())).setValue(us)
                         .addOnCompleteListener(task1 -> {
                             if (task1.isSuccessful()) {
                                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                                 Toast.makeText(RegisterUser.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+                                assert user != null;
                                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listProcessUser/"+user.getUid()+"/listTopic");
                                 for (int i=0;i<daoTopic.getTopicList().size();i++)
                                 {
