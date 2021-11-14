@@ -82,9 +82,11 @@ public class DAOProcessUser {
                                 break;
                             }
                         }
-                        if (processTopicItem.getProgress()<2) {
-                            databaseReference.child(uid).child("listTopic/" + idTopic + "/listProcess/" + processTopicItem.getProcess() + "/progress").setValue(processTopicItem.getProgress() + 1).addOnSuccessListener(unused -> {
-                            });
+                        if (processTopicItem.getProcess()>0 && processTopicItem.getIdTopic()>0) {
+                            if (processTopicItem.getProgress() < 2) {
+                                databaseReference.child(uid).child("listTopic/" + idTopic + "/listProcess/" + processTopicItem.getProcess() + "/progress").setValue(processTopicItem.getProgress() + 1).addOnSuccessListener(unused -> {
+                                });
+                            }
                         }
                     }
 

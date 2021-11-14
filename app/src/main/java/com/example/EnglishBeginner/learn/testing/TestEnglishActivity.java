@@ -14,6 +14,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -39,6 +40,7 @@ import pl.droidsonroids.gif.GifImageView;
 
 public class TestEnglishActivity extends AppCompatActivity implements View.OnClickListener {
     private ProgressBar progressBar;
+    private ImageView imgExit;
     @SuppressLint("StaticFieldLeak")
     public static Button btnPass, btnSubmit;
     private List<Question> arrayListQuestion;
@@ -66,7 +68,7 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
         if (arrayListQuestion != null && arrayListQuestion.size() > 0) {
             max = arrayListQuestion.size() - 1;
         }
-        ImageView imgExit = findViewById(R.id.img_btn_exit);
+        imgExit = findViewById(R.id.img_btn_exit);
         btnPass = findViewById(R.id.btn_pass);
         btnSubmit = findViewById(R.id.btn_continute);
         btnSubmit.setOnClickListener(this);
@@ -96,9 +98,16 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
                     daoProcessUser.updateProcess(userID,idTopic);
                 }
                 if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.TEST)) {
+                    btnPass.setVisibility(View.GONE);
+                    imgExit.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);
                     fragmentTransaction.replace(R.id.frameLayout_Fragment, new FinishEnglishFragment()).commit();
                 }
                 else if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.LEARN)) {
+                    btnPass.setVisibility(View.GONE);
+                    btnPass.setVisibility(View.GONE);
+                    imgExit.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);
                     fragmentTransaction.replace(R.id.frameLayout_Fragment, new FinishEnglishFragment()).commit();
                 }
             }
@@ -218,20 +227,20 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams windowAttributes = window.getAttributes();
         window.setAttributes(windowAttributes);
-        RelativeLayout relativeLayout = dialog.findViewById(R.id.rltCheckAnswer);
+        LinearLayout linearLayout = dialog.findViewById(R.id.rltCheckAnswer);
         GifImageView imgResult = dialog.findViewById(R.id.imgResult);
         @SuppressLint("CutPasteId") TextView tvtitle = dialog.findViewById(R.id.id_corect_title);
         Button btnContinute = dialog.findViewById(R.id.btn_continute_notify);
         if (!check) {
             imgResult.setImageResource(R.drawable.incorrect);
-            relativeLayout.setBackgroundResource(R.color.red_incorrect);
+            linearLayout.setBackgroundResource(R.color.red_incorrect);
             tvtitle.setTextColor(Color.parseColor("#ea2b2b"));
             btnContinute.setBackground(getResources().getDrawable(R.drawable.ct_layout_button4, null));
         }
         else
         {
             imgResult.setImageResource(R.drawable.correct);
-            relativeLayout.setBackgroundResource(R.color.greenResult);
+            linearLayout.setBackgroundResource(R.color.greenResult);
             tvtitle.setTextColor(Color.parseColor("#58a700"));
             btnContinute.setBackground(getResources().getDrawable(R.drawable.ct_layout_button3, null));
         }

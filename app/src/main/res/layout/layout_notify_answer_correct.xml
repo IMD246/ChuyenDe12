@@ -1,54 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rltCheckAnswer"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="wrap_content"
     android:layout_gravity="bottom"
+    android:orientation="vertical"
+    android:padding="8dp"
     android:background="#d7ffb8">
 
-    <pl.droidsonroids.gif.GifImageView
-        android:id="@+id/imgResult"
-        android:layout_width="120dp"
-        android:layout_height="340dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
-        android:src="@drawable/correct" />
-
-    <TextView
-        android:id="@+id/id_corect_title"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="42dp"
-        android:layout_toEndOf="@id/imgResult"
-        android:text="Chính xác!"
-        android:textColor="#58a700"
-        android:textSize="32sp"
-        android:textStyle="bold" />
+        android:orientation="horizontal">
+
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/imgResult"
+            android:layout_width="140dp"
+            android:layout_height="200dp"
+            android:src="@drawable/correct" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/id_corect_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chính xác!"
+                android:layout_marginEnd="12dp"
+                android:layout_marginTop="50dp"
+                android:textColor="#58a700"
+                android:textSize="32sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
 
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_continute_notify"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/id_corect_title"
-        android:layout_alignParentEnd="true"
-
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="58dp"
-
-        android:layout_toEndOf="@id/imgResult"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/ct_layout_button3"
         android:elevation="2dp"
         android:text="Tiếp tục"
+        android:layout_margin="8dp"
         android:textColor="@color/white"
         android:textSize="18dp" />
 
-</RelativeLayout>
+</LinearLayout>

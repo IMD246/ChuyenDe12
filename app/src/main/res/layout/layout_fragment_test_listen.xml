@@ -10,24 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="vertical"
+        android:orientation="horizontal"
+        android:gravity="center"
         android:padding="20dp">
 
-        <TextView
-            android:id="@+id/tv_type_question"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:text="Bạn nghe được  gì?"
-            android:textColor="@color/red"
-            android:textSize="24dp"
-            android:textStyle="bold" />
-
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -45,45 +35,40 @@
                     android:src="@drawable/baseline_volume_up_white_24dp" />
             </LinearLayout>
         </LinearLayout>
+        <TextView
+            android:id="@+id/tv_type_question"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Nói lại những gì bạn nghe"
+            android:layout_marginStart="12dp"
+            android:textColor="@color/red"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="3"
         android:orientation="vertical"
+        android:gravity="center"
         android:padding="20dp">
 
-        <TextView
-            android:id="@+id/tvSay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:text="Nói lại những gì bạn đã nghe"
-            android:textColor="@color/red"
-            android:textSize="24dp"
-            android:textStyle="bold" />
-
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal">
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:background="@drawable/ct_layout_boder3"
+            android:elevation="4dp"
+            android:gravity="center">
 
-            <LinearLayout
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginStart="16dp"
-                android:background="@drawable/ct_layout_boder3"
-                android:gravity="center">
-
-                <ImageView
-                    android:id="@+id/imgMic"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:clickable="true"
-                    android:src="@drawable/baseline_volume_up_white_24dp" />
-            </LinearLayout>
+            <ImageView
+                android:id="@+id/imgMic"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:clickable="true"
+                android:src="@drawable/baseline_mic_white_24dp" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
