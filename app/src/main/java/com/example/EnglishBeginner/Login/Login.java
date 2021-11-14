@@ -27,12 +27,10 @@ import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -60,8 +58,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private final static int RC_SIGN_IN = 100;
     private FirebaseUser current;
     private int dem = 0;
-    private Boolean check = false;
-    private Button loginFacebook;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +118,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         Button btnLogin = findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(this);
         callbackManager = CallbackManager.Factory.create();
-        loginFacebook = findViewById(R.id.loginFB);
+        Button loginFacebook;
         loginGoogle.setOnClickListener(v -> signIn());
         loginFacebook = findViewById(R.id.loginFB);
         loginFacebook.setOnClickListener(this);
@@ -173,7 +169,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private void linkWithInWithFirebase(AuthCredential credential) {
         Objects.requireNonNull(mFirebaseAuth.getCurrentUser()).linkWithCredential(credential).addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
-                FirebaseUser prevUser = current;
                 try {
                     current = Tasks.await(mFirebaseAuth.signInWithCredential(credential)).getUser();
                 } catch (Exception e) {
