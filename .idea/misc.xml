@@ -24,13 +24,41 @@
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/layout/login.xml" value="0.25" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/layout/register_user.xml" value="0.264" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/mipmap-anydpi-v26/ic_email.xml" value="0.26205128205128203" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/activity_admin_interface.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/activity_edit_account.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/activity_edit_privacy.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/activity_edit_study_mode.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/activity_main.xml" value="0.24427083333333333" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/activity_test_english.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/activity_toeic_management.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/activity_user_interface.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/addeditword.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/alarm_button_item.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/alarm_screen.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/dialog_numberpicker_alarm.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/layout_custom_dialog.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/layout_fragment_alarm.xml" value="0.24427083333333333" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/layout_fragment_finish_english.xml" value="0.1" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/layout_fragment_learn.xml" value="0.2318840579710145" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/layout_fragment_learning_english.xml" value="0.2318840579710145" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/layout_fragment_profile.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/layout_fragment_setting_menu.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/layout_fragment_test_choose_image.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/layout_fragment_test_listen.xml" value="0.1" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/layout_fragment_test_selection_english.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/layout_fragment_test_write.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/layout_fragment_vocabulary.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/layout_header_nav.xml" value="0.24427083333333333" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/layout_item_img.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/layout_item_level.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/layout_item_test_choose_image.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/layout_item_topic.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/layout_notify_answer_correct.xml" value="0.1" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/layout_popup_dialog.xml" value="0.24427083333333333" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/layout_popup_dialog_level.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/listoptionitem.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/login.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/testuser/app/src/main/res/layout/practive_screen.xml" value="0.24427083333333333" />
       </map>
     </option>
   </component>

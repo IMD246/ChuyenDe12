@@ -24,7 +24,7 @@
             android:src="@drawable/ic_exit_close" />
 
         <ProgressBar
-            android:id="@+id/learn_progress_bar"
+            android:id="@+id/learnTopic_progress_bar"
             style="@android:style/Widget.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

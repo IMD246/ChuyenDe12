@@ -22,7 +22,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.EnglishBeginner.DAO.DAOProcessUser;
 import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
-import com.example.EnglishBeginner.DTO.ProcessTopicItem;
 import com.example.EnglishBeginner.DTO.Question;
 import com.example.EnglishBeginner.R;
 import com.example.EnglishBeginner.learn.FinishEnglishFragment;
@@ -68,7 +67,7 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
         btnPass = findViewById(R.id.btn_pass);
         btnSubmit = findViewById(R.id.btn_continute);
         btnSubmit.setOnClickListener(this);
-        progressBar = findViewById(R.id.learn_progress_bar);
+        progressBar = findViewById(R.id.learnTopic_progress_bar);
         //Sử kiện nút trở lại
         imgExit.setOnClickListener(v -> {
             Intent intent1 = new Intent(TestEnglishActivity.this, UserInterfaceActivity.class);

@@ -1,5 +1,6 @@
 package com.example.EnglishBeginner.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,10 +23,15 @@ import java.util.List;
 
 public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewHolder> {
     //khai báo các trường dữ liệu
-    public List<Level> levelArrayList;
-    public List<Topic> topicList;
-    public Interface_Learn interface_learn;
+    private List<Level> levelArrayList;
+    private List<Topic> topicList;
+    private Interface_Learn interface_learn;
+    private String uid;
     private final Context context;
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     //hàm constructor
     public Level_Adapter(Context context) {
@@ -60,8 +66,7 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
             return;
         }
         holder.tvTitleLevel.setText(String.valueOf(level.getNameLevel()));
-        if (level.getUrlImage().trim().isEmpty() || level.getUrlImage().trim().length() == 0) {
-        } else {
+        if (!(level.getUrlImage().trim().isEmpty())) {
             Glide.with(context).load(level.getUrlImage()).into(holder.imgLesson);
         }
         List<Topic> listTopicNew = new ArrayList<>();
@@ -75,7 +80,7 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
                 }
             }
         }
-        setTopicItemRecycler(holder.rcvLevelTopicItem, listTopicNew);
+        setTopicItemRecycler(holder.rcvLevelTopicItem, listTopicNew,position);
         //xử lí khi click item learn:
         holder.layout.setOnClickListener(v -> {
             if (interface_learn!=null)
@@ -107,31 +112,21 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
             tvTitleLevel = itemView.findViewById(R.id.tvTitleLevel);
         }
     }
-    private void setTopicItemRecycler(RecyclerView recycler, List<Topic> topicList) {
+    @SuppressLint("NotifyDataSetChanged")
+    private void setTopicItemRecycler(RecyclerView recycler, List<Topic> topicList, int count) {
         Topic_Adapter topic_adapter = new Topic_Adapter(context);
         topic_adapter.setTopicList(topicList);
+        if (count == 0)
+        {
+            topic_adapter.setUid(uid);
+        }
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context.getApplicationContext(), 2);
         recycler.setLayoutManager(gridLayoutManager);
         recycler.setAdapter(topic_adapter);
         recycler.setHasFixedSize(true);
         recycler.setNestedScrollingEnabled(false);
         topic_adapter.notifyDataSetChanged();
-        topic_adapter.setInterface_learn(new Topic_Adapter.Interface_Learn() {
-            @Override
-            public void onClickItemLearn(Topic topic) {
-
-            }
-
-            @Override
-            public void onClickItemPopup(String string) {
-
-            }
-
-            @Override
-            public void createAlertDialog(Topic topic) {
-                interface_learn.createAlertDialog(topic);
-            }
-        });
+        topic_adapter.setInterface_learn(topic -> interface_learn.createAlertDialog(topic));
     }
 
     public interface Interface_Learn {

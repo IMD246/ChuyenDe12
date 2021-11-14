@@ -1,15 +1,13 @@
 package com.example.EnglishBeginner.learn;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,7 +17,6 @@ import com.example.EnglishBeginner.DAO.DAOTopic;
 import com.example.EnglishBeginner.DTO.Level;
 import com.example.EnglishBeginner.DTO.Topic;
 import com.example.EnglishBeginner.R;
-import com.example.EnglishBeginner.learn.learning.LearningEnglishFragment;
 import com.example.EnglishBeginner.main_interface.UserInterfaceActivity;
 
 public class LearnFragment extends Fragment {
@@ -43,19 +40,21 @@ public class LearnFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        getDataFromRealTime();
     }
 
     //Ánh xạ, xử lí view của list
     private void setControl() {
         daoLevel = new DAOLevel(getContext());
         daoTopic = new DAOTopic(getContext());
+        userInterfaceActivity = (UserInterfaceActivity) getActivity();
         learnRecyclerView_adapter = new Level_Adapter(getContext());
+        learnRecyclerView_adapter.setUid(userInterfaceActivity.firebaseUser.getUid());
         learnRecyclerView_adapter.setTopicList(daoTopic.getTopicList());
         learnRecyclerView = myView.findViewById(R.id.rcvLevel);
-        userInterfaceActivity = (UserInterfaceActivity) getActivity();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         learnRecyclerView.setHasFixedSize(true);
-        linearLayoutManager.setOrientation(learnRecyclerView.VERTICAL);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         learnRecyclerView_adapter.setLevelArrayList(daoLevel.getLevelList());
         learnRecyclerView.setAdapter(learnRecyclerView_adapter);
         learnRecyclerView.setLayoutManager(linearLayoutManager);
@@ -73,10 +72,5 @@ public class LearnFragment extends Fragment {
     private void getDataFromRealTime() {
         daoLevel.getDataFromRealTimeToList(learnRecyclerView_adapter);
         daoTopic.getDataFromRealTimeFirebase();
-    }
-    //hàm chuyển sang màn hình học tiếng Anh
-    private void onClickGoToScreen() {
-        Intent intent = new Intent(getContext(), LearningEnglishFragment.class);
-        getContext().startActivity(intent);
     }
 }
