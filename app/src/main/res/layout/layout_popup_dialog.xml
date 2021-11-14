@@ -3,6 +3,7 @@
     android:layout_width="380dp"
     android:layout_height="300dp"
     android:layout_gravity="center"
+    android:id="@+id/rltPopupDialog"
     android:background="@drawable/ct_layout_popup_dialog"
     android:padding="12dp">
 

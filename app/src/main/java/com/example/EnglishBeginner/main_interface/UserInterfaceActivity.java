@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -330,7 +331,6 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
     public void alertDialogTopic(Topic topic) {
         List<ProcessTopicItem> processTopicItemList = new ArrayList<>();
         daoQuestion = new DAOQuestion(this);
-
         if (topic != null) {
             daoQuestion.getDataFromRealTimeToList(topic);
         }
@@ -341,11 +341,12 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         TextView tvTitle = dialog.findViewById(R.id.tv_title_topic);
         Button learn = dialog.findViewById(R.id.btn_learn_topic);
         Button test = dialog.findViewById(R.id.btn_test_topic);
+        RelativeLayout relativeLayout = dialog.findViewById(R.id.rltPopupDialog);
         tvTitle.setText("Hãy cố gắng lên");
         tvLevel.setText("Level: 1");
         ProcessTopic_Adapter processTopic_adapter = new ProcessTopic_Adapter(dialog.getContext());
         assert topic != null;
-        daoProcessUser.getDataFromRealTimeFirebase(firebaseUser.getUid(), topic.getId(), processTopicItemList, processTopic_adapter, tvTitle, tvLevel);
+        daoProcessUser.getDataFromRealTimeFirebase(firebaseUser.getUid(), topic.getId(), processTopicItemList, processTopic_adapter,tvTitle, tvLevel,test,relativeLayout);
         learn.setOnClickListener(v -> {
             if (daoQuestion.getQuestionList().size() > 0) {
                 Intent intent = new Intent(UserInterfaceActivity.this, TestEnglishActivity.class);

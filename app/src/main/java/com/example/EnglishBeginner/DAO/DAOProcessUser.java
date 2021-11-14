@@ -2,6 +2,8 @@ package com.example.EnglishBeginner.DAO;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -9,6 +11,7 @@ import androidx.annotation.NonNull;
 
 import com.example.EnglishBeginner.Adapter.ProcessTopic_Adapter;
 import com.example.EnglishBeginner.DTO.ProcessTopicItem;
+import com.example.EnglishBeginner.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -32,7 +35,9 @@ public class DAOProcessUser {
         databaseReference = FirebaseDatabase.getInstance().getReference("listProcessUser");
     }
 
-    public void getDataFromRealTimeFirebase(String uid, int idTopic, List<ProcessTopicItem> processTopicItemList, ProcessTopic_Adapter processTopic_adapter, TextView tvTitle, TextView tvLevel) {
+    public void getDataFromRealTimeFirebase(String uid, int idTopic, List<ProcessTopicItem> processTopicItemList,
+                                            ProcessTopic_Adapter processTopic_adapter, TextView tvTitle,
+                                            TextView tvLevel, Button btnTest, RelativeLayout relativeLayout) {
         databaseReference.child(uid).child("listTopic/" + idTopic + "/listProcess").
                 addValueEventListener(new ValueEventListener() {
                     @Override
@@ -51,6 +56,8 @@ public class DAOProcessUser {
                             if (tvLevel != null && tvTitle != null) {
                                 tvLevel.setText("Level: Huyền thoại");
                                 tvTitle.setText("Bạn đã thông thạo kỹ năng này!");
+                                btnTest.setText("Luyện tập");
+                                relativeLayout.setBackgroundResource(R.drawable.ct_layout_popup_dialog1);
                             }
                         }
                     }
@@ -89,7 +96,6 @@ public class DAOProcessUser {
                             }
                         }
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         Toast.makeText(context, "Get list Process Topic failed", Toast.LENGTH_SHORT).show();

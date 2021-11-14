@@ -4,7 +4,6 @@
     android:layout_height="wrap_content"
     android:layout_alignParentTop="true"
     android:layout_centerHorizontal="true"
-    android:background="@color/blue1"
     android:gravity="center"
     android:orientation="horizontal">
 

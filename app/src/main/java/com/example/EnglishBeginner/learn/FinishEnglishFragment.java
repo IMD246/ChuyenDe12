@@ -21,9 +21,12 @@ import com.example.EnglishBeginner.DTO.Question;
 import com.example.EnglishBeginner.R;
 import com.example.EnglishBeginner.learn.testing.TestEnglishActivity;
 
+import pl.droidsonroids.gif.GifImageView;
+
 public class FinishEnglishFragment extends Fragment {
     //khai báo
     private View myView;
+    private TestEnglishActivity testEnglishActivity;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -33,6 +36,13 @@ public class FinishEnglishFragment extends Fragment {
     }
     //Ánh xạ, khởi tạo,...
     private void setControl() {
-        //ánh xạ các view
+        testEnglishActivity = (TestEnglishActivity) getActivity();
+        TextView textView = myView.findViewById(R.id.titleFinishResult);
+        GifImageView gifImageView = myView.findViewById(R.id.givFinishResult);
+        if (testEnglishActivity.checkFinishResult == false)
+        {
+            textView.setText("Hãy cố gắng lần sau");
+            gifImageView.setImageResource(R.drawable.failure);
+        }
     }
 }
