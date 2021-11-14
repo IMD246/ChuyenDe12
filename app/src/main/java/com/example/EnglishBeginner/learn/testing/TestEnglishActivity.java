@@ -57,6 +57,7 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_english);
+        setContentView(R.layout.activity_test_english);
         daoProcessUser = new DAOProcessUser(this);
         Intent intent = getIntent();
         if (intent != null) {
