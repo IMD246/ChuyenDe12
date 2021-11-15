@@ -72,7 +72,7 @@
         android:layout_height="4dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:background="@drawable/bg_bottomboder_blue">
+        android:background="@drawable/bg_bottomborder_blue">
 
     </LinearLayout>
 

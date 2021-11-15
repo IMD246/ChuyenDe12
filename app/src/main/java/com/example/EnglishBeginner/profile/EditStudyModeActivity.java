@@ -28,9 +28,9 @@ public class EditStudyModeActivity extends AppCompatActivity{
         cbRemind = findViewById(R.id.cb_edit_study_mode);
 
         if (check == 1){
-            cbRemind.setSelected(true);
+            cbRemind.setChecked(true);
         }else {
-            cbRemind.setSelected(false);
+            cbRemind.setChecked(false);
         }
 
         switch (Curent_Mode){
@@ -114,11 +114,17 @@ public class EditStudyModeActivity extends AppCompatActivity{
             }
         });
 
-        if (cbRemind.isChecked()){
-            check = 1;
-            Toast.makeText(EditStudyModeActivity.this, "Đã bật nhắc nhở luyện tập!", Toast.LENGTH_SHORT).show();
-        }else {
-            Toast.makeText(EditStudyModeActivity.this, "Đã tắt nhắc nhở luyện tập!", Toast.LENGTH_SHORT).show();
-        }
+        cbRemind.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (cbRemind.isChecked()){
+                    check = 1;
+                    Toast.makeText(EditStudyModeActivity.this, "Đã bật nhắc nhở luyện tập!", Toast.LENGTH_SHORT).show();
+                }else {
+                    check = 0;
+                    Toast.makeText(EditStudyModeActivity.this, "Đã tắt nhắc nhở luyện tập!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

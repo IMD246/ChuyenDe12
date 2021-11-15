@@ -98,6 +98,7 @@
     <string name="type_vocabulary_string">Loại từ vựng</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cheer">cheer</string>
     <!--    Array Type Word-->
     <array name="typeWord">
         <item>Nouns</item>

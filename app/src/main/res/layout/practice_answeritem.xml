@@ -4,7 +4,7 @@
     android:layout_width="180dp"
     android:layout_height="180dp"
     android:layout_margin="8dp"
-    android:background="@drawable/bg_boder_grey1"
+    android:background="@drawable/bg_border_grey1"
     android:gravity="center"
     android:orientation="horizontal">
 
