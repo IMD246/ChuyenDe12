@@ -1,6 +1,7 @@
 package com.example.EnglishBeginner.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +22,13 @@ public class TestChooseImageItem_Adapter extends RecyclerView.Adapter<TestChoose
     public List<Answer> answerList;
     public interface_Test interface_learn;
     private final Context context;
+    public static int previousPosition = 0;
+    private RecyclerView recyclerView;
 
     //hàm constructor
-    public TestChooseImageItem_Adapter(Context context) {
+    public TestChooseImageItem_Adapter(Context context, RecyclerView recyclerView) {
         this.context = context;
+        this.recyclerView = recyclerView;
     }
 
     public void setAnswerList(List<Answer> answerList) {
@@ -60,6 +64,21 @@ public class TestChooseImageItem_Adapter extends RecyclerView.Adapter<TestChoose
             {
                 interface_learn.onClickItemLearn(answer);
             }
+            if (holder.getAdapterPosition() == previousPosition){
+                v = recyclerView.findViewHolderForAdapterPosition(previousPosition).itemView;
+                holder.linearLayout = (LinearLayout) v.findViewById(R.id.layout_btn_lesson);
+                holder.linearLayout.setSelected(true);
+                previousPosition = holder.getAdapterPosition();
+            }else {
+                v = recyclerView.findViewHolderForAdapterPosition(previousPosition).itemView;
+                holder.linearLayout = (LinearLayout) v.findViewById(R.id.layout_btn_lesson);
+                holder.linearLayout.setSelected(false);
+
+                v = recyclerView.findViewHolderForAdapterPosition(holder.getAdapterPosition()).itemView;
+                holder.linearLayout = (LinearLayout) v.findViewById(R.id.layout_btn_lesson);
+                holder.linearLayout.setSelected(true);
+                previousPosition = holder.getAdapterPosition();
+            }
         });
     }
     //trả về số phần tử của list
@@ -73,7 +92,7 @@ public class TestChooseImageItem_Adapter extends RecyclerView.Adapter<TestChoose
     //class ViewHolder
     public static class ChooseImageViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imgAnswer;
-        private final LinearLayout linearLayout;
+        private LinearLayout linearLayout;
         public ChooseImageViewHolder(@NonNull View itemView) {
             super(itemView);
             imgAnswer = itemView.findViewById(R.id.img_answer_choose_img);

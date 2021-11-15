@@ -58,11 +58,12 @@ public class TestChooseImageFragment extends Fragment implements TextToSpeech.On
         textToSpeech = new TextToSpeech(getContext(),this);
         daoAnswer = new DAOAnswer(getContext());
         testEnglishActivity = (TestEnglishActivity) getActivity();
-        testChooseImageItem_adapter = new TestChooseImageItem_Adapter(testEnglishActivity.getApplicationContext());
+        recyclerViewAnswer = myView.findViewById(R.id.recycle_view_button_answer);
+        testChooseImageItem_adapter = new TestChooseImageItem_Adapter(testEnglishActivity.getApplicationContext(), recyclerViewAnswer);
         testChooseImageItem_adapter.setAnswerList(daoAnswer.getAnswerList());
         imgSpeak = myView.findViewById(R.id.img_listen);
         tvQuestion = myView.findViewById(R.id.tv_question);
-        recyclerViewAnswer = myView.findViewById(R.id.recycle_view_button_answer);
+
         GridLayoutManager gridLayoutManager = new GridLayoutManager(testEnglishActivity.getApplicationContext(),2);
         recyclerViewAnswer.setLayoutManager(gridLayoutManager);
         recyclerViewAnswer.setAdapter(testChooseImageItem_adapter);
