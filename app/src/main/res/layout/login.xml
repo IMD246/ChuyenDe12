@@ -10,26 +10,26 @@
         android:id="@+id/mtEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/mtPassWord"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/mtPassWord"
-        app:layout_constraintTop_toBottomOf="@id/tvLoginLabel"
-        >
+        app:layout_constraintTop_toBottomOf="@id/tvLoginLabel">
+
         <EditText
             android:id="@+id/edtEmail"
             android:layout_width="380dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:drawableStart="@drawable/ic_email"
             android:layout_marginTop="16dp"
-            android:ems="30"
             android:background="@drawable/border"
-            android:padding="10dp"
+            android:drawableStart="@drawable/ic_email"
+            android:ems="30"
             android:hint="Email"
             android:inputType="text"
-            android:textSize="30sp"
-            />
+            android:padding="10dp"
+            android:textSize="30sp" />
     </com.google.android.material.textfield.TextInputLayout>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/mtPassWord"
         android:layout_width="wrap_content"
@@ -37,8 +37,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mtEmail"
+        app:passwordToggleDrawable="@drawable/ct_select_icon_password"
         app:passwordToggleEnabled="true"
-        >
+        app:passwordToggleTint="@color/black">
 
         <EditText
             android:id="@+id/edtPassword"
@@ -55,6 +56,7 @@
             android:textSize="30sp" />
         />
     </com.google.android.material.textfield.TextInputLayout>
+
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleLarge"
@@ -75,15 +77,16 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="24dp"
-        android:backgroundTint="@color/purple_200"
         android:background="@drawable/border"
+        android:backgroundTint="@color/purple_200"
         android:text="@string/login"
         android:textSize="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.483"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvForgotPass" />
-        />
+    />
+
     <TextView
         android:id="@+id/tvLoginLabel"
         android:layout_width="match_parent"
@@ -98,14 +101,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/tvForgotPass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32sp"
         android:layout_marginEnd="85dp"
-        android:textColor="@color/color"
         android:text="@string/forgot_password"
+        android:textColor="@color/color"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/tvRegister"
@@ -117,8 +121,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:textColor="@color/color"
         android:text="@string/register"
+        android:textColor="@color/color"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -136,37 +140,40 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/loginFB"
-        android:background="@drawable/custom_fb_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:gravity="center"
         android:layout_marginTop="36dp"
+        android:background="@drawable/custom_fb_button"
+        android:drawableStart="@drawable/ic_facebook"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="Login With Facebook"
+        android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="#fff"
-        android:textSize="16dp"
-        android:text="Login With Facebook"
-        android:drawableStart="@drawable/ic_facebook"
+        android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/loginGoogle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/loginGoogle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/custom_google_button"
-        android:textAlignment="center"
-        android:gravity="center"
         android:layout_marginTop="36dp"
+        android:background="@drawable/custom_google_button"
+        android:drawableStart="@drawable/ic_google"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="Login With Google"
+        android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="#000"
-        android:textSize="16dp"
-        android:text="Login With Google"
-        android:drawableStart="@drawable/ic_google"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/loginFB"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

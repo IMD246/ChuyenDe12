@@ -23,16 +23,20 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.EnglishBeginner.DAO.DAOProcessUser;
 import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.DTO.Question;
+import com.example.EnglishBeginner.DTO.ReviewQuestion;
 import com.example.EnglishBeginner.R;
 import com.example.EnglishBeginner.learn.FinishEnglishFragment;
 import com.example.EnglishBeginner.learn.learning.LearningEnglishFragment;
 import com.example.EnglishBeginner.main_interface.UserInterfaceActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import pl.droidsonroids.gif.GifImageView;
 
 public class TestEnglishActivity extends AppCompatActivity implements View.OnClickListener {
+    private ArrayList<ReviewQuestion> questionArrayList;
+
     private ProgressBar progressBar;
     private ImageView imgExit;
     @SuppressLint("StaticFieldLeak")
@@ -45,7 +49,7 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
     private int idTopic;
     private String userID;
     private DAOProcessUser daoProcessUser;
-    public Boolean checkFinishResult = false;
+    public Boolean checkFinishResult = true;
     @SuppressWarnings("unchecked")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -197,7 +201,7 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
                 if (answer == null) {
                     alertDialog("Không chính xác", false);
                 } else {
-                    if (answer.equalsIgnoreCase(correctQuestion)) {
+                    if (answer.trim().equalsIgnoreCase(correctQuestion)) {
                         alertDialog("Chính xác", true);
                         countcorrect++;
                     } else {

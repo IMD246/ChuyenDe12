@@ -3,6 +3,7 @@ package com.example.EnglishBeginner.DTO;
 public class Answer {
     private int id;
     private String answerQuestion,urlImage = "";
+    private boolean check = false;
 
     public Answer(int id, String answerQuestion, String urlImage) {
         this.id = id;
@@ -11,6 +12,14 @@ public class Answer {
     }
 
     public Answer() {
+    }
+
+    public boolean isCheck() {
+        return check;
+    }
+
+    public void setCheck(boolean check) {
+        this.check = check;
     }
 
     public int getId() {

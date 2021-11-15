@@ -14,9 +14,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.EnglishBeginner.DAO.DAOUserProfile;
 import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.DTO.HashPass;
 import com.example.EnglishBeginner.DTO.User;
@@ -52,6 +54,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
@@ -67,6 +70,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private FirebaseUser current;
     private int dem = 0;
     private User userProfile;
+    private DAOUserProfile daoUserProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +100,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void loginFacebookRegister() {
-        LoginManager.getInstance().logInWithReadPermissions(Login.this,Arrays.asList(EMAIL,"public_profile"));
+        LoginManager.getInstance().logInWithReadPermissions(Login.this, Arrays.asList(EMAIL, "public_profile"));
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -117,6 +121,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
     // Ánh xạ tới các view trong layout
     private void setControl() {
+        daoUserProfile = new DAOUserProfile(this);
         Button loginGoogle = findViewById(R.id.loginGoogle);
         TextView register = findViewById(R.id.tvRegister);
         register.setOnClickListener(this);
@@ -193,6 +198,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         mFirebaseAuth.signInWithCredential(credential).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
+                assert firebaseUser != null;
                 checkAuthenticate(firebaseUser.getUid(), dem);
                 Log.d("signIn", "GoogleLoginSuccessful");
             }
@@ -205,13 +211,14 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         mFirebaseAuth.signInWithCredential(credential).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
+                assert firebaseUser != null;
                 checkAuthenticate(firebaseUser.getUid(), dem);
                 Log.d("signIn", "FacebookLoginSuccessful");
             }
         });
     }
 
-    @SuppressLint("NonConstantResourceId")
+    @SuppressLint({"NonConstantResourceId", "NewApi"})
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -219,13 +226,20 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 startActivity(new Intent(this, RegisterUser.class));
                 break;
             case R.id.btnLogin:
-                Handlelogin();
+                try {
+                    Handlelogin();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
-            case R.id.loginFB:loginFacebookRegister();break;
+            case R.id.loginFB:
+                loginFacebookRegister();
+                break;
             case R.id.tvForgotPass:
                 startActivity(new Intent(this, ForgetPassword.class));
         }
     }
+
     private void checkAuthenticate(String uid, int dem) {
         if (uid != null) {
             DocumentReference documentReference = firestore.collection("users").document(uid);
@@ -248,6 +262,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void Handlelogin() {
         String email = edtEmail.getText().toString().trim();
         String password = edtPassWord.getText().toString().trim();
@@ -263,14 +278,22 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         } else if (password.length() < 6) {
             edtPassWord.setError("Min password length should be 6 characters");
             edtPassWord.requestFocus();
-        }
-        else {
+        } else {
             mFirebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     FirebaseUser user = mFirebaseAuth.getCurrentUser();
+                    assert user != null;
                     if (user.isEmailVerified()) {
-                        dem++;
-                        checkAuthenticate(user.getUid(), dem);
+                        try {
+                            String encryptPass = HashPass.encryptPass(user.getUid(), password);
+                            HashMap<String, Object> hashMap = new HashMap<>();
+                            hashMap.put("passWord", encryptPass);
+                            daoUserProfile.updatePassWordUser(hashMap, user.getUid());
+                            dem++;
+                            checkAuthenticate(user.getUid(), dem);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     } else {
                         user.sendEmailVerification();
                         DEFAULTVALUE.alertDialogMessage("Thông báo", "Hãy xác thực email của bạn!", Login.this);
@@ -307,21 +330,23 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             });
         }
     }
+
     @Override
     protected void onStart() {
         super.onStart();
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         current = firebaseAuth.getCurrentUser();
         if (current != null) {
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users/"+current.getUid());
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users/" + current.getUid());
             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     userProfile = snapshot.getValue(User.class);
                     try {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            assert userProfile != null;
                             firebaseAuth.signInWithEmailAndPassword(userProfile.getEmail(),
-                                    HashPass.decryptPass(userProfile.getPassWord(),current.getUid())).addOnCompleteListener(task -> {
+                                    HashPass.decryptPass(userProfile.getPassWord(), current.getUid())).addOnCompleteListener(task -> {
                                 if (current.isEmailVerified()) {
                                     dem++;
                                     checkAuthenticate(current.getUid(), dem);
@@ -335,6 +360,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                         e.printStackTrace();
                     }
                 }
+
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                 }

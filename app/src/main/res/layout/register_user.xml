@@ -51,11 +51,11 @@
             android:layout_gravity="center"
             android:layout_marginTop="128dp"
             android:background="@drawable/border"
-            android:padding="10dp"
             android:drawableStart="@drawable/ic_email"
             android:ems="30"
             android:hint="Email"
             android:inputType="textEmailAddress"
+            android:padding="10dp"
             android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -69,24 +69,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mtEmail"
+        app:passwordToggleDrawable="@drawable/ct_select_icon_password"
         app:passwordToggleEnabled="true"
-        >
+        app:passwordToggleTint="@color/black">
+
         <EditText
             android:id="@+id/edtPassword"
             android:layout_width="380dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:drawableStart="@drawable/ic_lock"
             android:layout_marginTop="16dp"
-            android:ems="30"
             android:background="@drawable/border"
-            android:padding="10dp"
+            android:drawableStart="@drawable/ic_lock"
+            android:ems="30"
             android:hint="Pass Word"
             android:inputType="textPassword"
-            android:textSize="30sp"
-            />
-        />
+            android:padding="10dp"
+            android:textSize="30sp" />
     </com.google.android.material.textfield.TextInputLayout>
+
     <Button
         android:id="@+id/btnRegister"
         android:layout_width="380dp"
@@ -95,7 +96,7 @@
         android:layout_marginTop="32dp"
         android:background="@drawable/border"
         android:text="Register User"
-        android:textSize="30dp"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mtPassWord" />
