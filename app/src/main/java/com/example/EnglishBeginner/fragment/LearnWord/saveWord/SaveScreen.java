@@ -94,11 +94,15 @@ public class SaveScreen extends AppCompatActivity implements TextToSpeech.OnInit
                 String w_Text = input.getText().toString();
                 String m_Text = input2.getText().toString();
                 if(m_Text!=null&&w_Text!=null){
-                    sqliteHelper = new SaveSqliteHelper(getBaseContext());
+                    sqliteHelper = new SaveSqliteHelper(SaveScreen.this);
                     Word temp = new Word(listItem.size(),w_Text,m_Text);
-                    sqliteHelper.addSaveWordByFloating(temp);
-                    listItem.add(temp);
-                    adapter.notifyDataSetChanged();
+
+                   sqliteHelper.addSaveWordByFloating(temp);
+
+                    sqliteHelper.fetchData(listItem);
+                setAdapter();
+
+
                 }
                 else{
                     Toast.makeText(getBaseContext(), "dung de trong ", Toast.LENGTH_SHORT).show();
@@ -129,15 +133,17 @@ public class SaveScreen extends AppCompatActivity implements TextToSpeech.OnInit
         flAdd = findViewById(R.id.flAdd);
 
         // tao ra mot doi tuong adapter
+       setAdapter();
+    }
+    public void setAdapter(){
+        Collections.reverse(listItem);
         adapter = new SaveAdapter(getBaseContext(), listItem, sqliteHelper,textToSpeech);
         //manager de custom hien thi len recycle view
         LinearLayoutManager manager = new GridLayoutManager(this, 1);
-
         //set cac gia tri len recycler
         rcl.setItemAnimator(new DefaultItemAnimator());// Gán hiệu ứng cho Recyclerview
         rcl.setAdapter(adapter);
         rcl.setLayoutManager(manager);
-
     }
     @Override
     public void onInit(int status) {

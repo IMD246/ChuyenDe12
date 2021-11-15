@@ -1,7 +1,10 @@
 package com.example.EnglishBeginner.fragment.LearnWord.saveWord.source;
 
+import android.app.AlertDialog;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -51,6 +54,47 @@ public class SaveSqliteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS "+table_name);
         onCreate(db);
     }
+    public void alertDialogConfirm(SQLiteDatabase db, ContentValues cv,Word word){
+        if(checkTheSaveWord(word)){
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+            builder1.setMessage("tu bi trung\nban co muon them khong");
+            builder1.setCancelable(true);
+
+            builder1.setPositiveButton(
+                    "đồng ý",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            long result = db.insert(table_name,null,cv);
+                            if(result== -1){
+                                Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                Toast.makeText(context, "Successfully", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+            builder1.setNegativeButton(
+                    "không",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
+        }
+        else{
+            long result = db.insert(table_name,null,cv);
+            if(result== -1){
+                Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                Toast.makeText(context, "Successfully", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
     public void addSaveWordByButton(Word word){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -61,14 +105,9 @@ public class SaveSqliteHelper extends SQLiteOpenHelper {
 //        TranslateText translateText = new TranslateText();
 //        translateText.TranslateText(word.getWord());
         cv.put(column_meaning,word.getDescription()) ;
+        alertDialogConfirm(db,cv,word);
 
-        long result = db.insert(table_name,null,cv);
-        if(result== -1){
-            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
-        }
-        else{
-            Toast.makeText(context, "Successfully", Toast.LENGTH_SHORT).show();
-        }
+
     }
     public void addSaveWordByButtonFirebase(Word word){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -80,13 +119,10 @@ public class SaveSqliteHelper extends SQLiteOpenHelper {
 //        translateText.TranslateText(word.getWord());
         cv.put(column_meaning,word.getMeaning()) ;
 
-        long result = db.insert(table_name,null,cv);
-        if(result== -1){
-            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
-        }
-        else{
-            Toast.makeText(context, "Successfully", Toast.LENGTH_SHORT).show();
-        }
+
+
+        alertDialogConfirm(db,cv,word);
+
     }
     public void addSaveWordByFloating(Word word){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -102,13 +138,24 @@ public class SaveSqliteHelper extends SQLiteOpenHelper {
 
         }
 
-        long result = db.insert(table_name,null,cv);
-        if(result== -1){
-            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+        alertDialogConfirm(db,cv,word);
+
+
+    }
+    public boolean checkTheSaveWord(Word word){
+        ArrayList<Word> list = new ArrayList<>();
+        fetchData(list);
+        boolean checkIfEqual = false;
+        for (Word word1:list) {
+            if(word1.getWord().equals(word.getWord())){
+                checkIfEqual = true;
+                break;
+            }
+
         }
-        else{
-            Toast.makeText(context, "Successfully", Toast.LENGTH_SHORT).show();
-        }
+
+       return checkIfEqual;
+
     }
     public void fetchData(ArrayList<Word> list){
         list.clear();
@@ -134,12 +181,12 @@ public class SaveSqliteHelper extends SQLiteOpenHelper {
             } }
 
         cursor.close();
-        sqLiteDatabase.close();
+
     }
     public void removeSaveWord(Word word){
         SQLiteDatabase db = this.getWritableDatabase();
 
-        int i= db.delete("save_word","id = '" + word.getId() +"'",null);
+        int i= db.delete("save_word",column_word+" = '" + word.getWord() +"'",null);
 
         Log.e("","delete data" + i);
     }

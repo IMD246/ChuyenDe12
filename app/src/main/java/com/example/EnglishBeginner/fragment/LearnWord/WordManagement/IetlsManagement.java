@@ -124,7 +124,7 @@ public class IetlsManagement extends AppCompatActivity implements TextToSpeech.O
 
     // Xây dựng một Hộp thoại thông báo
     private void saveWord(Word word) {
-        SaveSqliteHelper sqliteHelper = new SaveSqliteHelper(getBaseContext());
+        SaveSqliteHelper sqliteHelper = new SaveSqliteHelper(IetlsManagement.this);
         Toast.makeText(this, "w", Toast.LENGTH_SHORT).show();
         sqliteHelper.addSaveWordByButtonFirebase(word);
     }

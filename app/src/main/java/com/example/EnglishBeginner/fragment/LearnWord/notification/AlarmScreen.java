@@ -12,6 +12,7 @@ import android.media.AudioAttributes;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -199,6 +200,19 @@ public class AlarmScreen extends AppCompatActivity {
         channel.setVibrationPattern( new long []{ 100 , 200 , 300 , 400 , 500 , 400 , 300 , 200 , 400 }) ;
         NotificationManager notificationManager = getSystemService(NotificationManager.class);
         notificationManager.createNotificationChannel(channel);
+
+    }
+    private void snoozeNotification(int snoozeMinute){
+       // finish();
+        Handler handler = new Handler();
+
+        handler.postDelayed(new Runnable() {
+
+            public void run() {
+//play the alarm here
+                setAlarm();
+            }
+        }, 5000);
 
     }
 }

@@ -16,6 +16,7 @@ import com.example.EnglishBeginner.fragment.LearnWord.vocubulary.VocabularyFragm
 
 public class AlarmReceiver extends BroadcastReceiver {
 
+    public static int notificationID = 123;
     @Override
     public void onReceive(Context context, Intent intent) {
 
@@ -23,6 +24,9 @@ public class AlarmReceiver extends BroadcastReceiver {
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context,0,i,0);
         Uri sound = Uri. parse (ContentResolver. SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/raw/oniichan_2.mp3" ) ;
+
+
+
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context,"foxandroid")
                 .setSmallIcon(R.drawable.ic_launcher_background)
@@ -35,6 +39,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
 
+
         long[] pattern = {100,200,300,400,500,600,700,800,900};
         builder.setVibrate(pattern);
         Uri soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getApplicationContext().getPackageName() + "/" + R.raw.oniichan_2);
@@ -42,6 +47,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         builder.setSound(soundUri);
 
         NotificationManagerCompat managerCompat = NotificationManagerCompat.from(context);
-        managerCompat.notify(123,builder.build());
+        managerCompat.notify(notificationID,builder.build());
     }
 }

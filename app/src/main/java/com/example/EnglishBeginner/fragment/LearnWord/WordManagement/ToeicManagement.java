@@ -125,7 +125,7 @@ public class ToeicManagement extends AppCompatActivity implements TextToSpeech.O
     // Xây dựng một Hộp thoại thông báo
 
     public void saveWord(Word word) {
-        SaveSqliteHelper sqliteHelper = new SaveSqliteHelper(getBaseContext());
+        SaveSqliteHelper sqliteHelper = new SaveSqliteHelper(ToeicManagement.this);
         sqliteHelper.addSaveWordByButtonFirebase(word);
 
     }

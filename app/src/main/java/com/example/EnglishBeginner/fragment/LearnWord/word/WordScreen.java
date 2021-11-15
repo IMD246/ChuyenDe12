@@ -184,7 +184,7 @@ public class WordScreen extends AppCompatActivity implements TextToSpeech.OnInit
     }
 
     private void setAdapterForListView(ArrayList<Word> listToSetAdapter) {
-        adapter = new WordAdapter(getBaseContext(), listToSetAdapter, databaseHelper,textToSpeech);
+        adapter = new WordAdapter(WordScreen.this, listToSetAdapter, databaseHelper,textToSpeech);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 1);// Tạo layout manager
         danhsach.setItemAnimator(new DefaultItemAnimator());// Gán hiệu ứng cho Recyclerview
         danhsach.setLayoutManager(layoutManager);// Gán layout manager cho recyclerview

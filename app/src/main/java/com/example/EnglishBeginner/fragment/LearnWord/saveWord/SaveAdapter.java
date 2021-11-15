@@ -57,7 +57,7 @@ public class SaveAdapter extends RecyclerView.Adapter<SaveAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
+        holder.txt_id.setText(position+"");
         holder.txt_saveWord.setText(listSave.get(position).getWord());
 //        translateText(listSave.get(position).getWord().toString(),holder.txt_saveMeaning);
 
@@ -86,11 +86,13 @@ public class SaveAdapter extends RecyclerView.Adapter<SaveAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView txt_saveWord,txt_saveMeaning;
+        TextView txt_id;
         ImageView remove,speech;
         public ViewHolder(View itemView) {
             super(itemView);
             this.txt_saveWord = itemView.findViewById(R.id.txt_saveWord);
             this.txt_saveMeaning = itemView.findViewById(R.id.txt_saveWordMeaning);
+            this.txt_id = itemView.findViewById(R.id.saveWord_txt_id);
             this.remove = itemView.findViewById(R.id.saveWord_img_remove);
             this.speech = itemView.findViewById(R.id.img_save_speach);
         }
