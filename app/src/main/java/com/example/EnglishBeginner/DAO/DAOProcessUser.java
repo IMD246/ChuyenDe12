@@ -1,7 +1,6 @@
 package com.example.EnglishBeginner.DAO;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -12,9 +11,6 @@ import androidx.annotation.NonNull;
 import com.example.EnglishBeginner.Adapter.ProcessTopic_Adapter;
 import com.example.EnglishBeginner.DTO.ProcessTopicItem;
 import com.example.EnglishBeginner.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

@@ -1,8 +1,5 @@
 package com.example.EnglishBeginner.DTO;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.io.Serializable;
 
 public class Question implements Serializable {

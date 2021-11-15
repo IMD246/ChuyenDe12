@@ -17,7 +17,6 @@ import com.bumptech.glide.Glide;
 import com.example.EnglishBeginner.DAO.DAOUserProfile;
 import com.example.EnglishBeginner.DTO.User;
 import com.example.EnglishBeginner.R;
-import com.example.EnglishBeginner.main_interface.UserInterfaceActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;

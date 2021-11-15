@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 
 import com.example.EnglishBeginner.Adapter.Level_Adapter;
 import com.example.EnglishBeginner.DTO.Level;
-import com.example.EnglishBeginner.DTO.Topic;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

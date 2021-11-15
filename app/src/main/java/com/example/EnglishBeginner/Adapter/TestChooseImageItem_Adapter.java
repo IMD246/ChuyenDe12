@@ -1,27 +1,19 @@
 package com.example.EnglishBeginner.Adapter;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.EnglishBeginner.DTO.Answer;
-import com.example.EnglishBeginner.DTO.Level;
-import com.example.EnglishBeginner.DTO.Topic;
 import com.example.EnglishBeginner.R;
 
-import java.sql.Struct;
-import java.util.ArrayList;
 import java.util.List;
 
 public class TestChooseImageItem_Adapter extends RecyclerView.Adapter<TestChooseImageItem_Adapter.ChooseImageViewHolder> {
@@ -29,7 +21,6 @@ public class TestChooseImageItem_Adapter extends RecyclerView.Adapter<TestChoose
     public List<Answer> answerList;
     public interface_Test interface_learn;
     private final Context context;
-    private boolean check;
 
     //hàm constructor
     public TestChooseImageItem_Adapter(Context context) {
@@ -69,10 +60,6 @@ public class TestChooseImageItem_Adapter extends RecyclerView.Adapter<TestChoose
             {
                 interface_learn.onClickItemLearn(answer);
             }
-            check = true;
-            holder.linearLayout.setBackgroundColor(Color.RED);
-
-            answer.setCheck(true);
         });
     }
     //trả về số phần tử của list

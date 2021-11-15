@@ -6,7 +6,7 @@ public class User {
     private String imageUser = "";
     private boolean activePrivacy;
 
-    public User(String fullname, String email, String gender,int age, int expPerDay, int totalExp, int idTypeProceedPerDay, String imageUser, boolean activePrivacy) {
+    public User(String fullname, String email, String gender, int age, int expPerDay, int totalExp, int idTypeProceedPerDay, String imageUser, boolean activePrivacy) {
         this.fullname = fullname;
         this.email = email;
         this.gender = gender;

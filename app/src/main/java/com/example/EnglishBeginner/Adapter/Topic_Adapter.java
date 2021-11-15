@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.EnglishBeginner.DAO.DAOProcessUser;
 import com.example.EnglishBeginner.DTO.ProcessTopicItem;
 import com.example.EnglishBeginner.DTO.Topic;
 import com.example.EnglishBeginner.R;

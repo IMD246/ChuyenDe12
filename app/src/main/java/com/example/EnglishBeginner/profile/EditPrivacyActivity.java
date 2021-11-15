@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.EnglishBeginner.DAO.DAOUserProfile;
-import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.DTO.User;
 import com.example.EnglishBeginner.R;
 import com.google.firebase.auth.FirebaseAuth;

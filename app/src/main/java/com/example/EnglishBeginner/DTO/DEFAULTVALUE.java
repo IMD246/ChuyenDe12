@@ -1,23 +1,8 @@
 package com.example.EnglishBeginner.DTO;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.EnglishBeginner.Adapter.ProcessTopic_Adapter;
-import com.example.EnglishBeginner.R;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class DEFAULTVALUE {
     final public static String ADMIN = "Admin";
