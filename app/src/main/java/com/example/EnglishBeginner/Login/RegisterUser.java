@@ -107,7 +107,6 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                 }
             } else {
                 FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                assert firebaseUser != null;
                 User us = new User("",email,"other",0, 0, 0, 0, "", true);
                 try {
                     us.setPassWord(HashPass.encryptPass(firebaseUser.getUid(),edtPassword.getText().toString()));
@@ -119,7 +118,6 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                             if (task1.isSuccessful()) {
                                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                                 Toast.makeText(RegisterUser.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-                                assert user != null;
                                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listProcessUser/"+user.getUid()+"/listTopic");
                                 for (int i=0;i<daoTopic.getTopicList().size();i++)
                                 {

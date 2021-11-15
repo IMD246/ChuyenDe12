@@ -43,6 +43,8 @@ public class FinishEnglishFragment extends Fragment {
         {
             textView.setText("Hãy cố gắng lần sau");
             gifImageView.setImageResource(R.drawable.failure);
+        }else{
+            gifImageView.setImageResource(R.drawable.congratolate);
         }
     }
 }

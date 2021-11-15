@@ -193,7 +193,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         mFirebaseAuth.signInWithCredential(credential).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
-                assert firebaseUser != null;
                 checkAuthenticate(firebaseUser.getUid(), dem);
                 Log.d("signIn", "GoogleLoginSuccessful");
             }
@@ -206,7 +205,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         mFirebaseAuth.signInWithCredential(credential).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
-                assert firebaseUser != null;
                 checkAuthenticate(firebaseUser.getUid(), dem);
                 Log.d("signIn", "FacebookLoginSuccessful");
             }
@@ -270,7 +268,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             mFirebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     FirebaseUser user = mFirebaseAuth.getCurrentUser();
-                    assert user != null;
                     if (user.isEmailVerified()) {
                         dem++;
                         checkAuthenticate(user.getUid(), dem);
@@ -323,7 +320,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     userProfile = snapshot.getValue(User.class);
                     try {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            assert userProfile != null;
                             firebaseAuth.signInWithEmailAndPassword(userProfile.getEmail(),
                                     HashPass.decryptPass(userProfile.getPassWord(),current.getUid())).addOnCompleteListener(task -> {
                                 if (current.isEmailVerified()) {
