@@ -1,8 +1,8 @@
 package com.example.EnglishBeginner.fragment.LearnWord.practice;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,39 +48,29 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewHo
         return new ViewHolder(ref);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        PracticeScreen practiceScreen = new PracticeScreen();
-
         holder.tvAnswer.setText(listAnswer.get(position));
-        if (hadChoose == true) {
-
-            Log.d("acxczxc", "onClick: " + hadChoose);
+        if (hadChoose) {
             if (holder.getAdapterPosition() == resultPos) {
                 holder.layoutAnswer.setBackgroundColor(Color.GREEN);
                 submitEventTemp.delayAndPushDataWhenSubmit();
-
             }
-
         }
         if (listAnswer.size() > 3) {
-            holder.layoutAnswer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (holder.getAdapterPosition() == resultPos) {
-                        holder.layoutAnswer.setBackgroundColor(Color.GREEN);
-                        listResult.add(true);
-                        hadChoose = true;
+            holder.layoutAnswer.setOnClickListener(v -> {
+                if (holder.getAdapterPosition() == resultPos) {
+                    holder.layoutAnswer.setBackgroundColor(Color.GREEN);
+                    listResult.add(true);
 
-                    } else {
-                        holder.layoutAnswer.setBackgroundColor(Color.RED);
-                        listResult.add(false);
-                        hadChoose = true;
-                    }
-                    holder.layoutAnswer.setEnabled(false);
-                    notifyDataSetChanged();
-
+                } else {
+                    holder.layoutAnswer.setBackgroundColor(Color.RED);
+                    listResult.add(false);
                 }
+                hadChoose = true;
+                holder.layoutAnswer.setEnabled(false);
+                notifyDataSetChanged();
             });
         }
 
@@ -91,7 +81,7 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewHo
         return listAnswer.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         //khai báo các phần từ
         TextView tvAnswer;
         LinearLayout layoutAnswer;

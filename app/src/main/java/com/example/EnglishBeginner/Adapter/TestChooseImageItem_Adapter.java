@@ -1,7 +1,6 @@
 package com.example.EnglishBeginner.Adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +15,7 @@ import com.example.EnglishBeginner.DTO.Answer;
 import com.example.EnglishBeginner.R;
 
 import java.util.List;
+import java.util.Objects;
 
 public class TestChooseImageItem_Adapter extends RecyclerView.Adapter<TestChooseImageItem_Adapter.ChooseImageViewHolder> {
     //khai báo các trường dữ liệu
@@ -23,7 +23,7 @@ public class TestChooseImageItem_Adapter extends RecyclerView.Adapter<TestChoose
     public interface_Test interface_learn;
     private final Context context;
     public static int previousPosition = 0;
-    private RecyclerView recyclerView;
+    private final RecyclerView recyclerView;
 
     //hàm constructor
     public TestChooseImageItem_Adapter(Context context, RecyclerView recyclerView) {
@@ -54,8 +54,7 @@ public class TestChooseImageItem_Adapter extends RecyclerView.Adapter<TestChoose
         if (answer == null) {
             return;
         }
-        if (answer.getUrlImage().trim().isEmpty() || answer.getUrlImage().trim().length() == 0) {
-        } else {
+        if (!(answer.getUrlImage().trim().isEmpty() || answer.getUrlImage().trim().length() == 0)) {
             Glide.with(context).load(answer.getUrlImage()).into(holder.imgAnswer);
         }
         //xử lí khi click item learn:
@@ -65,17 +64,17 @@ public class TestChooseImageItem_Adapter extends RecyclerView.Adapter<TestChoose
                 interface_learn.onClickItemLearn(answer);
             }
             if (holder.getAdapterPosition() == previousPosition){
-                v = recyclerView.findViewHolderForAdapterPosition(previousPosition).itemView;
-                holder.linearLayout = (LinearLayout) v.findViewById(R.id.layout_btn_lesson);
+                v = Objects.requireNonNull(recyclerView.findViewHolderForAdapterPosition(previousPosition)).itemView;
+                holder.linearLayout = v.findViewById(R.id.layout_btn_lesson);
                 holder.linearLayout.setSelected(true);
                 previousPosition = holder.getAdapterPosition();
             }else {
-                v = recyclerView.findViewHolderForAdapterPosition(previousPosition).itemView;
-                holder.linearLayout = (LinearLayout) v.findViewById(R.id.layout_btn_lesson);
+                v = Objects.requireNonNull(recyclerView.findViewHolderForAdapterPosition(previousPosition)).itemView;
+                holder.linearLayout = v.findViewById(R.id.layout_btn_lesson);
                 holder.linearLayout.setSelected(false);
 
-                v = recyclerView.findViewHolderForAdapterPosition(holder.getAdapterPosition()).itemView;
-                holder.linearLayout = (LinearLayout) v.findViewById(R.id.layout_btn_lesson);
+                v = Objects.requireNonNull(recyclerView.findViewHolderForAdapterPosition(holder.getAdapterPosition())).itemView;
+                holder.linearLayout = v.findViewById(R.id.layout_btn_lesson);
                 holder.linearLayout.setSelected(true);
                 previousPosition = holder.getAdapterPosition();
             }
