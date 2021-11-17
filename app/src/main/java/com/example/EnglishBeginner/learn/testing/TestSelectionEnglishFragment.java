@@ -1,13 +1,11 @@
 package com.example.EnglishBeginner.learn.testing;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,14 +13,21 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.EnglishBeginner.Adapter.UserChooseEnglishAdapter;
+import com.example.EnglishBeginner.Adapter.UserHadChooseEnglishAdapter;
 import com.example.EnglishBeginner.DAO.DAOAnswer;
 import com.example.EnglishBeginner.DTO.Answer;
 import com.example.EnglishBeginner.DTO.Question;
 import com.example.EnglishBeginner.R;
-import com.example.EnglishBeginner.learn.testing.source.UserChooseEnglishAdapter;
-import com.example.EnglishBeginner.learn.testing.source.UserHadChooseEnglishAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TestSelectionEnglishFragment extends Fragment {
     //khai báo
@@ -31,107 +36,110 @@ public class TestSelectionEnglishFragment extends Fragment {
     private ImageView imgSpeak;
     private TextView tvQuestion;
     private RecyclerView rv_listForUserToChoose, rv_listThatUserHadChoose;
-    private ArrayList<String> listForUserToChoose;
     private ArrayList<String> listUserHadChoose;
-    UserChooseEnglishAdapter userChooseEnglishAdapter;
-    UserHadChooseEnglishAdapter UserHadChooseEnglishAdapter;
+    private UserChooseEnglishAdapter userChooseEnglishAdapter;
+    private UserHadChooseEnglishAdapter userHadChooseEnglishAdapter;
     private Question question;
     private DAOAnswer daoAnswer;
     private TestEnglishActivity testEnglishActivity;
+    private DatabaseReference databaseReference;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.layout_fragment_test_selection_english, container, false);
         setControl();
-        setEvent();
-
         Bundle bundle = getArguments();
-
-        setControl();
         if (bundle!=null)
         {
             question = (Question) bundle.get("question");
-            getDataAnswer(question.getId());
             tvQuestion.setText(question.getTitle());
-
+            getDataAnswer(question.getId());
         }
-        getDataAnswer(question.getId());
-        Log.d("ubnax", "onCreateView: "+question.getId());
-
+        setAdapter();
         return myView;
     }
 
-    //xử lí màn hình learn
-    private void setEvent() {
-
-
-
+    @Override
+    public void onResume() {
+        super.onResume();
     }
+
     private void NotifyData(){
+        userHadChooseEnglishAdapter.notifyDataSetChanged();
         userChooseEnglishAdapter.notifyDataSetChanged();
-        UserHadChooseEnglishAdapter.notifyDataSetChanged();
     }
     private void setAdapter(){
-
-        listUserHadChoose = new ArrayList<>();
-        listForUserToChoose = new ArrayList<>();
-        String answerString = "";
-        if(daoAnswer.getAnswerList().size()>0){
-            for (Answer temp:daoAnswer.getAnswerList()) {
-                answerString += temp.getAnswerQuestion()+" ";
-            }
-            changeStringToArrayList(answerString,listForUserToChoose);
-        }
-        Log.d("asd1p2e", "setAdapter: "+daoAnswer.getAnswerList());
-
-        //
-        userChooseEnglishAdapter = new UserChooseEnglishAdapter(getContext(), listForUserToChoose, listUserHadChoose);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 3);// Tạo layout manager
         layoutManager.canScrollHorizontally();
         layoutManager.canScrollVertically();
         rv_listForUserToChoose.setLayoutManager(layoutManager);// Gán layout manager cho recyclerview
-        rv_listForUserToChoose.setAdapter(userChooseEnglishAdapter);//gán adapter cho Recyclerview.
         //set adapter for list user had choose
-        userChooseEnglishAdapter.setNotifyData(new UserChooseEnglishAdapter.notifyData() {
-            @Override
-            public void notifyDataChange() {
-                NotifyData();
-            }
-        });
-
-        UserHadChooseEnglishAdapter = new UserHadChooseEnglishAdapter(getContext(), listUserHadChoose, listForUserToChoose);
         RecyclerView.LayoutManager layoutManager2 = new GridLayoutManager(getContext(), 3);// Tạo layout manager
         layoutManager2.canScrollHorizontally();
         layoutManager2.canScrollVertically();
         rv_listThatUserHadChoose.setLayoutManager(layoutManager2);// Gán layout manager cho recyclerview
-        rv_listThatUserHadChoose.setAdapter(UserHadChooseEnglishAdapter);//gán adapter cho Recyclerview.
-        UserHadChooseEnglishAdapter.setNotifyData(new UserHadChooseEnglishAdapter.notifyData() {
-            @Override
-            public void notifyDataChange() {
-                NotifyData();
-            }
-        });
     }
     //Ánh xạ, khởi tạo,...
     private void setControl() {
         testEnglishActivity =(TestEnglishActivity) getActivity();
+        daoAnswer = new DAOAnswer(testEnglishActivity.getBaseContext());
+        listUserHadChoose = new ArrayList<>();
         //ánh xạ các view
-        daoAnswer = new DAOAnswer(getContext());
         imgSpeak = myView.findViewById(R.id.img_listen);
         tvQuestion = myView.findViewById(R.id.tv_question);
         rv_listForUserToChoose = myView.findViewById(R.id.recycle_view_button_answer);
         rv_listThatUserHadChoose = myView.findViewById(R.id.recycle_view_show_answer);
-        setAdapter();
-
-    }
-    private void changeStringToArrayList(String text,ArrayList<String> listResult){
-        String [] temp = text.split(" ");
-        for (String item: temp) {
-            listResult.add(item);
-        }
     }
     private void getDataAnswer(int idQuestion)
     {
-        daoAnswer.getDataFromFirebase(idQuestion,null);
+        databaseReference = FirebaseDatabase.getInstance().getReference("listquestion");
+        databaseReference.child(idQuestion+"/listanswer").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String answerString = "";
+                List<Answer> list = new ArrayList<>();
+                ArrayList<String> arrayList = new ArrayList<>();
+                if (list != null)
+                {
+                    list.clear();
+                }
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Answer answer = dataSnapshot.getValue(Answer.class);
+                    list.add(answer);
+                }
+                for (Answer temp: list) {
+                    answerString = answerString + temp.getAnswerQuestion()+ " ";
+                }
+                String [] temp = answerString.split(" ");
+                for (String item: temp) {
+                    arrayList.add(item);
+                }
+                if (userChooseEnglishAdapter!=null)
+                {
+                    userChooseEnglishAdapter.notifyDataSetChanged();
+                }
+                userChooseEnglishAdapter = new UserChooseEnglishAdapter(getContext(),listUserHadChoose,arrayList);
+                userHadChooseEnglishAdapter = new UserHadChooseEnglishAdapter(getContext(), listUserHadChoose, arrayList);
+                //gán adapter cho Recyclerview.
+                rv_listForUserToChoose.setAdapter(userChooseEnglishAdapter);
+                rv_listThatUserHadChoose.setAdapter(userHadChooseEnglishAdapter);//gán adapter cho Recyclerview.
+                userHadChooseEnglishAdapter.setNotifyData(new UserHadChooseEnglishAdapter.notifyData() {
+                    @Override
+                    public void notifyDataChange() {
+                        NotifyData();
+                    }
+                });
+                userChooseEnglishAdapter.setNotifyData(new UserChooseEnglishAdapter.notifyData() {
+                    @Override
+                    public void notifyDataChange() {
+                        NotifyData();
+                    }
+                });
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

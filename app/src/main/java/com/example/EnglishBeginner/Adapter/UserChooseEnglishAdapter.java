@@ -1,4 +1,4 @@
-package com.example.EnglishBeginner.learn.testing.source;
+package com.example.EnglishBeginner.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,66 +13,61 @@ import com.example.EnglishBeginner.R;
 
 import java.util.ArrayList;
 
-public class UserHadChooseEnglishAdapter extends RecyclerView.Adapter<UserHadChooseEnglishAdapter.ViewHolder> {
-
+public class UserChooseEnglishAdapter extends RecyclerView.Adapter<UserChooseEnglishAdapter.ViewHolder>  {
     Context context;
-    ArrayList<String> listUserHadChoose;
     ArrayList<String> listForUserToChoose;
+    ArrayList<String> listUserHadChoose;
 
-     notifyData notifyData;
+    UserChooseEnglishAdapter.notifyData notifyData;
+
     public void setNotifyData(notifyData input){
-         this.notifyData = input;
-     }
-    public UserHadChooseEnglishAdapter(Context context, ArrayList<String> listUserHadChoose, ArrayList<String> listForUserToChoose) {
+        this.notifyData = input;
+    }
+    public UserChooseEnglishAdapter(Context context, ArrayList<String> listUserHadChoose , ArrayList<String> listForUserToChoose) {
         this.context = context;
         this.listUserHadChoose = listUserHadChoose;
         this.listForUserToChoose = listForUserToChoose;
     }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         View ref = LayoutInflater.from(context).inflate(R.layout.layout_fragment_test_selection_english_item, parent, false);
 
-        return new UserHadChooseEnglishAdapter.ViewHolder(ref);
+        return new ViewHolder(ref);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        if(listUserHadChoose!=null){
-            holder.btnSelection.setText(listUserHadChoose.get(position));
+        if(listForUserToChoose!=null){
+            holder.btnAnswer.setText(listForUserToChoose.get(position));
         }
-
-
-        holder.btnSelection.setOnClickListener(new View.OnClickListener() {
+        holder.btnAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listForUserToChoose.add( listUserHadChoose.get(holder.getAdapterPosition()));
-                listUserHadChoose.remove(holder.getAdapterPosition());
+                listUserHadChoose.add(listForUserToChoose.get(holder.getAdapterPosition()));
+                listForUserToChoose.remove(holder.getAdapterPosition());
                 notifyData.notifyDataChange();
-
             }
         });
     }
 
-
     @Override
     public int getItemCount() {
-        return listUserHadChoose.size();
+        return listForUserToChoose.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         //khai báo các phần từ
-        Button btnSelection;
-
+        Button btnAnswer;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            btnAnswer = itemView.findViewById(R.id.selection_english_buttonItem);
 
-            btnSelection = itemView.findViewById(R.id.selection_english_buttonItem);
         }
     }
     public interface notifyData{
-         void notifyDataChange();
+        void notifyDataChange();
     }
 }

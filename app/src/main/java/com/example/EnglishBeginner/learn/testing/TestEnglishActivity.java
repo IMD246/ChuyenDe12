@@ -23,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -46,8 +47,6 @@ import pl.droidsonroids.gif.GifImageView;
 
 public class TestEnglishActivity extends AppCompatActivity implements View.OnClickListener, TextToSpeech.OnInitListener {
     private ArrayList<ReviewCourse> reviewCourseArrayList;
-    private ReviewCourse reviewCourse;
-    private ReviewCourse_Adapter reviewCourse_adapter;
     private ProgressBar progressBar;
     private ImageView imgExit;
     @SuppressLint("StaticFieldLeak")
@@ -99,6 +98,7 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
         processLearn();
     }
 
+    @SuppressLint("SetTextI18n")
     private void processLearn() {
         int min = 0;
         int randomQuestion = (int) Math.floor(Math.random() * (max - min + 1) + min);
@@ -107,7 +107,7 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
         if (arrayListQuestion.size() < 10) {
             progressBar.setMax(arrayListQuestion.size());
             if (count < arrayListQuestion.size()) {
-                transactionFragment(question);
+                transactionFragment();
             } else {
                 if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.TEST)) {
                     btnPass.setText("Xem lại bài học");
@@ -130,7 +130,7 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
         } else {
             progressBar.setMax(10);
             if (count < 10) {
-                transactionFragment(question);
+                transactionFragment();
             } else {
                 if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.TEST)) {
                     btnPass.setText("Xem lại bài học");
@@ -154,7 +154,7 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
     }
 
     @SuppressLint("ResourceType")
-    private void transactionFragment(Question question) {
+    private void transactionFragment() {
         FragmentTransaction fragmentTransaction;
         if (count == 0 && countSkip == 0) {
             fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -242,6 +242,7 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -277,24 +278,16 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
         WindowManager.LayoutParams windowAttributes = window.getAttributes();
         window.setAttributes(windowAttributes);
         ImageView imgExit = dialog.findViewById(R.id.btn_close);
-        imgExit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        imgExit.setOnClickListener(v -> dialog.dismiss());
         RecyclerView recyclerView = dialog.findViewById(R.id.recycleview_review_course);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(dialog.getContext(), 2);
         recyclerView.setLayoutManager(gridLayoutManager);
-        reviewCourse_adapter = new ReviewCourse_Adapter(dialog.getContext());
+        ReviewCourse_Adapter reviewCourse_adapter = new ReviewCourse_Adapter(dialog.getContext());
         reviewCourse_adapter.setLevelArrayList(reviewCourseArrayList);
         recyclerView.setAdapter(reviewCourse_adapter);
-        reviewCourse_adapter.setInterface_course(new ReviewCourse_Adapter.Interface_Course() {
-            @Override
-            public void onClickItemCourse(String corectAnswer) {
-                setCorectAnswer(corectAnswer);
-                texttoSpeak();
-            }
+        reviewCourse_adapter.setInterface_course(corectAnswer -> {
+            setCorectAnswer(corectAnswer);
+            texttoSpeak();
         });
         dialog.show();
 
@@ -308,8 +301,6 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
     private void texttoSpeak() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             textToSpeech.speak(corectAnswer, TextToSpeech.QUEUE_FLUSH, null, null);
-        } else {
-            textToSpeech.speak(corectAnswer, TextToSpeech.QUEUE_FLUSH, null);
         }
     }
 
@@ -325,8 +316,9 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
             }
         }
     }
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void submitResult() {
-        reviewCourse = new ReviewCourse();
+        ReviewCourse reviewCourse = new ReviewCourse();
         if (count < arrayListQuestion.size() && count < 10) {
             if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.TEST)) {
                 reviewCourse.setCorrectAnswer(question.getCorrectAnswer());
@@ -347,7 +339,7 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
                     }
                     answer = null;
                 }
-                Log.d("SINH", "submitResult: "+reviewCourse.getTypeQuestion() +"\n" + reviewCourse.isCheck());
+                Log.d("SINH", "submitResult: "+ reviewCourse.getTypeQuestion() +"\n" + reviewCourse.isCheck());
                 Log.d("SINH", "submitResult: "+ question.getNameTypeQuestion());
                 reviewCourseArrayList.add(reviewCourse);
             } else if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.LEARN)) {
@@ -396,7 +388,6 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
         }
         @SuppressLint("CutPasteId") TextView tvCorrect = dialog.findViewById(R.id.id_corect_title);
         tvCorrect.setText(msg);
-        @SuppressLint("CutPasteId") Button btnContinue = dialog.findViewById(R.id.btn_continute_notify);
         btnContinueNotify.setOnClickListener(v ->
         {
             if (choice == 1) {

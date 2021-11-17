@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.EnglishBeginner.Adapter.TestChooseImageItem_Adapter;
+import com.example.EnglishBeginner.Adapter.UserChooseEnglishAdapter;
+import com.example.EnglishBeginner.Adapter.UserHadChooseEnglishAdapter;
 import com.example.EnglishBeginner.DTO.Answer;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -60,70 +62,6 @@ public class DAOAnswer {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-    }
-    // thêm dữ liệu vào firebase
-    public void addDataToFireBase(Answer answer1, EditText edtAnswer,int idQuestion) {
-        Boolean check = true;
-        int s = 1;
-        if (answerList.size() > 0) {
-            for (Answer answer : answerList) {
-                if (answer.getAnswerQuestion().equalsIgnoreCase(answer1.getAnswerQuestion())) {
-                    check = false;
-                    break;
-                }
-            }
-        }
-        if (check == false) {
-            edtAnswer.setError("Trùng dữ liệu , hãy kiểm tra lại dữ liệu");
-            edtAnswer.requestFocus();
-        } else {
-            if (answerList.size()>0)
-            {
-                s = answer1.getId();
-            }
-            databaseReference.child(idQuestion+"/listanswer").child(String.valueOf(s)).setValue(answer1).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isComplete()) {
-                        Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-        }
-    }
-    // sửa dữ liệu
-    public void editDataToFireBase(Answer answer1, EditText edtAnswer , int idQuestion) {
-        Boolean check = true;
-        if (answerList.size() > 0) {
-            for (Answer answer : answerList) {
-                if (answer.getAnswerQuestion().equalsIgnoreCase(answer1.getAnswerQuestion())) {
-                    check = false;
-                    break;
-                }
-            }
-        }
-        if (check == false) {
-            edtAnswer.setError("Trùng dữ liệu , hãy kiểm tra lại dữ liệu");
-            edtAnswer.requestFocus();
-        } else {
-            databaseReference.child(idQuestion+"/listanswer/"+answer1.getId()).setValue(answer1).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isComplete()) {
-                        Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-        }
-    }
-    //xóa dữ liệu
-    public void deleteDataToFire(Answer answer, int id) {
-        databaseReference.child(id+"/listanswer").child(String.valueOf(answer.getId())).removeValue(new DatabaseReference.CompletionListener() {
-            @Override
-            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show();
             }
         });
     }
