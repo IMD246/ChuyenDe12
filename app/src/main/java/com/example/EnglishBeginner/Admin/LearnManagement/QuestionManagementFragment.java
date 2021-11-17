@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -207,35 +208,28 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
         }
         spnTopic.setAdapter(new ArrayAdapter<>(getContext(), R.layout.listoptionitem, R.id.tvOptionItem, listTopic));
         spnTypeQuestion.setAdapter(new ArrayAdapter<>(getContext(), R.layout.listoptionitem, R.id.tvOptionItem, list));
-        btnNo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
+        btnNo.setOnClickListener(v -> dialog.dismiss());
+        btnYes.setOnClickListener(v -> {
+            Question question = new Question();
+            if (daoQuestion.getQuestionList().size()>0) {
+                question.setId(daoQuestion.getQuestionList().get(daoQuestion.getQuestionList().size() - 1).getId() + 1);
+                Log.d("Test", "openDialog: ");
             }
-        });
-        btnYes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Question question = new Question();
-                if (daoQuestion.getQuestionList().size()>0) {
-                    question.setId(daoQuestion.getQuestionList().get(daoQuestion.getQuestionList().size() - 1).getId() + 1);
-                }
-                else {
-                    question.setId(1);
-                }
-                question.setTitle(edtTitle.getText().toString());
-                question.setCorrectAnswer(edtCorrectAnswer.getText().toString());
-                question.setNameTopic(spnTopic.getSelectedItem().toString());
-                question.setNameTypeQuestion(spnTypeQuestion.getSelectedItem().toString());
-                for (Topic topic : questionInterface.daoTopic.getTopicList()) {
-                    if (question.getNameTopic().equalsIgnoreCase(topic.getNameTopic())) {
-                        question.setIdTopic(topic.getId());
-                        break;
-                    }
-                }
-                daoQuestion.setContext(getContext());
-                daoQuestion.addDataToFireBase(question, edtTitle,edtCorrectAnswer);
+            else {
+                question.setId(1);
             }
+            question.setTitle(edtTitle.getText().toString());
+            question.setCorrectAnswer(edtCorrectAnswer.getText().toString());
+            question.setNameTopic(spnTopic.getSelectedItem().toString());
+            question.setNameTypeQuestion(spnTypeQuestion.getSelectedItem().toString());
+            for (Topic topic : questionInterface.daoTopic.getTopicList()) {
+                if (question.getNameTopic().equalsIgnoreCase(topic.getNameTopic())) {
+                    question.setIdTopic(topic.getId());
+                    break;
+                }
+            }
+            daoQuestion.setContext(getContext());
+            daoQuestion.addDataToFireBase(question, edtTitle,edtCorrectAnswer);
         });
         dialog.show();
     }
