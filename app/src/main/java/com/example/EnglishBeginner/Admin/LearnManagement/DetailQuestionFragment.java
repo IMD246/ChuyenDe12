@@ -223,7 +223,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
             }
             if (getContext()!=null) {
                 daoQuestion.setContext(getContext());
-                daoQuestion.editDataToFireBase(question, edtTitle, edtCorrectAnswer, tvTitle, tvCorrectAnswer);
+                daoQuestion.editDataToFireBase(question1, edtTitle, edtCorrectAnswer, tvTitle, tvCorrectAnswer);
             }
         });
         dialog.show();
