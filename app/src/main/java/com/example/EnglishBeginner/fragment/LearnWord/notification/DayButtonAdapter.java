@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,10 +23,12 @@ public class DayButtonAdapter extends RecyclerView.Adapter<DayButtonAdapter.View
     public Context context;
     ArrayList<DayItem> listDay;
     AlarmSqliteHelper alarmSqliteHelper ;
-    public DayButtonAdapter(Context context, ArrayList<DayItem> listDay) {
+    ToggleButton toggleButton;
+    public DayButtonAdapter(Context context, ArrayList<DayItem> listDay,ToggleButton toggleButton) {
         this.context = context;
         this.listDay = listDay;
         alarmSqliteHelper = new AlarmSqliteHelper(context);
+        this.toggleButton = toggleButton;
     }
 
     @NonNull
@@ -55,12 +58,15 @@ public class DayButtonAdapter extends RecyclerView.Adapter<DayButtonAdapter.View
                     listDay.get(holder.getAdapterPosition()).setStatus(1);
                     holder.btn_day.setBackgroundColor(Color.GREEN);
 
+
                 }else {
                     listDay.get(holder.getAdapterPosition()).setStatus(0);
                     holder.btn_day.setBackgroundColor(Color.GRAY);
 
                 }
                 alarmSqliteHelper.editDay(listDay.get(holder.getAdapterPosition()));
+                alarmSqliteHelper.editToggle(0);
+                toggleButton.setChecked(false);
                 notifyDataSetChanged();
             }
         });

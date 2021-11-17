@@ -61,12 +61,12 @@ public class VocabularyFragment extends Fragment {
         VocubularyItem item2 = new VocubularyItem("lịch sử tra từ", R.drawable.history);
         VocubularyItem item3 = new VocubularyItem("tra từ điển", R.drawable.word);
         VocubularyItem item4 = new VocubularyItem("Luyện tập", R.drawable.practice);
-        VocubularyItem item5 = new VocubularyItem("cài đặt lich học", R.drawable.settingic);
+      //  VocubularyItem item5 = new VocubularyItem("cài đặt lich học", R.drawable.settingic);
         vocabularyItems.add(item1);
         vocabularyItems.add(item2);
         vocabularyItems.add(item3);
         vocabularyItems.add(item4);
-        vocabularyItems.add(item5);
+       // vocabularyItems.add(item5);
     }
 
     private void setControl() {

@@ -6,11 +6,13 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.provider.SyncStateContract;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.EnglishBeginner.R;
+import com.example.EnglishBeginner.fragment.LearnWord.notification.AlarmScreen;
 import com.example.EnglishBeginner.fragment.LearnWord.vocubulary.VocabularyFragment;
 
 
@@ -25,7 +27,10 @@ public class AlarmReceiver extends BroadcastReceiver {
         PendingIntent pendingIntent = PendingIntent.getActivity(context,0,i,0);
         Uri sound = Uri. parse (ContentResolver. SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/raw/oniichan_2.mp3" ) ;
 
-
+//        Intent snoozeIntent = new Intent(context,SnoozeAction.class);
+//        snoozeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        PendingIntent snoozePendingIntent =
+//                PendingIntent.getBroadcast(context, 0, snoozeIntent, 0);
 
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context,"foxandroid")
@@ -33,6 +38,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 .setContentTitle("learning english notifycation")
                 .setContentText("time for learning bruh")
                 .setAutoCancel(true)
+                //.addAction(R.drawable.ic_baseline_timer_24,"snooze",snoozePendingIntent)
                 .setSound(sound)
                 .setContentIntent(PendingIntent.getActivity(context,0
                         ,new Intent(context.getApplicationContext(),VocabularyFragment.class),PendingIntent.FLAG_UPDATE_CURRENT))

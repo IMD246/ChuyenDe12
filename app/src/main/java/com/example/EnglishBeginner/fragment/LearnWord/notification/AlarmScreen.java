@@ -116,7 +116,7 @@ public class AlarmScreen extends AppCompatActivity {
 
         RecyclerView rcl=(RecyclerView)findViewById(R.id.alarm_rclButton);
         // tao ra mot doi tuong adapter
-       adapter = new DayButtonAdapter(getBaseContext(),dayItems);
+       adapter = new DayButtonAdapter(getBaseContext(),dayItems,stateToggle);
         //manager de custom hien thi len recycle view
         LinearLayoutManager manager = new GridLayoutManager(getBaseContext(),4);
         //set cac gia tri len recycler
