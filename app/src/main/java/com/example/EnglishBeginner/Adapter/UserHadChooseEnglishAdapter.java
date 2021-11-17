@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.EnglishBeginner.R;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class UserHadChooseEnglishAdapter extends RecyclerView.Adapter<UserHadChooseEnglishAdapter.ViewHolder> {
@@ -19,6 +20,10 @@ public class UserHadChooseEnglishAdapter extends RecyclerView.Adapter<UserHadCho
     ArrayList<String> listForUserToChoose;
 
     notifyData notifyData;
+
+    public ArrayList<String> getListUserHadChoose() {
+        return listUserHadChoose;
+    }
 
     public void setNotifyData(notifyData input) {
         this.notifyData = input;

@@ -28,9 +28,9 @@ public class TestListenFragment extends Fragment implements TextToSpeech.OnInitL
     //khai báo
     private View myView;
     protected static final int RESULT_SPEECH = 1;
+    private TextToSpeech textToSpeech;
     private Question question;
     private TestEnglishActivity testEnglishActivity;
-    private TextToSpeech textToSpeech;
 
     @Nullable
     @Override

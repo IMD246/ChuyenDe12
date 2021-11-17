@@ -329,6 +329,7 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
                     alertDialog("Không chính xác", false,1);
                     reviewCourse.setCheck(false);
                 } else {
+                    Log.d("testanswer", "submitResult: "+answer);
                     if (answer.trim().equalsIgnoreCase(correctQuestion)) {
                         alertDialog("Chính xác", true,1);
                         countcorrect++;
