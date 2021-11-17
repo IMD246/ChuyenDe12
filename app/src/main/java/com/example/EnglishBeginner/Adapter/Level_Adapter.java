@@ -2,6 +2,7 @@ package com.example.EnglishBeginner.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
     //hàm constructor
     public Level_Adapter(Context context) {
         this.context = context;
+        levelArrayList = new ArrayList<>();
     }
 
     public void setLevelArrayList(List<Level> levelArrayList) {
@@ -88,14 +90,13 @@ public class Level_Adapter extends RecyclerView.Adapter<Level_Adapter.LearnViewH
                 interface_learn.onClickItemLearn(level);
             }
         });
+
     }
     //trả về số phần tử của list
     @Override
     public int getItemCount() {
-        if (levelArrayList != null) {
             return levelArrayList.size();
-        }
-        return 0;
+
     }
     //class ViewHolder
     public static class LearnViewHolder extends RecyclerView.ViewHolder {

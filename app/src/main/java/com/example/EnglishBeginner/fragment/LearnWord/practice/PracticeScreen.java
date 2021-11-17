@@ -19,14 +19,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-
 import com.example.EnglishBeginner.DTO.Word;
 import com.example.EnglishBeginner.R;
-import com.example.EnglishBeginner.fragment.LearnWord.practice.source.TranslateText;
 import com.example.EnglishBeginner.fragment.LearnWord.saveWord.source.SaveSqliteHelper;
 import com.example.EnglishBeginner.fragment.LearnWord.vocubulary.VocabularyFragment;
 import com.example.EnglishBeginner.fragment.LearnWord.word.source.MySingleton;
@@ -186,7 +180,6 @@ public class PracticeScreen extends AppCompatActivity implements TextToSpeech.On
             progressBar.setProgress(currentpos+1);
             //reset the hint
             //save word get from sqlite to listitem
-            TranslateText translateText = new TranslateText();
             hintText.setText("");
             databaseHelper.fetchRandomWord(listItem.get(currentpos).getWord(), listAnswer);
             //get  word to a new list

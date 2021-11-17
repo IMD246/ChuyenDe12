@@ -43,11 +43,7 @@
         <activity
             android:name=".Login.Login"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <meta-data
@@ -113,7 +109,16 @@
         </activity>
 
         <receiver android:name=".fragment.LearnWord.notification.source.AlarmReceiver"/>
+        <activity
+            android:name=".Login.SpashScreen"
+            android:exported="true">
 
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
     <queries>
         <intent>

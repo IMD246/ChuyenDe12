@@ -209,6 +209,21 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
                     fragmentTransaction.replace(R.id.frameLayout_Fragment, testWriteFragment).commit();
                 }
             }
+            else if (question.getNameTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.READ)) {
+                TestSelectionEnglishFragment testSelectionFragment = new TestSelectionEnglishFragment();
+                testSelectionFragment.setArguments(bundle);
+                if (count == 0 && countSkip == 0) {
+                    fragmentTransaction.add(R.id.frameLayout_Fragment, testSelectionFragment).commit();
+                }
+                else if (count == 0 && countSkip>0)
+                {
+                    fragmentTransaction.replace(R.id.frameLayout_Fragment, testSelectionFragment).commit();
+                    countSkip = 0;
+                }
+                else{
+                    fragmentTransaction.replace(R.id.frameLayout_Fragment, testSelectionFragment).commit();
+                }
+            }
         } else if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.LEARN)) {
             btnPass.setVisibility(View.GONE);
             LearningEnglishFragment learningEnglishFragment = new LearningEnglishFragment();

@@ -246,7 +246,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             documentReference.get().addOnSuccessListener(documentSnapshot -> {
                 if (Objects.equals(documentSnapshot.getBoolean("isBlock"), false)) {
                     if (Objects.requireNonNull(documentSnapshot.getString("authenticate")).equalsIgnoreCase(DEFAULTVALUE.USER)) {
+
                         startActivity(new Intent(Login.this, UserInterfaceActivity.class));
+
                     } else {
                         DEFAULTVALUE.alertDialogMessage("Thông báo", "Không thuộc phạm vi người dùng", Login.this);
                     }
