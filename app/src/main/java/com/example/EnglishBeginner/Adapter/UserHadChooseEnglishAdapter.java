@@ -5,13 +5,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.EnglishBeginner.R;
 
 import java.lang.reflect.Array;
+import java.net.CacheRequest;
 import java.util.ArrayList;
 
 public class UserHadChooseEnglishAdapter extends RecyclerView.Adapter<UserHadChooseEnglishAdapter.ViewHolder> {
@@ -48,7 +51,7 @@ public class UserHadChooseEnglishAdapter extends RecyclerView.Adapter<UserHadCho
         if (listUserHadChoose != null) {
             holder.btnSelection.setText(listUserHadChoose.get(position));
         }
-        holder.btnSelection.setOnClickListener(v -> {
+        holder.cardView.setOnClickListener(v -> {
             listForUserToChoose.add(listUserHadChoose.get(holder.getAdapterPosition()));
             listUserHadChoose.remove(holder.getAdapterPosition());
             notifyData.notifyDataChange();
@@ -63,11 +66,11 @@ public class UserHadChooseEnglishAdapter extends RecyclerView.Adapter<UserHadCho
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         //khai báo các phần từ
-        Button btnSelection;
-
+        private TextView btnSelection;
+        private CardView cardView;
         public ViewHolder(View itemView) {
             super(itemView);
-
+            cardView = itemView.findViewById(R.id.cardview_selection_english);
             btnSelection = itemView.findViewById(R.id.selection_english_buttonItem);
         }
     }

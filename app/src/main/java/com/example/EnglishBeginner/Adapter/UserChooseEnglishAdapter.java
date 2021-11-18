@@ -5,8 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.EnglishBeginner.R;
@@ -42,7 +44,7 @@ public class UserChooseEnglishAdapter extends RecyclerView.Adapter<UserChooseEng
         if(listForUserToChoose!=null){
             holder.btnAnswer.setText(listForUserToChoose.get(position));
         }
-        holder.btnAnswer.setOnClickListener(new View.OnClickListener() {
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listUserHadChoose.add(listForUserToChoose.get(holder.getAdapterPosition()));
@@ -59,12 +61,13 @@ public class UserChooseEnglishAdapter extends RecyclerView.Adapter<UserChooseEng
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         //khai báo các phần từ
-        Button btnAnswer;
+        private TextView btnAnswer;
+        private CardView cardView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             btnAnswer = itemView.findViewById(R.id.selection_english_buttonItem);
-
+            cardView = itemView.findViewById(R.id.cardview_selection_english);
         }
     }
     public interface notifyData{

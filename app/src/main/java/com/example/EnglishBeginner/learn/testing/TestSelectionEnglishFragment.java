@@ -95,12 +95,12 @@ public class TestSelectionEnglishFragment extends Fragment implements TextToSpee
     }
 
     private void setAdapter() {
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 3);// Tạo layout manager
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 4);// Tạo layout manager
         layoutManager.canScrollHorizontally();
         layoutManager.canScrollVertically();
         rv_listForUserToChoose.setLayoutManager(layoutManager);// Gán layout manager cho recyclerview
         //set adapter for list user had choose
-        RecyclerView.LayoutManager layoutManager2 = new GridLayoutManager(getContext(), 3);// Tạo layout manager
+        RecyclerView.LayoutManager layoutManager2 = new GridLayoutManager(getContext(), 4);// Tạo layout manager
         layoutManager2.canScrollHorizontally();
         layoutManager2.canScrollVertically();
         rv_listThatUserHadChoose.setLayoutManager(layoutManager2);// Gán layout manager cho recyclerview
