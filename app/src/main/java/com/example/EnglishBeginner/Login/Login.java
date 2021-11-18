@@ -9,6 +9,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,6 +62,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private GoogleSignInClient mGoogleSignInClient;
     private final static int RC_SIGN_IN = 100;
     private FirebaseUser current;
+    private ProgressBar progressBar;
     private int dem = 0;
 
     @Override
@@ -69,6 +71,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(getApplication());
         setContentView(R.layout.login);
+        progressBar = findViewById(R.id.progressBarLogin);
         createRequestGoogle();
         mFirebaseAuth = FirebaseAuth.getInstance();
         setControl();
@@ -228,15 +231,19 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 if (Objects.equals(documentSnapshot.getBoolean("isBlock"), false)) {
                     if (Objects.requireNonNull(documentSnapshot.getString("authenticate")).equalsIgnoreCase(DEFAULTVALUE.ADMIN)) {
                         startActivity(new Intent(Login.this, AdminInterface.class));
+                        progressBar.setVisibility(View.GONE);
                     } else {
                         DEFAULTVALUE.alertDialogMessage("Thông báo", "Không thuộc quyền admin", Login.this);
+                        progressBar.setVisibility(View.GONE);
                     }
                 } else if (Objects.equals(documentSnapshot.getBoolean("isBlock"), true)) {
                     final String msg = "Tài khoản " + documentSnapshot.getString("email") + " hiện tại đã bị khóa";
                     DEFAULTVALUE.alertDialogMessage("Thông báo", msg, Login.this);
+                    progressBar.setVisibility(View.GONE);
                 } else {
                     if (dem > 0) {
                         DEFAULTVALUE.alertDialogMessage("Thông báo", "Hãy đăng ký tài khoản", Login.this);
+                        progressBar.setVisibility(View.GONE);
                     }
                 }
             });
@@ -261,6 +268,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         }
         mFirebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
+                progressBar.setVisibility(View.VISIBLE);
                 FirebaseUser user = mFirebaseAuth.getCurrentUser();
                 assert user != null;
                 if (user.isEmailVerified()) {
@@ -268,6 +276,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     checkAuthenticate(user.getUid(), dem);
                 } else {
                     user.sendEmailVerification();
+                    progressBar.setVisibility(View.GONE);
                     DEFAULTVALUE.alertDialogMessage("Thông báo", "Hãy xác thực email của bạn!", Login.this);
                 }
             } else {
@@ -307,6 +316,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         super.onStart();
         current = mFirebaseAuth.getCurrentUser();
         if (current != null) {
+            progressBar.setVisibility(View.VISIBLE);
             checkAuthenticate(current.getUid(), dem);
             dem++;
         }

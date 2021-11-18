@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.EnglishBeginner.Admin.AccountUserManagement;
-import com.example.EnglishBeginner.Admin.AnalysicUser;
+import com.example.EnglishBeginner.Admin.BlogManagementFragment;
 import com.example.EnglishBeginner.Admin.LearnManagementFragment;
 import com.example.EnglishBeginner.Admin.WordManagementFragment;
 
@@ -22,7 +22,7 @@ public class ViewPageAdapter extends FragmentStateAdapter {
         switch (position)
         {
             case 1:return new WordManagementFragment();
-            case 2:return new AnalysicUser();
+            case 2:return new BlogManagementFragment();
             case 3:return new AccountUserManagement();
             case 0:
             default:return new LearnManagementFragment();

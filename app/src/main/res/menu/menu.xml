@@ -9,7 +9,7 @@
         />
     <item android:id="@+id/analysic"
         android:icon="@drawable/baseline_leaderboard_black_24dp"
-        android:title="@string/analysic_fragment"
+        android:title="@string/blog_fragment"
         />
     <item android:id="@+id/account"
         android:icon="@drawable/baseline_manage_accounts_black_24dp"

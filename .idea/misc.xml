@@ -3,14 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/addeditlevel.xml" value="0.22509057971014493" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/addeditword.xml" value="0.22509057971014493" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/editlearnquestion.xml" value="0.22509057971014493" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/layout_custom_dialog.xml" value="0.23822463768115942" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/layout_fragment_learning_english.xml" value="0.2246376811594203" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/layout_item_learn_management.xml" value="0.22509057971014493" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/layout_item_vocabulary_management.xml" value="0.22509057971014493" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/learnquestionitem.xml" value="0.22509057971014493" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/layout_fragment_test_choose_image.xml" value="0.12158054711246201" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/layout_fragment_test_selection_english.xml" value="0.23369565217391305" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.20208333333333334" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/drawable/ic_email.xml" value="0.20208333333333334" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/drawable/ic_launcher_background.xml" value="0.20208333333333334" />
@@ -23,6 +17,20 @@
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/layout/login.xml" value="0.25" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/layout/register_user.xml" value="0.264" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/mipmap-anydpi-v26/ic_email.xml" value="0.26205128205128203" />
+        <entry key="..\:/chuyende1234/app/src/main/res/layout/activity_toeic_management.xml" value="0.12158054711246201" />
+        <entry key="..\:/chuyende1234/app/src/main/res/layout/answeritem.xml" value="0.14583333333333334" />
+        <entry key="..\:/chuyende1234/app/src/main/res/layout/blog_item.xml" value="0.14583333333333334" />
+        <entry key="..\:/chuyende1234/app/src/main/res/layout/fragment_analysic_user.xml" value="0.14583333333333334" />
+        <entry key="..\:/chuyende1234/app/src/main/res/layout/fragment_blogmanagement.xml" value="0.14583333333333334" />
+        <entry key="..\:/chuyende1234/app/src/main/res/layout/layout_item_learn_management.xml" value="0.14583333333333334" />
+        <entry key="..\:/chuyende1234/app/src/main/res/layout/layout_item_vocabulary_management.xml" value="0.14583333333333334" />
+        <entry key="..\:/chuyende1234/app/src/main/res/layout/learnquestionitem.xml" value="0.4" />
+        <entry key="..\:/chuyende1234/app/src/main/res/layout/levelitem.xml" value="0.14583333333333334" />
+        <entry key="..\:/chuyende1234/app/src/main/res/layout/listoptionitem.xml" value="0.14583333333333334" />
+        <entry key="..\:/chuyende1234/app/src/main/res/layout/login.xml" value="0.2318840579710145" />
+        <entry key="..\:/chuyende1234/app/src/main/res/layout/register_user.xml" value="0.2318840579710145" />
+        <entry key="..\:/chuyende1234/app/src/main/res/menu/menu.xml" value="0.25" />
+        <entry key="..\:/chuyende1234/app/src/main/res/menu/menu_navigation.xml" value="0.25" />
       </map>
     </option>
   </component>
