@@ -64,6 +64,7 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
     public static final int FRAGMENT_VOCABULARY = 3;
     public static final int FRAGMENT_PROFILE = 4;
     public static final int FRAGMENT_SETTING = 5;
+    public static final int FRAGMENT_ADDBLOG = 6;
 
     //khai báo giá trị màn hình hiện tại, mặc định là home
     public int myCurrentViewpager2 = FRAGMENT_LEARN;
@@ -78,7 +79,7 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
     private BottomNavigationView bottomNavigationView;
 
     //khai báo Viewpager2 và adapter của nó
-    private ViewPager2 viewPager2;
+    public ViewPager2 viewPager2;
     public ViewPager2_Adapter viewPager2_adapter;
 
     @Override

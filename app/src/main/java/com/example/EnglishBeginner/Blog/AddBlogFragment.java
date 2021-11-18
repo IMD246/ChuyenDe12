@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,7 @@ import android.widget.ImageView;
 
 import com.example.EnglishBeginner.R;
 
-public class AddBlog extends Fragment {
+public class AddBlogFragment extends Fragment {
 
     private View view;
     private EditText edt_title,edt_description;
@@ -30,12 +31,7 @@ public class AddBlog extends Fragment {
         return view;
     }
     private void setEvent() {
-        img_thumnail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openFileChoose();
-            }
-        });
+        img_thumnail.setOnClickListener(view -> openFileChoose());
     }
 
     private void setControl() {
@@ -45,8 +41,6 @@ public class AddBlog extends Fragment {
         btn_add = view.findViewById(R.id.btn_PostBlog);
         btn_cancel = view.findViewById(R.id.btn_cancelPostBlog);
     }
-
-
     public void openFileChoose()
     {
         Intent intent = new Intent();
@@ -61,7 +55,6 @@ public class AddBlog extends Fragment {
         {
 //            daoImageStorage.setmImgURL(data.getData());
             img_thumnail.setImageURI(data.getData());
-
         }
     }
 }

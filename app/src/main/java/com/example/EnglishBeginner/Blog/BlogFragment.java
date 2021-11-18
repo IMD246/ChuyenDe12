@@ -1,21 +1,23 @@
 package com.example.EnglishBeginner.Blog;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.example.EnglishBeginner.Adapter.BlogAdapter;
 import com.example.EnglishBeginner.Adapter.MenuAdapter;
 import com.example.EnglishBeginner.DTO.Blog;
 import com.example.EnglishBeginner.R;
+import com.example.EnglishBeginner.main_interface.UserInterfaceActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -26,7 +28,9 @@ public class BlogFragment extends Fragment {
     ArrayList<Blog> listBlog;
     ArrayList<Blog> newListBlog;
     ArrayList<String> listMenu;
+    private FloatingActionButton btnAddBlog;
     private MenuAdapter menuAdapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -43,30 +47,21 @@ public class BlogFragment extends Fragment {
         listMenu.add("mostFavorite");
         listMenu.add("new");
         listMenu.add("yourFavorite");
-        menuAdapter = new MenuAdapter(getContext(),listMenu,recyclerView_menu);
-        GridLayoutManager manager = new GridLayoutManager(getContext(),3);
+        menuAdapter = new MenuAdapter(getContext(), listMenu, recyclerView_menu);
+        GridLayoutManager manager = new GridLayoutManager(getContext(), 3);
         recyclerView_menu.setAdapter(menuAdapter);
         recyclerView_menu.setLayoutManager(manager);
-        menuAdapter.setSetAdapterOfListBlog(new MenuAdapter.setAdapterCallBack() {
-            @Override
-            public void setAdapter(String typeBlog) {
-                setDataFollowOption(typeBlog);
-            }
-        });
+        menuAdapter.setSetAdapterOfListBlog(typeBlog -> setDataFollowOption(typeBlog));
     }
 
     private void setDataFollowOption(String typeBlog) {
         ArrayList<Blog> arrayList = new ArrayList<>();
-        Log.d("test", "setDataFollowOption: "+listBlog.size());
 
-        for (Blog blog : listBlog)
-        {
-            if (blog.getTypeMenu().equals(typeBlog))
-            {
+        for (Blog blog : listBlog) {
+            if (blog.getTypeMenu().equals(typeBlog)) {
                 arrayList.add(blog);
             }
         }
-        Log.d("test2", "setDataFollowOption: "+arrayList.size());
 
         setAdapterc2(arrayList);
     }
@@ -74,9 +69,10 @@ public class BlogFragment extends Fragment {
     private void setControl() {
         newListBlog = new ArrayList<>();
         listBlog = new ArrayList<>();
-        Blog blog1 = new Blog("1","19/7/2121 10:pm","how to sell 100000 pack of notthing,","",120,41,203,"mostFavorite");
-        Blog blog2 = new Blog("1","19/7/2121 10:pm","i am yasuo 0/10,","",102,43,220,"yourFavorite");
-        Blog blog3 = new Blog("1","19/7/2121 10:pm","how to sell 100000 pack of notthing,w;elfja;rjpaowt;ljsdetpa2u3-4ojqpfhvxc.b,xlfk;EKht.eznb;fcxf;ew,5ntyw 4ht","",510,24,260,"new");
+        UserInterfaceActivity userInterfaceActivity = (UserInterfaceActivity) getActivity();
+        Blog blog1 = new Blog("1", "19/7/2121 10:pm", "how to sell 100000 pack of notthing,", "", 120, 41, 203, "mostFavorite");
+        Blog blog2 = new Blog("1", "19/7/2121 10:pm", "i am yasuo 0/10,", "", 102, 43, 220, "yourFavorite");
+        Blog blog3 = new Blog("1", "19/7/2121 10:pm", "how to sell 100000 pack of notthing,w;elfja;rjpaowt;ljsdetpa2u3-4ojqpfhvxc.b,xlfk;EKht.eznb;fcxf;ew,5ntyw 4ht", "", 510, 24, 260, "new");
         listBlog.add(blog1);
         listBlog.add(blog2);
         listBlog.add(blog2);
@@ -84,14 +80,16 @@ public class BlogFragment extends Fragment {
         listBlog.add(blog3);
         listBlog.add(blog1);
         recyclerView_blog = view.findViewById(R.id.rv_blog);
+        btnAddBlog = view.findViewById(R.id.btnAddBlog);
+        btnAddBlog.setOnClickListener(view -> {
+            userInterfaceActivity.viewPager2.setCurrentItem(UserInterfaceActivity.FRAGMENT_ADDBLOG);
+        });
         recyclerView_menu = view.findViewById(R.id.rv_menu);
     }
+
     private void setAdapter() {
-        Log.d("TAG", "setAdapter: "+listBlog.size());
-        for (Blog blog : listBlog)
-        {
-            if (blog.getTypeMenu().equals("mostFavorite"))
-            {
+        for (Blog blog : listBlog) {
+            if (blog.getTypeMenu().equals("mostFavorite")) {
                 newListBlog.add(blog);
             }
         }
@@ -103,12 +101,11 @@ public class BlogFragment extends Fragment {
         recyclerView_blog.setLayoutManager(manager);
         blogAdapter.notifyDataSetChanged();
     }
+
     private void setAdapterc2(ArrayList<Blog> temp) {
-        Log.d("TAG", "setAdapter: "+listBlog.size());
-        for (Blog blog : listBlog)
-        {
-            if (blog.getTypeMenu().equals("mostFavorite"))
-            {
+        Log.d("TAG", "setAdapter: " + listBlog.size());
+        for (Blog blog : listBlog) {
+            if (blog.getTypeMenu().equals("mostFavorite")) {
                 newListBlog.add(blog);
             }
         }

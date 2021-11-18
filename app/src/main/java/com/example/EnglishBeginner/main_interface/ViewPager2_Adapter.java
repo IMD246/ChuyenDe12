@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.example.EnglishBeginner.Blog.AddBlogFragment;
 import com.example.EnglishBeginner.Blog.BlogFragment;
 import com.example.EnglishBeginner.fragment.AlarmFragment;
 import com.example.EnglishBeginner.fragment.LearnWord.vocubulary.VocabularyFragment;
@@ -31,6 +32,8 @@ public class ViewPager2_Adapter extends FragmentStateAdapter {
                 return new ProfileFragment();
             case 5:
                 return new SettingMenuFragment();
+            case 6:
+                return new AddBlogFragment();
             case 0:
             default:
                 return new LearnFragment();
@@ -39,6 +42,6 @@ public class ViewPager2_Adapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 6;
+        return 7;
     }
 }
