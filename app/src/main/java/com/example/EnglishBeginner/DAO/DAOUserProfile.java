@@ -29,11 +29,6 @@ public class DAOUserProfile {
         });
     }
     public void updatePassWordUser(HashMap<String,Object>hashMap,String uid) {
-        mDatabaseReference.child(uid).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(@NonNull Void unused) {
-                Toast.makeText(context, "Cập nhật mậu khẩu mới vào hồ sơ thành công", Toast.LENGTH_SHORT).show();
-            }
-        });
+        mDatabaseReference.child(uid).updateChildren(hashMap).isSuccessful();
     }
 }

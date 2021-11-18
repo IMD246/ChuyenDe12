@@ -35,7 +35,7 @@ public class DAOProcessUser {
                                             ProcessTopic_Adapter processTopic_adapter, TextView tvTitle,
                                             TextView tvLevel, Button btnTest, RelativeLayout relativeLayout) {
         databaseReference.child(uid).child("listTopic/" + idTopic + "/listProcess").
-                addValueEventListener(new ValueEventListener() {
+                addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (processTopicItemList != null) {
@@ -57,7 +57,6 @@ public class DAOProcessUser {
                             }
                         }
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         Toast.makeText(context, "Get list Process Topic failed", Toast.LENGTH_SHORT).show();
