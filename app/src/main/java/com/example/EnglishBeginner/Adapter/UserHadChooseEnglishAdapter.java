@@ -42,7 +42,6 @@ public class UserHadChooseEnglishAdapter extends RecyclerView.Adapter<UserHadCho
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View ref = LayoutInflater.from(context).inflate(R.layout.layout_fragment_test_selection_english_item, parent, false);
-
         return new ViewHolder(ref);
     }
 
