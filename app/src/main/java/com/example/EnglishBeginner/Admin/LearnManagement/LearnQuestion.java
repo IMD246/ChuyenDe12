@@ -184,7 +184,7 @@ public class LearnQuestion extends AppCompatActivity {
             {
                 daoQuestion.updateLearnQuestion(question.getId(),map,edtWord,edtExample,edtGrammar);
             }
-            daoImageStorage.uploadFileImageToQuestion(imgEditQuestion,"Question"+question.getId(),question);
+            daoImageStorage.uploadFileImageToQuestion("Question"+question.getId(),question);
         });
         dialog.show();
     }
