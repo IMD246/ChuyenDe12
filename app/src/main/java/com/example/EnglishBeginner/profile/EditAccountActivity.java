@@ -83,8 +83,9 @@ public class EditAccountActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_edit_account_back:
-                Intent intent = new Intent(EditAccountActivity.this, UserInterfaceActivity.class);
-                EditAccountActivity.this.startActivity(intent);
+//                Intent intent = new Intent(EditAccountActivity.this, UserInterfaceActivity.class);
+//                EditAccountActivity.this.startActivity(intent);
+                EditAccountActivity.this.finish();
                 break;
             case R.id.btn_edit_account_save:
                 try {

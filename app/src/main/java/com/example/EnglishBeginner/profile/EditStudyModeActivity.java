@@ -2,6 +2,7 @@ package com.example.EnglishBeginner.profile;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -15,6 +16,7 @@ public class EditStudyModeActivity extends AppCompatActivity{
     private static int check = 0;
     private LinearLayout Basic, Medium, Hard, SuperHard;
     private CheckBox cbRemind;
+    private Button btnExit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +28,13 @@ public class EditStudyModeActivity extends AppCompatActivity{
         Hard = findViewById(R.id.item_hard);
         SuperHard = findViewById(R.id.item_superhard);
         cbRemind = findViewById(R.id.cb_edit_study_mode);
-
+        btnExit = findViewById(R.id.btnExit);
+        btnExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditStudyModeActivity.this.finish();
+            }
+        });
         if (check == 1){
             cbRemind.setChecked(true);
         }else {

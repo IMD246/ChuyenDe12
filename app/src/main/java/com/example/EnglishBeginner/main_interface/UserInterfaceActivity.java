@@ -34,6 +34,7 @@ import com.example.EnglishBeginner.DTO.User;
 import com.example.EnglishBeginner.Login.Login;
 import com.example.EnglishBeginner.R;
 import com.example.EnglishBeginner.learn.testing.TestEnglishActivity;
+import com.example.EnglishBeginner.profile.HelpActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -65,7 +66,7 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
     public static final int FRAGMENT_SETTING = 4;
 
     //khai báo giá trị màn hình hiện tại, mặc định là home
-    private int myCurrentViewpager2 = FRAGMENT_LEARN;
+    public int myCurrentViewpager2 = FRAGMENT_LEARN;
 
     //khai báo drawerlayout
     private DrawerLayout drawerLayout;
@@ -85,12 +86,22 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setControl();
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if (bundle != null){
+            if (bundle.getString("currentScreen").equalsIgnoreCase("3")){
+                checkLogicScreen(FRAGMENT_PROFILE, 3);
+            }
+        }
         getProFileFromRealTime();
         checkLogicDrawerLayout();
         processBottomNavigation();
         processViewPager2();
     }
 
+    public void setMyCurrentViewpager2(int myCurrentViewpager2) {
+        this.myCurrentViewpager2 = myCurrentViewpager2;
+    }
     //kiểm tra logic khi drawer layout đóng
 
     private void checkLogicDrawerLayout() {
@@ -272,11 +283,12 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
                 checkLogicScreen(FRAGMENT_SETTING, 4);
                 break;
             case R.id.nav_help://ấn vào help sẽ chuyển activities
-                Toast.makeText(UserInterfaceActivity.this, "click help", Toast.LENGTH_SHORT).show();
-                navigationView.getMenu().findItem(R.id.nav_profile).setChecked(false);
-                navigationView.getMenu().findItem(R.id.nav_setting).setChecked(false);
-                navigationView.getMenu().findItem(R.id.nav_help).setChecked(true);
-                navigationView.getMenu().findItem(R.id.nav_logout).setChecked(false);
+                Intent intent = new Intent(UserInterfaceActivity.this, HelpActivity.class);
+                startActivity(intent);
+//                navigationView.getMenu().findItem(R.id.nav_profile).setChecked(false);
+//                navigationView.getMenu().findItem(R.id.nav_setting).setChecked(false);
+//                navigationView.getMenu().findItem(R.id.nav_help).setChecked(true);
+//                navigationView.getMenu().findItem(R.id.nav_logout).setChecked(false);
                 break;
             case R.id.nav_logout:
                 navigationView.getMenu().findItem(R.id.nav_profile).setChecked(false);

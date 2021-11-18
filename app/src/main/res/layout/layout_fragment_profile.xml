@@ -283,9 +283,9 @@
 
     <Button
         android:id="@+id/btn_profile_edit"
-        android:layout_width="120dp"
+        android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_gravity="center"
+        android:layout_gravity="bottom"
         android:layout_marginTop="24dp"
         android:backgroundTint="@color/blue"
         android:text="@string/btn_edit_profile"

@@ -48,6 +48,12 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
         setControl();
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditProfileActivity.this.finish();
+            }
+        });
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         userId = firebaseUser.getUid();
@@ -70,7 +76,6 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
             }
         });
-        setEvent();
     }
 
     private void getDataUserProfileToControl(User user) {
@@ -81,15 +86,6 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                 Glide.with(EditProfileActivity.this).load(user.getImageUser()).into(imgUser);
             }
         }
-    }
-
-    private void setEvent() {
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(EditProfileActivity.this, UserInterfaceActivity.class));
-            }
-        });
     }
 
     //Ánh xạ
@@ -116,7 +112,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                 updateProfile();
                 break;
             case R.id.btn_edit_account_back:
-                onBackPressed();
+                EditProfileActivity.this.finish();
                 break;
             case R.id.img_user:
                 openFileChoose();

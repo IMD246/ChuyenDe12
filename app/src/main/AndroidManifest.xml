@@ -35,6 +35,9 @@
             android:name=".Login.ForgetPassword"
             android:exported="false" />
         <activity
+            android:name=".profile.HelpActivity"
+            android:exported="false" />
+        <activity
             android:name=".main_interface.UserInterfaceActivity"
             android:exported="true" />
         <activity
