@@ -25,7 +25,6 @@ public class SpashScreen extends AppCompatActivity {
                 // When timer is finished
                 // Execute your code here
                 startActivity(new Intent(SpashScreen.this, Login.class));
-
             }
 
             public void onTick(long millisUntilFinished) {

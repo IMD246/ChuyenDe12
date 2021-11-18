@@ -99,6 +99,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cheer">cheer</string>
+    <string name="blog">Blog</string>
     <!--    Array Type Word-->
     <array name="typeWord">
         <item>Nouns</item>

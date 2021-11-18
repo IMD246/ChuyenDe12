@@ -2,10 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="horizontal"
-    android:background="#689F38"
+    android:background="@drawable/englishsplash"
     android:gravity="center"
     android:layout_height="match_parent">
-
     <TextView
         android:layout_gravity="center"
         android:text="Simple Learning English"
@@ -13,7 +12,6 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:textSize="30dp"
-        android:textColor="#FBC02D">
-
+        android:textColor="@color/white">
     </TextView>
 </LinearLayout>

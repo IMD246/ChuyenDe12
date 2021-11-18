@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -60,7 +59,8 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
 
     //khai báo giá trị cho screen
     public static final int FRAGMENT_LEARN = 0;
-    public static final int FRAGMENT_ALARM = 1;
+    public static final int FRAGMENT_BLOG = 1;
+    public static final int FRAGMENT_ALARM = 2;
     public static final int FRAGMENT_VOCABULARY = 2;
     public static final int FRAGMENT_PROFILE = 3;
     public static final int FRAGMENT_SETTING = 4;
@@ -88,8 +88,8 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         setControl();
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        if (bundle != null){
-            if (bundle.getString("currentScreen").equalsIgnoreCase("3")){
+        if (bundle != null) {
+            if (bundle.getString("currentScreen").equalsIgnoreCase("3")) {
                 checkLogicScreen(FRAGMENT_PROFILE, 3);
             }
         }
@@ -127,21 +127,28 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
                         navigationView.getMenu().findItem(R.id.nav_logout).setChecked(false);
                         break;
                     case 1:
-                        bottomNavigationView.getMenu().findItem(R.id.bottom_nav_alarm).setChecked(true);
+                        bottomNavigationView.getMenu().findItem(R.id.bottom_nav_Blog).setChecked(true);
                         navigationView.getMenu().findItem(R.id.nav_profile).setChecked(false);
                         navigationView.getMenu().findItem(R.id.nav_setting).setChecked(false);
                         navigationView.getMenu().findItem(R.id.nav_help).setChecked(false);
                         navigationView.getMenu().findItem(R.id.nav_logout).setChecked(false);
                         break;
                     case 2:
-                        bottomNavigationView.getMenu().findItem(R.id.bottom_nav_vocabulary).setChecked(true);
+                        bottomNavigationView.getMenu().findItem(R.id.bottom_nav_alarm).setChecked(true);
                         navigationView.getMenu().findItem(R.id.nav_profile).setChecked(false);
                         navigationView.getMenu().findItem(R.id.nav_setting).setChecked(false);
                         navigationView.getMenu().findItem(R.id.nav_help).setChecked(false);
                         navigationView.getMenu().findItem(R.id.nav_logout).setChecked(false);
                         break;
                     case 3:
+                        bottomNavigationView.getMenu().findItem(R.id.bottom_nav_vocabulary).setChecked(true);
+                        navigationView.getMenu().findItem(R.id.nav_profile).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.nav_setting).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.nav_help).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.nav_logout).setChecked(false);
+                        break;
                     case 4:
+                    case 5:
                         bottomNavigationView.getMenu().findItem(R.id.bottom_nav_profile).setChecked(true);
                         break;
                 }
@@ -222,21 +229,25 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
                         bottomNavigationView.getMenu().findItem(R.id.bottom_nav_learn).setChecked(true);
                         break;
                     case 1:
+                        myCurrentViewpager2 = FRAGMENT_BLOG;
+                        bottomNavigationView.getMenu().findItem(R.id.bottom_nav_Blog).setChecked(true);
+                        break;
+                    case 2:
                         myCurrentViewpager2 = FRAGMENT_ALARM;
                         bottomNavigationView.getMenu().findItem(R.id.bottom_nav_alarm).setChecked(true);
                         break;
-                    case 2:
+                    case 3:
                         myCurrentViewpager2 = FRAGMENT_VOCABULARY;
                         bottomNavigationView.getMenu().findItem(R.id.bottom_nav_vocabulary).setChecked(true);
                         break;
-                    case 3:
+                    case 4:
                         myCurrentViewpager2 = FRAGMENT_PROFILE;
                         navigationView.getMenu().findItem(R.id.nav_profile).setChecked(true);
                         navigationView.getMenu().findItem(R.id.nav_setting).setChecked(false);
                         navigationView.getMenu().findItem(R.id.nav_help).setChecked(false);
                         navigationView.getMenu().findItem(R.id.nav_logout).setChecked(false);
                         break;
-                    case 4:
+                    case 5:
                         myCurrentViewpager2 = FRAGMENT_SETTING;
                         navigationView.getMenu().findItem(R.id.nav_setting).setChecked(true);
                         navigationView.getMenu().findItem(R.id.nav_profile).setChecked(false);
@@ -357,7 +368,7 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         tvLevel.setText("Level: 1");
         ProcessTopic_Adapter processTopic_adapter = new ProcessTopic_Adapter(dialog.getContext());
         assert topic != null;
-        daoProcessUser.getDataFromRealTimeFirebase(firebaseUser.getUid(), topic.getId(), processTopicItemList, processTopic_adapter,tvTitle, tvLevel,test,relativeLayout);
+        daoProcessUser.getDataFromRealTimeFirebase(firebaseUser.getUid(), topic.getId(), processTopicItemList, processTopic_adapter, tvTitle, tvLevel, test, relativeLayout);
         learn.setOnClickListener(v -> {
             if (daoQuestion.getQuestionList().size() > 0) {
                 Intent intent = new Intent(UserInterfaceActivity.this, TestEnglishActivity.class);

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="20dp"
+            android:orientation="horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/blogDetails_img_avatar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@color/black" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/blogDetails_txt_userName"
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:layout_weight="1"
+                    android:text="Elizabeth Rek"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/blogDetails_txt_dayOfPost"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="23 March 2019, 10:45 pm"
+                    android:textSize="14dp"
+                    android:textStyle="italic" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+
+            android:id="@+id/blogDetails_txt_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_weight="1"
+            android:text="15 BEST PRACTICE  FOR FIRST VOICE CALL RESOLUTION"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:textStyle="bold">
+
+        </TextView>
+
+        <ImageView
+            android:id="@+id/blogDetails_img_thumnail"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_margin="20dp"
+            android:layout_weight="3"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_launcher_background">
+
+        </ImageView>
+
+        <TextView
+            android:id="@+id/txt_descrition"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="20dp"
+            android:text="aozxciqwezmxcoasieqwe">
+
+        </TextView>
+    </LinearLayout>
+</ScrollView>

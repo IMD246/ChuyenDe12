@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/blog_ln_detail"
+    android:clickable="true"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="20dp"
+        android:orientation="horizontal"
+        >
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/blog_img_avatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@color/black"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/blog_txt_userName"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_weight="1"
+                android:text="Elizabeth Rek"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/blog_txt_dayOfPost"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="23 March 2019, 10:45 pm"
+                android:textSize="14dp"
+                android:textStyle="italic"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/blog_img_thumnail"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_margin="20dp"
+
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_launcher_background">
+
+    </ImageView>
+
+    <TextView
+        android:id="@+id/blog_txt_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+
+        android:text="15 BEST PRACTICE  FOR FIRST VOICE CALL RESOLUTION"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textStyle="bold">
+
+    </TextView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_facebook"/>
+
+        <TextView
+            android:id="@+id/blog_txt_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:text="705"
+            android:textColor="@color/black"
+            android:textSize="12dp"/>
+
+        <ImageView
+
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_facebook">
+
+        </ImageView>
+
+        <TextView
+            android:id="@+id/blog_txt_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:text="705"
+            android:textColor="@color/black"
+            android:textSize="12dp"/>
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="right"
+            android:layout_marginLeft="50dp"
+            android:src="@drawable/ic_facebook">
+
+        </ImageView>
+
+        <TextView
+            android:id="@+id/blog_txt_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginHorizontal="20dp"
+            android:text="705"
+            android:textColor="@color/black"
+            android:textSize="12dp"/>
+    </LinearLayout>
+
+</LinearLayout>
