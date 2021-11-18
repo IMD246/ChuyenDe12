@@ -115,7 +115,7 @@ public class DAOImageStorage {
         }
     }
     // hàm upload ảnh cho answer
-    public void uploadFileImageToAnswer(int i, ImageView imgAnswer, String s, Answer answer1, int idQuestion, Question question) {
+    public void uploadFileImageToAnswer(int i, ImageView imgAnswer, String s, Answer answer1, int idQuestion) {
         if (mImgURL != null) {
             StorageReference fileReference = storageReference.child(s);
             fileReference.putFile(mImgURL).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -136,7 +136,7 @@ public class DAOImageStorage {
                         mImgURL = task.getResult();
                         answer1.setUrlImage(mImgURL.toString());
                         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listquestion");
-                        databaseReference.child(idQuestion + "/listanswer").child(String.valueOf(answer1.getId())).setValue(answer1.getUrlImage()).addOnCompleteListener(task1 -> {
+                        databaseReference.child(idQuestion + "/listanswer").child(answer1.getId()+"/urlImage").setValue(answer1.getUrlImage()).addOnCompleteListener(task1 -> {
                             if (task1.isComplete()) {
                                 Toast.makeText(context, "Cập nhật ảnh thành công", Toast.LENGTH_SHORT).show();
                             }

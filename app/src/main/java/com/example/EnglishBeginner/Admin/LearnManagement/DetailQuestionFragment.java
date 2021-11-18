@@ -307,16 +307,16 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
                     daoAnswer.setContext(getContext());
                     daoAnswer.editDataToFireBase(answer1, edtAnswer, question.getId());
                 }
-                daoImageStorage.uploadFileImageToAnswer(2, imgAnswer, "Question"+question.getId()+"Answer" + answer1.getId(), answer1, question.getId(), daoAnswer.getQuestion());
+                daoImageStorage.uploadFileImageToAnswer(2, imgAnswer, "Question"+question.getId()+"Answer" + answer1.getId(), answer1, question.getId());
             });
         } else if (choice == 1) {
             btnYes.setText("Thêm");
             btnYes.setOnClickListener(v -> {
                 {
+                    Answer answer1 = new Answer();
                     if (question.getNameTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.IMAGE)) {
                         if (daoAnswer.getAnswerList().size()<4)
                         {
-                            Answer answer1 = new Answer();
                             if (daoAnswer.getAnswerList().size() > 0) {
                                 idAnswer = daoAnswer.getAnswerList().get(daoAnswer.getAnswerList().size() - 1).getId() + 1;
                             }
@@ -325,7 +325,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
                             answer1.setUrlImage("");
                             daoAnswer.setContext(getContext());
                             daoAnswer.addDataAnswerToFirebaseQuestion(answer1, edtAnswer, question.getId());
-                            daoImageStorage.uploadFileImageToAnswer(1, imgAnswer, "Question" + question.getId() + "Answer" + answer1.getId(), answer1, question.getId(), daoAnswer.getQuestion());
+                            daoImageStorage.uploadFileImageToAnswer(1, imgAnswer, "Question" + question.getId() + "Answer" + answer1.getId(), answer1, question.getId());
                         }
                         else
                         {
@@ -334,7 +334,6 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
                     }
                     else
                     {
-                        Answer answer1 = new Answer();
                         if (daoAnswer.getAnswerList().size() > 0) {
                             idAnswer = daoAnswer.getAnswerList().get(daoAnswer.getAnswerList().size() - 1).getId() + 1;
                         }
@@ -343,7 +342,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
                         answer1.setUrlImage("");
                         daoAnswer.setContext(getContext());
                         daoAnswer.addDataAnswerToFirebaseQuestion(answer1, edtAnswer, question.getId());
-                        daoImageStorage.uploadFileImageToAnswer(1, imgAnswer, "Question" + question.getId() + "Answer" + answer1.getId(), answer1, question.getId(), daoAnswer.getQuestion());
+                        daoImageStorage.uploadFileImageToAnswer(1, imgAnswer, "Question" + question.getId() + "Answer" + answer1.getId(), answer1, question.getId());
                     }
                 }
             });
