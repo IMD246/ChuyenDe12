@@ -22,18 +22,18 @@ public class ViewPager2_Adapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         switch (position){
+//            case 1:
+//                return new BlogFragment();
             case 1:
-                return new BlogFragment();
-            case 2:
                 return new AlarmFragment();
-            case 3:
+            case 2:
                 return new VocabularyFragment();
-            case 4:
+            case 3:
                 return new ProfileFragment();
-            case 5:
+            case 4:
                 return new SettingMenuFragment();
-            case 6:
-                return new AddBlogFragment();
+//            case 6:
+//                return new AddBlogFragment();
             case 0:
             default:
                 return new LearnFragment();
@@ -42,6 +42,6 @@ public class ViewPager2_Adapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 7;
+        return 5;
     }
 }

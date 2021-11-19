@@ -81,9 +81,9 @@ public class BlogFragment extends Fragment {
         listBlog.add(blog1);
         recyclerView_blog = view.findViewById(R.id.rv_blog);
         btnAddBlog = view.findViewById(R.id.btnAddBlog);
-        btnAddBlog.setOnClickListener(view -> {
-            userInterfaceActivity.viewPager2.setCurrentItem(UserInterfaceActivity.FRAGMENT_ADDBLOG);
-        });
+//        btnAddBlog.setOnClickListener(view -> {
+//            userInterfaceActivity.viewPager2.setCurrentItem(UserInterfaceActivity.FRAGMENT_ADDBLOG);
+//        });
         recyclerView_menu = view.findViewById(R.id.rv_menu);
     }
 
