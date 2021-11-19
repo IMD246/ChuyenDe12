@@ -216,7 +216,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
             question1.setNameTopic(spnTopic.getSelectedItem().toString());
             question1.setNameTypeQuestion(spnTypeQuestion.getSelectedItem().toString());
             for (Topic topic : questionInterface.daoTopic.getTopicList()) {
-                if (question.getNameTopic().equalsIgnoreCase(topic.getNameTopic())) {
+                if (question1.getNameTopic().equalsIgnoreCase(topic.getNameTopic())) {
                     question1.setIdTopic(topic.getId());
                     break;
                 }
