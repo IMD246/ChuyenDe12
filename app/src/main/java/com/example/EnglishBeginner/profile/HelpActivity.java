@@ -1,39 +1,16 @@
 package com.example.EnglishBeginner.profile;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.SearchView;
+import androidx.appcompat.widget.SearchView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.EnglishBeginner.DAO.DAOUserProfile;
-import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
-import com.example.EnglishBeginner.DTO.HashPass;
-import com.example.EnglishBeginner.DTO.User;
 import com.example.EnglishBeginner.R;
-import com.example.EnglishBeginner.main_interface.UserInterfaceActivity;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
 public class HelpActivity extends AppCompatActivity {
@@ -70,8 +47,10 @@ public class HelpActivity extends AppCompatActivity {
         lvHelp = findViewById(R.id.lvHelp);
         svHelp = findViewById(R.id.seach_view_help);
         arrayList = new ArrayList<>();
-        arrayList.add("Câu hỏi chung");arrayList.add("Diễn đàn");arrayList.add("Tài khoản");
-        stringArrayAdapter = new ArrayAdapter<>(this,R.layout.layout_item_help, arrayList);
+        arrayList.add("Câu hỏi chung");
+        arrayList.add("Diễn đàn");
+        arrayList.add("Tài khoản");
+        stringArrayAdapter = new ArrayAdapter<>(this,R.layout.layout_item_help,R.id.tvHelp,arrayList);
         lvHelp.setAdapter(stringArrayAdapter);
     }
 
