@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
-        android:text="Alarm"
+        android:text="hẹn giờ"
         android:textSize="40dp"
         android:textColor="#433511"
         android:gravity="center">

@@ -226,10 +226,10 @@ public class PracticeScreen extends AppCompatActivity implements TextToSpeech.On
         hintText.setText("Your Score is: " + getScore() + "/" + listItem.size());
         hintText.setTextSize(30);
         showHint.setVisibility(View.GONE);
-        returnButton.setVisibility(View.GONE);
+      //  returnButton.setVisibility(View.GONE);
         submitButton.setText("Thoát");
         submitButton.setPadding(0,30,0,0);
-
+        submitButton.setVisibility(View.VISIBLE);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -253,15 +253,16 @@ public class PracticeScreen extends AppCompatActivity implements TextToSpeech.On
 
     private void ifDataIsNull() {
         speakerIcon.setVisibility(View.GONE);
-        submitButton.setText("Return to main");
+        showHint.setVisibility(View.GONE);
+  //      submitButton.setText("Return to main");
         hintText.setText("your save word list is empty");
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), VocabularyFragment.class);
-                startActivity(intent);
-            }
-        });
+//        submitButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getBaseContext(), VocabularyFragment.class);
+//                startActivity(intent);
+//            }
+//        });
     }
 
     private int getResultPos(ArrayList<String> list, String answer) {

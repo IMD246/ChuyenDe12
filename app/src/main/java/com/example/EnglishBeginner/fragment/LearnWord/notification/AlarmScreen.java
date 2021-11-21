@@ -90,22 +90,24 @@ public class AlarmScreen extends AppCompatActivity {
                  alarmSqliteHelper.editToggle(1);
              }
              else{
-                 Intent intent = new Intent(getBaseContext(), AlarmReceiver.class);
-                 pendingIntent = PendingIntent.getBroadcast(getBaseContext(),0,intent,0);
-
-                 if(alarmManager == null){
-                     alarmManager = (AlarmManager)   getSystemService(Context.ALARM_SERVICE);
-                 }
-
-                 alarmManager.cancel(pendingIntent);
-                 Toast.makeText(getBaseContext(), "alarm canceled", Toast.LENGTH_SHORT).show();
-
+                 cancelNotification();
              }
             }
         });
 //
     }
+    private void cancelNotification(){
+        Intent intent = new Intent(getBaseContext(), AlarmReceiver.class);
+        pendingIntent = PendingIntent.getBroadcast(getBaseContext(),0,intent,0);
 
+        if(alarmManager == null){
+            alarmManager = (AlarmManager)   getSystemService(Context.ALARM_SERVICE);
+        }
+
+        alarmManager.cancel(pendingIntent);
+        Toast.makeText(getBaseContext(), "alarm canceled", Toast.LENGTH_SHORT).show();
+
+    }
     private void setControl() {
         stateToggle = findViewById(R.id.alarm_toggle_state);
 //        save=findViewById(R.id.alarm_btnSave);
@@ -128,7 +130,7 @@ public class AlarmScreen extends AppCompatActivity {
     private void setAlarm() {
         try {
 
-
+            cancelNotification();
             alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(getBaseContext(), AlarmReceiver.class);
             pendingIntent = PendingIntent.getBroadcast(getBaseContext(), 0, intent, 0);
@@ -202,17 +204,17 @@ public class AlarmScreen extends AppCompatActivity {
         notificationManager.createNotificationChannel(channel);
 
     }
-    private void snoozeNotification(int snoozeMinute){
-       // finish();
-        Handler handler = new Handler();
-
-        handler.postDelayed(new Runnable() {
-
-            public void run() {
-//play the alarm here
-                setAlarm();
-            }
-        }, 5000);
-
-    }
+//    private void snoozeNotification(int snoozeMinute){
+//       // finish();
+//        Handler handler = new Handler();
+//
+//        handler.postDelayed(new Runnable() {
+//
+//            public void run() {
+////play the alarm here
+//                setAlarm();
+//            }
+//        }, 5000);
+//
+//    }
 }

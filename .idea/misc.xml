@@ -3,10 +3,6 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/fragment_blog.xml" value="0.2318840579710145" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/help_activity.xml" value="0.11980749746707194" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/layout_item_help.xml" value="0.22735507246376813" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/menu/menu_bottom_navigation.xml" value="0.24635416666666668" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/layout_fragment_test_choose_image.xml" value="0.12158054711246201" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/layout_fragment_test_selection_english.xml" value="0.23369565217391305" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.20208333333333334" />
@@ -22,6 +18,7 @@
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/layout/register_user.xml" value="0.264" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/mipmap-anydpi-v26/ic_email.xml" value="0.26205128205128203" />
         <entry key="..\:/chuyende1234/app/src/main/res/layout/activity_toeic_management.xml" value="0.12158054711246201" />
+        <entry key="..\:/chuyende1234/app/src/main/res/layout/alarm_screen.xml" value="0.2318840579710145" />
         <entry key="..\:/chuyende1234/app/src/main/res/layout/answeritem.xml" value="0.14583333333333334" />
         <entry key="..\:/chuyende1234/app/src/main/res/layout/blog_item.xml" value="0.14583333333333334" />
         <entry key="..\:/chuyende1234/app/src/main/res/layout/fragment_analysic_user.xml" value="0.14583333333333334" />
@@ -33,6 +30,10 @@
         <entry key="..\:/chuyende1234/app/src/main/res/layout/listoptionitem.xml" value="0.14583333333333334" />
         <entry key="..\:/chuyende1234/app/src/main/res/layout/login.xml" value="0.2318840579710145" />
         <entry key="..\:/chuyende1234/app/src/main/res/layout/register_user.xml" value="0.2318840579710145" />
+        <entry key="..\:/chuyende1234/app/src/main/res/layout/saveword_item.xml" value="0.12708333333333333" />
+        <entry key="..\:/chuyende1234/app/src/main/res/layout/toeicietlsitem.xml" value="0.23641304347826086" />
+        <entry key="..\:/chuyende1234/app/src/main/res/layout/vocubulary_list_item.xml" value="0.1331521739130435" />
+        <entry key="..\:/chuyende1234/app/src/main/res/layout/vocubulary_screen.xml" value="0.23641304347826086" />
         <entry key="..\:/chuyende1234/app/src/main/res/menu/menu.xml" value="0.25" />
         <entry key="..\:/chuyende1234/app/src/main/res/menu/menu_navigation.xml" value="0.25" />
       </map>
