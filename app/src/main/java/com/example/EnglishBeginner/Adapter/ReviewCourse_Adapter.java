@@ -77,16 +77,7 @@ public class ReviewCourse_Adapter extends RecyclerView.Adapter<ReviewCourse_Adap
         holder.tvtitle.setText(reviewCourse.getQuestion()+"");
         holder.tvAnswer.setText(reviewCourse.getUserAnswer());
         holder.tvCorrectAnswer.setText(reviewCourse.getCorrectAnswer());
-        holder.btnSpeak.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                interface_course.onClickItemCourse(reviewCourse.getCorrectAnswer());
-            }
-        });
-        //xử lí khi click item learn:
-        holder.cardView.setOnClickListener(v -> {
-
-        });
+        holder.btnSpeak.setOnClickListener(v -> interface_course.onClickItemCourse(reviewCourse.getCorrectAnswer()));
     }
     //trả về số phần tử của list
     @Override
