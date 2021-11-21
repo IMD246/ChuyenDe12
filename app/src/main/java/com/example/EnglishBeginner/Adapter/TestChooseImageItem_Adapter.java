@@ -61,7 +61,7 @@ public class TestChooseImageItem_Adapter extends RecyclerView.Adapter<TestChoose
         holder.linearLayout.setOnClickListener(v -> {
             if (interface_learn!=null)
             {
-                interface_learn.onClickItemLearn(answer);
+                interface_learn.onClickItemLearn(answer.getAnswerQuestion().trim());
             }
             if (holder.getAdapterPosition() == previousPosition){
                 v = Objects.requireNonNull(recyclerView.findViewHolderForAdapterPosition(previousPosition)).itemView;
@@ -99,6 +99,6 @@ public class TestChooseImageItem_Adapter extends RecyclerView.Adapter<TestChoose
         }
     }
     public interface interface_Test {
-        void onClickItemLearn(Answer answer);
+        void onClickItemLearn(String answerQuestion);
     }
 }

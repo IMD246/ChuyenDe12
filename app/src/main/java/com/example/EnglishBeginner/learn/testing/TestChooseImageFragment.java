@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,25 +17,32 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.EnglishBeginner.Adapter.TestChooseImageItem_Adapter;
-import com.example.EnglishBeginner.DAO.DAOAnswer;
 import com.example.EnglishBeginner.DTO.Answer;
 import com.example.EnglishBeginner.DTO.Question;
 import com.example.EnglishBeginner.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class TestChooseImageFragment extends Fragment implements TextToSpeech.OnInitListener{
     //khai báo
     private View myView;
 
-    private ImageView imgExit, imgSpeak;
+    private ImageView imgSpeak;
     private TextView tvQuestion;
     private RecyclerView recyclerViewAnswer;
-    private ProgressBar progressBar;
-    private DAOAnswer daoAnswer;
+    private List<Answer> answerList;
+    private DatabaseReference databaseReference;
     private TestChooseImageItem_Adapter testChooseImageItem_adapter;
     private TestEnglishActivity testEnglishActivity;
     private Question question;
+    private GridLayoutManager gridLayoutManager;
     private TextToSpeech textToSpeech;
     @Nullable
     @Override
@@ -56,36 +62,44 @@ public class TestChooseImageFragment extends Fragment implements TextToSpeech.On
     private void setControl() {
         //ánh xạ các view
         textToSpeech = new TextToSpeech(getContext(),this);
-        daoAnswer = new DAOAnswer(getContext());
-        testEnglishActivity = (TestEnglishActivity) getActivity();
-        recyclerViewAnswer = myView.findViewById(R.id.recycle_view_button_answer);
-        testChooseImageItem_adapter = new TestChooseImageItem_Adapter(testEnglishActivity.getApplicationContext(), recyclerViewAnswer);
-        testChooseImageItem_adapter.setAnswerList(daoAnswer.getAnswerList());
+        answerList = new ArrayList<>();
+        databaseReference = FirebaseDatabase.getInstance().getReference("listquestion");
         imgSpeak = myView.findViewById(R.id.img_listen);
         tvQuestion = myView.findViewById(R.id.tv_question);
-
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(testEnglishActivity.getApplicationContext(),2);
-        recyclerViewAnswer.setLayoutManager(gridLayoutManager);
-        recyclerViewAnswer.setAdapter(testChooseImageItem_adapter);
-        testChooseImageItem_adapter.setInterface_learn(new TestChooseImageItem_Adapter.interface_Test() {
-            @Override
-            public void onClickItemLearn(Answer answer) {
-                if (answer!=null)
-                {
-                    testEnglishActivity.answer = answer.getAnswerQuestion();
-                }
-            }
-        });
-        imgSpeak.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                texttoSpeak();
-            }
-        });
+        testEnglishActivity = (TestEnglishActivity) getActivity();
+        recyclerViewAnswer = myView.findViewById(R.id.recycle_view_button_answer);
+        testChooseImageItem_adapter = new TestChooseImageItem_Adapter(getContext(), recyclerViewAnswer);
+        gridLayoutManager = new GridLayoutManager(getContext(),2);
+        imgSpeak.setOnClickListener(v -> texttoSpeak());
     }
     private void getDataAnswer(int idQuestion)
     {
-        daoAnswer.getDataFromFirebase(idQuestion,testChooseImageItem_adapter);
+        databaseReference.child(idQuestion+"/listanswer").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (answerList != null)
+                {
+                    answerList.clear();
+                }
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Answer answer = dataSnapshot.getValue(Answer.class);
+                    answerList.add(answer);
+                }
+                testChooseImageItem_adapter.setAnswerList(answerList);
+                recyclerViewAnswer.setLayoutManager(gridLayoutManager);
+                recyclerViewAnswer.setAdapter(testChooseImageItem_adapter);
+                testChooseImageItem_adapter.notifyDataSetChanged();
+                testChooseImageItem_adapter.setInterface_learn(answer -> {
+                    if (answer!=null)
+                    {
+                        testEnglishActivity.answer = answer.trim();
+                    }
+                });
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
     }
     @Override
     public void onInit(int status) {

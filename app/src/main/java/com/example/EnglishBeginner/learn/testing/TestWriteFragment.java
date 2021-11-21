@@ -64,7 +64,7 @@ public class TestWriteFragment extends Fragment implements TextToSpeech.OnInitLi
                 answer = edtAnswer.getText().toString();
                 if (answer!=null || answer.trim().length()>0)
                 {
-                    testEnglishActivity.answer = answer;
+                    testEnglishActivity.answer = edtAnswer.getText().toString().trim();
                 }
             }
 

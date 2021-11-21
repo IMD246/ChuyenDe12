@@ -171,13 +171,10 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
                 testChooseImageFragment.setArguments(bundle);
                 if (count == 0 && countSkip == 0) {
                     fragmentTransaction.add(R.id.frameLayout_Fragment, testChooseImageFragment).commit();
-                }
-                else if (count == 0 && countSkip>0)
-                {
+                } else if (count == 0 && countSkip > 0) {
                     fragmentTransaction.replace(R.id.frameLayout_Fragment, testChooseImageFragment).commit();
                     countSkip = 0;
-                }
-                else {
+                } else {
                     fragmentTransaction.replace(R.id.frameLayout_Fragment, testChooseImageFragment).commit();
                 }
             } else if (question.getNameTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.LISTEN)) {
@@ -185,13 +182,10 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
                 testListenFragment.setArguments(bundle);
                 if (count == 0 && countSkip == 0) {
                     fragmentTransaction.add(R.id.frameLayout_Fragment, testListenFragment).commit();
-                }
-                else if (count == 0 && countSkip>0)
-                {
+                } else if (count == 0 && countSkip > 0) {
                     fragmentTransaction.replace(R.id.frameLayout_Fragment, testListenFragment).commit();
                     countSkip = 0;
-                }
-                else{
+                } else {
                     fragmentTransaction.replace(R.id.frameLayout_Fragment, testListenFragment).commit();
                 }
             } else if (question.getNameTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.WRITE)) {
@@ -199,28 +193,21 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
                 testWriteFragment.setArguments(bundle);
                 if (count == 0 && countSkip == 0) {
                     fragmentTransaction.add(R.id.frameLayout_Fragment, testWriteFragment).commit();
-                }
-                else if (count == 0 && countSkip>0)
-                {
+                } else if (count == 0 && countSkip > 0) {
                     fragmentTransaction.replace(R.id.frameLayout_Fragment, testWriteFragment).commit();
                     countSkip = 0;
-                }
-                else{
+                } else {
                     fragmentTransaction.replace(R.id.frameLayout_Fragment, testWriteFragment).commit();
                 }
-            }
-            else if (question.getNameTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.READ)) {
+            } else if (question.getNameTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.READ)) {
                 TestSelectionEnglishFragment testSelectionFragment = new TestSelectionEnglishFragment();
                 testSelectionFragment.setArguments(bundle);
                 if (count == 0 && countSkip == 0) {
                     fragmentTransaction.add(R.id.frameLayout_Fragment, testSelectionFragment).commit();
-                }
-                else if (count == 0 && countSkip>0)
-                {
+                } else if (count == 0 && countSkip > 0) {
                     fragmentTransaction.replace(R.id.frameLayout_Fragment, testSelectionFragment).commit();
                     countSkip = 0;
-                }
-                else{
+                } else {
                     fragmentTransaction.replace(R.id.frameLayout_Fragment, testSelectionFragment).commit();
                 }
             }
@@ -230,13 +217,10 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
             learningEnglishFragment.setArguments(bundle);
             if (count == 0 && countSkip == 0) {
                 fragmentTransaction.add(R.id.frameLayout_Fragment, learningEnglishFragment).commit();
-            }
-            else if (count == 0 && countSkip>0)
-            {
+            } else if (count == 0 && countSkip > 0) {
                 fragmentTransaction.replace(R.id.frameLayout_Fragment, learningEnglishFragment).commit();
                 countSkip = 0;
-            }
-            else {
+            } else {
                 fragmentTransaction.replace(R.id.frameLayout_Fragment, learningEnglishFragment).commit();
             }
         }
@@ -251,15 +235,15 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.btn_pass:
                 if (arrayListQuestion.size() < 10) {
-                    if (count >= arrayListQuestion.size()){
+                    if (count >= arrayListQuestion.size()) {
                         alertDialogReviewCourse();
-                    }else{
+                    } else {
                         skipQuestion();
                     }
-                }else{
+                } else {
                     if (count < 10) {
                         skipQuestion();
-                    }else {
+                    } else {
                         alertDialogReviewCourse();
                     }
                 }
@@ -310,12 +294,13 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
         if (requestCode == RESULT_SPEECH) {
             if (resultCode == Activity.RESULT_OK && data != null) {
                 ArrayList<String> text = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                if (corectAnswer != null){
+                if (corectAnswer != null) {
                     corectAnswer = text.get(0);
                 }
             }
         }
     }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void submitResult() {
         ReviewCourse reviewCourse = new ReviewCourse();
@@ -326,28 +311,24 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
                 reviewCourse.setUserAnswer(answer);
                 reviewCourse.setTypeQuestion(question.getNameTypeQuestion());
                 if (answer == null) {
-                    alertDialog("Không chính xác", false,1);
+                    alertDialog("Không chính xác", false, 1);
                     reviewCourse.setCheck(false);
                 } else {
-                    Log.d("testanswer", "submitResult: "+answer);
-                    if (answer.trim().equalsIgnoreCase(correctQuestion)) {
-                        alertDialog("Chính xác", true,1);
+                    if (answer.trim().equalsIgnoreCase(correctQuestion.trim())) {
+                        alertDialog("Chính xác", true, 1);
                         countcorrect++;
                         reviewCourse.setCheck(true);
                     } else {
-                        alertDialog("Không chính xác", false,1);
+                        alertDialog("Không chính xác", false, 1);
                         reviewCourse.setCheck(false);
                     }
-                    answer = null;
+                    answer = "";
                 }
-                Log.d("SINH", "submitResult: "+ reviewCourse.getTypeQuestion() +"\n" + reviewCourse.isCheck());
-                Log.d("SINH", "submitResult: "+ question.getNameTypeQuestion());
                 reviewCourseArrayList.add(reviewCourse);
             } else if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.LEARN)) {
                 countcorrect++;
                 alertDialog("Đã hoàn thành phần học", true, 1);
             }
-
         } else {
             startActivity(new Intent(TestEnglishActivity.this, UserInterfaceActivity.class));
         }
@@ -392,8 +373,7 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
         btnContinueNotify.setOnClickListener(v ->
         {
             if (choice == 1) {
-                if (count > 0)
-                {
+                if (count > 0) {
                     new CountDownTimer(2000, 1000) {
                         public void onTick(long millisUntilFinished) {
                             btnPass.setEnabled(false);
@@ -406,13 +386,10 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
                             processLearn();
                         }
                     }.start();
-                }
-                else {
+                } else {
                     processLearn();
                 }
-            }
-            else if (choice == 2)
-            {
+            } else if (choice == 2) {
                 new CountDownTimer(2000, 1000) {
                     public void onTick(long millisUntilFinished) {
                         btnPass.setEnabled(false);

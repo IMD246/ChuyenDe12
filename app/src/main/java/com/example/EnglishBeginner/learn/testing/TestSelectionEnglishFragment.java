@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.EnglishBeginner.Adapter.UserChooseEnglishAdapter;
 import com.example.EnglishBeginner.Adapter.UserHadChooseEnglishAdapter;
-import com.example.EnglishBeginner.DAO.DAOAnswer;
 import com.example.EnglishBeginner.DTO.Answer;
 import com.example.EnglishBeginner.DTO.Question;
 import com.example.EnglishBeginner.R;
@@ -47,7 +46,6 @@ public class TestSelectionEnglishFragment extends Fragment implements TextToSpee
     private UserChooseEnglishAdapter userChooseEnglishAdapter;
     private UserHadChooseEnglishAdapter userHadChooseEnglishAdapter;
     private Question question;
-    private DAOAnswer daoAnswer;
     private TestEnglishActivity testEnglishActivity;
     private DatabaseReference databaseReference;
     protected static final int RESULT_SPEECH = 1;
@@ -110,7 +108,6 @@ public class TestSelectionEnglishFragment extends Fragment implements TextToSpee
     private void setControl() {
         textToSpeech = new TextToSpeech(getContext(), this);
         testEnglishActivity = (TestEnglishActivity) getActivity();
-        daoAnswer = new DAOAnswer(testEnglishActivity.getBaseContext());
         listUserHadChoose = new ArrayList<>();
         //ánh xạ các view
         imgSpeak = myView.findViewById(R.id.img_Listen);
@@ -121,7 +118,7 @@ public class TestSelectionEnglishFragment extends Fragment implements TextToSpee
 
     private void getDataAnswer(int idQuestion) {
         databaseReference = FirebaseDatabase.getInstance().getReference("listquestion");
-        databaseReference.child(idQuestion + "/listanswer").addValueEventListener(new ValueEventListener() {
+        databaseReference.child(idQuestion + "/listanswer").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String answerString = "";
@@ -146,8 +143,9 @@ public class TestSelectionEnglishFragment extends Fragment implements TextToSpee
                 }
                 userChooseEnglishAdapter = new UserChooseEnglishAdapter(getContext(), listUserHadChoose, arrayList);
                 userHadChooseEnglishAdapter = new UserHadChooseEnglishAdapter(getContext(), listUserHadChoose, arrayList);
-                //gán adapter cho Recyclerview.
                 rv_listForUserToChoose.setAdapter(userChooseEnglishAdapter);
+                userChooseEnglishAdapter.notifyDataSetChanged();
+                //gán adapter cho Recyclerview.
                 rv_listThatUserHadChoose.setAdapter(userHadChooseEnglishAdapter);//gán adapter cho Recyclerview.
                 userHadChooseEnglishAdapter.setNotifyData(new UserHadChooseEnglishAdapter.notifyData() {
                     @Override
