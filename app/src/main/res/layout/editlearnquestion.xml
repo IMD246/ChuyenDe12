@@ -102,15 +102,16 @@
             <ImageView
                 android:id="@+id/imgEditQuestion"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="120dp"
+                android:layout_weight="1"
                 android:src="@drawable/ic_search" />
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnPickImageQuestion"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_weight="1"
                 android:background="@drawable/bg_yellow_corner_10"
                 android:text="@string/ch_n_nh"
                 android:textColor="@color/black"

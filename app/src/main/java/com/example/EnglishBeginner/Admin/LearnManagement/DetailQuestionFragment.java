@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -232,10 +234,25 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         if (question != null) {
             spnTopic.setSelection(getSelectedSpinner(spnTopic, question.getNameTopic()));
             spnTypeQuestion.setSelection(getSelectedSpinner(spnTopic, question.getNameTypeQuestion()));
-            svTitleQuestion.setText(question.getWord());
-            CharSequence charSequence = question.getTitle();
+            svTitleQuestion.setText(question.getTitle());
             edtCorrectAnswer.setText(question.getCorrectAnswer());
         }
+        svTitleQuestion.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                edtCorrectAnswer.setText("");
+            }
+        });
         btnNo.setOnClickListener(v -> dialog.dismiss());
         btnYes.setOnClickListener(v -> {
             Question question1 = new Question();
@@ -251,10 +268,32 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
                     break;
                 }
             }
-            if (getContext()!=null) {
-                daoQuestion.setContext(getContext());
-                daoQuestion.editDataToFireBase(question1, svTitleQuestion, edtCorrectAnswer, tvTitle, tvCorrectAnswer);
-            }
+            daoQuestion.setContext(getContext());
+            databaseReference.orderByChild("word").equalTo(question1.getTitle()).
+                    addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            Word word = dataSnapshot.getValue(Word.class);
+                            question1.setWord(word.getWord());
+                            question1.setTypeWord(word.getTypeWord());
+                            question1.setWordMeaning(word.getMeaning());
+                        }
+                    }
+                    else
+                    {
+                        question1.setWord("");
+                        question1.setTypeWord("");
+                        question1.setWordMeaning("");
+                    }
+                    daoQuestion.editDataToFireBase(question1, svTitleQuestion, edtCorrectAnswer, tvTitle, tvCorrectAnswer);
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
         });
         dialog.show();
     }

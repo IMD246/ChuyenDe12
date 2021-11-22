@@ -83,7 +83,14 @@ public class LearnQuestionAdapter extends RecyclerView.Adapter<LearnQuestionAdap
         holder.tvTitle.setText("Câu hỏi: " + question.getTitle());
         holder.tvNameTopic.setText("Chủ đề: " + question.getNameTopic());
         holder.tvTypeQuestion.setText("Loại câu hỏi: " + question.getNameTypeQuestion());
-        holder.tvWord.setText("Từ vựng: " + question.getWord() + " (" + question.getTypeWord() + ")");
+        if (question.getWord().isEmpty())
+        {
+            holder.tvWord.setText("Từ vựng: " + DEFAULTVALUE.DEFAULTVALUE + " (" + DEFAULTVALUE.DEFAULTVALUE + ")");
+        }
+        else
+        {
+            holder.tvWord.setText("Từ vựng: " + question.getWord() + " (" + question.getTypeWord() + ")");
+        }
         holder.tvWordMeaning.setText("Nghĩa của từ: " + question.getWordMeaning());
         holder.tvExample.setText("Ví dụ: " + question.getExample());
         holder.tvExampleMeaning.setText("Nghĩa ví dụ: " + question.getExampleMeaning());

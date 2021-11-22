@@ -5,15 +5,6 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Parcelable;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,13 +20,19 @@ import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Spinner;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.EnglishBeginner.Admin.Adapter.QuestionAdapter;
 import com.example.EnglishBeginner.Admin.Adapter.TopicSpinnerAdapter;
 import com.example.EnglishBeginner.Admin.Adapter.TypeQuestionSpinnerAdapter;
 import com.example.EnglishBeginner.Admin.DAO.DAOQuestion;
+import com.example.EnglishBeginner.Admin.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.Admin.DTO.Question;
 import com.example.EnglishBeginner.Admin.DTO.Topic;
-import com.example.EnglishBeginner.Admin.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.Admin.DTO.Word;
 import com.example.EnglishBeginner.R;
 import com.google.firebase.database.DataSnapshot;
@@ -58,6 +55,7 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
     String topic = DEFAULTVALUE.TOPIC, typeQuestion = DEFAULTVALUE.TYPEQUESTION;
     private QuestionAdapter questionAdapter;
     private View v;
+    private int check = 0;
 
     public QuestionManagementFragment() {
         daoQuestion = new DAOQuestion(getContext());
@@ -72,10 +70,11 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
         getDataFromRealTime();
         return v;
     }
+
     @Override
     public void onResume() {
         super.onResume();
-        List<String>list = Arrays.asList(getResources().getStringArray(R.array.typeQuestion));
+        List<String> list = Arrays.asList(getResources().getStringArray(R.array.typeQuestion));
         atcTypeQuestion.setAdapter(new TypeQuestionSpinnerAdapter(getContext(), R.layout.listoptionitem,
                 R.id.tvOptionItem, list));
         atcTopic.setAdapter(new TopicSpinnerAdapter(getContext(), R.layout.listoptionitem,
@@ -100,6 +99,7 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
             public void editItem(Question question) {
                 questionInterface.goToDetailQuestionFragment(question);
             }
+
             @Override
             public void deleteItem(Question question) {
                 alertDialog(question);
@@ -120,9 +120,8 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
         atcTypeQuestion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (atcTypeQuestion.getText().toString().isEmpty())
-                {}
-                else {
+                if (atcTypeQuestion.getText().toString().isEmpty()) {
+                } else {
                     typeQuestion = atcTypeQuestion.getText().toString();
                     questionAdapter.setListDependOnTopicAndTypeQuestion(topic, typeQuestion);
                 }
@@ -131,44 +130,43 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
         atcTopic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (atcTopic.getText().toString().isEmpty())
-                {
-                }
-                else {
+                if (atcTopic.getText().toString().isEmpty()) {
+                } else {
                     topic = atcTopic.getText().toString();
                     questionAdapter.setListDependOnTopicAndTypeQuestion(topic, typeQuestion);
                 }
             }
         });
     }
+
     // Xây dựng một Hộp thoại thông báo
     private void alertDialog(Question question) {
-            AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
-            builder1.setMessage("Bạn có muốn xóa không?");
-            builder1.setCancelable(true);
-            builder1.setPositiveButton(
-                    "Có",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            daoQuestion.setContext(getContext());
-                            daoQuestion.deleteDataToFire(question);
-                        }
-                    });
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+        builder1.setMessage("Bạn có muốn xóa không?");
+        builder1.setCancelable(true);
+        builder1.setPositiveButton(
+                "Có",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        daoQuestion.setContext(getContext());
+                        daoQuestion.deleteDataToFire(question);
+                    }
+                });
 
-            builder1.setNegativeButton(
-                    "Không",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
+        builder1.setNegativeButton(
+                "Không",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
 
-            AlertDialog alert11 = builder1.create();
-            alert11.show();
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
     }
 
     private void getDataFromRealTime() {
-        daoQuestion.getDataFromRealTimeToList(questionAdapter,null);
+        daoQuestion.getDataFromRealTimeToList(questionAdapter, null);
     }
 
     @Override
@@ -205,18 +203,17 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (listWord!=null)
-                {
+                if (listWord != null) {
                     listWord.clear();
                 }
-                for (DataSnapshot dataSnapshot : snapshot.getChildren())
-                {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Word word = dataSnapshot.getValue(Word.class);
                     listWord.add(word.getWord());
                 }
-                ArrayAdapter<String>arrayAdapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_list_item_1,listWord);
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, listWord);
                 svTitleQuestion.setAdapter(arrayAdapter);
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -226,7 +223,7 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
         Spinner spnTopic = dialog.findViewById(R.id.spnQuestion_Topic);
         Spinner spnTypeQuestion = dialog.findViewById(R.id.spnQuestion_TypeQuestion);
         List<String> listTopic = new ArrayList<>();
-        List<String>list = Arrays.asList(getResources().getStringArray(R.array.typeQuestion));
+        List<String> list = Arrays.asList(getResources().getStringArray(R.array.typeQuestion));
         Button btnYes = dialog.findViewById(R.id.btnYes);
         Button btnNo = dialog.findViewById(R.id.btnNo);
         btnYes.setText("Add");
@@ -238,11 +235,9 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
         btnNo.setOnClickListener(v -> dialog.dismiss());
         btnYes.setOnClickListener(v -> {
             Question question = new Question();
-            if (daoQuestion.getQuestionList().size()>0) {
+            if (daoQuestion.getQuestionList().size() > 0) {
                 question.setId(daoQuestion.getQuestionList().get(daoQuestion.getQuestionList().size() - 1).getId() + 1);
-                Log.d("Test", "openDialog: ");
-            }
-            else {
+            } else {
                 question.setId(1);
             }
             question.setTitle(svTitleQuestion.getText().toString());
@@ -256,7 +251,26 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
                 }
             }
             daoQuestion.setContext(getContext());
-            daoQuestion.addDataToFireBase(question, svTitleQuestion,edtCorrectAnswer);
+            databaseReference.orderByChild("word").equalTo(question.getTitle()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()) {
+                                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                    Word word = dataSnapshot.getValue(Word.class);
+                                    question.setWord(word.getWord());
+                                    question.setCorrectAnswer(word.getMeaning());
+                                    question.setTypeWord(word.getTypeWord());
+                                    question.setWordMeaning(word.getMeaning());
+                                }
+                            }
+                            daoQuestion.addDataToFireBase(question, svTitleQuestion, edtCorrectAnswer);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
         });
         dialog.show();
     }

@@ -123,7 +123,6 @@ public class WordToeicIetlsAdapter extends RecyclerView.Adapter<WordToeicIetlsAd
                 filterResults.values = wordList;
                 return filterResults;
             }
-
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 wordList = (List<Word>) results.values;

@@ -5,8 +5,8 @@ import java.io.Serializable;
 public class Question implements Serializable {
     private int id,idTopic;
     private String title,nameTopic,nameTypeQuestion,correctAnswer,
-            example= DEFAULTVALUE.DEFAULTVALUE,exampleMeaning=DEFAULTVALUE.DEFAULTVALUE,word = DEFAULTVALUE.DEFAULTVALUE,wordMeaning = DEFAULTVALUE.DEFAULTVALUE,
-            typeWord = DEFAULTVALUE.DEFAULTVALUE,grammar= DEFAULTVALUE.DEFAULTVALUE,urlImage="";
+            example= "",exampleMeaning="",word = "",wordMeaning = "",
+            typeWord = "",grammar= "",urlImage="";
     public Question(int id, int idTopic, String title, String nameTopic, String nameTypeQuestion,
                     String correctAnswer) {
         this.id = id;
