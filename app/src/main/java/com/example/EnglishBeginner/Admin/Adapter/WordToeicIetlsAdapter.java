@@ -12,8 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.EnglishBeginner.Admin.DTO.Word;
 import com.example.EnglishBeginner.Admin.DTO.DEFAULTVALUE;
+import com.example.EnglishBeginner.Admin.DTO.Word;
 import com.example.EnglishBeginner.R;
 
 import java.util.ArrayList;
@@ -24,7 +24,8 @@ public class WordToeicIetlsAdapter extends RecyclerView.Adapter<WordToeicIetlsAd
     private Context context;
     private List<Word> wordList;
     private List<Word> wordListOld;
-
+    private String typeWordOld = DEFAULTVALUE.ALL;
+    private String keyWord = "";
     private MyDelegationLevel myDelegationLevel;
 
     public void setMyDelegationLevel(MyDelegationLevel myDelegationLevel) {
@@ -41,16 +42,26 @@ public class WordToeicIetlsAdapter extends RecyclerView.Adapter<WordToeicIetlsAd
     }
 
     public void setListDependOnTypeWord(@NonNull String typeWord) {
+        typeWordOld = typeWord;
         if (wordList.size() == 0) {
             wordList = wordListOld;
         }
-        if (typeWord.equalsIgnoreCase(DEFAULTVALUE.TYPEWORD)) {
+        if (typeWord.equalsIgnoreCase(DEFAULTVALUE.ALL) && keyWord.isEmpty()) {
             wordList = wordListOld;
         } else {
             List<Word> list = new ArrayList<>();
             for (Word word : wordListOld) {
-                if (word.getTypeWord().equalsIgnoreCase(typeWord)) {
-                    list.add(word);
+                if (!keyWord.isEmpty())
+                {
+                    if (word.getTypeWord().equalsIgnoreCase(typeWord) &&
+                            word.getWord().toLowerCase().contains(keyWord.toLowerCase())) {
+                        list.add(word);
+                    }
+                }
+                else {
+                    if (word.getTypeWord().equalsIgnoreCase(typeWord)) {
+                        list.add(word);
+                    }
                 }
             }
             wordList = list;
@@ -106,15 +117,23 @@ public class WordToeicIetlsAdapter extends RecyclerView.Adapter<WordToeicIetlsAd
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 String strSearch = constraint.toString();
-                if (strSearch.isEmpty() || strSearch.length() == 0) {
-                    if (wordList.size() == 0) {
-                        wordList = wordListOld;
-                    }
+                keyWord = constraint.toString();
+                if (strSearch.isEmpty() && typeWordOld.equalsIgnoreCase(DEFAULTVALUE.ALL)) {
+                    wordList = wordListOld;
                 } else {
                     List<Word> list = new ArrayList<>();
-                    for (Word word : wordList) {
-                        if (word.getWord().toLowerCase().contains(strSearch.toLowerCase())) {
-                            list.add(word);
+                    for (Word word : wordListOld) {
+                        if (typeWordOld.equalsIgnoreCase(DEFAULTVALUE.ALL))
+                        {
+                            if (word.getWord().toLowerCase().contains(strSearch.toLowerCase())){
+                                list.add(word);
+                            }
+                        }
+                        else {
+                            if (word.getWord().toLowerCase().contains(strSearch.toLowerCase()) &&
+                                    word.getTypeWord().equalsIgnoreCase(typeWordOld)) {
+                                list.add(word);
+                            }
                         }
                     }
                     wordList = list;
@@ -123,6 +142,7 @@ public class WordToeicIetlsAdapter extends RecyclerView.Adapter<WordToeicIetlsAd
                 filterResults.values = wordList;
                 return filterResults;
             }
+
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 wordList = (List<Word>) results.values;

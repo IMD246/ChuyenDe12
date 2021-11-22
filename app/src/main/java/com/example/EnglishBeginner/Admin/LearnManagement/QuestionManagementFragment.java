@@ -1,5 +1,6 @@
 package com.example.EnglishBeginner.Admin.LearnManagement;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -19,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -30,6 +32,7 @@ import com.example.EnglishBeginner.Admin.Adapter.QuestionAdapter;
 import com.example.EnglishBeginner.Admin.Adapter.TopicSpinnerAdapter;
 import com.example.EnglishBeginner.Admin.Adapter.TypeQuestionSpinnerAdapter;
 import com.example.EnglishBeginner.Admin.DAO.DAOQuestion;
+import com.example.EnglishBeginner.Admin.DAO.DAOTopic;
 import com.example.EnglishBeginner.Admin.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.Admin.DTO.Question;
 import com.example.EnglishBeginner.Admin.DTO.Topic;
@@ -74,13 +77,8 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
     @Override
     public void onResume() {
         super.onResume();
-        List<String> list = Arrays.asList(getResources().getStringArray(R.array.typeQuestion));
-        atcTypeQuestion.setAdapter(new TypeQuestionSpinnerAdapter(getContext(), R.layout.listoptionitem,
-                R.id.tvOptionItem, list));
-        atcTopic.setAdapter(new TopicSpinnerAdapter(getContext(), R.layout.listoptionitem,
-                R.id.tvOptionItem, questionInterface.daoTopic.getTopicList()));
+        getDataFromRealTime();
     }
-
     private void initUI(View v) {
         questionInterface = (QuestionInterface) getActivity();
         RecyclerView rcvQuestion = v.findViewById(R.id.rcvQuestion);
@@ -167,6 +165,30 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
 
     private void getDataFromRealTime() {
         daoQuestion.getDataFromRealTimeToList(questionAdapter, null);
+        List<String> topicList = new ArrayList<>();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listtopic");
+        databaseReference.orderByChild("level").addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (topicList != null) {
+                    topicList.clear();
+                    topicList.add(DEFAULTVALUE.ALL);
+                }
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Topic topic = dataSnapshot.getValue(Topic.class);
+                    topicList.add(topic.getNameTopic());
+                }
+                atcTopic.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1,topicList));
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        List<String> list = Arrays.asList(getResources().getStringArray(R.array.typeQuestion));
+        atcTypeQuestion.setAdapter(new TypeQuestionSpinnerAdapter(getContext(), R.layout.listoptionitem,
+                R.id.tvOptionItem, list));
     }
 
     @Override

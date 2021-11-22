@@ -14,8 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.EnglishBeginner.Admin.DTO.Question;
 import com.example.EnglishBeginner.Admin.DTO.DEFAULTVALUE;
+import com.example.EnglishBeginner.Admin.DTO.Question;
 import com.example.EnglishBeginner.R;
 
 import java.util.ArrayList;
@@ -25,15 +25,18 @@ public class LearnQuestionAdapter extends RecyclerView.Adapter<LearnQuestionAdap
 
     private List<Question> questionList;
     private List<Question> questionListOld;
-
     private MyDelegationLevel myDelegationLevel;
+    private String typeTopicOld = DEFAULTVALUE.ALL;
+    private String typeQuestionOld = DEFAULTVALUE.ALL;
+    private String keyWord = "";
     private final Context context;
+
     public void setMyDelegationLevel(MyDelegationLevel myDelegationLevel) {
         this.myDelegationLevel = myDelegationLevel;
     }
 
     public LearnQuestionAdapter(Context context) {
-        this.context =context;
+        this.context = context;
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -42,23 +45,43 @@ public class LearnQuestionAdapter extends RecyclerView.Adapter<LearnQuestionAdap
         questionListOld = questionList;
         notifyDataSetChanged();
     }
+
     // Tìm kiếm dữ liệu dựa vào các options của menu
     @SuppressLint("NotifyDataSetChanged")
     public void setListDependOnTopicAndTypeQuestion(@NonNull String topic, @NonNull String typeQuestion) {
+        typeTopicOld = topic;
+        typeQuestionOld = typeQuestion;
         if (questionList.size() == 0) {
             questionList = questionListOld;
         }
-        if (topic.equalsIgnoreCase(DEFAULTVALUE.TOPIC) && typeQuestion.equalsIgnoreCase(DEFAULTVALUE.TYPEQUESTION)) {
+        if ((topic.equalsIgnoreCase(DEFAULTVALUE.ALL) &&
+                typeQuestion.equalsIgnoreCase(DEFAULTVALUE.ALL)) && keyWord.isEmpty()) {
             questionList = questionListOld;
         } else {
             List<Question> list = new ArrayList<>();
             for (Question question : questionListOld) {
-                if (question.getNameTopic().equalsIgnoreCase(topic) && question.getNameTypeQuestion().equalsIgnoreCase(typeQuestion)) {
-                    list.add(question);
-                } else if (question.getNameTypeQuestion().equalsIgnoreCase(typeQuestion) && topic.equalsIgnoreCase(DEFAULTVALUE.TOPIC)) {
-                    list.add(question);
-                } else if (typeQuestion.equalsIgnoreCase(DEFAULTVALUE.TYPEQUESTION) && question.getNameTopic().equalsIgnoreCase(topic)) {
-                    list.add(question);
+                if (!keyWord.isEmpty()) {
+                    if (question.getNameTopic().equalsIgnoreCase(topic)
+                            && question.getNameTypeQuestion().equalsIgnoreCase(typeQuestion) &&
+                            question.getTitle().toLowerCase().contains(keyWord.toLowerCase())) {
+                        list.add(question);
+                    } else if (question.getNameTypeQuestion().equalsIgnoreCase(typeQuestion)
+                            && topic.equalsIgnoreCase(DEFAULTVALUE.ALL) &&
+                            question.getTitle().toLowerCase().contains(keyWord.toLowerCase())) {
+                        list.add(question);
+                    } else if (typeQuestion.equalsIgnoreCase(DEFAULTVALUE.ALL) &&
+                            question.getNameTopic().equalsIgnoreCase(topic) &&
+                            question.getTitle().toLowerCase().contains(keyWord.toLowerCase())) {
+                        list.add(question);
+                    }
+                } else {
+                    if (question.getNameTopic().equalsIgnoreCase(topic) && question.getNameTypeQuestion().equalsIgnoreCase(typeQuestion)) {
+                        list.add(question);
+                    } else if (question.getNameTypeQuestion().equalsIgnoreCase(typeQuestion) && topic.equalsIgnoreCase(DEFAULTVALUE.ALL)) {
+                        list.add(question);
+                    } else if (typeQuestion.equalsIgnoreCase(DEFAULTVALUE.ALL) && question.getNameTopic().equalsIgnoreCase(topic)) {
+                        list.add(question);
+                    }
                 }
             }
             questionList = list;
@@ -83,20 +106,16 @@ public class LearnQuestionAdapter extends RecyclerView.Adapter<LearnQuestionAdap
         holder.tvTitle.setText("Câu hỏi: " + question.getTitle());
         holder.tvNameTopic.setText("Chủ đề: " + question.getNameTopic());
         holder.tvTypeQuestion.setText("Loại câu hỏi: " + question.getNameTypeQuestion());
-        if (question.getWord().isEmpty())
-        {
+        if (question.getWord().isEmpty()) {
             holder.tvWord.setText("Từ vựng: " + DEFAULTVALUE.DEFAULTVALUE + " (" + DEFAULTVALUE.DEFAULTVALUE + ")");
-        }
-        else
-        {
+        } else {
             holder.tvWord.setText("Từ vựng: " + question.getWord() + " (" + question.getTypeWord() + ")");
         }
         holder.tvWordMeaning.setText("Nghĩa của từ: " + question.getWordMeaning());
         holder.tvExample.setText("Ví dụ: " + question.getExample());
         holder.tvExampleMeaning.setText("Nghĩa ví dụ: " + question.getExampleMeaning());
         holder.tvGrammar.setText("Ngữ pháp: " + question.getGrammar());
-        if (question.getUrlImage().trim().length()>0||!(question.getUrlImage().isEmpty()))
-        {
+        if (question.getUrlImage().trim().length() > 0 || !(question.getUrlImage().isEmpty())) {
             Glide.with(context).load(question.getUrlImage()).into(holder.imgLearnQuestion);
         }
         holder.onClickListener = v -> {
@@ -115,6 +134,7 @@ public class LearnQuestionAdapter extends RecyclerView.Adapter<LearnQuestionAdap
         }
         return 0;
     }
+
     // hàm tìm kiếm gần đúng với từng keyword mà người dùng nhập vào
     @Override
     public Filter getFilter() {
@@ -122,15 +142,39 @@ public class LearnQuestionAdapter extends RecyclerView.Adapter<LearnQuestionAdap
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 String strSearch = constraint.toString();
-                if (strSearch.isEmpty()) {
-                    if (questionList.size() == 0) {
-                        questionList = questionListOld;
-                    }
+                keyWord = constraint.toString();
+                if (strSearch.isEmpty() && typeQuestionOld.equalsIgnoreCase(DEFAULTVALUE.ALL)
+                        && typeTopicOld.equalsIgnoreCase(DEFAULTVALUE.ALL)) {
+                    questionList = questionListOld;
                 } else {
                     List<Question> list = new ArrayList<>();
                     for (Question question : questionList) {
-                        if (question.getTitle().toLowerCase().contains(strSearch.toLowerCase())) {
-                            list.add(question);
+                        if (!(strSearch.isEmpty())) {
+                            if (typeQuestionOld.equalsIgnoreCase(DEFAULTVALUE.ALL) && typeTopicOld.equalsIgnoreCase(DEFAULTVALUE.ALL)) {
+                                if (question.getTitle().toLowerCase().contains(strSearch.toLowerCase())) {
+                                    list.add(question);
+                                }
+                            } else if (typeTopicOld.equalsIgnoreCase(DEFAULTVALUE.ALL) && !(typeTopicOld.equalsIgnoreCase(DEFAULTVALUE.ALL))) {
+                                if (question.getTitle().toLowerCase().contains(strSearch.toLowerCase())
+                                        && question.getNameTopic().equalsIgnoreCase(typeTopicOld)) {
+                                    list.add(question);
+                                }
+                            } else {
+                                if (question.getTitle().toLowerCase().contains(strSearch.toLowerCase())
+                                        && question.getNameTypeQuestion().equalsIgnoreCase(typeQuestionOld)) {
+                                    list.add(question);
+                                }
+                            }
+                        } else {
+                            if (typeTopicOld.equalsIgnoreCase(DEFAULTVALUE.ALL) && !(typeTopicOld.equalsIgnoreCase(DEFAULTVALUE.ALL))) {
+                                if (question.getNameTopic().equalsIgnoreCase(typeTopicOld)) {
+                                    list.add(question);
+                                }
+                            } else {
+                                if (question.getNameTypeQuestion().equalsIgnoreCase(typeQuestionOld)) {
+                                    list.add(question);
+                                }
+                            }
                         }
                     }
                     questionList = list;
@@ -139,6 +183,7 @@ public class LearnQuestionAdapter extends RecyclerView.Adapter<LearnQuestionAdap
                 filterResults.values = questionList;
                 return filterResults;
             }
+
             @SuppressLint("NotifyDataSetChanged")
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {

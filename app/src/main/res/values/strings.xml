@@ -43,12 +43,14 @@
     <string name="c_u_tr_l_i">Câu trả lời</string>
     <string name="NhapCauHoi">Nhập Câu Hỏi</string>
     <array name="typeWord">
+        <item>All</item>
         <item>Nouns</item>
         <item>Verbs</item>
         <item>Adjective</item>
         <item>Adverb</item>
     </array>
     <array name="typeQuestion">
+        <item>All</item>
         <item>Read</item>
         <item>Write</item>
         <item>Listen</item>

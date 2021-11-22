@@ -13,8 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.EnglishBeginner.Admin.DTO.Topic;
 import com.example.EnglishBeginner.Admin.DTO.DEFAULTVALUE;
+import com.example.EnglishBeginner.Admin.DTO.Topic;
 import com.example.EnglishBeginner.R;
 
 import java.util.ArrayList;
@@ -25,6 +25,8 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
     private Context context;
     private List<Topic> topicList;
     private List<Topic> topicListOld;
+    private String level = DEFAULTVALUE.ALL;
+    private String keyWord = "";
 
     private MyDelegationLevel myDelegationLevel;
 
@@ -43,16 +45,32 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
     }
 
     public void setTopicListDependOnLevel(@NonNull String level) {
+        this.level = level;
         if (topicList.size() == 0) {
             topicList = topicListOld;
         }
-        if (level.equals(DEFAULTVALUE.LEVELLABEL.trim())) {
+        if (level.equalsIgnoreCase(DEFAULTVALUE.ALL) && keyWord.isEmpty()) {
             topicList = topicListOld;
         } else {
             List<Topic> list = new ArrayList<>();
             for (Topic topic : topicListOld) {
-                if (topic.getLevel() == Integer.parseInt(level.toLowerCase().trim())) {
-                    list.add(topic);
+                if (!keyWord.isEmpty()) {
+                    if (level.equalsIgnoreCase(DEFAULTVALUE.ALL)) {
+                        if (topic.getNameTopic().toLowerCase().contains(keyWord.toLowerCase())){
+                            list.add(topic);
+                        }
+                    }
+                    else
+                    {
+                        if (topic.getNameTopic().toLowerCase().contains(keyWord.toLowerCase())
+                                && topic.getLevel() == Integer.parseInt(level)) {
+                            list.add(topic);
+                        }
+                    }
+                } else {
+                    if (topic.getLevel() == Integer.parseInt(level.toLowerCase())) {
+                        list.add(topic);
+                    }
                 }
             }
             topicList = list;
@@ -111,15 +129,21 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 String strSearch = constraint.toString();
-                if (strSearch.isEmpty() || strSearch.length() == 0) {
-                    if (topicList.size() == 0) {
-                        topicList = topicListOld;
-                    }
+                keyWord = constraint.toString();
+                if (strSearch.isEmpty() && level.equalsIgnoreCase(DEFAULTVALUE.ALL)) {
+                    topicList = topicListOld;
                 } else {
                     List<Topic> list = new ArrayList<>();
-                    for (Topic topic : topicList) {
-                        if (topic.getNameTopic().toLowerCase().contains(strSearch.toLowerCase())) {
-                            list.add(topic);
+                    for (Topic topic : topicListOld) {
+                        if (level.equalsIgnoreCase(DEFAULTVALUE.ALL)) {
+                            if (topic.getNameTopic().toLowerCase().contains(strSearch.toLowerCase())) {
+                                list.add(topic);
+                            }
+                        } else {
+                            if (topic.getLevel() == Integer.parseInt(level)
+                                    && topic.getNameTopic().toLowerCase().contains(strSearch.toLowerCase())) {
+                                list.add(topic);
+                            }
                         }
                     }
                     topicList = list;

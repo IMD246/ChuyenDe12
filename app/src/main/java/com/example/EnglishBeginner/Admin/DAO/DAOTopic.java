@@ -57,7 +57,6 @@ public class DAOTopic {
                     topicAdapter.notifyDataSetChanged();
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(context, "Get list Topic failed", Toast.LENGTH_SHORT).show();

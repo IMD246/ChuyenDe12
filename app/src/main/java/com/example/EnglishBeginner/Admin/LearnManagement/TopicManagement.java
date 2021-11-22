@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
@@ -15,7 +16,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,9 +32,15 @@ import com.example.EnglishBeginner.Admin.Adapter.TopicAdapter;
 import com.example.EnglishBeginner.Admin.DAO.DAOImageStorage;
 import com.example.EnglishBeginner.Admin.DAO.DAOLevel;
 import com.example.EnglishBeginner.Admin.DAO.DAOTopic;
+import com.example.EnglishBeginner.Admin.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.Admin.DTO.Level;
 import com.example.EnglishBeginner.Admin.DTO.Topic;
 import com.example.EnglishBeginner.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,16 +64,35 @@ public class TopicManagement extends AppCompatActivity {
 
     private void getDataFirebase() {
         daoTopic.getDataFromRealTimeFirebase(topicAdapter);
+        List<String>levelList = new ArrayList<>();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listlevel");
+        databaseReference.orderByChild("nameLevel").addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (levelList != null) {
+                    levelList.clear();
+                    levelList.add(DEFAULTVALUE.ALL);
+                }
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Level level = dataSnapshot.getValue(Level.class);
+                    assert levelList != null;
+                    levelList.add(String.valueOf(level.getNameLevel()));
+                }
+                autoCompleteTextView.setAdapter(new ArrayAdapter<>(getBaseContext(),android.R.layout.simple_list_item_1,levelList));
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
     }
 
     private void initUI() {
         daoImageStorage = new DAOImageStorage(this);
-        daoLevel = new DAOLevel(this);
-        daoLevel.getDataFromRealTimeToList(null);
         daoTopic = new DAOTopic(this);
         SearchView searchView = findViewById(R.id.svTopic);
         autoCompleteTextView = findViewById(R.id.atcTopic_Level);
-        autoCompleteTextView.setAdapter(new LevelSpinnerAdapter(this,R.layout.listoptionitem,R.id.tvOptionItem,daoLevel.getLevelList()));
+        autoCompleteTextView.setText(DEFAULTVALUE.ALL);
         RecyclerView recyclerView = findViewById(R.id.rcvTopic);
         topicAdapter = new TopicAdapter(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
