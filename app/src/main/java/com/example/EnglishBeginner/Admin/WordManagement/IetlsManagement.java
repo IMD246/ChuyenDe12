@@ -1,5 +1,6 @@
 package com.example.EnglishBeginner.Admin.WordManagement;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -28,6 +29,11 @@ import com.example.EnglishBeginner.Admin.Adapter.WordToeicIetlsAdapter;
 import com.example.EnglishBeginner.Admin.DAO.DAOIetls;
 import com.example.EnglishBeginner.Admin.DTO.Word;
 import com.example.EnglishBeginner.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class IetlsManagement extends AppCompatActivity {
 
@@ -37,10 +43,22 @@ public class IetlsManagement extends AppCompatActivity {
     private SearchView svIetls;
     private DAOIetls daoIetls;
     private ImageView imgAdd;
+    long maxID = 0 ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ietls_management);
+        DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("listWord");
+        databaseReference1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                maxID = snapshot.getChildrenCount()+2;
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         initUI();
         getDataFirebase();
     }
@@ -158,23 +176,21 @@ public class IetlsManagement extends AppCompatActivity {
         }
         else if (choice == 1)
         {
+            maxID++;
             btnYes.setText("Thêm");
             tvThemSua.setText("Thêm dữ liệu");
-            btnYes.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Word word1 = new Word();
-                    int i=1;
-                    if (daoIetls.getWordList().size()>0)
-                    {
-                        i = daoIetls.getWordList().get(daoIetls.getWordList().size()-1).getId()+1;
-                    }
-                    word1.setId(i);
-                    word1.setWord(edtWord.getText().toString());
-                    word1.setTypeWord(spnTypeWord.getSelectedItem().toString());
-                    word1.setMeaning(edtMeaning.getText().toString());
-                    daoIetls.addDataToFireBase(word1,edtWord,edtMeaning);
+            btnYes.setOnClickListener(v -> {
+                Word word1 = new Word();
+                int i=1;
+                if (daoIetls.getWordList().size()>0)
+                {
+                    i = daoIetls.getWordList().get(daoIetls.getWordList().size()-1).getId()+1;
                 }
+                word1.setId(i);
+                word1.setWord(edtWord.getText().toString());
+                word1.setTypeWord(spnTypeWord.getSelectedItem().toString());
+                word1.setMeaning(edtMeaning.getText().toString());
+                daoIetls.addDataToFireBase(word1,edtWord,edtMeaning,maxID);
             });
         }
         dialog.show();

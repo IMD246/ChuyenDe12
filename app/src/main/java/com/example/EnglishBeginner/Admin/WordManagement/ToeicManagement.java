@@ -1,5 +1,6 @@
 package com.example.EnglishBeginner.Admin.WordManagement;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -11,6 +12,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -23,11 +25,17 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.EnglishBeginner.Admin.Adapter.WordToeicIetlsAdapter;
 import com.example.EnglishBeginner.Admin.DAO.DAOToeic;
 import com.example.EnglishBeginner.Admin.DTO.Word;
 import com.example.EnglishBeginner.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class ToeicManagement extends AppCompatActivity {
 
@@ -37,10 +45,22 @@ public class ToeicManagement extends AppCompatActivity {
     private SearchView svToeic;
     private DAOToeic daoToeic;
     private ImageView imgAdd;
+    private long maxID = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_toeic_management);
+        DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("listWord");
+        databaseReference1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                maxID = snapshot.getChildrenCount()+2;
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         initUI();
         getDataFirebase();
     }
@@ -84,12 +104,7 @@ public class ToeicManagement extends AppCompatActivity {
                 return false;
             }
         });
-        atcToeic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                wordToeicIetlsAdapter.setListDependOnTypeWord(atcToeic.getText().toString());
-            }
-        });
+        atcToeic.setOnItemClickListener((parent, view, position, id) -> wordToeicIetlsAdapter.setListDependOnTypeWord(atcToeic.getText().toString()));
     }
     private void getDataFirebase() {
         daoToeic.getDataFromRealTimeToList(wordToeicIetlsAdapter);
@@ -157,6 +172,7 @@ public class ToeicManagement extends AppCompatActivity {
         }
         else if (choice == 1)
         {
+            maxID++;
             btnYes.setText("Thêm");
             tvThemSua.setText("Thêm dữ liệu");
             btnYes.setOnClickListener(new View.OnClickListener() {
@@ -172,7 +188,7 @@ public class ToeicManagement extends AppCompatActivity {
                     word1.setWord(edtWord.getText().toString());
                     word1.setTypeWord(spnTypeWord.getSelectedItem().toString());
                     word1.setMeaning(edtMeaning.getText().toString());
-                    daoToeic.addDataToFireBase(word1,edtWord,edtMeaning);
+                    daoToeic.addDataToFireBase(word1,edtWord,edtMeaning,maxID);
                 }
             });
         }

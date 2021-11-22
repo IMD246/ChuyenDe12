@@ -1,6 +1,7 @@
 package com.example.EnglishBeginner.Admin.DAO;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -18,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class DAOIetls {
@@ -62,7 +64,7 @@ public class DAOIetls {
         });
     }
 
-    public void addDataToFireBase(Word word, EditText edtWord,EditText edtMeaning) {
+    public void addDataToFireBase(Word word, EditText edtWord,EditText edtMeaning , long maxID) {
         boolean[] check = new boolean[2];
         int s = 1;
         for (int i = 0; i < check.length; i++) {
@@ -90,14 +92,18 @@ public class DAOIetls {
             edtWord.setError("Trùng dữ liệu , hãy kiểm tra lại dữ liệu");
             edtWord.requestFocus();
         } else {
-            databaseReference.child(String.valueOf(word.getId())).setValue(word).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isComplete()) {
-                        edtWord.setText("");
-                        edtMeaning.setText("");
-                        Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
-                    }
+            HashMap<String,Object>hashMap = new HashMap<>();
+            DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("listWord");
+            hashMap.put("id",maxID);
+            hashMap.put("word",word.getWord());
+            hashMap.put("typeWord",word.getTypeWord());
+            hashMap.put("meaning",word.getMeaning());
+            databaseReference1.child(String.valueOf(hashMap.get("id"))).updateChildren(hashMap).isSuccessful();
+            databaseReference.child(String.valueOf(word.getId())).setValue(word).addOnCompleteListener(task -> {
+                if (task.isComplete()) {
+                    edtWord.setText("");
+                    edtMeaning.setText("");
+                    Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
                 }
             });
         }
