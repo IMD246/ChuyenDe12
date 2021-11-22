@@ -84,25 +84,7 @@ public class PracticeScreen extends AppCompatActivity implements TextToSpeech.On
 
     private void setEvent() {
         AddItem(currentpos);
-//        submitButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                try {
-//                    if (currentpos < listItem.size() - 1 && currentpos < 10) {
-//                        currentpos = currentpos + 1;
-////                        listAnswer.clear();
-//                        AddItem(currentpos);
-//                    } else {
-//                        //  listAnswer.clear();
-//                        setAdapter(1);
-//                        afterThePractice();
-//                    }
-//                } catch (Exception ex) {
-//
-//                }
-//
-//            }
-//        });
+
 
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,6 +119,9 @@ public class PracticeScreen extends AppCompatActivity implements TextToSpeech.On
     }
 
     private void setAdapter(int resultPos) {
+
+
+
         adapter = new PracticeAdapter(getBaseContext(), listAnswer, resultPos, listOfResult);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);// Tạo layout manager
         danhsach.setLayoutManager(layoutManager);// Gán layout manager cho recyclerview
@@ -153,12 +138,12 @@ public class PracticeScreen extends AppCompatActivity implements TextToSpeech.On
                             if (currentpos < listItem.size() - 1 && currentpos < 10) {
                                 currentpos = currentpos + 1;
 //                        listAnswer.clear();
-
+                                texttoSpeak(listItem.get(currentpos).getWord());
                                 AddItem(currentpos);
 
                             } else {
                                 //  listAnswer.clear();
-                                setAdapter(1);
+                                setAdapter(0);
                                 afterThePractice();
                             }
                         } catch (Exception ex) {
