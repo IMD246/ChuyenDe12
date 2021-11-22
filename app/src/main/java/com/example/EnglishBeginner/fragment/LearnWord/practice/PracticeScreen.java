@@ -1,8 +1,6 @@
 package com.example.EnglishBeginner.fragment.LearnWord.practice;
 
 import android.content.Intent;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -23,18 +21,14 @@ import com.example.EnglishBeginner.DTO.Word;
 import com.example.EnglishBeginner.R;
 import com.example.EnglishBeginner.fragment.LearnWord.saveWord.source.SaveSqliteHelper;
 import com.example.EnglishBeginner.fragment.LearnWord.vocubulary.VocabularyFragment;
-import com.example.EnglishBeginner.fragment.LearnWord.word.source.MySingleton;
 import com.example.EnglishBeginner.fragment.LearnWord.word.source.SqlLiteHelper;
 import com.google.firebase.FirebaseApp;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
 
-public class PracticeScreen extends AppCompatActivity implements TextToSpeech.OnInitListener{
+public class PracticeScreen extends AppCompatActivity implements TextToSpeech.OnInitListener {
 
     private RecyclerView danhsach;
 
@@ -55,26 +49,24 @@ public class PracticeScreen extends AppCompatActivity implements TextToSpeech.On
     int currentpos = 0;
     FirebaseApp firebaseApp;
     private TextToSpeech textToSpeech;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         firebaseApp.initializeApp(PracticeScreen.this);
-//        firebaseApp.getApplicationContext();
         setContentView(R.layout.practive_screen);
 
-        textToSpeech = new TextToSpeech(getBaseContext(),this);
+        textToSpeech = new TextToSpeech(getBaseContext(), this);
         sqliteHelper = new SaveSqliteHelper(getBaseContext());
         //lay du lieu saveword trong sqlite roi dua vao list
         sqliteHelper.fetchData(listItem);
         //random list
         Collections.shuffle(listItem);
         ///-----------------------------///
-
         prepareSQL();
 
         setControl();
         setEvent();
-        AddItem(currentpos);
         progressBar.setMax(listItem.size());
         if (listItem.size() == 0) {
             ifDataIsNull();
@@ -84,8 +76,6 @@ public class PracticeScreen extends AppCompatActivity implements TextToSpeech.On
 
     private void setEvent() {
         AddItem(currentpos);
-
-
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,9 +109,6 @@ public class PracticeScreen extends AppCompatActivity implements TextToSpeech.On
     }
 
     private void setAdapter(int resultPos) {
-
-
-
         adapter = new PracticeAdapter(getBaseContext(), listAnswer, resultPos, listOfResult);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);// Tạo layout manager
         danhsach.setLayoutManager(layoutManager);// Gán layout manager cho recyclerview
@@ -132,9 +119,7 @@ public class PracticeScreen extends AppCompatActivity implements TextToSpeech.On
             public void delayAndPushDataWhenSubmit() {
                 new CountDownTimer(3000, 1000) {
                     public void onFinish() {
-
                         try {
-
                             if (currentpos < listItem.size() - 1 && currentpos < 10) {
                                 currentpos = currentpos + 1;
 //                        listAnswer.clear();
@@ -154,21 +139,19 @@ public class PracticeScreen extends AppCompatActivity implements TextToSpeech.On
                     public void onTick(long millisUntilFinished) {
                     }
                 }.start();
-
-
             }
         });
     }
-
     public void AddItem(int currentpos) {
         try {
-            progressBar.setProgress(currentpos+1);
+            progressBar.setProgress(currentpos + 1);
+            databaseHelper.fetchRandomWord(listItem.get(currentpos).getWord(), listAnswer);
+            texttoSpeak(listItem.get(currentpos).getWord());
+            listAnswer.add(listItem.get(currentpos).getWord());
             //reset the hint
             //save word get from sqlite to listitem
             hintText.setText("");
-            databaseHelper.fetchRandomWord(listItem.get(currentpos).getWord(), listAnswer);
             //get  word to a new list
-            listAnswer.add(listItem.get(currentpos).getWord());
             Collections.shuffle(listAnswer);
             Toast.makeText(getBaseContext(), listAnswer.get(0), Toast.LENGTH_SHORT).show();
             setAdapter(getResultPos(listAnswer, listItem.get(currentpos).getWord()));
@@ -181,7 +164,6 @@ public class PracticeScreen extends AppCompatActivity implements TextToSpeech.On
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
-
                 }
             });
             //set hint
@@ -190,7 +172,7 @@ public class PracticeScreen extends AppCompatActivity implements TextToSpeech.On
                 public void onClick(View v) {
                     // translateText(listItem.get(currentpos).getWord().toString(),hintText);
 
-                   hintText.setText(listItem.get(currentpos).getMeaning());
+                    hintText.setText(listItem.get(currentpos).getMeaning());
                 }
             });
 
@@ -200,10 +182,7 @@ public class PracticeScreen extends AppCompatActivity implements TextToSpeech.On
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
-
     }
-
     private void afterThePractice() {
         listAnswer.clear();
         progressBar.setMax(listItem.size());
@@ -211,9 +190,9 @@ public class PracticeScreen extends AppCompatActivity implements TextToSpeech.On
         hintText.setText("Your Score is: " + getScore() + "/" + listItem.size());
         hintText.setTextSize(30);
         showHint.setVisibility(View.GONE);
-      //  returnButton.setVisibility(View.GONE);
+        //  returnButton.setVisibility(View.GONE);
         submitButton.setText("Thoát");
-        submitButton.setPadding(0,30,0,0);
+        submitButton.setPadding(0, 30, 0, 0);
         submitButton.setVisibility(View.VISIBLE);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -239,7 +218,7 @@ public class PracticeScreen extends AppCompatActivity implements TextToSpeech.On
     private void ifDataIsNull() {
         speakerIcon.setVisibility(View.GONE);
         showHint.setVisibility(View.GONE);
-  //      submitButton.setText("Return to main");
+        //      submitButton.setText("Return to main");
         hintText.setText("your save word list is empty");
 //        submitButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -275,6 +254,7 @@ public class PracticeScreen extends AppCompatActivity implements TextToSpeech.On
             Log.e("error", "Failed to Initialize");
         }
     }
+
     @Override
     public void onDestroy() {
         if (textToSpeech != null) {
@@ -283,11 +263,11 @@ public class PracticeScreen extends AppCompatActivity implements TextToSpeech.On
         }
         super.onDestroy();
     }
+
     private void texttoSpeak(String text) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
-        }
-        else {
+        } else {
             textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
         }
     }

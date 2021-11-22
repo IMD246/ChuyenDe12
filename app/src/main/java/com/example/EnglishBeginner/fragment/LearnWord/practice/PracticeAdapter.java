@@ -63,7 +63,6 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewHo
                 if (holder.getAdapterPosition() == resultPos) {
                     holder.layoutAnswer.setBackgroundColor(Color.GREEN);
                     listResult.add(true);
-
                 } else {
                     holder.layoutAnswer.setBackgroundColor(Color.RED);
                     listResult.add(false);
@@ -98,5 +97,4 @@ public class PracticeAdapter extends RecyclerView.Adapter<PracticeAdapter.ViewHo
     interface submitEvent {
         void delayAndPushDataWhenSubmit();
     }
-
 }
