@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,8 +40,14 @@ import com.example.EnglishBeginner.Admin.DTO.Answer;
 import com.example.EnglishBeginner.Admin.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.Admin.DTO.Question;
 import com.example.EnglishBeginner.Admin.DTO.Topic;
+import com.example.EnglishBeginner.Admin.DTO.Word;
 import com.example.EnglishBeginner.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -184,7 +192,28 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         windowAttributes.gravity = center;
         window.setAttributes(windowAttributes);
         dialog.setCancelable(Gravity.CENTER == center);
-        EditText edtTitle = dialog.findViewById(R.id.edtTitle);
+        AutoCompleteTextView svTitleQuestion = dialog.findViewById(R.id.svTitleQuestion);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listWord");
+        List<String> listWord = new ArrayList<>();
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (listWord!=null)
+                {
+                    listWord.clear();
+                }
+                for (DataSnapshot dataSnapshot : snapshot.getChildren())
+                {
+                    Word word = dataSnapshot.getValue(Word.class);
+                    listWord.add(word.getWord());
+                }
+                ArrayAdapter<String>arrayAdapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_list_item_1,listWord);
+                svTitleQuestion.setAdapter(arrayAdapter);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
         EditText edtCorrectAnswer = dialog.findViewById(R.id.edtCorrectAnswer);
         TextView tvThemSua = dialog.findViewById(R.id.tvThemSua);
         Spinner spnTopic = dialog.findViewById(R.id.spnQuestion_Topic);
@@ -203,7 +232,8 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         if (question != null) {
             spnTopic.setSelection(getSelectedSpinner(spnTopic, question.getNameTopic()));
             spnTypeQuestion.setSelection(getSelectedSpinner(spnTopic, question.getNameTypeQuestion()));
-            edtTitle.setText(question.getTitle());
+            svTitleQuestion.setText(question.getWord());
+            CharSequence charSequence = question.getTitle();
             edtCorrectAnswer.setText(question.getCorrectAnswer());
         }
         btnNo.setOnClickListener(v -> dialog.dismiss());
@@ -211,7 +241,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
             Question question1 = new Question();
             assert question != null;
             question1.setId(question.getId());
-            question1.setTitle(edtTitle.getText().toString());
+            question1.setTitle(svTitleQuestion.getText().toString());
             question1.setCorrectAnswer(edtCorrectAnswer.getText().toString());
             question1.setNameTopic(spnTopic.getSelectedItem().toString());
             question1.setNameTypeQuestion(spnTypeQuestion.getSelectedItem().toString());
@@ -223,7 +253,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
             }
             if (getContext()!=null) {
                 daoQuestion.setContext(getContext());
-                daoQuestion.editDataToFireBase(question1, edtTitle, edtCorrectAnswer, tvTitle, tvCorrectAnswer);
+                daoQuestion.editDataToFireBase(question1, svTitleQuestion, edtCorrectAnswer, tvTitle, tvCorrectAnswer);
             }
         });
         dialog.show();
@@ -257,11 +287,9 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         }
         window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
         WindowManager.LayoutParams windowAttributes = window.getAttributes();
         windowAttributes.gravity = center;
         window.setAttributes(windowAttributes);
-
         dialog.setCancelable(Gravity.CENTER == center);
         for (Question question4 : daoQuestion.getQuestionList()) {
             if (question.getId() == question4.getId()) {

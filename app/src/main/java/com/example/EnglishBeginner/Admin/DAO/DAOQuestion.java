@@ -2,15 +2,18 @@ package com.example.EnglishBeginner.Admin.DAO;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 
 import com.example.EnglishBeginner.Admin.Adapter.LearnQuestionAdapter;
 import com.example.EnglishBeginner.Admin.Adapter.QuestionAdapter;
 import com.example.EnglishBeginner.Admin.DTO.Question;
+import com.example.EnglishBeginner.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -70,7 +73,8 @@ public class DAOQuestion {
             }
         });
     }
-    public void addDataToFireBase(Question question, EditText edtTitle, EditText edtCorrectAnswer) {
+
+    public void addDataToFireBase(Question question, AutoCompleteTextView searchView, EditText edtCorrectAnswer) {
         boolean[] check = new boolean[3];
         Arrays.fill(check, true);
         if (question.getTitle().isEmpty() || question.getTitle().length() == 0) {
@@ -90,14 +94,14 @@ public class DAOQuestion {
             }
         }
         if (!check[0]) {
-            edtTitle.setError("Không để trống");
-            edtTitle.requestFocus();
+            searchView.setError("Không bỏ trống");
+            searchView.requestFocus();
         } else if (!check[1]) {
             edtCorrectAnswer.setError("Không để trống");
             edtCorrectAnswer.requestFocus();
         } else if (!check[2]) {
-            edtTitle.setError("Trùng dữ liệu , hãy kiểm tra lại dữ liệu");
-            edtTitle.requestFocus();
+            searchView.setError("Trùng dữ liệu , hãy kiểm tra lại dữ liệu");
+            searchView.requestFocus();
         } else {
             databaseReference.child(String.valueOf(question.getId())).setValue(question).addOnCompleteListener(task -> {
                 if (task.isComplete()) {
@@ -106,9 +110,13 @@ public class DAOQuestion {
             });
         }
     }
-
+    private void setErrorSearchView(androidx.appcompat.widget.SearchView searchView, String errorMes) {
+        EditText editText = (EditText) searchView.findViewById(R.id.svTitleQuestion);
+        editText.setError(errorMes);
+        searchView.requestFocus();
+    }
     @SuppressLint("SetTextI18n")
-    public void editDataToFireBase(Question question, EditText edtTitle, EditText edtCorrectAnswer, TextView tvTitle, TextView tvCorrect) {
+    public void editDataToFireBase(Question question, AutoCompleteTextView searchView, EditText edtCorrectAnswer, TextView tvTitle, TextView tvCorrect) {
         boolean[] check = new boolean[3];
         Arrays.fill(check, true);
         if (question.getTitle().isEmpty() || question.getTitle().length() == 0) {
@@ -128,14 +136,14 @@ public class DAOQuestion {
             }
         }
         if (!check[0]) {
-            edtTitle.setError("Không để trống");
-            edtTitle.requestFocus();
+            searchView.setError("Không bỏ trống");
+            searchView.requestFocus();
         } else if (!check[1]) {
             edtCorrectAnswer.setError("Không để trống");
             edtCorrectAnswer.requestFocus();
         } else if (!check[2]) {
-            edtTitle.setError("Trùng dữ liệu , hãy kiểm tra lại dữ liệu");
-            edtTitle.requestFocus();
+            searchView.setError("Trùng dữ liệu , hãy kiểm tra lại dữ liệu");
+            searchView.requestFocus();
         } else {
             tvTitle.setText("Câu hỏi: " + question.getTitle());
             tvCorrect.setText("Câu Trả Lời Chính xác: " + question.getCorrectAnswer());

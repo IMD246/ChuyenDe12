@@ -6,11 +6,13 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -34,7 +36,13 @@ import com.example.EnglishBeginner.Admin.DAO.DAOQuestion;
 import com.example.EnglishBeginner.Admin.DTO.Question;
 import com.example.EnglishBeginner.Admin.DTO.Topic;
 import com.example.EnglishBeginner.Admin.DTO.DEFAULTVALUE;
+import com.example.EnglishBeginner.Admin.DTO.Word;
 import com.example.EnglishBeginner.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,9 +51,7 @@ import java.util.List;
 
 public class QuestionManagementFragment extends Fragment implements View.OnClickListener {
 
-    private RecyclerView rcvQuestion;
-    private DAOQuestion daoQuestion;
-    private ImageView imgAdd;
+    private final DAOQuestion daoQuestion;
     private SearchView svQuestion;
     private QuestionInterface questionInterface;
     private AutoCompleteTextView atcTopic, atcTypeQuestion;
@@ -66,7 +72,6 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
         getDataFromRealTime();
         return v;
     }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -79,9 +84,9 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
 
     private void initUI(View v) {
         questionInterface = (QuestionInterface) getActivity();
-        rcvQuestion = v.findViewById(R.id.rcvQuestion);
+        RecyclerView rcvQuestion = v.findViewById(R.id.rcvQuestion);
         svQuestion = v.findViewById(R.id.svQuestion);
-        imgAdd = v.findViewById(R.id.imgAddQuestion);
+        ImageView imgAdd = v.findViewById(R.id.imgAddQuestion);
         imgAdd.setOnClickListener(this);
         atcTopic = v.findViewById(R.id.atcQuestion_Topic);
         atcTypeQuestion = v.findViewById(R.id.atcQuestion_TypeQuestion);
@@ -194,7 +199,29 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
         } else {
             dialog.setCancelable(false);
         }
-        EditText edtTitle = dialog.findViewById(R.id.edtTitle);
+        AutoCompleteTextView svTitleQuestion = dialog.findViewById(R.id.svTitleQuestion);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listWord");
+        List<String> listWord = new ArrayList<>();
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (listWord!=null)
+                {
+                    listWord.clear();
+                }
+                for (DataSnapshot dataSnapshot : snapshot.getChildren())
+                {
+                    Word word = dataSnapshot.getValue(Word.class);
+                    listWord.add(word.getWord());
+                }
+                ArrayAdapter<String>arrayAdapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_list_item_1,listWord);
+                svTitleQuestion.setAdapter(arrayAdapter);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         EditText edtCorrectAnswer = dialog.findViewById(R.id.edtCorrectAnswer);
         Spinner spnTopic = dialog.findViewById(R.id.spnQuestion_Topic);
         Spinner spnTypeQuestion = dialog.findViewById(R.id.spnQuestion_TypeQuestion);
@@ -218,7 +245,7 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
             else {
                 question.setId(1);
             }
-            question.setTitle(edtTitle.getText().toString());
+            question.setTitle(svTitleQuestion.getText().toString());
             question.setCorrectAnswer(edtCorrectAnswer.getText().toString());
             question.setNameTopic(spnTopic.getSelectedItem().toString());
             question.setNameTypeQuestion(spnTypeQuestion.getSelectedItem().toString());
@@ -229,7 +256,7 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
                 }
             }
             daoQuestion.setContext(getContext());
-            daoQuestion.addDataToFireBase(question, edtTitle,edtCorrectAnswer);
+            daoQuestion.addDataToFireBase(question, svTitleQuestion,edtCorrectAnswer);
         });
         dialog.show();
     }
