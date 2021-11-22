@@ -1,5 +1,6 @@
 package com.example.EnglishBeginner.Admin.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,13 +22,13 @@ import java.util.List;
 
 public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.QuestionViewHolder> implements Filterable {
 
-    private Context context;
     private List<Question> questionList;
     private List<Question> questionListOld;
     private String typeTopicOld = DEFAULTVALUE.ALL;
     private String typeQuestionOld = DEFAULTVALUE.ALL;
     private String keyWord = "";
     private MyDelegationLevel myDelegationLevel;
+    private final Context context;
 
     public void setMyDelegationLevel(MyDelegationLevel myDelegationLevel) {
         this.myDelegationLevel = myDelegationLevel;
@@ -37,11 +38,13 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
         this.context = context;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setQuestionList(List<Question> questionList) {
         this.questionList = questionList;
         questionListOld = questionList;
         notifyDataSetChanged();
     }
+    @SuppressLint("NotifyDataSetChanged")
     public void setListDependOnTopicAndTypeQuestion(@NonNull String topic, @NonNull String typeQuestion) {
         typeTopicOld = topic;
         typeQuestionOld = typeQuestion;
@@ -86,32 +89,30 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
     @NonNull
     @Override
     public QuestionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.questionitem, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.questionitem, parent, false);
         return new QuestionViewHolder(view);
     }
 
+    @SuppressLint({"SetTextI18n", "NonConstantResourceId"})
     @Override
     public void onBindViewHolder(@NonNull QuestionViewHolder holder, int position) {
         Question question = questionList.get(position);
         if (question == null) {
             return;
         }
-        holder.tvTitle.setText("Câu hỏi: " + String.valueOf(question.getTitle()));
+        holder.tvTitle.setText("Câu hỏi: " + question.getTitle());
         holder.tvNameTopic.setText("Chủ đề: " + question.getNameTopic());
         holder.tvTypeQuestion.setText("Loại câu hỏi: " + question.getNameTypeQuestion());
 
-        holder.onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (myDelegationLevel != null) {
-                    switch (v.getId()) {
-                        case R.id.imgEdit_Question:
-                            myDelegationLevel.editItem(question);
-                            break;
-                        case R.id.imgDelete_Question:
-                            myDelegationLevel.deleteItem(question);
-                            break;
-                    }
+        holder.onClickListener = v -> {
+            if (myDelegationLevel != null) {
+                switch (v.getId()) {
+                    case R.id.imgEdit_Question:
+                        myDelegationLevel.editItem(question);
+                        break;
+                    case R.id.imgDelete_Question:
+                        myDelegationLevel.deleteItem(question);
+                        break;
                 }
             }
         };
@@ -172,7 +173,8 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
                 filterResults.values = questionList;
                 return filterResults;
             }
-
+            @SuppressWarnings("unchecked")
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 questionList = (List<Question>) results.values;
@@ -182,8 +184,9 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
     }
 
     public static class QuestionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView tvTitle, tvNameTopic, tvTypeQuestion;
-        private ImageView imgDelete, imgEdit;
+        private final TextView tvTitle;
+        private final TextView tvNameTopic;
+        private final TextView tvTypeQuestion;
         View.OnClickListener onClickListener;
 
         public void setOnClickListener(View.OnClickListener onClickListener) {
@@ -195,9 +198,9 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
             tvNameTopic = itemView.findViewById(R.id.tvTopic_Question);
             tvTitle = itemView.findViewById(R.id.tvQuestion);
             tvTypeQuestion = itemView.findViewById(R.id.tvTypeQuestion_Question);
-            imgDelete = itemView.findViewById(R.id.imgDelete_Question);
+            ImageView imgDelete = itemView.findViewById(R.id.imgDelete_Question);
             imgDelete.setOnClickListener(this);
-            imgEdit = itemView.findViewById(R.id.imgEdit_Question);
+            ImageView imgEdit = itemView.findViewById(R.id.imgEdit_Question);
             imgEdit.setOnClickListener(this);
         }
 
@@ -208,8 +211,8 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
     }
 
     public interface MyDelegationLevel {
-        public void editItem(Question question);
+        void editItem(Question question);
 
-        public void deleteItem(Question question);
+        void deleteItem(Question question);
     }
 }

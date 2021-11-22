@@ -183,7 +183,7 @@ public class LearnQuestionAdapter extends RecyclerView.Adapter<LearnQuestionAdap
                 filterResults.values = questionList;
                 return filterResults;
             }
-
+            @SuppressWarnings("unchecked")
             @SuppressLint("NotifyDataSetChanged")
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
