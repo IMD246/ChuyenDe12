@@ -87,6 +87,7 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setControl();
+        //xử lí currentScreen khi từ activity khác trở lại
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         if (bundle != null) {
@@ -94,6 +95,7 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
                 checkLogicScreen(FRAGMENT_PROFILE, 3);
             }
         }
+
         getProFileFromRealTime();
         checkLogicDrawerLayout();
         processBottomNavigation();
@@ -103,8 +105,8 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
     public void setMyCurrentViewpager2(int myCurrentViewpager2) {
         this.myCurrentViewpager2 = myCurrentViewpager2;
     }
-    //kiểm tra logic khi drawer layout đóng
 
+    //kiểm tra logic khi drawer layout đóng
     private void checkLogicDrawerLayout() {
         drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
@@ -300,16 +302,12 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
             case R.id.nav_help://ấn vào help sẽ chuyển activities
                 Intent intent = new Intent(UserInterfaceActivity.this, HelpActivity.class);
                 startActivity(intent);
-//                navigationView.getMenu().findItem(R.id.nav_profile).setChecked(false);
-//                navigationView.getMenu().findItem(R.id.nav_setting).setChecked(false);
-//                navigationView.getMenu().findItem(R.id.nav_help).setChecked(true);
-//                navigationView.getMenu().findItem(R.id.nav_logout).setChecked(false);
                 break;
             case R.id.nav_logout:
-                navigationView.getMenu().findItem(R.id.nav_profile).setChecked(false);
-                navigationView.getMenu().findItem(R.id.nav_setting).setChecked(false);
-                navigationView.getMenu().findItem(R.id.nav_help).setChecked(false);
-                navigationView.getMenu().findItem(R.id.nav_logout).setChecked(true);
+//                navigationView.getMenu().findItem(R.id.nav_profile).setChecked(false);
+//                navigationView.getMenu().findItem(R.id.nav_setting).setChecked(false);
+//                navigationView.getMenu().findItem(R.id.nav_help).setChecked(false);
+//                navigationView.getMenu().findItem(R.id.nav_logout).setChecked(true);
                 alertDialog();
                 break;
         }
