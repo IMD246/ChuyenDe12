@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.EnglishBeginner.Admin.DTO.Question;
 import com.example.EnglishBeginner.Admin.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.R;
@@ -103,8 +104,10 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
         }
         holder.tvTitle.setText("Câu hỏi: " + question.getTitle());
         holder.tvNameTopic.setText("Chủ đề: " + question.getNameTopic());
-        holder.tvTypeQuestion.setText("Loại câu hỏi: " + question.getNameTypeQuestion());
-
+        if (!(question.getUrlImage().trim().isEmpty()))
+        {
+            Glide.with(context).load(question.getUrlImage()).into(holder.imgQuestion);
+        }
         holder.onClickListener = v -> {
             if (myDelegationLevel != null) {
                 switch (v.getId()) {
@@ -187,7 +190,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
     public static class QuestionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView tvTitle;
         private final TextView tvNameTopic;
-        private final TextView tvTypeQuestion;
+        private final ImageView imgQuestion;
         View.OnClickListener onClickListener;
 
         public void setOnClickListener(View.OnClickListener onClickListener) {
@@ -198,7 +201,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
             super(itemView);
             tvNameTopic = itemView.findViewById(R.id.tvTopic_Question);
             tvTitle = itemView.findViewById(R.id.tvQuestion);
-            tvTypeQuestion = itemView.findViewById(R.id.tvTypeQuestion_Question);
+            imgQuestion = itemView.findViewById(R.id.imgQuestion);
             ImageView imgDelete = itemView.findViewById(R.id.imgDelete_Question);
             imgDelete.setOnClickListener(this);
             ImageView imgEdit = itemView.findViewById(R.id.imgEdit_Question);

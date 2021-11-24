@@ -142,7 +142,7 @@ public class DAOImageStorage {
         }
     }
     // hàm upload ảnh cho answer
-    public void uploadFileImageToQuestion(String s, Question question) {
+    public void uploadFileImageToQuestion(String s, Question question,ImageView imgQuestion ,int choice) {
         if (mImgURL != null) {
             StorageReference fileReference = storageReference.child(s);
             fileReference.putFile(mImgURL).continueWithTask(task -> {
@@ -153,6 +153,10 @@ public class DAOImageStorage {
             }).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     mImgURL = task.getResult();
+                    if (choice == 1)
+                    {
+                        imgQuestion.setImageURI(null);
+                    }
                     question.setUrlImage(mImgURL.toString());
                     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listquestion/"+question.getId()+"/urlImage");
                     databaseReference.setValue(question.getUrlImage()).addOnCompleteListener(task1 -> {

@@ -25,9 +25,6 @@
             android:name="com.example.EnglishBeginner.Admin.WordManagement.ToeicManagement"
             android:exported="false" />
         <activity
-            android:name="com.example.EnglishBeginner.Admin.LearnManagement.LearnQuestion"
-            android:exported="false" />
-        <activity
             android:name="com.example.EnglishBeginner.Admin.ChangePasswordActivity_Admin"
             android:exported="false" />
         <activity

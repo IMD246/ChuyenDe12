@@ -3,10 +3,6 @@
     <item android:id="@+id/learn"
         android:icon="@drawable/baseline_school_black_24dp"
         android:title="@string/learn_fragment" />
-    <item android:id="@+id/word"
-        android:icon="@drawable/baseline_library_books_black_24dp"
-        android:title="@string/word_fragment"
-        />
     <item android:id="@+id/analysic"
         android:icon="@drawable/baseline_leaderboard_black_24dp"
         android:title="@string/blog_fragment"

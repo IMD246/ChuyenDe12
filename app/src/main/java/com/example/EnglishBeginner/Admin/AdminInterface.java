@@ -18,12 +18,9 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.EnglishBeginner.Admin.Adapter.ViewPageAdapter;
 import com.example.EnglishBeginner.Admin.DTO.LearnItem;
-import com.example.EnglishBeginner.Admin.LearnManagement.LearnQuestion;
 import com.example.EnglishBeginner.Admin.LearnManagement.LevelManagement;
 import com.example.EnglishBeginner.Admin.LearnManagement.QuestionInterface;
 import com.example.EnglishBeginner.Admin.LearnManagement.TopicManagement;
-import com.example.EnglishBeginner.Admin.WordManagement.IetlsManagement;
-import com.example.EnglishBeginner.Admin.WordManagement.ToeicManagement;
 import com.example.EnglishBeginner.Admin.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.Login.Login;
 import com.example.EnglishBeginner.R;
@@ -67,7 +64,7 @@ public class AdminInterface extends AppCompatActivity {
 
             }
 
-            @Override
+            @Override   
             public void onDrawerOpened(@NonNull View drawerView) {
 
             }
@@ -79,15 +76,12 @@ public class AdminInterface extends AppCompatActivity {
                         bottomNavigationView.getMenu().findItem(R.id.learn).setChecked(true);
                         break;
                     case 1:
-                        bottomNavigationView.getMenu().findItem(R.id.word).setChecked(true);
-                        break;
-                    case 2:
                         bottomNavigationView.getMenu().findItem(R.id.analysic).setChecked(true);
                         break;
-                    case 3:
+                    case 2:
                         bottomNavigationView.getMenu().findItem(R.id.account).setChecked(true);
                         break;
-                    case 4:
+                    case 3:
                         bottomNavigationView.getMenu().findItem(R.id.profile).setChecked(true);
                         break;
                 }
@@ -138,18 +132,14 @@ public class AdminInterface extends AppCompatActivity {
                         myCurrentScreen = 0;
                         break;
                     case 1:
-                        bottomNavigationView.getMenu().findItem(R.id.word).setChecked(true);
-                        myCurrentScreen = 1;
-                        break;
-                    case 2:
                         bottomNavigationView.getMenu().findItem(R.id.analysic).setChecked(true);
                         myCurrentScreen = 2;
                         break;
-                    case 3:
+                    case 2:
                         bottomNavigationView.getMenu().findItem(R.id.account).setChecked(true);
                         myCurrentScreen = 3;
                         break;
-                    case 4:
+                    case 3:
                         bottomNavigationView.getMenu().findItem(R.id.profile).setChecked(true);
                         myCurrentScreen = 4;
                         break;
@@ -161,14 +151,11 @@ public class AdminInterface extends AppCompatActivity {
                 case R.id.learn:
                     viewPager.setCurrentItem(0);
                     break;
-                case R.id.word:
+                case R.id.analysic:
                     viewPager.setCurrentItem(1);
                     break;
-                case R.id.analysic:
-                    viewPager.setCurrentItem(2);
-                    break;
                 case R.id.account:
-                    viewPager.setCurrentItem(3);
+                    viewPager.setCurrentItem(2);
                     break;
                 case R.id.profile:
                     drawerLayout.openDrawer(GravityCompat.END);
@@ -219,18 +206,6 @@ public class AdminInterface extends AppCompatActivity {
             startActivity(new Intent(AdminInterface.this, TopicManagement.class));
         } else if (learnItem.getName().equals(DEFAULTVALUE.QUESTION)) {
             startActivity(new Intent(AdminInterface.this, QuestionInterface.class));
-        }
-        else if (learnItem.getName().equals(DEFAULTVALUE.LEARNTOPIC))
-        {
-            startActivity(new Intent(AdminInterface.this, LearnQuestion.class));
-        }
-        else if (learnItem.getName().equals(DEFAULTVALUE.TOEIC))
-        {
-            startActivity(new Intent(AdminInterface.this, ToeicManagement.class));
-        }
-        else if (learnItem.getName().equals(DEFAULTVALUE.IETLS))
-        {
-            startActivity(new Intent(AdminInterface.this, IetlsManagement.class));
         }
     }
 }

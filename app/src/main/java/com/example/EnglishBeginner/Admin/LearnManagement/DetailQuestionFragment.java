@@ -230,6 +230,13 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
             question1.setId(question.getId());
             question1.setTitle(edtTitleQuestion.getText().toString());
             question1.setCorrectAnswer(edtCorrectAnswer.getText().toString());
+            question1.setGrammar(edtGrammar.getText().toString());
+            question1.setExample(edtExample.getText().toString());
+            question1.setExampleMeaning(edtExampleMeaning.getText().toString());
+            question1.setTypeWord(spnTypeWord.getSelectedItem().toString());
+            question1.setCategoryWord(spnCategoryWord.getSelectedItem().toString());
+            question1.setWordMeaning(edtMeaning.getText().toString());
+            question1.setWord(edtWord.getText().toString());
             question1.setNameTopic(spnTopic.getSelectedItem().toString());
             for (Topic topic : questionInterface.daoTopic.getTopicList()) {
                 if (question1.getNameTopic().equalsIgnoreCase(topic.getNameTopic())) {
@@ -237,7 +244,8 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
                     break;
                 }
             }
-            daoQuestion.editDataToFireBase(question1, edtTitleQuestion, edtCorrectAnswer, tvTitle, tvCorrectAnswer);
+            daoQuestion.editDataToFireBase(question1, edtTitleQuestion,edtWord, edtCorrectAnswer, tvTitle, tvCorrectAnswer);
+            daoImageStorage.uploadFileImageToQuestion("Question "+question.getId(),question1,imgQuestion,2);
         });
         dialog.show();
     }
@@ -292,10 +300,6 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         edtQuestion.setText(question.getTitle());
         TextView tvThemSua = dialog.findViewById(R.id.tvTitle);
         Button btnPickImageTopic = dialog.findViewById(R.id.btnPickImageTopic);
-        LinearLayout linearLayout = dialog.findViewById(R.id.lnpickimage);
-        if (!(question.getNameTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.IMAGE))) {
-            linearLayout.setVisibility(View.GONE);
-        }
         imgAnswer = dialog.findViewById(R.id.imgAnswer);
         btnPickImageTopic.setOnClickListener(v -> openFileChoose());
         Button btnYes = dialog.findViewById(R.id.btnYes);

@@ -158,7 +158,7 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
     }
 
     private void getDataFromRealTime() {
-        daoQuestion.getDataFromRealTimeToList(questionAdapter, null);
+        daoQuestion.getDataFromRealTimeToList(questionAdapter);
         List<String> topicList = new ArrayList<>();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listtopic");
         databaseReference.orderByChild("level").addValueEventListener(new ValueEventListener() {
@@ -284,7 +284,6 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
                 if (daoQuestion.getQuestionList().size() > 0) {
                     for (Question question1 : daoQuestion.getQuestionList()) {
                         if (question1.getNameTopic().equalsIgnoreCase(question.getNameTopic()) &&
-                                question1.getNameTypeQuestion().equalsIgnoreCase(question.getNameTypeQuestion()) &&
                                 question1.getTitle().equalsIgnoreCase(question.getTitle())
                         && question1.getWord().equalsIgnoreCase(question.getWord())) {
                             check[3] = false;
@@ -322,6 +321,7 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
                     }
                 });
             }
+            daoImageStorage.uploadFileImageToQuestion("Question "+question.getId(),question,imgQuestion,1);
         });
         dialog.show();
     }

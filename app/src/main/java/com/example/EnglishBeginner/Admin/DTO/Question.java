@@ -4,16 +4,15 @@ import java.io.Serializable;
 
 public class Question implements Serializable {
     private int id,idTopic;
-    private String title,nameTopic,nameTypeQuestion,correctAnswer,
+    private String title,nameTopic,correctAnswer,
             example= "",exampleMeaning="",word = "",wordMeaning = "",
             typeWord = "",categoryWord,grammar= "",urlImage="";
 
-    public Question(int id, int idTopic, String title, String nameTopic, String nameTypeQuestion, String correctAnswer, String example, String exampleMeaning, String word, String wordMeaning, String typeWord, String categoryWord, String grammar, String urlImage) {
+    public Question(int id, int idTopic, String title, String nameTopic, String correctAnswer, String example, String exampleMeaning, String word, String wordMeaning, String typeWord, String categoryWord, String grammar, String urlImage) {
         this.id = id;
         this.idTopic = idTopic;
         this.title = title;
         this.nameTopic = nameTopic;
-        this.nameTypeQuestion = nameTypeQuestion;
         this.correctAnswer = correctAnswer;
         this.example = example;
         this.exampleMeaning = exampleMeaning;
@@ -90,14 +89,6 @@ public class Question implements Serializable {
 
     public void setNameTopic(String nameTopic) {
         this.nameTopic = nameTopic;
-    }
-
-    public String getNameTypeQuestion() {
-        return nameTypeQuestion;
-    }
-
-    public void setNameTypeQuestion(String nameTypeQuestion) {
-        this.nameTypeQuestion = nameTypeQuestion;
     }
 
     public String getCorrectAnswer() {

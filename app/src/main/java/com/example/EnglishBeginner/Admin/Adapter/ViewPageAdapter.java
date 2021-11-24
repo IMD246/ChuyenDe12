@@ -8,7 +8,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.example.EnglishBeginner.Admin.AccountUserManagement;
 import com.example.EnglishBeginner.Admin.BlogManagementFragment;
 import com.example.EnglishBeginner.Admin.LearnManagementFragment;
-import com.example.EnglishBeginner.Admin.WordManagementFragment;
 
 public class ViewPageAdapter extends FragmentStateAdapter {
 
@@ -21,9 +20,8 @@ public class ViewPageAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position)
         {
-            case 1:return new WordManagementFragment();
-            case 2:return new BlogManagementFragment();
-            case 3:return new AccountUserManagement();
+            case 1:return new BlogManagementFragment();
+            case 2:return new AccountUserManagement();
             case 0:
             default:return new LearnManagementFragment();
         }
@@ -31,7 +29,7 @@ public class ViewPageAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 4;
+        return 3;
     }
 }
 
