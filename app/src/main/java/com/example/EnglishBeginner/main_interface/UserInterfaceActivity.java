@@ -69,7 +69,7 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
     public static final int FRAGMENT_SETTING = 5;
 
     //khai báo giá trị màn hình hiện tại, mặc định là home
-    public int myCurrentViewpager2 = FRAGMENT_LEARN;
+    public int myCurrentViewpager2;
 
     //khai báo drawerlayout
     private DrawerLayout drawerLayout;
@@ -90,13 +90,16 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         setContentView(R.layout.activity_main);
         setControl();
         //xử lí currentScreen khi từ activity khác trở lại
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        if (bundle != null) {
-            if (bundle.getString("currentScreen").equalsIgnoreCase("3")) {
-                checkLogicScreen(FRAGMENT_PROFILE, 3);
-            }
-        }
+        myCurrentViewpager2 = FRAGMENT_LEARN;
+
+
+//        Intent intent = getIntent();
+//        Bundle bundle = intent.getExtras();
+//        if (bundle != null) {
+//            if (bundle.getString("currentScreen").equalsIgnoreCase("3")) {
+//                checkLogicScreen(FRAGMENT_PROFILE, 3);
+//            }
+//        }
 
         getProFileFromRealTime();
         checkLogicDrawerLayout();
@@ -153,6 +156,7 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
                         navigationView.getMenu().findItem(R.id.nav_logout).setChecked(false);
                         break;
                     case 4:
+                    case 5:
                         bottomNavigationView.getMenu().findItem(R.id.bottom_nav_profile).setChecked(true);
                         break;
                     case 5:
