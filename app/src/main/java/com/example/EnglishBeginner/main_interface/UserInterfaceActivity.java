@@ -173,7 +173,7 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         String userId = firebaseUser.getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
-        databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);

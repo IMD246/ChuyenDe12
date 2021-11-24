@@ -165,7 +165,6 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
             hashMap.put("gender", getGender());
             daoUserProfile.updateProFileUser(hashMap, firebaseUser.getUid());
             daoImageStorage.uploadFileImageUser("User", firebaseUser.getUid(), userOld);
-
         }
     }
 

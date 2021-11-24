@@ -35,7 +35,6 @@ public class ProfileFragment extends Fragment {
     private TextView tvFullname, tvAge, tvGender, tvTotalEXP, tvLevel;
     String userId;
     private ImageView imgAvatar;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,10 +48,9 @@ public class ProfileFragment extends Fragment {
     private void setEvent() {
         //Lấy dữ liệu của User từ Firebase
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
         userId = firebaseUser.getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
-        databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);

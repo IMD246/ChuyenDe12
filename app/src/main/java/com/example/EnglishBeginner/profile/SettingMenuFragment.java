@@ -38,7 +38,6 @@ public class SettingMenuFragment extends Fragment {
     private FirebaseUser firebaseUser;
     //khai báo
     private CardView btn_setting_profile, btn_setting_account, btn_setting_study_mode, btn_setting_privacy;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -48,7 +47,7 @@ public class SettingMenuFragment extends Fragment {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         userId = firebaseUser.getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
-        databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);

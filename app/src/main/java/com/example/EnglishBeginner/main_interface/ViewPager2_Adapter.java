@@ -38,7 +38,6 @@ public class ViewPager2_Adapter extends FragmentStateAdapter {
 //            case 6:
 //                return new AddBlogFragment();
             case 0:
-                return new LearnFragment();
             default:
                 return new LearnFragment();
         }
