@@ -44,7 +44,6 @@ public class LevelManagement extends AppCompatActivity {
     private void initUI() {
         daoImageStorage = new DAOImageStorage(this);
         daoLevel = new DAOLevel(this);
-        SearchView searchView = findViewById(R.id.svLevel);
         RecyclerView recyclerView = findViewById(R.id.rcvLevel);
         levelAdapter = new LevelAdapter(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -65,18 +64,6 @@ public class LevelManagement extends AppCompatActivity {
         });
         ImageView imgAdd = findViewById(R.id.imgAdd);
         imgAdd.setOnClickListener(v -> openDialog(1,null));
-        searchView.setInputType(InputType.TYPE_CLASS_NUMBER);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                levelAdapter.getFilter().filter(newText);
-                return false;
-            }
-        });
     }
     private void setDataListFromRealTimeFireBase()
     {

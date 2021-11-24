@@ -6,7 +6,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
@@ -16,7 +17,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,7 +27,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.EnglishBeginner.Admin.Adapter.LevelSpinnerAdapter;
 import com.example.EnglishBeginner.Admin.Adapter.TopicAdapter;
 import com.example.EnglishBeginner.Admin.DAO.DAOImageStorage;
 import com.example.EnglishBeginner.Admin.DAO.DAOLevel;
@@ -51,7 +50,7 @@ public class TopicManagement extends AppCompatActivity {
     private DAOTopic daoTopic;
     private DAOLevel daoLevel;
     private DAOImageStorage daoImageStorage;
-    private AutoCompleteTextView autoCompleteTextView;
+    private AutoCompleteTextView autoCompleteTextView,searchView;
     private String level;
     private ImageView imgTopic;
     @Override
@@ -61,9 +60,29 @@ public class TopicManagement extends AppCompatActivity {
         initUI();
         getDataFirebase();
     }
-
     private void getDataFirebase() {
         daoTopic.getDataFromRealTimeFirebase(topicAdapter);
+        List<String>topicList = new ArrayList<>();
+        DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("listtopic");
+        databaseReference1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (topicList != null) {
+                    topicList.clear();
+                    topicList.add(DEFAULTVALUE.ALL);
+                }
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Topic topic = dataSnapshot.getValue(Topic.class);
+                    topicList.add(topic.getNameTopic());
+                }
+                searchView.setAdapter(new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1,topicList));
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         List<String>levelList = new ArrayList<>();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listlevel");
         databaseReference.orderByChild("nameLevel").addValueEventListener(new ValueEventListener() {
@@ -90,7 +109,7 @@ public class TopicManagement extends AppCompatActivity {
     private void initUI() {
         daoImageStorage = new DAOImageStorage(this);
         daoTopic = new DAOTopic(this);
-        SearchView searchView = findViewById(R.id.svTopic);
+        searchView = findViewById(R.id.svTopic);
         autoCompleteTextView = findViewById(R.id.atcTopic_Level);
         autoCompleteTextView.setText(DEFAULTVALUE.ALL);
         RecyclerView recyclerView = findViewById(R.id.rcvTopic);
@@ -114,15 +133,20 @@ public class TopicManagement extends AppCompatActivity {
         });
         ImageView imgAdd = findViewById(R.id.imgAdd);
         imgAdd.setOnClickListener(v -> openDialog(Gravity.CENTER,1,null));
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchView.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
             }
+
             @Override
-            public boolean onQueryTextChange(String newText) {
-                topicAdapter.getFilter().filter(newText);
-                return false;
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                topicAdapter.getFilter().filter(String.valueOf(s));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
         autoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
@@ -185,7 +209,7 @@ public class TopicManagement extends AppCompatActivity {
         {
             list.add(String.valueOf(level.getNameLevel()));
         }
-        spnTopic.setAdapter(new ArrayAdapter<>(this, R.layout.listoptionitem, R.id.tvOptionItem, list));
+        spnTopic.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,list));
         if (topic!=null)
         {
             spnTopic.setSelection(getSelectedSpinner(spnTopic,String.valueOf(topic.getLevel())));
@@ -260,7 +284,6 @@ public class TopicManagement extends AppCompatActivity {
         builder1.setNegativeButton(
                 "Không",
                 (dialog, id) -> dialog.cancel());
-
         AlertDialog alert11 = builder1.create();
         alert11.show();
     }

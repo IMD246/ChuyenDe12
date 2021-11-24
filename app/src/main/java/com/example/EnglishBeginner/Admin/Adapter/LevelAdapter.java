@@ -19,7 +19,7 @@ import com.example.EnglishBeginner.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHolder> implements Filterable {
+public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHolder>{
 
     private Context context;
     private List<Level> listLevel;
@@ -86,37 +86,6 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHol
         }
         return 0;
     }
-
-    @Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                String strSearch = constraint.toString();
-                if (strSearch.isEmpty() || strSearch.length() == 0) {
-                    listLevel = listLevelOld;
-                } else {
-                    List<Level> list = new ArrayList<>();
-                    for (Level level : listLevelOld) {
-                        if (level.getNameLevel() == Integer.parseInt(strSearch)) {
-                            list.add(level);
-                        }
-                    }
-                    listLevel = list;
-                }
-                FilterResults filterResults = new FilterResults();
-                filterResults.values = listLevel;
-                return filterResults;
-            }
-
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                listLevel = (List<Level>) results.values;
-                notifyDataSetChanged();
-            }
-        };
-    }
-
     public static class LevelViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView tvName;
         private ImageView imgDelete, imgEdit,imgLevel;

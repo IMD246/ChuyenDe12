@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +22,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.SearchView;
+
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,7 +35,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.EnglishBeginner.Admin.Adapter.QuestionAdapter;
-import com.example.EnglishBeginner.Admin.Adapter.TypeQuestionSpinnerAdapter;
 import com.example.EnglishBeginner.Admin.DAO.DAOImageStorage;
 import com.example.EnglishBeginner.Admin.DAO.DAOQuestion;
 import com.example.EnglishBeginner.Admin.DTO.DEFAULTVALUE;
@@ -54,9 +55,8 @@ import java.util.List;
 public class QuestionManagementFragment extends Fragment implements View.OnClickListener {
 
     private DAOQuestion daoQuestion;
-    private SearchView svQuestion;
     private QuestionInterface questionInterface;
-    private AutoCompleteTextView atcTopic;
+    private AutoCompleteTextView atcTopic,svQuestion;
     String topic = DEFAULTVALUE.TOPIC, typeQuestion = DEFAULTVALUE.TYPEQUESTION;
     private QuestionAdapter questionAdapter;
     private DAOImageStorage daoImageStorage;
@@ -80,6 +80,7 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
     @Override
     public void onResume() {
         super.onResume();
+        initUI(v);
         getDataFromRealTime();
     }
     private void initUI(View v) {
@@ -107,16 +108,20 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
                 alertDialog(question);
             }
         });
-        svQuestion.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        svQuestion.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-                questionAdapter.getFilter().filter(newText);
-                return false;
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                questionAdapter.getFilter().filter(String.valueOf(s));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
         atcTopic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -159,6 +164,25 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
 
     private void getDataFromRealTime() {
         daoQuestion.getDataFromRealTimeToList(questionAdapter);
+        List<String>titleList = new ArrayList<>();
+        DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("listquestion");
+        databaseReference1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (titleList!=null)
+                {
+                    titleList.clear();
+                }
+                for (DataSnapshot dataSnapshot : snapshot.getChildren())
+                {
+                    Question question = dataSnapshot.getValue(Question.class);
+                    titleList.add(question.getTitle());
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) { }
+        });
+        svQuestion.setAdapter(new ArrayAdapter<>(getContext(),android.R.layout.simple_list_item_1,titleList));
         List<String> topicList = new ArrayList<>();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listtopic");
         databaseReference.orderByChild("level").addValueEventListener(new ValueEventListener() {
@@ -247,7 +271,7 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
         for (Topic topic : questionInterface.daoTopic.getTopicList()) {
             listTopic.add(topic.getNameTopic());
         }
-        spnTopic.setAdapter(new ArrayAdapter<>(getContext(), R.layout.listoptionitem, R.id.tvOptionItem, listTopic));
+        spnTopic.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, listTopic));
         btnNo.setOnClickListener(v -> dialog.dismiss());
         btnYes.setOnClickListener(v -> {
             Question question = new Question();

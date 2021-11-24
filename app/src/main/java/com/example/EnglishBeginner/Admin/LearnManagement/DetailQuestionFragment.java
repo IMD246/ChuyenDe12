@@ -18,7 +18,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -43,6 +42,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class DetailQuestionFragment extends Fragment implements View.OnClickListener {
 
@@ -52,29 +52,36 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
     private QuestionInterface questionInterface;
     private DAOQuestion daoQuestion;
     private DAOImageStorage daoImageStorage;
-    private ImageView imgAnswer,imgQuestion;
+    private ImageView imgAnswer, imgQuestion;
     private int openChooseFile = 0;
     private Question question;
-    private TextView tvTitle, tvCorrectAnswer;
+    private TextView tvTitle, tvCorrectAnswer, tvWord, tvMeaningWord, tvExample, tvExampleMeaning, tvGrammar;
     private int idAnswer = 1;
-    Question question2;
 
     public DetailQuestionFragment() {
     }
 
+    @SuppressLint({"SetTextI18n", "UseRequireInsteadOfGet"})
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_detail_question_fragment, container, false);
         Bundle bundleReceiver = getArguments();
+        initUI();
         if (bundleReceiver != null) {
             question = (Question) bundleReceiver.get("object_question");
+            tvTitle.setText("Câu hỏi: " + question.getTitle());
+            tvCorrectAnswer.setText("Câu Trả Lời Chính xác: " + question.getCorrectAnswer());
+            tvWord.setText("Từ vựng: "+question.getWord() +" ("+ question.getTypeWord()+")");
+            tvMeaningWord.setText("Nghĩa từ: " + question.getWordMeaning());
+            tvExample.setText("Ví dụ: " + question.getExample());
+            tvExampleMeaning.setText("Nghĩa ví dụ: " + question.getExampleMeaning());
+            tvCorrectAnswer.setText("Câu Trả Lời Chính xác: " + question.getCorrectAnswer());
+            tvGrammar.setText("Ngữ pháp: "+question.getGrammar());
         }
-        initUI();
         getDataFromFirebase();
         return view;
     }
-
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -85,9 +92,12 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
     private void initUI() {
         questionInterface = (QuestionInterface) getActivity();
         tvTitle = view.findViewById(R.id.tvTitleQuestionDetail);
+        tvExample = view.findViewById(R.id.tvExample);
+        tvExampleMeaning = view.findViewById(R.id.tvExampleMeaning);
+        tvWord = view.findViewById(R.id.tvWord);
+        tvMeaningWord = view.findViewById(R.id.tvMeaningWord);
+        tvGrammar = view.findViewById(R.id.tvGrammar);
         tvCorrectAnswer = view.findViewById(R.id.tvCorrectAnswerQuestion);
-        tvTitle.setText("Câu hỏi: " + question.getTitle());
-        tvCorrectAnswer.setText("Câu Trả Lời Chính xác: " + question.getCorrectAnswer());
         answerAdapter = new AnswerAdapter(getContext());
         daoAnswer = new DAOAnswer(getContext());
         daoImageStorage = new DAOImageStorage(getContext());
@@ -181,7 +191,6 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         }
         window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
         WindowManager.LayoutParams windowAttributes = window.getAttributes();
         windowAttributes.gravity = center;
         window.setAttributes(windowAttributes);
@@ -201,7 +210,8 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         Button btnPickImage = dialog.findViewById(R.id.btnPickImageQuestion);
         imgQuestion = dialog.findViewById(R.id.imgEditQuestion);
         btnPickImage.setOnClickListener(v -> {
-            openFileChoose();openChooseFile = 1;
+            openFileChoose();
+            openChooseFile = 1;
         });
         Button btnYes = dialog.findViewById(R.id.btnYes);
         Button btnNo = dialog.findViewById(R.id.btnNo);
@@ -210,7 +220,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         for (Topic topic : questionInterface.daoTopic.getTopicList()) {
             listTopic.add(topic.getNameTopic());
         }
-        spnTopic.setAdapter(new ArrayAdapter<>(getContext(), R.layout.listoptionitem, R.id.tvOptionItem, listTopic));
+        spnTopic.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1,listTopic));
         if (question != null) {
             edtWord.setText(question.getWord());
             edtMeaning.setText(question.getWordMeaning());
@@ -220,8 +230,16 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
             edtTitleQuestion.setText(question.getTitle());
             edtGrammar.setText(question.getGrammar());
             edtCorrectAnswer.setText(question.getCorrectAnswer());
-            spnTypeWord.setSelection(getSelectedSpinner(spnTypeWord,question.getTypeWord()));
-            spnCategoryWord.setSelection(getSelectedSpinner(spnCategoryWord,question.getCategoryWord()));
+            spnTypeWord.setSelection(getSelectedSpinner(spnTypeWord, question.getTypeWord()));
+            spnCategoryWord.setSelection(getSelectedSpinner(spnCategoryWord, question.getCategoryWord()));
+            if (question.getUrlImage().trim().isEmpty()
+                    || question.getUrlImage().trim().length()==0
+            )
+            { }
+            else
+            {
+                Glide.with(questionInterface.getBaseContext()).load(question.getUrlImage()).into(imgQuestion);
+            }
         }
         btnNo.setOnClickListener(v -> dialog.dismiss());
         btnYes.setOnClickListener(v -> {
@@ -244,8 +262,8 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
                     break;
                 }
             }
-            daoQuestion.editDataToFireBase(question1, edtTitleQuestion,edtWord, edtCorrectAnswer, tvTitle, tvCorrectAnswer);
-            daoImageStorage.uploadFileImageToQuestion("Question "+question.getId(),question1,imgQuestion,2);
+            daoQuestion.editDataToFireBase(question1, edtTitleQuestion, edtWord, edtCorrectAnswer, tvTitle, tvCorrectAnswer);
+            daoImageStorage.uploadFileImageToQuestion("Question " + question.getId(), question1, imgQuestion, 2);
         });
         dialog.show();
     }
@@ -255,11 +273,9 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100 && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
             daoImageStorage.setmImgURL(data.getData());
-            if (openChooseFile == 1)
-            {
+            if (openChooseFile == 1) {
                 imgQuestion.setImageURI(daoImageStorage.getmImgURL());
-            }
-            else {
+            } else {
                 imgAnswer.setImageURI(daoImageStorage.getmImgURL());
             }
         }
@@ -289,12 +305,6 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         windowAttributes.gravity = center;
         window.setAttributes(windowAttributes);
         dialog.setCancelable(Gravity.CENTER == center);
-        for (Question question4 : daoQuestion.getQuestionList()) {
-            if (question.getId() == question4.getId()) {
-                question2 = question4;
-                break;
-            }
-        }
         EditText edtAnswer = dialog.findViewById(R.id.edtAnswer);
         EditText edtQuestion = dialog.findViewById(R.id.edtTitleQuestion);
         edtQuestion.setText(question.getTitle());

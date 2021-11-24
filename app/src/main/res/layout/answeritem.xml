@@ -39,9 +39,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="75dp"
-            android:layout_marginTop="16dp"
             android:text="@string/c_u_tr_l_i"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toEndOf="@+id/imgAnswer"
             app:layout_constraintTop_toTopOf="parent" />
