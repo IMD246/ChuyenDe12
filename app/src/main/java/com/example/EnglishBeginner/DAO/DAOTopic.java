@@ -22,7 +22,6 @@ public class DAOTopic {
     public List<Topic> getTopicList() {
         return topicList;
     }
-    private DAOQuestion daoQuestion;
     public DAOTopic(Context context) {
         this.context = context;
         topicList = new ArrayList<>();

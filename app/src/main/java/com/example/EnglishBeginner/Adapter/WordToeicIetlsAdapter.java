@@ -84,14 +84,12 @@ public class WordToeicIetlsAdapter extends RecyclerView.Adapter<WordToeicIetlsAd
         }
         notifyDataSetChanged();
     }
-
     @NonNull
     @Override
     public WordToeicIetlsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.toeicietlsitem, parent, false);
         return new WordToeicIetlsViewHolder(view);
     }
-
     @Override
     public void onBindViewHolder(@NonNull WordToeicIetlsViewHolder holder, int position) {
         Word word = wordList.get(position);
