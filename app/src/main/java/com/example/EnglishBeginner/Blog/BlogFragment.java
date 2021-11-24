@@ -58,9 +58,9 @@ public class BlogFragment extends Fragment {
         ArrayList<Blog> arrayList = new ArrayList<>();
 
         for (Blog blog : listBlog) {
-            if (blog.getTypeMenu().equals(typeBlog)) {
-                arrayList.add(blog);
-            }
+//            if (blog.getTypeMenu().equals(typeBlog)) {
+//                arrayList.add(blog);
+//            }
         }
 
         setAdapterc2(arrayList);
@@ -70,15 +70,15 @@ public class BlogFragment extends Fragment {
         newListBlog = new ArrayList<>();
         listBlog = new ArrayList<>();
         UserInterfaceActivity userInterfaceActivity = (UserInterfaceActivity) getActivity();
-        Blog blog1 = new Blog("1", "19/7/2121 10:pm", "how to sell 100000 pack of notthing,", "", 120, 41, 203, "mostFavorite");
-        Blog blog2 = new Blog("1", "19/7/2121 10:pm", "i am yasuo 0/10,", "", 102, 43, 220, "yourFavorite");
-        Blog blog3 = new Blog("1", "19/7/2121 10:pm", "how to sell 100000 pack of notthing,w;elfja;rjpaowt;ljsdetpa2u3-4ojqpfhvxc.b,xlfk;EKht.eznb;fcxf;ew,5ntyw 4ht", "", 510, 24, 260, "new");
-        listBlog.add(blog1);
-        listBlog.add(blog2);
-        listBlog.add(blog2);
-        listBlog.add(blog3);
-        listBlog.add(blog3);
-        listBlog.add(blog1);
+//        Blog blog2 = new Blog("1", "19/7/2121 10:pm", "i am yasuo 0/10,", "", 102, 43, 220, "yourFavorite");
+//        Blog blog1 = new Blog("1", "19/7/2121 10:pm", "how to sell 100000 pack of notthing,", "", 120, 41, 203, "mostFavorite");
+//        Blog blog3 = new Blog("1", "19/7/2121 10:pm", "how to sell 100000 pack of notthing,w;elfja;rjpaowt;ljsdetpa2u3-4ojqpfhvxc.b,xlfk;EKht.eznb;fcxf;ew,5ntyw 4ht", "", 510, 24, 260, "new");
+//        listBlog.add(blog1);
+//        listBlog.add(blog2);
+//        listBlog.add(blog2);
+//        listBlog.add(blog3);
+//        listBlog.add(blog3);
+//        listBlog.add(blog1);
         recyclerView_blog = view.findViewById(R.id.rv_blog);
         btnAddBlog = view.findViewById(R.id.btnAddBlog);
 //        btnAddBlog.setOnClickListener(view -> {
@@ -89,9 +89,9 @@ public class BlogFragment extends Fragment {
 
     private void setAdapter() {
         for (Blog blog : listBlog) {
-            if (blog.getTypeMenu().equals("mostFavorite")) {
-                newListBlog.add(blog);
-            }
+//            if (blog.getTypeMenu().equals("mostFavorite")) {
+//                newListBlog.add(blog);
+//            }
         }
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         BlogAdapter blogAdapter = new BlogAdapter(getContext());
@@ -105,9 +105,9 @@ public class BlogFragment extends Fragment {
     private void setAdapterc2(ArrayList<Blog> temp) {
         Log.d("TAG", "setAdapter: " + listBlog.size());
         for (Blog blog : listBlog) {
-            if (blog.getTypeMenu().equals("mostFavorite")) {
-                newListBlog.add(blog);
-            }
+//            if (blog.getTypeMenu().equals("mostFavorite")) {
+//                newListBlog.add(blog);
+//            }
         }
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         BlogAdapter blogAdapter = new BlogAdapter(getContext());

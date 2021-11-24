@@ -1,35 +1,28 @@
 package com.example.EnglishBeginner.DTO;
 
 public class Blog {
-
     String idUser;
+    String nameUser;
     String dayOfPost;
     String title;
     String url_image;
     int comment;
     int like;
     int view;
-    String typeMenu;
 
-    public Blog(String idUser, String dayOfPost, String title, String url_image, int comment, int like, int view, String typeMenu) {
+    public Blog(String idUser, String nameUser, String dayOfPost, String title, String url_image, int comment, int like, int view) {
         this.idUser = idUser;
+        this.nameUser = nameUser;
         this.dayOfPost = dayOfPost;
         this.title = title;
         this.url_image = url_image;
         this.comment = comment;
         this.like = like;
         this.view = view;
-        this.typeMenu = typeMenu;
     }
 
-    public String getTypeMenu() {
-        return typeMenu;
+    public Blog() {
     }
-
-    public void setTypeMenu(String typeMenu) {
-        this.typeMenu = typeMenu;
-    }
-
     public String getIdUser() {
         return idUser;
     }
@@ -84,18 +77,5 @@ public class Blog {
 
     public void setView(int view) {
         this.view = view;
-    }
-
-    public Blog(String idUser, String dayOfPost, String title, String url_image, int comment, int like, int view) {
-        this.idUser = idUser;
-        this.dayOfPost = dayOfPost;
-        this.title = title;
-        this.url_image = url_image;
-        this.comment = comment;
-        this.like = like;
-        this.view = view;
-    }
-
-    public Blog() {
     }
 }
