@@ -3,6 +3,8 @@ package com.example.EnglishBeginner.main_interface;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.EnglishBeginner.Blog.AddBlogFragment;
@@ -14,6 +16,7 @@ import com.example.EnglishBeginner.profile.ProfileFragment;
 import com.example.EnglishBeginner.profile.SettingMenuFragment;
 
 public class ViewPager2_Adapter extends FragmentStateAdapter {
+
     public ViewPager2_Adapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
     }
@@ -22,15 +25,15 @@ public class ViewPager2_Adapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         switch (position){
-//            case 1:
-//                return new BlogFragment();
             case 1:
-                return new AlarmFragment();
+                return new BlogFragment();
             case 2:
-                return new VocabularyFragment();
+                return new AlarmFragment();
             case 3:
-                return new ProfileFragment();
+                return new VocabularyFragment();
             case 4:
+                return new ProfileFragment();
+            case 5:
                 return new SettingMenuFragment();
 //            case 6:
 //                return new AddBlogFragment();
@@ -40,9 +43,8 @@ public class ViewPager2_Adapter extends FragmentStateAdapter {
                 return new LearnFragment();
         }
     }
-
     @Override
     public int getItemCount() {
-        return 5;
+        return 6;
     }
 }
