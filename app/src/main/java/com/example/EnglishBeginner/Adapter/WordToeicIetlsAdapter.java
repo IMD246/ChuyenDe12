@@ -31,6 +31,8 @@ public class WordToeicIetlsAdapter extends RecyclerView.Adapter<WordToeicIetlsAd
     private Context context;
     private List<Word> wordList;
     private List<Word> wordListOld;
+    private String typeWordOld = DEFAULTVALUE.ALL;
+    private String keyWord = "";
 
     private MyDelegationLevel myDelegationLevel;
 
@@ -48,16 +50,34 @@ public class WordToeicIetlsAdapter extends RecyclerView.Adapter<WordToeicIetlsAd
     }
 
     public void setListDependOnTypeWord(@NonNull String typeWord) {
+        typeWordOld = typeWord;
         if (wordList.size() == 0) {
             wordList = wordListOld;
         }
-        if (typeWord.equalsIgnoreCase(DEFAULTVALUE.TYPEWORD)) {
+        if (typeWord.equalsIgnoreCase(DEFAULTVALUE.ALL) && keyWord.isEmpty()) {
             wordList = wordListOld;
         } else {
             List<Word> list = new ArrayList<>();
             for (Word word : wordListOld) {
-                if (word.getTypeWord().equalsIgnoreCase(typeWord)) {
-                    list.add(word);
+                if (!keyWord.isEmpty()) {
+                    if (typeWord.equalsIgnoreCase(DEFAULTVALUE.ALL)) {
+                        if (word.getWord().toLowerCase().contains(keyWord.toLowerCase())){
+                            list.add(word);
+                        }
+                    }
+                    else
+                    {
+                        if (word.getWord().toLowerCase().contains(keyWord.toLowerCase())
+                                && word.getTypeWord().equalsIgnoreCase(typeWord)) {
+                            list.add(word);
+                        }
+                    }
+                } else {
+                    if (!typeWord.equalsIgnoreCase(DEFAULTVALUE.ALL)) {
+                        if (word.getTypeWord().equalsIgnoreCase(typeWord)) {
+                            list.add(word);
+                        }
+                    }
                 }
             }
             wordList = list;
@@ -82,40 +102,34 @@ public class WordToeicIetlsAdapter extends RecyclerView.Adapter<WordToeicIetlsAd
         holder.tvNumberList.setText(String.valueOf(position + 1));
         holder.tvMeaning.setText(word.getMeaning());
 
-        holder.onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (myDelegationLevel != null) {
-                    switch (v.getId()) {
-                        case R.id.imgSave_Word:
-                            myDelegationLevel.saveItem(word);
-                            break;
-                        case R.id.imgSpeech_Word:
-                            myDelegationLevel.speechItem(word);
-                            break;
-                    }
+        holder.onClickListener = v -> {
+            if (myDelegationLevel != null) {
+                switch (v.getId()) {
+                    case R.id.imgSave_Word:
+                        myDelegationLevel.saveItem(word);
+                        break;
+                    case R.id.imgSpeech_Word:
+                        myDelegationLevel.speechItem(word);
+                        break;
                 }
             }
         };
-        holder.layout_toeicIelts.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                HistorySqliteDataHelper historySqliteDataHelper = new HistorySqliteDataHelper(context);
-                HistoryItem is=
-                        new HistoryItem(wordList.get(holder.getAdapterPosition()).getId()+"",
-                                wordList.get(holder.getAdapterPosition()).getWord(),
-                                HistoryItem.getDateTimeNow());
-                historySqliteDataHelper.addHistory(is);
-                SqlLiteHelper sqlLiteHelperOfWord = new SqlLiteHelper(context,"Dictionary.db",3);
+        holder.layout_toeicIelts.setOnClickListener(v -> {
+            HistorySqliteDataHelper historySqliteDataHelper = new HistorySqliteDataHelper(context);
+            HistoryItem is=
+                    new HistoryItem(wordList.get(holder.getAdapterPosition()).getId()+"",
+                            wordList.get(holder.getAdapterPosition()).getWord(),
+                            HistoryItem.getDateTimeNow());
+            historySqliteDataHelper.addHistory(is);
+            SqlLiteHelper sqlLiteHelperOfWord = new SqlLiteHelper(context,"Dictionary.db",3);
 
-                Bundle bundle = new Bundle();
-                bundle.putString("htmlText", sqlLiteHelperOfWord.getHtmlTextByWord(wordList.get(holder.getAdapterPosition()).getWord()));
+            Bundle bundle = new Bundle();
+            bundle.putString("htmlText", sqlLiteHelperOfWord.getHtmlTextByWord(wordList.get(holder.getAdapterPosition()).getWord()));
 
-                Intent it = new Intent(context, WordItemDetail.class);
-                it.putExtras(bundle);
-                it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(it);
-            }
+            Intent it = new Intent(context, WordItemDetail.class);
+            it.putExtras(bundle);
+            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(it);
         });
     }
 
@@ -133,15 +147,33 @@ public class WordToeicIetlsAdapter extends RecyclerView.Adapter<WordToeicIetlsAd
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 String strSearch = constraint.toString();
-                if (strSearch.isEmpty() || strSearch.length() == 0) {
+                keyWord = constraint.toString();
+                if (strSearch.isEmpty() && typeWordOld.equalsIgnoreCase(DEFAULTVALUE.ALL)) {
                     if (wordList.size() == 0) {
                         wordList = wordListOld;
                     }
                 } else {
                     List<Word> list = new ArrayList<>();
                     for (Word word : wordList) {
-                        if (word.getWord().toLowerCase().contains(strSearch.toLowerCase())) {
-                            list.add(word);
+                        if (!keyWord.isEmpty()) {
+                            if (typeWordOld.equalsIgnoreCase(DEFAULTVALUE.ALL)) {
+                                if (word.getWord().toLowerCase().contains(keyWord.toLowerCase())){
+                                    list.add(word);
+                                }
+                            }
+                            else
+                            {
+                                if (word.getWord().toLowerCase().contains(keyWord.toLowerCase())
+                                        && word.getTypeWord().equalsIgnoreCase(typeWordOld)) {
+                                    list.add(word);
+                                }
+                            }
+                        } else {
+                            if (!typeWordOld.equalsIgnoreCase(DEFAULTVALUE.ALL)) {
+                                if (word.getTypeWord().equalsIgnoreCase(typeWordOld)) {
+                                    list.add(word);
+                                }
+                            }
                         }
                     }
                     wordList = list;

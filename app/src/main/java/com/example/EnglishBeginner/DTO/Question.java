@@ -4,21 +4,47 @@ import java.io.Serializable;
 
 public class Question implements Serializable {
     private int id,idTopic;
-    private String title,nameTopic,nameTypeQuestion,correctAnswer,
-            example= DEFAULTVALUE.DEFAULTVALUE,exampleMeaning=DEFAULTVALUE.DEFAULTVALUE,word = DEFAULTVALUE.DEFAULTVALUE,wordMeaning = DEFAULTVALUE.DEFAULTVALUE,
-            typeWord = DEFAULTVALUE.DEFAULTVALUE,grammar= DEFAULTVALUE.DEFAULTVALUE,urlImage="";
-    public Question(int id, int idTopic, String title, String nameTopic, String nameTypeQuestion,
-                    String correctAnswer) {
+    private String title,nameTopic,correctAnswer,
+            example= "",exampleMeaning="",word = "",wordMeaning = "",
+            typeWord = "",categoryWord,grammar= "",urlImage="";
+
+    public Question(int id, int idTopic, String title, String nameTopic, String correctAnswer, String example, String exampleMeaning, String word, String wordMeaning, String typeWord, String categoryWord, String grammar, String urlImage) {
         this.id = id;
         this.idTopic = idTopic;
         this.title = title;
         this.nameTopic = nameTopic;
-        this.nameTypeQuestion = nameTypeQuestion;
         this.correctAnswer = correctAnswer;
+        this.example = example;
+        this.exampleMeaning = exampleMeaning;
+        this.word = word;
+        this.wordMeaning = wordMeaning;
+        this.typeWord = typeWord;
+        this.categoryWord = categoryWord;
+        this.grammar = grammar;
+        this.urlImage = urlImage;
+    }
+
+    public String getCategoryWord() {
+        return categoryWord;
+    }
+
+    public void setCategoryWord(String categoryWord) {
+        this.categoryWord = categoryWord;
+    }
+
+    public Question() {
     }
 
     public String getExampleMeaning() {
         return exampleMeaning;
+    }
+
+    public String getUrlImage() {
+        return urlImage;
+    }
+
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
     }
 
     public void setExampleMeaning(String exampleMeaning) {
@@ -31,57 +57,6 @@ public class Question implements Serializable {
 
     public void setWordMeaning(String wordMeaning) {
         this.wordMeaning = wordMeaning;
-    }
-
-    public String getUrlImage() {
-        return urlImage;
-    }
-
-    public void setUrlImage(String urlImage) {
-        this.urlImage = urlImage;
-    }
-
-    public String getExample() {
-        return example;
-    }
-
-    public void setExample(String example) {
-        this.example = example;
-    }
-
-    public String getWord() {
-        return word;
-    }
-
-    public void setWord(String word) {
-        this.word = word;
-    }
-
-    public String getTypeWord() {
-        return typeWord;
-    }
-
-    public void setTypeWord(String typeWord) {
-        this.typeWord = typeWord;
-    }
-
-    public String getGrammar() {
-        return grammar;
-    }
-
-    public void setGrammar(String grammar) {
-        this.grammar = grammar;
-    }
-
-    public Question() {
-    }
-
-    public String getCorrectAnswer() {
-        return correctAnswer;
-    }
-
-    public void setCorrectAnswer(String correctAnswer) {
-        this.correctAnswer = correctAnswer;
     }
 
     public int getId() {
@@ -116,11 +91,43 @@ public class Question implements Serializable {
         this.nameTopic = nameTopic;
     }
 
-    public String getNameTypeQuestion() {
-        return nameTypeQuestion;
+    public String getCorrectAnswer() {
+        return correctAnswer;
     }
 
-    public void setNameTypeQuestion(String nameTypeQuestion) {
-        this.nameTypeQuestion = nameTypeQuestion;
+    public void setCorrectAnswer(String correctAnswer) {
+        this.correctAnswer = correctAnswer;
+    }
+
+    public String getExample() {
+        return example;
+    }
+
+    public void setExample(String example) {
+        this.example = example;
+    }
+
+    public String getWord() {
+        return word;
+    }
+
+    public void setWord(String word) {
+        this.word = word;
+    }
+
+    public String getTypeWord() {
+        return typeWord;
+    }
+
+    public void setTypeWord(String typeWord) {
+        this.typeWord = typeWord;
+    }
+
+    public String getGrammar() {
+        return grammar;
+    }
+
+    public void setGrammar(String grammar) {
+        this.grammar = grammar;
     }
 }

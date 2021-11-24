@@ -1,10 +1,10 @@
 package com.example.EnglishBeginner.fragment.LearnWord.WordManagement;
 
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,39 +14,39 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.EnglishBeginner.Adapter.WordToeicIetlsAdapter;
-import com.example.EnglishBeginner.DAO.DAOIetls;
+import com.example.EnglishBeginner.DAO.DAOWord;
+import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
+import com.example.EnglishBeginner.DTO.Question;
 import com.example.EnglishBeginner.DTO.Word;
 import com.example.EnglishBeginner.R;
 import com.example.EnglishBeginner.fragment.LearnWord.saveWord.source.SaveSqliteHelper;
-import com.example.EnglishBeginner.fragment.LearnWord.word.source.MySingleton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class IetlsManagement extends AppCompatActivity implements TextToSpeech.OnInitListener {
 
     private RecyclerView rcvIetls;
 
-    private AutoCompleteTextView atcIetls;
-    private SearchView svIetls;
+    private AutoCompleteTextView atcIetls,svIetls;
 
     private Button returnButton;
-    MediaPlayer player;
     private WordToeicIetlsAdapter wordToeicIetlsAdapter;
-    private DAOIetls daoIetls;
+    private DAOWord daoWord;
     TextToSpeech textToSpeech;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,17 +57,23 @@ public class IetlsManagement extends AppCompatActivity implements TextToSpeech.O
         getDataFirebase();
     }
     private void initUI() {
-        daoIetls = new DAOIetls(this);
+        daoWord = new DAOWord(this);
         rcvIetls = findViewById(R.id.rcvIetls);
         wordToeicIetlsAdapter = new WordToeicIetlsAdapter(this);
         returnButton = findViewById(R.id.ielts_returnButton);
         svIetls = findViewById(R.id.svIetls);
         atcIetls = findViewById(R.id.atcTypeWord);
-        atcIetls.setAdapter(new ArrayAdapter<String>(this, R.layout.listoptionitem, R.id.tvOptionItem,getResources().getStringArray(R.array.typeWord)));
+        List<String> listTypeWord = new ArrayList<>();
+        listTypeWord.add(DEFAULTVALUE.ALL);
+        for (String i : getResources().getStringArray(R.array.typeWord))
+        {
+            listTypeWord.add(i);
+        }
+        atcIetls.setAdapter(new ArrayAdapter<String>(this, R.layout.listoptionitem, R.id.tvOptionItem,listTypeWord));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         rcvIetls.setLayoutManager(linearLayoutManager);
-        wordToeicIetlsAdapter.setWordList(daoIetls.getWordList());
+        wordToeicIetlsAdapter.setWordList(daoWord.getWordList());
         rcvIetls.setAdapter(wordToeicIetlsAdapter);
         wordToeicIetlsAdapter.setMyDelegationLevel(new WordToeicIetlsAdapter.MyDelegationLevel() {
             @Override
@@ -82,46 +88,47 @@ public class IetlsManagement extends AppCompatActivity implements TextToSpeech.O
             }
         });
 
-        svIetls.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        svIetls.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                wordToeicIetlsAdapter.getFilter().filter(String.valueOf(charSequence));
             }
             @Override
-            public boolean onQueryTextChange(String newText) {
-                wordToeicIetlsAdapter.getFilter().filter(newText);
-                return false;
-            }
-        });
-        atcIetls.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                wordToeicIetlsAdapter.setListDependOnTypeWord(atcIetls.getText().toString());
+            public void afterTextChanged(Editable editable) {
+
             }
         });
-        returnButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        atcIetls.setOnItemClickListener((parent, view, position, id) -> wordToeicIetlsAdapter.setListDependOnTypeWord(atcIetls.getText().toString()));
+        returnButton.setOnClickListener(v -> finish());
     }
     private void getDataFirebase() {
-        daoIetls.getDataFromRealTimeToList(wordToeicIetlsAdapter);
-    }
-
-
-    private int getSelectedSpinner(Spinner spnTypeWord, String valueOf) {
-        for (int i=0; i< spnTypeWord.getCount();i++)
-        {
-            if (spnTypeWord.getItemAtPosition(i).toString().equalsIgnoreCase(valueOf))
-            {
-                return i;
+        daoWord.getDataFromRealTimeToList(wordToeicIetlsAdapter,DEFAULTVALUE.IETLS);
+        List<String>listWord = new ArrayList<>();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listquestion");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (listWord!=null)
+                {
+                    listWord.clear();
+                }
+                for (DataSnapshot dataSnapshot : snapshot.getChildren())
+                {
+                    Question question = dataSnapshot.getValue(Question.class);
+                    listWord.add(question.getWord());
+                }
+                svIetls.setAdapter(new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1,listWord));
             }
-        }
-        return 0;
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
     }
-
     // Xây dựng một Hộp thoại thông báo
     private void saveWord(Word word) {
         SaveSqliteHelper sqliteHelper = new SaveSqliteHelper(IetlsManagement.this);

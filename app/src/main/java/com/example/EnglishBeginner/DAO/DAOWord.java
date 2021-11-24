@@ -1,14 +1,14 @@
 package com.example.EnglishBeginner.DAO;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.EnglishBeginner.Adapter.WordToeicIetlsAdapter;
+import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
+import com.example.EnglishBeginner.DTO.Question;
 import com.example.EnglishBeginner.DTO.Word;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -21,14 +21,14 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DAOIetls {
+public class DAOWord {
     private List<Word> wordList;
     private DatabaseReference databaseReference;
     private Context context;
 
-    public DAOIetls(Context context) {
+    public DAOWord(Context context) {
         wordList = new ArrayList<>();
-        databaseReference = FirebaseDatabase.getInstance().getReference("listietls");
+        databaseReference = FirebaseDatabase.getInstance().getReference("listquestion");
         this.context = context;
     }
 
@@ -40,17 +40,20 @@ public class DAOIetls {
         return wordList;
     }
 
-    public void getDataFromRealTimeToList(WordToeicIetlsAdapter wordToeicIetlsAdapter) {
-        databaseReference.addValueEventListener(new ValueEventListener() {
+    public void getDataFromRealTimeToList(WordToeicIetlsAdapter wordToeicIetlsAdapter, String categoryWord) {
+        databaseReference.orderByChild("categoryWord").equalTo(categoryWord).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+                if (wordList != null) {
                     wordList.clear();
-
+                }
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Word word = dataSnapshot.getValue(Word.class);
+                    Question question = dataSnapshot.getValue(Question.class);
+                    Word word = new Word();
+                    word.setWord(question.getWord());
+                    word.setTypeWord(question.getTypeWord());
+                    word.setMeaning(question.getWordMeaning());
                     wordList.add(word);
-                    Log.e("firebase", word.getWord() );
                 }
                 if (wordToeicIetlsAdapter != null) {
                     wordToeicIetlsAdapter.notifyDataSetChanged();
@@ -59,7 +62,6 @@ public class DAOIetls {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(context, "Get list question failed", Toast.LENGTH_SHORT).show();
             }
         });
     }

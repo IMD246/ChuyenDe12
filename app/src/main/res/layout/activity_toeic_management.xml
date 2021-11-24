@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".User.LearnWord.WordManagement.IetlsManagement">
+    tools:context=".fragment.LearnWord.WordManagement.ToeicManagement">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,26 +15,29 @@
 
         <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_margin="8dp"
+            android:layout_weight="1"
             card_view:cardCornerRadius="8dp"
             card_view:cardElevation="4dp"
             card_view:cardUseCompatPadding="true">
 
-            <androidx.appcompat.widget.SearchView
+            <AutoCompleteTextView
                 android:id="@+id/svToeic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:elevation="4dp" />
+                android:drawableStart="@drawable/baseline_search_black_24dp"
+                android:hint="@string/nh_p_t_kh_a_t_m_ki_m" />
         </androidx.cardview.widget.CardView>
 
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tfLevel"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:layout_width="220dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="1">
 
             <AutoCompleteTextView
                 android:id="@+id/atcTypeWord"
@@ -49,18 +52,19 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvToeic"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="0dp"
         android:layout_margin="8dp"
         android:layout_marginTop="20dp"
+        android:layout_weight="4.5"
         android:background="@drawable/bg_blue_corner_recycleview"
         android:padding="1dp" />
 
     <Button
         android:id="@+id/toeic_returnButton"
-        android:layout_width="145dp"
-        android:layout_height="64dp"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
         android:layout_gravity="center"
-        android:layout_marginTop="12dp"
+        android:layout_weight="0.5"
         android:backgroundTint="@color/l_blue"
-        android:text="Quay Lại" />
+        android:text="@string/quay_l_i" />
 </LinearLayout>

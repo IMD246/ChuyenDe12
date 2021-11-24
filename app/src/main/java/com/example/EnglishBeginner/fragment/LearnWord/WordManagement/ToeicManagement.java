@@ -1,50 +1,42 @@
 package com.example.EnglishBeginner.fragment.LearnWord.WordManagement;
 
-import android.media.MediaPlayer;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.Spinner;
-import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.EnglishBeginner.Adapter.WordToeicIetlsAdapter;
-import com.example.EnglishBeginner.DAO.DAOToeic;
+import com.example.EnglishBeginner.DAO.DAOWord;
+import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
+import com.example.EnglishBeginner.DTO.Question;
 import com.example.EnglishBeginner.DTO.Word;
 import com.example.EnglishBeginner.R;
 import com.example.EnglishBeginner.fragment.LearnWord.saveWord.source.SaveSqliteHelper;
-import com.example.EnglishBeginner.fragment.LearnWord.word.source.MySingleton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 
 public class ToeicManagement extends AppCompatActivity implements TextToSpeech.OnInitListener {
 
-    private RecyclerView rcvToeic;
     private WordToeicIetlsAdapter wordToeicIetlsAdapter;
-    private AutoCompleteTextView atcToeic;
-    private SearchView svToeic;
-    private DAOToeic daoToeic;
-    private Button returnButton;
-    MediaPlayer player;
+    private AutoCompleteTextView atcToeic,svToeic;
+    private DAOWord daoWord;
     TextToSpeech textToSpeech;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,17 +47,20 @@ public class ToeicManagement extends AppCompatActivity implements TextToSpeech.O
         getDataFirebase();
     }
     private void initUI() {
-        daoToeic = new DAOToeic(this);
-        rcvToeic = findViewById(R.id.rcvToeic);
+        daoWord = new DAOWord(this);
+        RecyclerView rcvToeic = findViewById(R.id.rcvToeic);
         wordToeicIetlsAdapter = new WordToeicIetlsAdapter(this);
         svToeic = findViewById(R.id.svToeic);
         atcToeic = findViewById(R.id.atcTypeWord);
-        returnButton = findViewById(R.id.toeic_returnButton);
-        atcToeic.setAdapter(new ArrayAdapter<String>(this, R.layout.listoptionitem, R.id.tvOptionItem,getResources().getStringArray(R.array.typeWord)));
+        Button returnButton = findViewById(R.id.toeic_returnButton);
+        List<String> listTypeWord = new ArrayList<>();
+        listTypeWord.add(DEFAULTVALUE.ALL);
+        Collections.addAll(listTypeWord, getResources().getStringArray(R.array.typeWord));
+        atcToeic.setAdapter(new ArrayAdapter<>(this, R.layout.listoptionitem, R.id.tvOptionItem, listTypeWord));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         rcvToeic.setLayoutManager(linearLayoutManager);
-        wordToeicIetlsAdapter.setWordList(daoToeic.getWordList());
+        wordToeicIetlsAdapter.setWordList(daoWord.getWordList());
         rcvToeic.setAdapter(wordToeicIetlsAdapter);
         wordToeicIetlsAdapter.setMyDelegationLevel(new WordToeicIetlsAdapter.MyDelegationLevel() {
             @Override
@@ -75,53 +70,51 @@ public class ToeicManagement extends AppCompatActivity implements TextToSpeech.O
 
             @Override
             public void speechItem(Word word) {
-                texttoSpeak(word.getWord());
+                textToSpeak(word.getWord());
             }
         });
-//        imgAdd.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                openDialog(Gravity.CENTER,1,null);
-//            }
-//        });
-        svToeic.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        svToeic.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
             }
+
             @Override
-            public boolean onQueryTextChange(String newText) {
-                wordToeicIetlsAdapter.getFilter().filter(newText);
-                return false;
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                wordToeicIetlsAdapter.getFilter().filter(String.valueOf(charSequence));
+                wordToeicIetlsAdapter.notifyDataSetChanged();
             }
-        });
-        atcToeic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                wordToeicIetlsAdapter.setListDependOnTypeWord(atcToeic.getText().toString());
+            public void afterTextChanged(Editable editable) {
+
             }
         });
-        returnButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        atcToeic.setOnItemClickListener((parent, view, position, id) -> wordToeicIetlsAdapter.setListDependOnTypeWord(atcToeic.getText().toString()));
+        returnButton.setOnClickListener(v -> finish());
     }
     private void getDataFirebase() {
-        daoToeic.getDataFromRealTimeToList(wordToeicIetlsAdapter);
+        daoWord.getDataFromRealTimeToList(wordToeicIetlsAdapter,DEFAULTVALUE.TOEIC);
+        List<String>listWord = new ArrayList<>();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listquestion");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                listWord.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren())
+                {
+                    Question question = dataSnapshot.getValue(Question.class);
+                    assert question != null;
+                    listWord.add(question.getWord());
+                }
+                svToeic.setAdapter(new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1,listWord));
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
     }
 
-    private int getSelectedSpinner(Spinner spnTypeWord, String valueOf) {
-        for (int i=0; i< spnTypeWord.getCount();i++)
-        {
-            if (spnTypeWord.getItemAtPosition(i).toString().equalsIgnoreCase(valueOf))
-            {
-                return i;
-            }
-        }
-        return 0;
-    }
     // Xây dựng một Hộp thoại thông báo
 
     public void saveWord(Word word) {
@@ -151,12 +144,7 @@ public class ToeicManagement extends AppCompatActivity implements TextToSpeech.O
         }
         super.onDestroy();
     }
-    private void texttoSpeak(String text) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
-        }
-        else {
-            textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
-        }
+    private void textToSpeak(String text) {
+        textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
     }
 }

@@ -71,8 +71,11 @@ public class ReviewCourse_Adapter extends RecyclerView.Adapter<ReviewCourse_Adap
         if (reviewCourse.getTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.LISTEN)){
             holder.layoutAnswer.setVisibility(View.GONE);
             holder.layoutCorrect.setVisibility(View.GONE);
+            holder.btnSpeak.setVisibility(View.VISIBLE);
         }else {
             holder.btnSpeak.setVisibility(View.GONE);
+            holder.layoutAnswer.setVisibility(View.VISIBLE);
+            holder.layoutCorrect.setVisibility(View.VISIBLE);
         }
         holder.tvtitle.setText(reviewCourse.getQuestion()+"");
         holder.tvAnswer.setText(reviewCourse.getUserAnswer());

@@ -18,7 +18,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
@@ -27,10 +26,9 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.example.EnglishBeginner.Adapter.ProcessTopic_Adapter;
-import com.example.EnglishBeginner.DAO.DAOProcessUser;
-import com.example.EnglishBeginner.DAO.DAOQuestion;
 import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.DTO.ProcessTopicItem;
+import com.example.EnglishBeginner.DTO.Question;
 import com.example.EnglishBeginner.DTO.Topic;
 import com.example.EnglishBeginner.DTO.User;
 import com.example.EnglishBeginner.Login.Login;
@@ -57,8 +55,6 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
     public DatabaseReference databaseReference;
     private TextView tvUserName, tvUserEmail;
     private ImageView imgUserName;
-    private DAOQuestion daoQuestion;
-    private DAOProcessUser daoProcessUser;
 
     //khai báo giá trị cho screen
     public static final int FRAGMENT_LEARN = 0;
@@ -159,7 +155,7 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
                     case 5:
                         bottomNavigationView.getMenu().findItem(R.id.bottom_nav_profile).setChecked(true);
                         break;
-                    case 5:
+                    case 6:
                         bottomNavigationView.getMenu().findItem(R.id.bottom_nav_profile).setChecked(true);
                         break;
                 }
@@ -206,7 +202,6 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
     private void setControl() {
         //drawe layout
         drawerLayout = findViewById(R.id.drawer_layout);
-        daoProcessUser = new DAOProcessUser(this);
         navigationView = findViewById(R.id.nav_view);
         // get view control trong navigationview có chứa drawable
         View header = navigationView.getHeaderView(0);
@@ -238,6 +233,7 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         });
         viewPager2.setPageTransformer(compositePageTransformer);
     }
+
     //xử lí Viewpager2
     private void processViewPager2() {
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
@@ -345,6 +341,7 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
             alertDialog();
         }
     }
+
     public void alertDialog() {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         builder1.setMessage("Bạn có muốn đăng xuất?");
@@ -367,10 +364,6 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
     @SuppressLint("SetTextI18n")
     public void alertDialogTopic(Topic topic) {
         List<ProcessTopicItem> processTopicItemList = new ArrayList<>();
-        daoQuestion = new DAOQuestion(this);
-        if (topic != null) {
-            daoQuestion.getDataFromRealTimeToList(topic);
-        }
         Dialog dialog = new Dialog(UserInterfaceActivity.this);
         dialog.setContentView(R.layout.layout_popup_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -379,38 +372,80 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         Button learn = dialog.findViewById(R.id.btn_learn_topic);
         Button test = dialog.findViewById(R.id.btn_test_topic);
         RelativeLayout relativeLayout = dialog.findViewById(R.id.rltPopupDialog);
+        List<Question> questionList = new ArrayList<>();
         tvTitle.setText("Hãy cố gắng lên");
         tvLevel.setText("Level: 1");
         ProcessTopic_Adapter processTopic_adapter = new ProcessTopic_Adapter(dialog.getContext());
-        assert topic != null;
-        daoProcessUser.getDataFromRealTimeFirebase(firebaseUser.getUid(), topic.getId(), processTopicItemList, processTopic_adapter, tvTitle, tvLevel, test, relativeLayout);
-        learn.setOnClickListener(v -> {
-            if (daoQuestion.getQuestionList().size() > 0) {
-                Intent intent = new Intent(UserInterfaceActivity.this, TestEnglishActivity.class);
-                intent.putExtra("listQuestion", (Serializable) daoQuestion.getQuestionList());
-                intent.putExtra("learn", DEFAULTVALUE.LEARN);
-                startActivity(intent);
-            } else {
-                DEFAULTVALUE.alertDialogMessage("Thông báo", "Chủ đề này hiện không có câu hỏi", UserInterfaceActivity.this);
-            }
-        });
-        test.setOnClickListener(v -> {
-            if (daoQuestion.getQuestionList().size() > 0) {
-                Intent intent = new Intent(UserInterfaceActivity.this, TestEnglishActivity.class);
-                intent.putExtra("listQuestion", (Serializable) daoQuestion.getQuestionList());
-                intent.putExtra("learn", DEFAULTVALUE.TEST);
-                intent.putExtra("idTopic", topic.getId());
-                intent.putExtra("userID", firebaseUser.getUid());
-                startActivity(intent);
-            } else {
-                DEFAULTVALUE.alertDialogMessage("Thông báo", "Chủ đề này hiện không có câu hỏi", UserInterfaceActivity.this);
-            }
-        });
         RecyclerView rcvLevelTopic = dialog.findViewById(R.id.rcvImageTopic);
+        assert topic != null;
+        DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("listquestion");
+        databaseReference1.orderByChild("idTopic").equalTo(topic.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (questionList != null) {
+                    questionList.clear();
+                }
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Question question = dataSnapshot.getValue(Question.class);
+                    questionList.add(question);
+                }
+                learn.setOnClickListener(v -> {
+                    if (questionList.size() > 0) {
+                        Intent intent = new Intent(UserInterfaceActivity.this, TestEnglishActivity.class);
+                        intent.putExtra("listQuestion", (Serializable) questionList);
+                        intent.putExtra("learn", DEFAULTVALUE.LEARN);
+                        startActivity(intent);
+                    } else {
+                        DEFAULTVALUE.alertDialogMessage("Thông báo", "Chủ đề này hiện không có câu hỏi", UserInterfaceActivity.this);
+                    }
+                });
+                test.setOnClickListener(v -> {
+                    if (questionList.size() > 0) {
+                        Intent intent = new Intent(UserInterfaceActivity.this, TestEnglishActivity.class);
+                        intent.putExtra("listQuestion", (Serializable) questionList);
+                        intent.putExtra("learn", DEFAULTVALUE.TEST);
+                        intent.putExtra("idTopic", topic.getId());
+                        intent.putExtra("userID", firebaseUser.getUid());
+                        startActivity(intent);
+                    } else {
+                        DEFAULTVALUE.alertDialogMessage("Thông báo", "Chủ đề này hiện không có câu hỏi", UserInterfaceActivity.this);
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(dialog.getContext(), LinearLayoutManager.HORIZONTAL, false);
-        processTopic_adapter.setProcessTopicItemList(processTopicItemList);
-        rcvLevelTopic.setLayoutManager(linearLayoutManager);
-        rcvLevelTopic.setAdapter(processTopic_adapter);
+        DatabaseReference databaseReference2 = FirebaseDatabase.getInstance().getReference("listProcessUser");
+        databaseReference2.child(firebaseUser.getUid()).child("listTopic/" + topic.getId() + "/listProcess").
+                addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (processTopicItemList != null) {
+                            processTopicItemList.clear();
+                        }
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            ProcessTopicItem processTopicItem = dataSnapshot.getValue(ProcessTopicItem.class);
+                            processTopicItemList.add(processTopicItem);
+                        }
+                        if (processTopicItemList.get(processTopicItemList.size() - 1).getProgress() == 2) {
+                            tvLevel.setText("Level: Huyền thoại");
+                            tvTitle.setText("Bạn đã thông thạo kỹ năng này!");
+                            test.setText("Luyện tập");
+                            relativeLayout.setBackgroundResource(R.drawable.ct_layout_popup_dialog1);
+                        }
+                        processTopic_adapter.setProcessTopicItemList(processTopicItemList);
+                        rcvLevelTopic.setLayoutManager(linearLayoutManager);
+                        rcvLevelTopic.setAdapter(processTopic_adapter);
+                        processTopic_adapter.notifyDataSetChanged();
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
         dialog.show();
     }
 

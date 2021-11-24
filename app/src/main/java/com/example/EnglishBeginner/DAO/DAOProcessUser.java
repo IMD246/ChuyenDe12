@@ -30,39 +30,6 @@ public class DAOProcessUser {
         processTopicItem1 = new ArrayList<>();
         databaseReference = FirebaseDatabase.getInstance().getReference("listProcessUser");
     }
-
-    public void getDataFromRealTimeFirebase(String uid, int idTopic, List<ProcessTopicItem> processTopicItemList,
-                                            ProcessTopic_Adapter processTopic_adapter, TextView tvTitle,
-                                            TextView tvLevel, Button btnTest, RelativeLayout relativeLayout) {
-        databaseReference.child(uid).child("listTopic/" + idTopic + "/listProcess").
-                addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (processTopicItemList != null) {
-                            processTopicItemList.clear();
-                        }
-                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                            ProcessTopicItem processTopicItem = dataSnapshot.getValue(ProcessTopicItem.class);
-                            processTopicItemList.add(processTopicItem);
-                        }
-                        if (processTopic_adapter != null) {
-                            processTopic_adapter.notifyDataSetChanged();
-                        }
-                        if (processTopicItemList.get(processTopicItemList.size() - 1).getProgress() == 2) {
-                            if (tvLevel != null && tvTitle != null) {
-                                tvLevel.setText("Level: Huyền thoại");
-                                tvTitle.setText("Bạn đã thông thạo kỹ năng này!");
-                                btnTest.setText("Luyện tập");
-                                relativeLayout.setBackgroundResource(R.drawable.ct_layout_popup_dialog1);
-                            }
-                        }
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(context, "Get list Process Topic failed", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
     public void updateProcess(String uid, int idTopic) {
         databaseReference.child(uid).child("listTopic/" + idTopic + "/listProcess").
                 addListenerForSingleValueEvent(new ValueEventListener() {

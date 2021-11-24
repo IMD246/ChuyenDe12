@@ -39,7 +39,9 @@ import com.example.EnglishBeginner.learn.FinishEnglishFragment;
 import com.example.EnglishBeginner.learn.learning.LearningEnglishFragment;
 import com.example.EnglishBeginner.main_interface.UserInterfaceActivity;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -54,7 +56,9 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
     private List<Question> arrayListQuestion;
     private int count = 0, countcorrect = 0;
     private int max = 0;
+    private int maxTypeQuestion = 3;
     public String correctQuestion = null, answer = null;
+    private int randomTypeQuestion = 0;
     private String typeLearn = null;
     private int idTopic;
     private String userID;
@@ -65,6 +69,7 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
     private TextToSpeech textToSpeech;
     protected static final int RESULT_SPEECH = 1;
     private String corectAnswer = "";
+    private List<String>typeQuestionList;
 
     @SuppressWarnings("unchecked")
     @Override
@@ -74,6 +79,8 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
         textToSpeech = new TextToSpeech(this, this);
         reviewCourseArrayList = new ArrayList<>();
         daoProcessUser = new DAOProcessUser(this);
+        typeQuestionList = new ArrayList<>();
+        typeQuestionList = Arrays.asList(getResources().getStringArray(R.array.typeQuestion));
         Intent intent = getIntent();
         if (intent != null) {
             arrayListQuestion = (List<Question>) intent.getSerializableExtra("listQuestion");
@@ -163,10 +170,11 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
         }
         Bundle bundle = new Bundle();
         bundle.putSerializable("question", question);
+        randomTypeQuestion = (int) Math.floor(Math.random() * (typeQuestionList.size()-1 + 1) + 0);
         correctQuestion = question.getCorrectAnswer();
         if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.TEST)) {
             btnPass.setVisibility(View.VISIBLE);
-            if (question.getNameTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.IMAGE)) {
+            if (typeQuestionList.get(randomTypeQuestion).equalsIgnoreCase(DEFAULTVALUE.IMAGE)) {
                 TestChooseImageFragment testChooseImageFragment = new TestChooseImageFragment();
                 testChooseImageFragment.setArguments(bundle);
                 if (count == 0 && countSkip == 0) {
@@ -177,7 +185,7 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
                 } else {
                     fragmentTransaction.replace(R.id.frameLayout_Fragment, testChooseImageFragment).commit();
                 }
-            } else if (question.getNameTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.LISTEN)) {
+            } else if (typeQuestionList.get(randomTypeQuestion).equalsIgnoreCase(DEFAULTVALUE.LISTEN)) {
                 TestListenFragment testListenFragment = new TestListenFragment();
                 testListenFragment.setArguments(bundle);
                 if (count == 0 && countSkip == 0) {
@@ -188,7 +196,7 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
                 } else {
                     fragmentTransaction.replace(R.id.frameLayout_Fragment, testListenFragment).commit();
                 }
-            } else if (question.getNameTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.WRITE)) {
+            } else if (typeQuestionList.get(randomTypeQuestion).equalsIgnoreCase(DEFAULTVALUE.WRITE)) {
                 TestWriteFragment testWriteFragment = new TestWriteFragment();
                 testWriteFragment.setArguments(bundle);
                 if (count == 0 && countSkip == 0) {
@@ -199,7 +207,7 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
                 } else {
                     fragmentTransaction.replace(R.id.frameLayout_Fragment, testWriteFragment).commit();
                 }
-            } else if (question.getNameTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.READ)) {
+            } else if (typeQuestionList.get(randomTypeQuestion).equalsIgnoreCase(DEFAULTVALUE.READ)) {
                 TestSelectionEnglishFragment testSelectionFragment = new TestSelectionEnglishFragment();
                 testSelectionFragment.setArguments(bundle);
                 if (count == 0 && countSkip == 0) {
@@ -309,7 +317,7 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
                 reviewCourse.setCorrectAnswer(question.getCorrectAnswer());
                 reviewCourse.setQuestion(question.getTitle());
                 reviewCourse.setUserAnswer(answer);
-                reviewCourse.setTypeQuestion(question.getNameTypeQuestion());
+                reviewCourse.setTypeQuestion(typeQuestionList.get(randomTypeQuestion));
                 if (answer == null) {
                     alertDialog("Không chính xác", false, 1);
                     reviewCourse.setCheck(false);
