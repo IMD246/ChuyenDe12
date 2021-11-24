@@ -22,18 +22,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.EnglishBeginner.Admin.AccountUserManagement;
 import com.example.EnglishBeginner.Admin.Adapter.LevelAdapter;
 import com.example.EnglishBeginner.Admin.DAO.DAOImageStorage;
 import com.example.EnglishBeginner.Admin.DAO.DAOLevel;
 import com.example.EnglishBeginner.Admin.DTO.Level;
 import com.example.EnglishBeginner.R;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.stream.Collectors;
 
 public class LevelManagement extends AppCompatActivity {
 
@@ -123,7 +116,7 @@ public class LevelManagement extends AppCompatActivity {
         window.setAttributes(windowAttributes);
         EditText edtLevel = dialog.findViewById(R.id.edtLevel);
         edtLevel.setInputType(InputType.TYPE_CLASS_NUMBER);
-        TextView tvThemSua = dialog.findViewById(R.id.tvThemSua);
+        TextView tvThemSua = dialog.findViewById(R.id.tvTitle);
         imgLevel = dialog.findViewById(R.id.imgaddeditLevel);
         Button btnYes = dialog.findViewById(R.id.btnYes);
         Button btnNo = dialog.findViewById(R.id.btnNo);

@@ -12,7 +12,7 @@
         android:orientation="vertical"
         >
         <TextView
-            android:id="@+id/tvThemSua"
+            android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_yellow_corner_16_top_left_top_right"
@@ -53,6 +53,24 @@
                     android:entries="@array/typeWord"
                     />
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chọn thể loại"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+                <Spinner
+                    android:id="@+id/spnCategoryWord"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/categoryWord"
+                    />
+            </LinearLayout>
             <EditText
                 android:id="@+id/edtMeaningItem"
                 android:layout_width="match_parent"
@@ -62,7 +80,7 @@
                 android:hint="Nhập vào nghĩa của từ"
                 android:padding="12dp"
                 android:textAlignment="center" />
-            <AutoCompleteTextView
+            <EditText
                 android:id="@+id/svTitleQuestion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -72,13 +90,11 @@
                 android:iconifiedByDefault="true"
                 android:padding="12dp"
                 android:textAlignment="center" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="16dp"
                 android:orientation="horizontal">
-
                 <TextView
                     android:id="@+id/tvTopic"
                     android:layout_width="wrap_content"
@@ -87,7 +103,6 @@
                     android:layout_gravity="center"
                     android:textSize="20dp"
                     android:textStyle="bold" />
-
                 <Spinner
                     android:id="@+id/spnQuestion_Topic"
                     android:layout_width="wrap_content"

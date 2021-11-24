@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -17,7 +15,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -28,7 +25,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,17 +38,10 @@ import com.example.EnglishBeginner.Admin.DTO.Answer;
 import com.example.EnglishBeginner.Admin.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.Admin.DTO.Question;
 import com.example.EnglishBeginner.Admin.DTO.Topic;
-import com.example.EnglishBeginner.Admin.DTO.Word;
 import com.example.EnglishBeginner.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class DetailQuestionFragment extends Fragment implements View.OnClickListener {
@@ -63,7 +52,8 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
     private QuestionInterface questionInterface;
     private DAOQuestion daoQuestion;
     private DAOImageStorage daoImageStorage;
-    private ImageView imgAnswer;
+    private ImageView imgAnswer,imgQuestion;
+    private int openChooseFile = 0;
     private Question question;
     private TextView tvTitle, tvCorrectAnswer;
     private int idAnswer = 1;
@@ -127,7 +117,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
 
     // hộp thoại để thống báo có xóa dữ liệu hay không
     private void alertDialogtoDelete(Answer answer) {
-        if (getContext()!=null) {
+        if (getContext() != null) {
             AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
 
             builder1.setMessage("Bạn có muốn xóa không?");
@@ -158,6 +148,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         }
         return 0;
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -168,7 +159,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         getView().requestFocus();
         getView().setOnKeyListener((view, keyCode, keyEvent) -> {
             if (keyEvent.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                if (getActivity()!=null) {
+                if (getActivity() != null) {
                     getActivity().getSupportFragmentManager().popBackStack();
                     return true;
                 }
@@ -176,12 +167,13 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
             return false;
         });
     }
+
     // hộp thoại sửa dữ liệu Question
     @SuppressLint("SetTextI18n")
     public void openDialogEditQuestion(int center, Question question) {
         final Dialog dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.addquestion);
+        dialog.setContentView(R.layout.addeditquestion);
 
         Window window = dialog.getWindow();
         if (window == null) {
@@ -194,106 +186,58 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         windowAttributes.gravity = center;
         window.setAttributes(windowAttributes);
         dialog.setCancelable(Gravity.CENTER == center);
-        AutoCompleteTextView svTitleQuestion = dialog.findViewById(R.id.svTitleQuestion);
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listWord");
-        List<String> listWord = new ArrayList<>();
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (listWord!=null)
-                {
-                    listWord.clear();
-                }
-                for (DataSnapshot dataSnapshot : snapshot.getChildren())
-                {
-                    Word word = dataSnapshot.getValue(Word.class);
-                    listWord.add(word.getWord());
-                }
-                ArrayAdapter<String>arrayAdapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_list_item_1,listWord);
-                svTitleQuestion.setAdapter(arrayAdapter);
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
+        EditText edtTitleQuestion = dialog.findViewById(R.id.svTitleQuestion);
+        TextView tvTitle = dialog.findViewById(R.id.tvTitle);
         EditText edtCorrectAnswer = dialog.findViewById(R.id.edtCorrectAnswer);
-        TextView tvThemSua = dialog.findViewById(R.id.tvThemSua);
         Spinner spnTopic = dialog.findViewById(R.id.spnQuestion_Topic);
-        Spinner spnTypeQuestion = dialog.findViewById(R.id.spnQuestion_TypeQuestion);
         List<String> listTopic = new ArrayList<>();
-        List<String>listTypeQuestion = Arrays.asList(getResources().getStringArray(R.array.typeQuestion));
+        EditText edtWord = dialog.findViewById(R.id.edtWordItem);
+        EditText edtMeaning = dialog.findViewById(R.id.edtMeaningItem);
+        Spinner spnTypeWord = dialog.findViewById(R.id.spnTypeWordItem);
+        Spinner spnCategoryWord = dialog.findViewById(R.id.spnCategoryWord);
+        EditText edtExample = dialog.findViewById(R.id.edtExample);
+        EditText edtGrammar = dialog.findViewById(R.id.edtGrammar);
+        EditText edtExampleMeaning = dialog.findViewById(R.id.edtExampleMeaning);
+        Button btnPickImage = dialog.findViewById(R.id.btnPickImageQuestion);
+        imgQuestion = dialog.findViewById(R.id.imgEditQuestion);
+        btnPickImage.setOnClickListener(v -> {
+            openFileChoose();openChooseFile = 1;
+        });
         Button btnYes = dialog.findViewById(R.id.btnYes);
         Button btnNo = dialog.findViewById(R.id.btnNo);
         btnYes.setText("Sửa");
-        tvThemSua.setText("Sửa dữ liệu");
+        tvTitle.setText("Sửa dữ liệu");
         for (Topic topic : questionInterface.daoTopic.getTopicList()) {
             listTopic.add(topic.getNameTopic());
         }
         spnTopic.setAdapter(new ArrayAdapter<>(getContext(), R.layout.listoptionitem, R.id.tvOptionItem, listTopic));
-        spnTypeQuestion.setAdapter(new ArrayAdapter<>(getContext(), R.layout.listoptionitem, R.id.tvOptionItem, listTypeQuestion));
         if (question != null) {
+            edtWord.setText(question.getWord());
+            edtMeaning.setText(question.getWordMeaning());
+            edtExample.setText(question.getExample());
+            edtExampleMeaning.setText(question.getExampleMeaning());
             spnTopic.setSelection(getSelectedSpinner(spnTopic, question.getNameTopic()));
-            spnTypeQuestion.setSelection(getSelectedSpinner(spnTopic, question.getNameTypeQuestion()));
-            svTitleQuestion.setText(question.getTitle());
+            edtTitleQuestion.setText(question.getTitle());
+            edtGrammar.setText(question.getGrammar());
             edtCorrectAnswer.setText(question.getCorrectAnswer());
+            spnTypeWord.setSelection(getSelectedSpinner(spnTypeWord,question.getTypeWord()));
+            spnCategoryWord.setSelection(getSelectedSpinner(spnCategoryWord,question.getCategoryWord()));
         }
-        svTitleQuestion.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                edtCorrectAnswer.setText("");
-            }
-        });
         btnNo.setOnClickListener(v -> dialog.dismiss());
         btnYes.setOnClickListener(v -> {
             Question question1 = new Question();
             assert question != null;
             question1.setId(question.getId());
-            question1.setTitle(svTitleQuestion.getText().toString());
+            question1.setTitle(edtTitleQuestion.getText().toString());
             question1.setCorrectAnswer(edtCorrectAnswer.getText().toString());
             question1.setNameTopic(spnTopic.getSelectedItem().toString());
-            question1.setNameTypeQuestion(spnTypeQuestion.getSelectedItem().toString());
             for (Topic topic : questionInterface.daoTopic.getTopicList()) {
                 if (question1.getNameTopic().equalsIgnoreCase(topic.getNameTopic())) {
                     question1.setIdTopic(topic.getId());
                     break;
                 }
             }
-            daoQuestion.setContext(getContext());
-            databaseReference.orderByChild("word").equalTo(question1.getTitle()).
-                    addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
-                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                            Word word = dataSnapshot.getValue(Word.class);
-                            question1.setWord(word.getWord());
-                            question1.setTypeWord(word.getTypeWord());
-                            question1.setWordMeaning(word.getMeaning());
-                        }
-                    }
-                    else
-                    {
-                        question1.setWord("");
-                        question1.setTypeWord("");
-                        question1.setWordMeaning("");
-                    }
-                    daoQuestion.editDataToFireBase(question1, svTitleQuestion, edtCorrectAnswer, tvTitle, tvCorrectAnswer);
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
+            daoQuestion.editDataToFireBase(question1, edtTitleQuestion, edtCorrectAnswer, tvTitle, tvCorrectAnswer);
         });
         dialog.show();
     }
@@ -301,12 +245,18 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100 && resultCode == Activity.RESULT_OK && data !=null && data.getData()!=null)
-        {
+        if (requestCode == 100 && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
             daoImageStorage.setmImgURL(data.getData());
-            imgAnswer.setImageURI(daoImageStorage.getmImgURL());
+            if (openChooseFile == 1)
+            {
+                imgQuestion.setImageURI(daoImageStorage.getmImgURL());
+            }
+            else {
+                imgAnswer.setImageURI(daoImageStorage.getmImgURL());
+            }
         }
     }
+
     // hàm mở file chọn ảnh trong thiết bị
     public void openFileChoose() {
         Intent intent = new Intent();
@@ -314,6 +264,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, 100);
     }
+
     // hộp thoại để thêm và sửa Answer
     @SuppressLint("SetTextI18n")
     public void openDiaLogAnswer(int center, int choice, Answer answer) {
@@ -339,7 +290,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         EditText edtAnswer = dialog.findViewById(R.id.edtAnswer);
         EditText edtQuestion = dialog.findViewById(R.id.edtTitleQuestion);
         edtQuestion.setText(question.getTitle());
-        TextView tvThemSua = dialog.findViewById(R.id.tvThemSua);
+        TextView tvThemSua = dialog.findViewById(R.id.tvTitle);
         Button btnPickImageTopic = dialog.findViewById(R.id.btnPickImageTopic);
         LinearLayout linearLayout = dialog.findViewById(R.id.lnpickimage);
         if (!(question.getNameTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.IMAGE))) {
@@ -356,7 +307,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
             edtAnswer.setText(answer.getAnswerQuestion());
             if (answer.getUrlImage().isEmpty()) {
             } else {
-                if (getContext()!=null) {
+                if (getContext() != null) {
                     Glide.with(getContext()).load(answer.getUrlImage()).into(imgAnswer);
                 }
             }
@@ -374,33 +325,14 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
                     daoAnswer.setContext(getContext());
                     daoAnswer.editDataToFireBase(answer1, edtAnswer, question.getId());
                 }
-                daoImageStorage.uploadFileImageToAnswer(2, imgAnswer, "Question"+question.getId()+"Answer" + answer1.getId(), answer1, question.getId());
+                daoImageStorage.uploadFileImageToAnswer(2, imgAnswer, "Question" + question.getId() + "Answer" + answer1.getId(), answer1, question.getId());
             });
         } else if (choice == 1) {
             btnYes.setText("Thêm");
             btnYes.setOnClickListener(v -> {
                 {
                     Answer answer1 = new Answer();
-                    if (question.getNameTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.IMAGE)) {
-                        if (daoAnswer.getAnswerList().size()<4)
-                        {
-                            if (daoAnswer.getAnswerList().size() > 0) {
-                                idAnswer = daoAnswer.getAnswerList().get(daoAnswer.getAnswerList().size() - 1).getId() + 1;
-                            }
-                            answer1.setId(idAnswer);
-                            answer1.setAnswerQuestion(edtAnswer.getText().toString());
-                            answer1.setUrlImage("");
-                            daoAnswer.setContext(getContext());
-                            daoAnswer.addDataAnswerToFirebaseQuestion(answer1, edtAnswer, question.getId());
-                            daoImageStorage.uploadFileImageToAnswer(1, imgAnswer, "Question" + question.getId() + "Answer" + answer1.getId(), answer1, question.getId());
-                        }
-                        else
-                        {
-                            DEFAULTVALUE.alertDialogMessage("Thông báo","Chỉ được thêm 4 câu hỏi ảnh",getContext());
-                        }
-                    }
-                    else
-                    {
+                    if (daoAnswer.getAnswerList().size() < 4) {
                         if (daoAnswer.getAnswerList().size() > 0) {
                             idAnswer = daoAnswer.getAnswerList().get(daoAnswer.getAnswerList().size() - 1).getId() + 1;
                         }
@@ -410,6 +342,8 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
                         daoAnswer.setContext(getContext());
                         daoAnswer.addDataAnswerToFirebaseQuestion(answer1, edtAnswer, question.getId());
                         daoImageStorage.uploadFileImageToAnswer(1, imgAnswer, "Question" + question.getId() + "Answer" + answer1.getId(), answer1, question.getId());
+                    } else {
+                        DEFAULTVALUE.alertDialogMessage("Thông báo", "Chỉ được thêm 4 câu hỏi", getContext());
                     }
                 }
             });

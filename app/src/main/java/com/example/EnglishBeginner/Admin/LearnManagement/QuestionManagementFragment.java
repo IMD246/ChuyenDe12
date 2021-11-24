@@ -1,8 +1,10 @@
 package com.example.EnglishBeginner.Admin.LearnManagement;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -20,23 +22,23 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.EnglishBeginner.Admin.Adapter.QuestionAdapter;
-import com.example.EnglishBeginner.Admin.Adapter.TopicSpinnerAdapter;
 import com.example.EnglishBeginner.Admin.Adapter.TypeQuestionSpinnerAdapter;
+import com.example.EnglishBeginner.Admin.DAO.DAOImageStorage;
 import com.example.EnglishBeginner.Admin.DAO.DAOQuestion;
-import com.example.EnglishBeginner.Admin.DAO.DAOTopic;
 import com.example.EnglishBeginner.Admin.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.Admin.DTO.Question;
 import com.example.EnglishBeginner.Admin.DTO.Topic;
-import com.example.EnglishBeginner.Admin.DTO.Word;
 import com.example.EnglishBeginner.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -51,18 +53,19 @@ import java.util.List;
 
 public class QuestionManagementFragment extends Fragment implements View.OnClickListener {
 
-    private final DAOQuestion daoQuestion;
+    private DAOQuestion daoQuestion;
     private SearchView svQuestion;
     private QuestionInterface questionInterface;
-    private AutoCompleteTextView atcTopic, atcTypeQuestion;
+    private AutoCompleteTextView atcTopic;
     String topic = DEFAULTVALUE.TOPIC, typeQuestion = DEFAULTVALUE.TYPEQUESTION;
     private QuestionAdapter questionAdapter;
+    private DAOImageStorage daoImageStorage;
     private View v;
+    private ImageView imgQuestion;
     private int check = 0;
 
     public QuestionManagementFragment() {
-        daoQuestion = new DAOQuestion(getContext());
-        questionAdapter = new QuestionAdapter(getContext());
+
     }
 
     @Override
@@ -81,12 +84,14 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
     }
     private void initUI(View v) {
         questionInterface = (QuestionInterface) getActivity();
+        daoQuestion = new DAOQuestion(getContext());
+        questionAdapter = new QuestionAdapter(getContext());
+        daoImageStorage = new DAOImageStorage(getContext());
         RecyclerView rcvQuestion = v.findViewById(R.id.rcvQuestion);
         svQuestion = v.findViewById(R.id.svQuestion);
         ImageView imgAdd = v.findViewById(R.id.imgAddQuestion);
         imgAdd.setOnClickListener(this);
         atcTopic = v.findViewById(R.id.atcQuestion_Topic);
-        atcTypeQuestion = v.findViewById(R.id.atcQuestion_TypeQuestion);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(rcvQuestion.VERTICAL);
         rcvQuestion.setLayoutManager(linearLayoutManager);
@@ -97,7 +102,6 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
             public void editItem(Question question) {
                 questionInterface.goToDetailQuestionFragment(question);
             }
-
             @Override
             public void deleteItem(Question question) {
                 alertDialog(question);
@@ -115,23 +119,13 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
                 return false;
             }
         });
-        atcTypeQuestion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (atcTypeQuestion.getText().toString().isEmpty()) {
-                } else {
-                    typeQuestion = atcTypeQuestion.getText().toString();
-                    questionAdapter.setListDependOnTopicAndTypeQuestion(topic, typeQuestion);
-                }
-            }
-        });
         atcTopic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (atcTopic.getText().toString().isEmpty()) {
                 } else {
                     topic = atcTopic.getText().toString();
-                    questionAdapter.setListDependOnTopicAndTypeQuestion(topic, typeQuestion);
+                    questionAdapter.setListDependOnTopic(topic);
                 }
             }
         });
@@ -186,9 +180,6 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
 
             }
         });
-        List<String> list = Arrays.asList(getResources().getStringArray(R.array.typeQuestion));
-        atcTypeQuestion.setAdapter(new TypeQuestionSpinnerAdapter(getContext(), R.layout.listoptionitem,
-                R.id.tvOptionItem, list));
     }
 
     @Override
@@ -198,11 +189,26 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
                 openDialog(Gravity.CENTER);
         }
     }
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100 && resultCode == Activity.RESULT_OK && data !=null && data.getData()!=null)
+        {
+            daoImageStorage.setmImgURL(data.getData());
+            imgQuestion.setImageURI(daoImageStorage.getmImgURL());
+        }
+    }
+    // hàm mở file chọn ảnh trong thiết bị
+    public void openFileChoose() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, 100);
+    }
     public void openDialog(int center) {
         final Dialog dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.addquestion);
+        dialog.setContentView(R.layout.addeditquestion);
 
         Window window = dialog.getWindow();
         if (window == null) {
@@ -219,41 +225,29 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
         } else {
             dialog.setCancelable(false);
         }
-        AutoCompleteTextView svTitleQuestion = dialog.findViewById(R.id.svTitleQuestion);
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listWord");
-        List<String> listWord = new ArrayList<>();
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (listWord != null) {
-                    listWord.clear();
-                }
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Word word = dataSnapshot.getValue(Word.class);
-                    listWord.add(word.getWord());
-                }
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, listWord);
-                svTitleQuestion.setAdapter(arrayAdapter);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        EditText edtTitleQuestion = dialog.findViewById(R.id.svTitleQuestion);
+        TextView tvTitle = dialog.findViewById(R.id.tvTitle);
+        tvTitle.setText("Thêm dữ liệu");
         EditText edtCorrectAnswer = dialog.findViewById(R.id.edtCorrectAnswer);
         Spinner spnTopic = dialog.findViewById(R.id.spnQuestion_Topic);
-        Spinner spnTypeQuestion = dialog.findViewById(R.id.spnQuestion_TypeQuestion);
+        Spinner spnCategoryWord = dialog.findViewById(R.id.spnCategoryWord);
         List<String> listTopic = new ArrayList<>();
-        List<String> list = Arrays.asList(getResources().getStringArray(R.array.typeQuestion));
+        EditText edtWord = dialog.findViewById(R.id.edtWordItem);
+        EditText edtMeaning = dialog.findViewById(R.id.edtMeaningItem);
+        Spinner spnTypeWord = dialog.findViewById(R.id.spnTypeWordItem);
+        EditText edtExample = dialog.findViewById(R.id.edtExample);
+        EditText edtGrammar = dialog.findViewById(R.id.edtGrammar);
+        EditText edtExampleMeaning = dialog.findViewById(R.id.edtExampleMeaning);
+        Button btnPickImage = dialog.findViewById(R.id.btnPickImageQuestion);
+        imgQuestion = dialog.findViewById(R.id.imgEditQuestion);
+        btnPickImage.setOnClickListener(v -> openFileChoose());
         Button btnYes = dialog.findViewById(R.id.btnYes);
         Button btnNo = dialog.findViewById(R.id.btnNo);
-        btnYes.setText("Add");
+        btnYes.setText("Thêm");
         for (Topic topic : questionInterface.daoTopic.getTopicList()) {
             listTopic.add(topic.getNameTopic());
         }
         spnTopic.setAdapter(new ArrayAdapter<>(getContext(), R.layout.listoptionitem, R.id.tvOptionItem, listTopic));
-        spnTypeQuestion.setAdapter(new ArrayAdapter<>(getContext(), R.layout.listoptionitem, R.id.tvOptionItem, list));
         btnNo.setOnClickListener(v -> dialog.dismiss());
         btnYes.setOnClickListener(v -> {
             Question question = new Question();
@@ -262,37 +256,72 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
             } else {
                 question.setId(1);
             }
-            question.setTitle(svTitleQuestion.getText().toString());
+            question.setWord(edtWord.getText().toString());
+            question.setCategoryWord(spnCategoryWord.getSelectedItem().toString());
+            question.setWordMeaning(edtMeaning.getText().toString());
+            question.setExample(edtExample.getText().toString());
+            question.setExampleMeaning(edtExampleMeaning.getText().toString());
+            question.setTitle(edtTitleQuestion.getText().toString());
             question.setCorrectAnswer(edtCorrectAnswer.getText().toString());
             question.setNameTopic(spnTopic.getSelectedItem().toString());
-            question.setNameTypeQuestion(spnTypeQuestion.getSelectedItem().toString());
+            question.setTypeWord(spnTypeWord.getSelectedItem().toString());
+            question.setGrammar(edtGrammar.getText().toString());
             for (Topic topic : questionInterface.daoTopic.getTopicList()) {
                 if (question.getNameTopic().equalsIgnoreCase(topic.getNameTopic())) {
                     question.setIdTopic(topic.getId());
                     break;
                 }
             }
-            daoQuestion.setContext(getContext());
-            databaseReference.orderByChild("word").equalTo(question.getTitle()).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if (snapshot.exists()) {
-                                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                                    Word word = dataSnapshot.getValue(Word.class);
-                                    question.setWord(word.getWord());
-                                    question.setCorrectAnswer(word.getMeaning());
-                                    question.setTypeWord(word.getTypeWord());
-                                    question.setWordMeaning(word.getMeaning());
-                                }
-                            }
-                            daoQuestion.addDataToFireBase(question, svTitleQuestion, edtCorrectAnswer);
+            boolean[] check = new boolean[4];
+            Arrays.fill(check, true);
+            if (question.getTitle().trim().isEmpty()) {
+                check[0] = false;
+            } else if (question.getCorrectAnswer().trim().isEmpty()) {
+                check[1] = false;
+            } else if (question.getWord().trim().isEmpty()) {
+                check[2] = false;
+            } else {
+                if (daoQuestion.getQuestionList().size() > 0) {
+                    for (Question question1 : daoQuestion.getQuestionList()) {
+                        if (question1.getNameTopic().equalsIgnoreCase(question.getNameTopic()) &&
+                                question1.getNameTypeQuestion().equalsIgnoreCase(question.getNameTypeQuestion()) &&
+                                question1.getTitle().equalsIgnoreCase(question.getTitle())
+                        && question1.getWord().equalsIgnoreCase(question.getWord())) {
+                            check[3] = false;
+                            break;
                         }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
+                    }
+                }
+            }
+            if (!check[0]) {
+                edtTitleQuestion.setError("Không bỏ trống");
+                edtTitleQuestion.requestFocus();
+            } else if (!check[1]) {
+                edtCorrectAnswer.setError("Không để trống");
+                edtCorrectAnswer.requestFocus();
+            }
+            else if (!check[2]) {
+                edtWord.setError("Không bỏ trống");
+                edtWord.requestFocus();
+            }
+            else if (!check[3]) {
+                edtTitleQuestion.setError("Trùng dữ liệu , hãy kiểm tra lại dữ liệu");
+                edtTitleQuestion.requestFocus();
+            } else {
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listquestion");
+                databaseReference.child(String.valueOf(question.getId())).setValue(question).addOnCompleteListener(task -> {
+                    if (task.isComplete()) {
+                        edtCorrectAnswer.setText("");
+                        edtExample.setText("");
+                        edtTitleQuestion.setText("");
+                        edtGrammar.setText("");
+                        edtMeaning.setText("");
+                        edtExampleMeaning.setText("");
+                        edtWord.setText("");
+                        Toast.makeText(getContext(), "Thêm thành công", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         });
         dialog.show();
     }

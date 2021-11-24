@@ -25,11 +25,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.EnglishBeginner.Admin.Adapter.LearnQuestionAdapter;
-import com.example.EnglishBeginner.Admin.Adapter.TopicSpinnerAdapter;
-import com.example.EnglishBeginner.Admin.Adapter.TypeQuestionSpinnerAdapter;
 import com.example.EnglishBeginner.Admin.DAO.DAOImageStorage;
 import com.example.EnglishBeginner.Admin.DAO.DAOQuestion;
-import com.example.EnglishBeginner.Admin.DAO.DAOTopic;
 import com.example.EnglishBeginner.Admin.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.Admin.DTO.Question;
 import com.example.EnglishBeginner.Admin.DTO.Topic;
@@ -50,7 +47,7 @@ public class LearnQuestion extends AppCompatActivity {
 
     private DAOQuestion daoQuestion;
     private DAOImageStorage daoImageStorage;
-    private AutoCompleteTextView atcTopic, atcTypeQuestion;
+    private AutoCompleteTextView atcTopic;
     String topic = DEFAULTVALUE.TOPIC, typeQuestion = DEFAULTVALUE.TYPEQUESTION;
     private LearnQuestionAdapter learnQuestionAdapter;
     private ImageView imgEditQuestion;
@@ -70,7 +67,6 @@ public class LearnQuestion extends AppCompatActivity {
         atcTopic = findViewById(R.id.atcQuestion_Topic);
         atcTopic.setText(DEFAULTVALUE.ALL);
         SearchView svQuestion = findViewById(R.id.svQuestion);
-        atcTypeQuestion = findViewById(R.id.atcQuestion_TypeQuestion);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         rcvQuestion.setLayoutManager(linearLayoutManager);
@@ -89,13 +85,9 @@ public class LearnQuestion extends AppCompatActivity {
                 return false;
             }
         });
-        atcTypeQuestion.setOnItemClickListener((parent, view, position, id) -> {
-                typeQuestion = atcTypeQuestion.getText().toString();
-                learnQuestionAdapter.setListDependOnTopicAndTypeQuestion(topic, typeQuestion);
-        });
         atcTopic.setOnItemClickListener((parent, view, position, id) -> {
                 topic = atcTopic.getText().toString();
-                learnQuestionAdapter.setListDependOnTopicAndTypeQuestion(topic, typeQuestion);
+                learnQuestionAdapter.setListDependOnTopic(topic);
         });
     }
     private void getDataFromRealTime() {
@@ -122,8 +114,6 @@ public class LearnQuestion extends AppCompatActivity {
             }
         });
         List<String> list = Arrays.asList(getResources().getStringArray(R.array.typeQuestion));
-        atcTypeQuestion.setAdapter(new TypeQuestionSpinnerAdapter(getBaseContext(), R.layout.listoptionitem,
-                R.id.tvOptionItem, list));
     }
     private int setSelectedSpinner(Spinner spinner , String o)
     {
@@ -168,9 +158,9 @@ public class LearnQuestion extends AppCompatActivity {
         window.setAttributes(windowAttributes);
         dialog.setCancelable(Gravity.CENTER == center);
         EditText edtWord = dialog.findViewById(R.id.edtWord);
+        EditText edtWordMeaning = dialog.findViewById(R.id.edtMeaningWord);
         EditText edtExample = dialog.findViewById(R.id.edtExample);
         EditText edtGrammar = dialog.findViewById(R.id.edtGrammar);
-        EditText edtWordMeaning = dialog.findViewById(R.id.edtMeaningWord);
         EditText edtExampleMeaning = dialog.findViewById(R.id.edtExampleMeaning);
         Button btnPickImage = dialog.findViewById(R.id.btnPickImageQuestion);
         imgEditQuestion = dialog.findViewById(R.id.imgEditQuestion);
@@ -179,11 +169,11 @@ public class LearnQuestion extends AppCompatActivity {
         edtExample.setText(question.getExample());
         edtExampleMeaning.setText(question.getExampleMeaning());
         edtGrammar.setText(question.getGrammar());
+        Spinner spnTypeWord = dialog.findViewById(R.id.spnTypeWordLearnQuestion);
         if (question.getUrlImage().trim().length()>0||!(question.getUrlImage().isEmpty()))
         {
             Glide.with(getBaseContext()).load(question.getUrlImage()).into(imgEditQuestion);
         }
-        Spinner spnTypeWord = dialog.findViewById(R.id.spnTypeWordLearnQuestion);
         if (question.getTypeWord().isEmpty() || question.getTypeWord().equalsIgnoreCase(DEFAULTVALUE.DEFAULTVALUE)){
         }
         else

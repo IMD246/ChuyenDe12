@@ -74,49 +74,10 @@ public class DAOQuestion {
         });
     }
 
-    public void addDataToFireBase(Question question, AutoCompleteTextView searchView, EditText edtCorrectAnswer) {
-        boolean[] check = new boolean[3];
-        Arrays.fill(check, true);
-        if (question.getTitle().isEmpty() || question.getTitle().length() == 0) {
-            check[0] = false;
-        } else if (question.getCorrectAnswer().isEmpty() || question.getCorrectAnswer().length() == 0) {
-            check[1] = false;
-        } else {
-            if (questionList.size() > 0) {
-                for (Question question1 : questionList) {
-                    if (question1.getNameTopic().equalsIgnoreCase(question.getNameTopic()) &&
-                            question1.getNameTypeQuestion().equalsIgnoreCase(question.getNameTypeQuestion()) &&
-                            question1.getTitle().equalsIgnoreCase(question.getTitle())) {
-                        check[2] = false;
-                        break;
-                    }
-                }
-            }
-        }
-        if (!check[0]) {
-            searchView.setError("Không bỏ trống");
-            searchView.requestFocus();
-        } else if (!check[1]) {
-            edtCorrectAnswer.setError("Không để trống");
-            edtCorrectAnswer.requestFocus();
-        } else if (!check[2]) {
-            searchView.setError("Trùng dữ liệu , hãy kiểm tra lại dữ liệu");
-            searchView.requestFocus();
-        } else {
-            databaseReference.child(String.valueOf(question.getId())).setValue(question).addOnCompleteListener(task -> {
-                if (task.isComplete()) {
-                    Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-    }
-    private void setErrorSearchView(androidx.appcompat.widget.SearchView searchView, String errorMes) {
-        EditText editText = (EditText) searchView.findViewById(R.id.svTitleQuestion);
-        editText.setError(errorMes);
-        searchView.requestFocus();
+    public void addDataToFireBase(Question question, EditText edtCorrectAnswer) {
     }
     @SuppressLint("SetTextI18n")
-    public void editDataToFireBase(Question question, AutoCompleteTextView searchView, EditText edtCorrectAnswer, TextView tvTitle, TextView tvCorrect) {
+    public void editDataToFireBase(Question question, EditText edtTitle, EditText edtCorrectAnswer, TextView tvTitle, TextView tvCorrect) {
         boolean[] check = new boolean[3];
         Arrays.fill(check, true);
         if (question.getTitle().isEmpty() || question.getTitle().length() == 0) {
@@ -136,24 +97,17 @@ public class DAOQuestion {
             }
         }
         if (!check[0]) {
-            searchView.setError("Không bỏ trống");
-            searchView.requestFocus();
+            edtTitle.setError("Không bỏ trống");
+            edtTitle.requestFocus();
         } else if (!check[1]) {
             edtCorrectAnswer.setError("Không để trống");
             edtCorrectAnswer.requestFocus();
         } else if (!check[2]) {
-            searchView.setError("Trùng dữ liệu , hãy kiểm tra lại dữ liệu");
-            searchView.requestFocus();
+            edtTitle.setError("Trùng dữ liệu , hãy kiểm tra lại dữ liệu");
+            edtTitle.requestFocus();
         } else {
             tvTitle.setText("Câu hỏi: " + question.getTitle());
             tvCorrect.setText("Câu Trả Lời Chính xác: " + question.getCorrectAnswer());
-            HashMap<String, Object> hashMap = new HashMap<>();
-            hashMap.put("id", question.getId());
-            hashMap.put("nameTypeQuestion", question.getNameTypeQuestion());
-            hashMap.put("title", question.getTitle());
-            hashMap.put("correctAnswer", question.getCorrectAnswer());
-            DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("listtopic");
-            databaseReference1.child(question.getIdTopic() + "/listquestion/" + question.getId()).updateChildren(hashMap).isComplete();
             databaseReference.child(String.valueOf(question.getId())).setValue(question).addOnCompleteListener(task -> {
                 if (task.isComplete()) {
                     Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();

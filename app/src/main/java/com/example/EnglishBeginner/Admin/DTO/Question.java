@@ -6,16 +6,33 @@ public class Question implements Serializable {
     private int id,idTopic;
     private String title,nameTopic,nameTypeQuestion,correctAnswer,
             example= "",exampleMeaning="",word = "",wordMeaning = "",
-            typeWord = "",grammar= "",urlImage="";
-    public Question(int id, int idTopic, String title, String nameTopic, String nameTypeQuestion,
-                    String correctAnswer) {
+            typeWord = "",categoryWord,grammar= "",urlImage="";
+
+    public Question(int id, int idTopic, String title, String nameTopic, String nameTypeQuestion, String correctAnswer, String example, String exampleMeaning, String word, String wordMeaning, String typeWord, String categoryWord, String grammar, String urlImage) {
         this.id = id;
         this.idTopic = idTopic;
         this.title = title;
         this.nameTopic = nameTopic;
         this.nameTypeQuestion = nameTypeQuestion;
         this.correctAnswer = correctAnswer;
+        this.example = example;
+        this.exampleMeaning = exampleMeaning;
+        this.word = word;
+        this.wordMeaning = wordMeaning;
+        this.typeWord = typeWord;
+        this.categoryWord = categoryWord;
+        this.grammar = grammar;
+        this.urlImage = urlImage;
     }
+
+    public String getCategoryWord() {
+        return categoryWord;
+    }
+
+    public void setCategoryWord(String categoryWord) {
+        this.categoryWord = categoryWord;
+    }
+
     public Question() {
     }
 
