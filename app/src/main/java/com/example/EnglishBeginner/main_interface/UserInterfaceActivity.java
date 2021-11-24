@@ -18,8 +18,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.CompositePageTransformer;
+import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
@@ -59,15 +62,14 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
 
     //khai báo giá trị cho screen
     public static final int FRAGMENT_LEARN = 0;
-//    public static final int FRAGMENT_BLOG = 1;
-    public static final int FRAGMENT_ALARM = 1;
-    public static final int FRAGMENT_VOCABULARY = 2;
-    public static final int FRAGMENT_PROFILE = 3;
-    public static final int FRAGMENT_SETTING = 4;
-//    public static final int FRAGMENT_ADDBLOG = 6;
+    public static final int FRAGMENT_BLOG = 1;
+    public static final int FRAGMENT_ALARM = 2;
+    public static final int FRAGMENT_VOCABULARY = 3;
+    public static final int FRAGMENT_PROFILE = 4;
+    public static final int FRAGMENT_SETTING = 5;
 
     //khai báo giá trị màn hình hiện tại, mặc định là home
-    public int myCurrentViewpager2 = FRAGMENT_LEARN;
+    public int myCurrentViewpager2;
 
     //khai báo drawerlayout
     private DrawerLayout drawerLayout;
@@ -88,13 +90,16 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         setContentView(R.layout.activity_main);
         setControl();
         //xử lí currentScreen khi từ activity khác trở lại
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        if (bundle != null) {
-            if (bundle.getString("currentScreen").equalsIgnoreCase("3")) {
-                checkLogicScreen(FRAGMENT_PROFILE, 3);
-            }
-        }
+        myCurrentViewpager2 = FRAGMENT_LEARN;
+
+
+//        Intent intent = getIntent();
+//        Bundle bundle = intent.getExtras();
+//        if (bundle != null) {
+//            if (bundle.getString("currentScreen").equalsIgnoreCase("3")) {
+//                checkLogicScreen(FRAGMENT_PROFILE, 3);
+//            }
+//        }
 
         getProFileFromRealTime();
         checkLogicDrawerLayout();
@@ -129,29 +134,29 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
                         navigationView.getMenu().findItem(R.id.nav_help).setChecked(false);
                         navigationView.getMenu().findItem(R.id.nav_logout).setChecked(false);
                         break;
-//                    case 1:
-//                        bottomNavigationView.getMenu().findItem(R.id.bottom_nav_blog).setChecked(true);
-//                        navigationView.getMenu().findItem(R.id.nav_profile).setChecked(false);
-//                        navigationView.getMenu().findItem(R.id.nav_setting).setChecked(false);
-//                        navigationView.getMenu().findItem(R.id.nav_help).setChecked(false);
-//                        navigationView.getMenu().findItem(R.id.nav_logout).setChecked(false);
-//                        break;
                     case 1:
-                        bottomNavigationView.getMenu().findItem(R.id.bottom_nav_alarm).setChecked(true);
+                        bottomNavigationView.getMenu().findItem(R.id.bottom_nav_blog).setChecked(true);
                         navigationView.getMenu().findItem(R.id.nav_profile).setChecked(false);
                         navigationView.getMenu().findItem(R.id.nav_setting).setChecked(false);
                         navigationView.getMenu().findItem(R.id.nav_help).setChecked(false);
                         navigationView.getMenu().findItem(R.id.nav_logout).setChecked(false);
                         break;
                     case 2:
-                        bottomNavigationView.getMenu().findItem(R.id.bottom_nav_vocabulary).setChecked(true);
+                        bottomNavigationView.getMenu().findItem(R.id.bottom_nav_alarm).setChecked(true);
                         navigationView.getMenu().findItem(R.id.nav_profile).setChecked(false);
                         navigationView.getMenu().findItem(R.id.nav_setting).setChecked(false);
                         navigationView.getMenu().findItem(R.id.nav_help).setChecked(false);
                         navigationView.getMenu().findItem(R.id.nav_logout).setChecked(false);
                         break;
                     case 3:
+                        bottomNavigationView.getMenu().findItem(R.id.bottom_nav_vocabulary).setChecked(true);
+                        navigationView.getMenu().findItem(R.id.nav_profile).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.nav_setting).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.nav_help).setChecked(false);
+                        navigationView.getMenu().findItem(R.id.nav_logout).setChecked(false);
+                        break;
                     case 4:
+                    case 5:
                         bottomNavigationView.getMenu().findItem(R.id.bottom_nav_profile).setChecked(true);
                         break;
                 }
@@ -218,8 +223,18 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
         viewPager2 = findViewById(R.id.view_pager2);
         viewPager2_adapter = new ViewPager2_Adapter(this);
         viewPager2.setAdapter(viewPager2_adapter);
-    }
 
+        CompositePageTransformer compositePageTransformer = new CompositePageTransformer();
+        compositePageTransformer.addTransformer(new MarginPageTransformer(8));
+        compositePageTransformer.addTransformer(new ViewPager2.PageTransformer() {
+            @Override
+            public void transformPage(@NonNull View page, float position) {
+                float v = 1 - Math.abs(position);
+                page.setScaleY(0.8f + v * 0.2f);
+            }
+        });
+        viewPager2.setPageTransformer(compositePageTransformer);
+    }
     //xử lí Viewpager2
     private void processViewPager2() {
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
@@ -231,26 +246,26 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
                         myCurrentViewpager2 = FRAGMENT_LEARN;
                         bottomNavigationView.getMenu().findItem(R.id.bottom_nav_learn).setChecked(true);
                         break;
-//                    case 1:
-//                        myCurrentViewpager2 = FRAGMENT_BLOG;
-//                        bottomNavigationView.getMenu().findItem(R.id.bottom_nav_blog).setChecked(true);
-//                        break;
                     case 1:
+                        myCurrentViewpager2 = FRAGMENT_BLOG;
+                        bottomNavigationView.getMenu().findItem(R.id.bottom_nav_blog).setChecked(true);
+                        break;
+                    case 2:
                         myCurrentViewpager2 = FRAGMENT_ALARM;
                         bottomNavigationView.getMenu().findItem(R.id.bottom_nav_alarm).setChecked(true);
                         break;
-                    case 2:
+                    case 3:
                         myCurrentViewpager2 = FRAGMENT_VOCABULARY;
                         bottomNavigationView.getMenu().findItem(R.id.bottom_nav_vocabulary).setChecked(true);
                         break;
-                    case 3:
+                    case 4:
                         myCurrentViewpager2 = FRAGMENT_PROFILE;
                         navigationView.getMenu().findItem(R.id.nav_profile).setChecked(true);
                         navigationView.getMenu().findItem(R.id.nav_setting).setChecked(false);
                         navigationView.getMenu().findItem(R.id.nav_help).setChecked(false);
                         navigationView.getMenu().findItem(R.id.nav_logout).setChecked(false);
                         break;
-                    case 4:
+                    case 5:
                         myCurrentViewpager2 = FRAGMENT_SETTING;
                         navigationView.getMenu().findItem(R.id.nav_setting).setChecked(true);
                         navigationView.getMenu().findItem(R.id.nav_profile).setChecked(false);
@@ -271,14 +286,14 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
                 case R.id.bottom_nav_learn:
                     checkLogicScreen(FRAGMENT_LEARN, 0);
                     break;
-//                case R.id.bottom_nav_blog:
-//                    checkLogicScreen(FRAGMENT_BLOG, 1);
-//                    break;
+                case R.id.bottom_nav_blog:
+                    checkLogicScreen(FRAGMENT_BLOG, 1);
+                    break;
                 case R.id.bottom_nav_alarm:
-                    checkLogicScreen(FRAGMENT_ALARM, 1);
+                    checkLogicScreen(FRAGMENT_ALARM, 2);
                     break;
                 case R.id.bottom_nav_vocabulary:
-                    checkLogicScreen(FRAGMENT_VOCABULARY, 2);
+                    checkLogicScreen(FRAGMENT_VOCABULARY, 3);
                     break;
                 case R.id.bottom_nav_profile:
                     drawerLayout.openDrawer(GravityCompat.END);
@@ -294,20 +309,16 @@ public class UserInterfaceActivity extends AppCompatActivity implements Navigati
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_profile:
-                checkLogicScreen(FRAGMENT_PROFILE, 3);
+                checkLogicScreen(FRAGMENT_PROFILE, 4);
                 break;
             case R.id.nav_setting:
-                checkLogicScreen(FRAGMENT_SETTING, 4);
+                checkLogicScreen(FRAGMENT_SETTING, 5);
                 break;
             case R.id.nav_help://ấn vào help sẽ chuyển activities
                 Intent intent = new Intent(UserInterfaceActivity.this, HelpActivity.class);
                 startActivity(intent);
                 break;
             case R.id.nav_logout:
-//                navigationView.getMenu().findItem(R.id.nav_profile).setChecked(false);
-//                navigationView.getMenu().findItem(R.id.nav_setting).setChecked(false);
-//                navigationView.getMenu().findItem(R.id.nav_help).setChecked(false);
-//                navigationView.getMenu().findItem(R.id.nav_logout).setChecked(true);
                 alertDialog();
                 break;
         }
