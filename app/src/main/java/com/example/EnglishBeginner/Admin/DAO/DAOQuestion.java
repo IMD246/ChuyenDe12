@@ -114,7 +114,5 @@ public class DAOQuestion {
 
     public void deleteDataToFire(Question question) {
         databaseReference.child(String.valueOf(question.getId())).removeValue((error, ref) -> Toast.makeText(context, "Xóa thành công", Toast.LENGTH_SHORT).show());
-        DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("listtopic");
-        databaseReference1.child(question.getIdTopic() + "/listquestion/" + question.getId()).removeValue().isComplete();
     }
 }

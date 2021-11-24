@@ -42,7 +42,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class DetailQuestionFragment extends Fragment implements View.OnClickListener {
 
@@ -177,7 +176,6 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
             return false;
         });
     }
-
     // hộp thoại sửa dữ liệu Question
     @SuppressLint("SetTextI18n")
     public void openDialogEditQuestion(int center, Question question) {
