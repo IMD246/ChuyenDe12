@@ -24,7 +24,7 @@ public class BlogManagementFragment extends Fragment {
     View v ;
     BlogAdapter blogAdapter;
     public BlogManagementFragment() {
-        // Required empty public constructor
+
     }
     @Override
     public void onAttach(@NonNull Context context) {
@@ -60,12 +60,12 @@ public class BlogManagementFragment extends Fragment {
 //        autoCompleteTextView.setAdapter(new LevelSpinnerAdapter(this,R.layout.listoptionitem,R.id.tvOptionItem,daoLevel.getLevelList()));
 
         List<Blog> listBlog = new ArrayList<>();
-        Blog blog = new Blog("1","12:12:12:12","nghia","",1,2,3,"new");
-        Blog blog2 = new Blog("1","12:12:12:12","nghia","",1,2,3,"new");
-        Blog blog3 = new Blog("1","12:12:12:12","nghia","",1,2,3,"new");
-            listBlog.add(blog2);
-            listBlog.add(blog3);
-            listBlog.add(blog);
+//        Blog blog = new Blog("1","12:12:12:12","nghia","",1,2,3,"new");
+//        Blog blog2 = new Blog("1","12:12:12:12","nghia","",1,2,3,"new");
+//        Blog blog3 = new Blog("1","12:12:12:12","nghia","",1,2,3,"new");
+//            listBlog.add(blog2);
+//            listBlog.add(blog3);
+//            listBlog.add(blog);
          blogAdapter = new BlogAdapter(getContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);

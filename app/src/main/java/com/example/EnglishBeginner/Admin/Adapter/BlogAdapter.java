@@ -65,7 +65,8 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.BlogViewHolder
             holder.imgBlogThumnail.setVisibility(View.VISIBLE);
             Glide.with(context).load(blog.getUrl_image()).into(holder.imgBlogThumnail);
         }
-       // holder.txt_userName.setText("Câu trả lời: " + blog.getIdUser());
+        holder.txt_userName.setText("Câu trả lời: " + blog.getNameUser());
+        holder.txt_title.setText("Câu trả lời: " + blog.getTitle());
         holder.onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,9 +94,8 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.BlogViewHolder
     //Tạo View Holder và ánh xạ các view con và sử dụng
     public static class BlogViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         //Fields
-        private TextView txt_userName,txt_title;
-        private ImageView imgBlogThumnail;
-        private ImageView btn_apply,btn_notApply;
+        private final TextView txt_userName,txt_title;
+        private final ImageView imgBlogThumnail;
         View.OnClickListener onClickListener;
         //Properties
         public void setOnClickListener(View.OnClickListener onClickListener) {
@@ -107,8 +107,8 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.BlogViewHolder
             imgBlogThumnail = itemView.findViewById(R.id.img_blogThumnail);
             txt_userName = itemView.findViewById(R.id.tv_blogUserName);
             txt_title = itemView.findViewById(R.id.tv_blogTitle);
-            btn_apply = itemView.findViewById(R.id.img_blogApply);
-            btn_notApply = itemView.findViewById(R.id.img_blogNotApply);
+            ImageView btn_apply = itemView.findViewById(R.id.img_blogApply);
+            ImageView btn_notApply = itemView.findViewById(R.id.img_blogNotApply);
 
             btn_apply.setOnClickListener(this);
             btn_notApply.setOnClickListener(this);

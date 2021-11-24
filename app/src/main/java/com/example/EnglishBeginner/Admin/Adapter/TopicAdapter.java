@@ -54,7 +54,14 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
         } else {
             List<Topic> list = new ArrayList<>();
             for (Topic topic : topicListOld) {
-                if (!keyWord.isEmpty()) {
+                if (keyWord.isEmpty()) {
+                    if (!level.equalsIgnoreCase(DEFAULTVALUE.ALL))
+                    {
+                        if (topic.getLevel() == Integer.parseInt(level)) {
+                            list.add(topic);
+                        }
+                    }
+                } else {
                     if (level.equalsIgnoreCase(DEFAULTVALUE.ALL)) {
                         if (topic.getNameTopic().toLowerCase().contains(keyWord.toLowerCase())){
                             list.add(topic);
@@ -66,10 +73,6 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
                                 && topic.getLevel() == Integer.parseInt(level)) {
                             list.add(topic);
                         }
-                    }
-                } else {
-                    if (topic.getLevel() == Integer.parseInt(level.toLowerCase())) {
-                        list.add(topic);
                     }
                 }
             }
@@ -135,14 +138,25 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
                 } else {
                     List<Topic> list = new ArrayList<>();
                     for (Topic topic : topicListOld) {
-                        if (level.equalsIgnoreCase(DEFAULTVALUE.ALL)) {
-                            if (topic.getNameTopic().toLowerCase().contains(strSearch.toLowerCase())) {
-                                list.add(topic);
+                        if (keyWord.isEmpty()) {
+                            if (!level.equalsIgnoreCase(DEFAULTVALUE.ALL))
+                            {
+                                if (topic.getLevel() == Integer.parseInt(level)) {
+                                    list.add(topic);
+                                }
                             }
                         } else {
-                            if (topic.getLevel() == Integer.parseInt(level)
-                                    && topic.getNameTopic().toLowerCase().contains(strSearch.toLowerCase())) {
-                                list.add(topic);
+                            if (level.equalsIgnoreCase(DEFAULTVALUE.ALL)) {
+                                if (topic.getNameTopic().toLowerCase().contains(keyWord.toLowerCase())){
+                                    list.add(topic);
+                                }
+                            }
+                            else
+                            {
+                                if (topic.getNameTopic().toLowerCase().contains(keyWord.toLowerCase())
+                                        && topic.getLevel() == Integer.parseInt(level)) {
+                                    list.add(topic);
+                                }
                             }
                         }
                     }
@@ -152,7 +166,6 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
                 filterResults.values = topicList;
                 return filterResults;
             }
-
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 topicList = (List<Topic>) results.values;
