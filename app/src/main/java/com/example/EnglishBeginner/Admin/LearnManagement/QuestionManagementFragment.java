@@ -177,6 +177,7 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
                 {
                     Question question = dataSnapshot.getValue(Question.class);
                     titleList.add(question.getTitle());
+                    titleList.add(question.getWord());
                 }
             }
             @Override

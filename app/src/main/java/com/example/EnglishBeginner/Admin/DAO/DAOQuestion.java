@@ -58,7 +58,6 @@ public class DAOQuestion {
                     questionAdapter.notifyDataSetChanged();
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(context, "Get list question failed", Toast.LENGTH_SHORT).show();

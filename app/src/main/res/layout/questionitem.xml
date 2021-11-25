@@ -28,9 +28,19 @@
             android:text="Câu hỏi"
             android:textSize="16dp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/tvTopic_Question"
+            app:layout_constraintBottom_toTopOf="@+id/tvWordQuestionItem"
             app:layout_constraintLeft_toRightOf="@id/imgQuestion"
             app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/tvWordQuestionItem"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="Từ vựng"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/tvTopic_Question"
+            app:layout_constraintLeft_toRightOf="@id/imgQuestion"
+            app:layout_constraintTop_toBottomOf="@id/tvQuestion" />
         <TextView
             android:id="@+id/tvTopic_Question"
             android:layout_width="150dp"
