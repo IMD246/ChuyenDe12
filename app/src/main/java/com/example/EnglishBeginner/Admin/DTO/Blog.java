@@ -1,24 +1,54 @@
 package com.example.EnglishBeginner.Admin.DTO;
 
 public class Blog {
+    int id = -1;
     String idUser;
     String nameUser;
     String dayOfPost;
     String title;
-    String url_image;
-    int comment;
-    int like;
-    int view;
+    String content;
+    String urlImage = "";
+    boolean checkApply = false;
+    int comment = 0;
+    int like = 0;
+    int view = 0;
 
-    public Blog(String idUser, String nameUser, String dayOfPost, String title, String url_image, int comment, int like, int view) {
+    public Blog(int id, String idUser, String nameUser, String dayOfPost, String title, String content, String urlImage, boolean checkApply, int comment, int like, int view) {
+        this.id = id;
         this.idUser = idUser;
         this.nameUser = nameUser;
         this.dayOfPost = dayOfPost;
         this.title = title;
-        this.url_image = url_image;
+        this.content = content;
+        this.urlImage = urlImage;
+        this.checkApply = checkApply;
         this.comment = comment;
         this.like = like;
         this.view = view;
+    }
+
+    public boolean isCheckApply() {
+        return checkApply;
+    }
+
+    public void setCheckApply(boolean checkApply) {
+        this.checkApply = checkApply;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNameUser() {
@@ -55,12 +85,12 @@ public class Blog {
         this.title = title;
     }
 
-    public String getUrl_image() {
-        return url_image;
+    public String getUrlImage() {
+        return urlImage;
     }
 
-    public void setUrl_image(String url_image) {
-        this.url_image = url_image;
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
     }
 
     public int getComment() {

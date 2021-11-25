@@ -8,20 +8,21 @@
     tools:context=".Admin.BlogManagementFragment">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="120dp"
         >
-        <androidx.appcompat.widget.SearchView
+        <AutoCompleteTextView
             android:id="@+id/svBlog"
             android:layout_margin="20dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:drawableStart="@drawable/baseline_search_black_24dp"
+            android:hint="Nhập từ khóa để tìm kiếm"
             android:background="@drawable/bg_white_corner_16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvBlog"
         android:layout_width="match_parent"

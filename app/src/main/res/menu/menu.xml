@@ -4,7 +4,7 @@
         android:icon="@drawable/baseline_school_black_24dp"
         android:title="@string/learn_fragment" />
     <item android:id="@+id/analysic"
-        android:icon="@drawable/baseline_leaderboard_black_24dp"
+        android:icon="@drawable/ic_comment_blog"
         android:title="@string/blog_fragment"
         />
     <item android:id="@+id/account"

@@ -1,5 +1,6 @@
 package com.example.EnglishBeginner.Admin.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,21 +54,23 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.BlogViewHolder
         return new BlogViewHolder(view);
     }
     // đổ dữ liệu vào view dữ liệu và xử lý view
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull BlogViewHolder holder, int position) {
         Blog blog = blogList.get(position);
         if (blog == null) {
             return;
         }
-        if (blog.getUrl_image().isEmpty() || blog.getUrl_image().trim().length() == 0) {
+        if (blog.getUrlImage().trim().isEmpty()) {
             holder.imgBlogThumnail.setVisibility(View.GONE);
         } else {
             holder.imgBlogThumnail.setVisibility(View.VISIBLE);
-            Glide.with(context).load(blog.getUrl_image()).into(holder.imgBlogThumnail);
+            Glide.with(context).load(blog.getUrlImage()).into(holder.imgBlogThumnail);
         }
-        holder.txt_userName.setText("Câu trả lời: " + blog.getNameUser());
-        holder.txt_title.setText("Câu trả lời: " + blog.getTitle());
+        holder.txt_userName.setText("Email: " + blog.getNameUser());
+        holder.txt_title.setText("Chủ đề: " + blog.getTitle());
         holder.onClickListener = new View.OnClickListener() {
+            @SuppressLint("NonConstantResourceId")
             @Override
             public void onClick(View v) {
                 if (myDelegationLevel != null) {
@@ -121,8 +124,7 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.BlogViewHolder
     }
     // tạo một interface để định nghĩa hàm sau
     public interface MyDelegationLevel {
-        public void applyBlog(Blog Blog);
-
-        public void notApplyBlog(Blog Blog);
+         void applyBlog(Blog blog);
+         void notApplyBlog(Blog blog);
     }
 }
