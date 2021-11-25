@@ -47,11 +47,11 @@
     <ImageView
         android:id="@+id/blog_img_thumnail"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="center_horizontal"
         android:layout_margin="20dp"
         android:scaleType="fitXY"
         android:src="@drawable/ic_launcher_background">
-
     </ImageView>
     <TextView
         android:id="@+id/blog_txt_title"
@@ -68,7 +68,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="20dp"
         android:orientation="horizontal">
         <ImageView
             android:layout_width="0dp"

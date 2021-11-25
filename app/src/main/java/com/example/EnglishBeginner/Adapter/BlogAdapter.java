@@ -53,7 +53,6 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.ViewHolder> {
         holder.txt_like.setText(String.valueOf(temp.getLike()));
         holder.txt_dayOfPost.setText(temp.getDayOfPost());
         holder.txt_title.setText(temp.getTitle());
-        holder.txt_userName.setText(temp.getNameUser());
         holder.txt_view.setText(String.valueOf(temp.getView()));
         if (!(temp.getUrlImage().trim().isEmpty())) {
             Glide.with(context).load(temp.getUrlImage()).into(holder.img_blog);
@@ -68,6 +67,14 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.ViewHolder> {
                     hashMap.put(dataSnapshot.getKey(), dataSnapshot.getValue());
                 }
                 String urlImage = hashMap.get("imageUser").toString();
+                String fullName = hashMap.get("fullname").toString();
+                if (fullName.trim().isEmpty())
+                {
+                    holder.txt_userName.setText("Unknown");
+                }
+                else {
+                    holder.txt_userName.setText(hashMap.get("fullname").toString());
+                }
                 if (!(urlImage.trim().isEmpty())) {
                     Glide.with(context).load(urlImage).into(holder.img_user);
                 } else {
