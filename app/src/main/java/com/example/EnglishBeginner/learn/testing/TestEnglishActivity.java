@@ -387,7 +387,6 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
                             btnPass.setEnabled(false);
                             btnSubmit.setEnabled(false);
                         }
-
                         public void onFinish() {
                             btnPass.setEnabled(true);
                             btnSubmit.setEnabled(true);

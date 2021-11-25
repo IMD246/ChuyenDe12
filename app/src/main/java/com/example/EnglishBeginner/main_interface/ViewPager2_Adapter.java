@@ -3,11 +3,8 @@ package com.example.EnglishBeginner.main_interface;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.EnglishBeginner.Blog.AddBlogFragment;
 import com.example.EnglishBeginner.Blog.BlogFragment;
 import com.example.EnglishBeginner.fragment.AlarmFragment;
 import com.example.EnglishBeginner.fragment.LearnWord.vocubulary.VocabularyFragment;

@@ -18,4 +18,13 @@
         <item name="android:windowMinWidthMajor">80%</item>
         <item name="android:windowMinWidthMinor">80%</item>
     </style>
+
+    <style name="Theme.Menu_Right.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Menu_Right.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Menu_Right.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

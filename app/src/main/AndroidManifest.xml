@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.EnglishBeginner">
+    package="com.example.EnglishBeginner" >
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+    </queries>
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/logo3"
@@ -15,22 +23,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Menu_Right"
         android:usesCleartextTraffic="true"
-        tools:ignore="AllowBackup">
+        tools:ignore="AllowBackup" >
+        <activity
+            android:name=".Blog.AddBlogActivity"
+            android:exported="false" />
         <activity
             android:name=".learn.testing.TestEnglishActivity"
             android:exported="false" />
         <activity
             android:name=".profile.EditPrivacyActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".profile.EditAccountActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".profile.EditStudyModeActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".profile.EditProfileActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".Login.ForgetPassword"
             android:exported="false" />
@@ -45,9 +56,7 @@
             android:exported="true" />
         <activity
             android:name=".Login.Login"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -60,7 +69,7 @@
             android:label="@string/app_name" />
         <activity
             android:name="com.facebook.CustomTabActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -72,50 +81,34 @@
         </activity>
         <activity
             android:name=".fragment.LearnWord.word.WordScreen"
-            android:exported="true">
-
-        </activity>
-
+            android:exported="true" />
         <activity
             android:name=".fragment.LearnWord.saveWord.SaveScreen"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".fragment.LearnWord.practice.PracticeScreen"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".fragment.LearnWord.history.HistoryScreen"
-            android:exported="true">
-
-        </activity>
-
+            android:exported="true" />
         <activity
             android:name=".fragment.LearnWord.word.WordItemDetail"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".fragment.LearnWord.WordManagement.ToeicManagement"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".fragment.LearnWord.WordManagement.IetlsManagement"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".fragment.LearnWord.notification.AlarmScreen"
-            android:exported="true">
+            android:exported="true" />
 
-        </activity>
+        <receiver android:name=".fragment.LearnWord.notification.source.AlarmReceiver" />
 
-        <receiver android:name=".fragment.LearnWord.notification.source.AlarmReceiver"/>
         <activity
             android:name=".Login.SpashScreen"
-            android:exported="true">
-
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -123,9 +116,5 @@
             </intent-filter>
         </activity>
     </application>
-    <queries>
-        <intent>
-            <action android:name="android.intent.action.TTS_SERVICE" />
-        </intent>
-    </queries>
+
 </manifest>

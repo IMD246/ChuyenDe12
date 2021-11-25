@@ -15,18 +15,18 @@ import com.example.EnglishBeginner.DTO.Blog;
 import com.example.EnglishBeginner.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.ViewHolder> {
 
     Context context;
-    ArrayList<Blog> listBlog;
+    List<Blog> listBlog;
 
     public BlogAdapter(Context context) {
         this.context = context;
-        listBlog = new ArrayList<>();
     }
 
-    public void setListBlog(ArrayList<Blog> listBlog) {
+    public void setListBlog(List<Blog> listBlog) {
         this.listBlog = listBlog;
     }
 
@@ -34,7 +34,6 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.blog_recyclerview_item,parent,false);
-
         return new ViewHolder(view);
     }
 

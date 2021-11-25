@@ -1,5 +1,6 @@
 package com.example.EnglishBeginner.Blog;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,21 +16,29 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.EnglishBeginner.Adapter.BlogAdapter;
 import com.example.EnglishBeginner.Adapter.MenuAdapter;
+import com.example.EnglishBeginner.DAO.DAOBlog;
 import com.example.EnglishBeginner.DTO.Blog;
+import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.R;
 import com.example.EnglishBeginner.main_interface.UserInterfaceActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BlogFragment extends Fragment {
     private View view;
     RecyclerView recyclerView_blog;
     RecyclerView recyclerView_menu;
-    ArrayList<Blog> listBlog;
-    ArrayList<Blog> newListBlog;
     ArrayList<String> listMenu;
     private FloatingActionButton btnAddBlog;
+    private DAOBlog daoBlog;
+    private BlogAdapter blogAdapter;
     private MenuAdapter menuAdapter;
 
     @Override
@@ -39,14 +49,18 @@ public class BlogFragment extends Fragment {
         setControl();
         setAdapterForMenu();
         setAdapter();
+        getDataRealTime();
         return view;
     }
 
+    private void getDataRealTime() {
+        daoBlog.getDataFromRealTimeFirebase(blogAdapter);
+    }
     private void setAdapterForMenu() {
         listMenu = new ArrayList<>();
-        listMenu.add("mostFavorite");
-        listMenu.add("new");
-        listMenu.add("yourFavorite");
+        listMenu.add(DEFAULTVALUE.MOSTFAVORITE);
+        listMenu.add(DEFAULTVALUE.NEW);
+        listMenu.add(DEFAULTVALUE.YOURFAVORITE);
         menuAdapter = new MenuAdapter(getContext(), listMenu, recyclerView_menu);
         GridLayoutManager manager = new GridLayoutManager(getContext(), 3);
         recyclerView_menu.setAdapter(menuAdapter);
@@ -55,63 +69,52 @@ public class BlogFragment extends Fragment {
     }
 
     private void setDataFollowOption(String typeBlog) {
-        ArrayList<Blog> arrayList = new ArrayList<>();
+        List<Blog>blogList = new ArrayList<>();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listblog");
+        if (typeBlog.equalsIgnoreCase(DEFAULTVALUE.MOSTFAVORITE));
+        {
+            databaseReference.orderByChild("like").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren())
+                    {
+                        Blog blog = dataSnapshot.getValue(Blog.class);
+                        blogList.add(blog);
+                    }
+                    setAdapterc2(blogList);
+                }
 
-        for (Blog blog : listBlog) {
-//            if (blog.getTypeMenu().equals(typeBlog)) {
-//                arrayList.add(blog);
-//            }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
         }
-
-        setAdapterc2(arrayList);
     }
-
     private void setControl() {
-        newListBlog = new ArrayList<>();
-        listBlog = new ArrayList<>();
-        UserInterfaceActivity userInterfaceActivity = (UserInterfaceActivity) getActivity();
-//        Blog blog2 = new Blog("1", "19/7/2121 10:pm", "i am yasuo 0/10,", "", 102, 43, 220, "yourFavorite");
-//        Blog blog1 = new Blog("1", "19/7/2121 10:pm", "how to sell 100000 pack of notthing,", "", 120, 41, 203, "mostFavorite");
-//        Blog blog3 = new Blog("1", "19/7/2121 10:pm", "how to sell 100000 pack of notthing,w;elfja;rjpaowt;ljsdetpa2u3-4ojqpfhvxc.b,xlfk;EKht.eznb;fcxf;ew,5ntyw 4ht", "", 510, 24, 260, "new");
-//        listBlog.add(blog1);
-//        listBlog.add(blog2);
-//        listBlog.add(blog2);
-//        listBlog.add(blog3);
-//        listBlog.add(blog3);
-//        listBlog.add(blog1);
+        daoBlog = new DAOBlog(getContext());
+        blogAdapter = new BlogAdapter(getContext());
         recyclerView_blog = view.findViewById(R.id.rv_blog);
         btnAddBlog = view.findViewById(R.id.btnAddBlog);
-//        btnAddBlog.setOnClickListener(view -> {
-//            userInterfaceActivity.viewPager2.setCurrentItem(UserInterfaceActivity.FRAGMENT_ADDBLOG);
-//        });
+        btnAddBlog.setOnClickListener(view -> {
+            startActivity(new Intent(getContext(),AddBlogActivity.class));
+        });
         recyclerView_menu = view.findViewById(R.id.rv_menu);
     }
 
     private void setAdapter() {
-        for (Blog blog : listBlog) {
-//            if (blog.getTypeMenu().equals("mostFavorite")) {
-//                newListBlog.add(blog);
-//            }
-        }
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
-        BlogAdapter blogAdapter = new BlogAdapter(getContext());
-        blogAdapter.setListBlog(newListBlog);
+        blogAdapter.setListBlog(daoBlog.getBlogList());
         manager.setOrientation(RecyclerView.VERTICAL);
         recyclerView_blog.setAdapter(blogAdapter);
         recyclerView_blog.setLayoutManager(manager);
         blogAdapter.notifyDataSetChanged();
     }
 
-    private void setAdapterc2(ArrayList<Blog> temp) {
-        Log.d("TAG", "setAdapter: " + listBlog.size());
-        for (Blog blog : listBlog) {
-//            if (blog.getTypeMenu().equals("mostFavorite")) {
-//                newListBlog.add(blog);
-//            }
-        }
+    private void setAdapterc2(List<Blog> newListBlog) {
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         BlogAdapter blogAdapter = new BlogAdapter(getContext());
-        blogAdapter.setListBlog(temp);
+        blogAdapter.setListBlog(newListBlog);
         manager.setOrientation(RecyclerView.VERTICAL);
         recyclerView_blog.setAdapter(blogAdapter);
         recyclerView_blog.setLayoutManager(manager);

@@ -37,16 +37,11 @@ public class LearningEnglishFragment extends Fragment implements TextToSpeech.On
         if (bundle!=null)
         {
             question = (Question) bundle.get("question");
-            if (question.getUrlImage().isEmpty()||question.getUrlImage().trim().length()==0)
-            {
-                imgLesson.setVisibility(View.GONE);
-            }
-            else
+            if (!(question.getUrlImage().trim().isEmpty()))
             {
                 Glide.with(getContext()).load(question.getUrlImage()).into(imgLesson);
-                imgLesson.setVisibility(View.VISIBLE);
             }
-            tvLesson.setText(question.getTitle());
+            tvLesson.setText(question.getWord());
             tvVocabulary.setText(question.getWord());
             tvExample.setText(question.getExample());
             tvTypeWord.setText(question.getTypeWord()+":");
@@ -68,8 +63,6 @@ public class LearningEnglishFragment extends Fragment implements TextToSpeech.On
         tvExample = myView.findViewById(R.id.tv_example_word);
         tvExampleMeans = myView.findViewById(R.id.tv_example_mean_word);
         tvGrammar = myView.findViewById(R.id.tv_grammar);
-
-
         imgSpeak.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,10 +81,10 @@ public class LearningEnglishFragment extends Fragment implements TextToSpeech.On
     }
     private void texttoSpeak() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            textToSpeech.speak(question.getTitle(), TextToSpeech.QUEUE_FLUSH, null, null);
+            textToSpeech.speak(question.getWord(), TextToSpeech.QUEUE_FLUSH, null, null);
         }
         else {
-            textToSpeech.speak(question.getTitle(), TextToSpeech.QUEUE_FLUSH, null);
+            textToSpeech.speak(question.getWord(), TextToSpeech.QUEUE_FLUSH, null);
         }
     }
     @Override
