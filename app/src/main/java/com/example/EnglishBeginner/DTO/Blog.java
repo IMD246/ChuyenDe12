@@ -8,7 +8,7 @@ public class Blog {
     String title;
     String content;
     String urlImage = "";
-    boolean checkApply = false;
+    boolean checkApply;
     int comment = 0;
     int like = 0;
     int view = 0;

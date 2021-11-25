@@ -2,10 +2,12 @@ package com.example.EnglishBeginner.DTO;
 
 public class User {
     private String fullname,email = "",gender = "",passWord= "";
-    private int age,expPerDay,totalExp,idTypeProceedPerDay;
+    private int age = 0,expPerDay = 0,totalExp = 0,idTypeProceedPerDay = -1;
     private String imageUser = "";
-    private boolean activePrivacy;
+    private boolean activePrivacy = false;
 
+    public User() {
+    }
     public User(String fullname, String email, String gender, int age, int expPerDay, int totalExp, int idTypeProceedPerDay, String imageUser, boolean activePrivacy) {
         this.fullname = fullname;
         this.email = email;
@@ -16,8 +18,6 @@ public class User {
         this.idTypeProceedPerDay = idTypeProceedPerDay;
         this.imageUser = imageUser;
         this.activePrivacy = activePrivacy;
-    }
-    public User() {
     }
     public String getPassWord() {
         return passWord;

@@ -1,12 +1,11 @@
 package com.example.EnglishBeginner.Blog;
 
 import android.content.Intent;
+import android.graphics.Path;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -20,15 +19,18 @@ import com.example.EnglishBeginner.DAO.DAOBlog;
 import com.example.EnglishBeginner.DTO.Blog;
 import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.R;
-import com.example.EnglishBeginner.main_interface.UserInterfaceActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.Query;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class BlogFragment extends Fragment {
@@ -56,6 +58,7 @@ public class BlogFragment extends Fragment {
     private void getDataRealTime() {
         daoBlog.getDataFromRealTimeFirebase(blogAdapter);
     }
+
     private void setAdapterForMenu() {
         listMenu = new ArrayList<>();
         listMenu.add(DEFAULTVALUE.MOSTFAVORITE);
@@ -69,17 +72,38 @@ public class BlogFragment extends Fragment {
     }
 
     private void setDataFollowOption(String typeBlog) {
-        List<Blog>blogList = new ArrayList<>();
+        List<Blog> blogList = new ArrayList<>();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listblog");
-        if (typeBlog.equalsIgnoreCase(DEFAULTVALUE.MOSTFAVORITE));
+
+        if (typeBlog.equalsIgnoreCase(DEFAULTVALUE.MOSTFAVORITE))
         {
-            databaseReference.orderByChild("like").addValueEventListener(new ValueEventListener() {
+            databaseReference.orderByChild("like").limitToLast(1).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren())
-                    {
+                    blogList.clear();
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Blog blog = dataSnapshot.getValue(Blog.class);
-                        blogList.add(blog);
+                        if (blog.isCheckApply()) {
+                            blogList.add(blog);
+                        }
+                    }
+                    setAdapterc2(blogList);
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }else if (typeBlog.equalsIgnoreCase(DEFAULTVALUE.NEW)) {
+            databaseReference.orderByChild("dayOfPost").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    blogList.clear();
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Blog blog = dataSnapshot.getValue(Blog.class);
+                        if (blog.isCheckApply()) {
+                            blogList.add(blog);
+                        }
                     }
                     setAdapterc2(blogList);
                 }
@@ -90,14 +114,20 @@ public class BlogFragment extends Fragment {
                 }
             });
         }
+        else
+        {
+            blogList.clear();
+            setAdapterc2(blogList);
+        }
     }
+
     private void setControl() {
         daoBlog = new DAOBlog(getContext());
         blogAdapter = new BlogAdapter(getContext());
         recyclerView_blog = view.findViewById(R.id.rv_blog);
         btnAddBlog = view.findViewById(R.id.btnAddBlog);
         btnAddBlog.setOnClickListener(view -> {
-            startActivity(new Intent(getContext(),AddBlogActivity.class));
+            startActivity(new Intent(getContext(), AddBlogActivity.class));
         });
         recyclerView_menu = view.findViewById(R.id.rv_menu);
     }
