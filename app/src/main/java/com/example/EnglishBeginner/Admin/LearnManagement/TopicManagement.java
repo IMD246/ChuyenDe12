@@ -49,6 +49,7 @@ public class TopicManagement extends AppCompatActivity {
     private TopicAdapter topicAdapter;
     private DAOTopic daoTopic;
     private DAOLevel daoLevel;
+    private List<String>levelList1;
     private DAOImageStorage daoImageStorage;
     private AutoCompleteTextView autoCompleteTextView,searchView;
     private String level;
@@ -62,6 +63,7 @@ public class TopicManagement extends AppCompatActivity {
     }
     private void getDataFirebase() {
         daoTopic.getDataFromRealTimeFirebase(topicAdapter);
+        levelList1 = new ArrayList<>();
         List<String>topicList = new ArrayList<>();
         DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("listtopic");
         databaseReference1.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -89,14 +91,14 @@ public class TopicManagement extends AppCompatActivity {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (levelList != null) {
-                    levelList.clear();
-                    levelList.add(DEFAULTVALUE.ALL);
-                }
+                levelList.clear();
+                levelList.add(DEFAULTVALUE.ALL);
+                levelList1.clear();;
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Level level = dataSnapshot.getValue(Level.class);
                     assert levelList != null;
                     levelList.add(String.valueOf(level.getNameLevel()));
+                    levelList1.add(String.valueOf(level.getNameLevel()));
                 }
                 autoCompleteTextView.setAdapter(new ArrayAdapter<>(getBaseContext(),android.R.layout.simple_list_item_1,levelList));
             }
@@ -107,6 +109,7 @@ public class TopicManagement extends AppCompatActivity {
     }
 
     private void initUI() {
+        daoLevel = new DAOLevel(this);
         daoImageStorage = new DAOImageStorage(this);
         daoTopic = new DAOTopic(this);
         searchView = findViewById(R.id.svTopic);
@@ -204,12 +207,7 @@ public class TopicManagement extends AppCompatActivity {
         imgTopic = dialog.findViewById(R.id.imgaddeditTopic);
         Spinner spnTopic = dialog.findViewById(R.id.spnTopic_Level);
         btnPickImageTopic.setOnClickListener(v -> openFileChoose());
-        List<String> list = new ArrayList<>();
-        for (Level level : daoLevel.getLevelList())
-        {
-            list.add(String.valueOf(level.getNameLevel()));
-        }
-        spnTopic.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,list));
+        spnTopic.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,levelList1));
         if (topic!=null)
         {
             spnTopic.setSelection(getSelectedSpinner(spnTopic,String.valueOf(topic.getLevel())));
