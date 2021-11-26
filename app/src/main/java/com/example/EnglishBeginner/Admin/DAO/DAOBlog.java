@@ -70,7 +70,7 @@ public class DAOBlog {
         databaseReference.child(String.valueOf(blog.getId())).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                DEFAULTVALUE.alertDialogMessage("Thông báo", "Không duyệt thành công!", context);
+                DEFAULTVALUE.alertDialogMessage("Thông báo", "Đã xóa bài viết!", context);
             }
         });
     }
