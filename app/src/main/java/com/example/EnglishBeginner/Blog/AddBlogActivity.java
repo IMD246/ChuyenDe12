@@ -175,7 +175,7 @@ public class AddBlogActivity extends AppCompatActivity implements View.OnClickLi
             Blog blog = new Blog();
             if (blogList.size()>0)
             {
-                blog.setId(blogList.get(blogList.size()-1).getId());
+                blog.setId(blogList.get(blogList.size()-1).getId()+1);
             }
             else
             {
