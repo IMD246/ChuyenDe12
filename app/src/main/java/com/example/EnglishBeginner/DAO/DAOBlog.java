@@ -44,7 +44,9 @@ public class DAOBlog {
                 }
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Blog blog = dataSnapshot.getValue(Blog.class);
-                    blogList.add(blog);
+                    if (blog.isCheckApply()) {
+                        blogList.add(blog);
+                    }
                 }
                 if (blogAdapter != null) {
                     blogAdapter.notifyDataSetChanged();
