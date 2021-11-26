@@ -25,7 +25,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class BlogManagementFragment extends Fragment {
@@ -106,6 +108,7 @@ public class BlogManagementFragment extends Fragment {
                 "Có",
                 (dialog, id) -> {
                     if (choice == 1) {
+                        blog.setDayOfPost(getDateTime());
                         blog.setCheckApply(true);
                         daoBlog.applyBlog(blog);
                     }
@@ -119,5 +122,11 @@ public class BlogManagementFragment extends Fragment {
                 (dialog, id) -> dialog.cancel());
         AlertDialog alert11 = builder1.create();
         alert11.show();
+    }
+    private String getDateTime()
+    {
+        SimpleDateFormat simpleDateFormat =  new SimpleDateFormat("HH:mm:ss a, dd/MM/yyyy");
+        String currentDateTime = simpleDateFormat.format(Calendar.getInstance().getTime());
+        return currentDateTime;
     }
 }
