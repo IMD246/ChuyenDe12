@@ -61,6 +61,14 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.BlogViewHolder
         if (blog == null) {
             return;
         }
+        if (blog.isCheckApply())
+        {
+            holder.btn_apply.setVisibility(View.GONE);
+        }
+        else
+        {
+            holder.btn_apply.setVisibility(View.VISIBLE);
+        }
         if (blog.getUrlImage().trim().isEmpty()) {
             holder.imgBlogThumnail.setVisibility(View.GONE);
         } else {
@@ -98,7 +106,7 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.BlogViewHolder
     public static class BlogViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         //Fields
         private final TextView txt_userName,txt_title;
-        private final ImageView imgBlogThumnail;
+        private final ImageView imgBlogThumnail,btn_apply,btn_notApply;
         View.OnClickListener onClickListener;
         //Properties
         public void setOnClickListener(View.OnClickListener onClickListener) {
@@ -110,9 +118,8 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.BlogViewHolder
             imgBlogThumnail = itemView.findViewById(R.id.img_blogThumnail);
             txt_userName = itemView.findViewById(R.id.tv_blogUserName);
             txt_title = itemView.findViewById(R.id.tv_blogTitle);
-            ImageView btn_apply = itemView.findViewById(R.id.img_blogApply);
-            ImageView btn_notApply = itemView.findViewById(R.id.img_blogNotApply);
-
+            btn_apply = itemView.findViewById(R.id.img_blogApply);
+            btn_notApply = itemView.findViewById(R.id.img_blogNotApply);
             btn_apply.setOnClickListener(this);
             btn_notApply.setOnClickListener(this);
         }

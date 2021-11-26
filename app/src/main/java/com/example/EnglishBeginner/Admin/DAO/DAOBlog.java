@@ -1,7 +1,6 @@
 package com.example.EnglishBeginner.Admin.DAO;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,18 +35,15 @@ public class DAOBlog {
     }
 
     public void getDataFromRealTimeFirebase(BlogAdapter blogAdapter) {
-        databaseReference.orderByChild("checkApply").equalTo(false).
-                addValueEventListener(new ValueEventListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (blogList != null) {
                     blogList.clear();
                 }
-                if (snapshot.exists()) {
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        Blog blog = dataSnapshot.getValue(Blog.class);
-                        blogList.add(blog);
-                    }
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Blog blog = dataSnapshot.getValue(Blog.class);
+                    blogList.add(blog);
                 }
                 if (blogAdapter != null) {
                     blogAdapter.notifyDataSetChanged();
@@ -60,8 +56,9 @@ public class DAOBlog {
             }
         });
     }
+
     public void applyBlog(Blog blog) {
-        databaseReference.child(blog.getId()+"/checkApply").setValue(blog.isCheckApply()).addOnCompleteListener(new OnCompleteListener<Void>() {
+        databaseReference.child(blog.getId() + "/checkApply").setValue(blog.isCheckApply()).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 DEFAULTVALUE.alertDialogMessage("Thông báo", "Duyệt thành công!", context);
