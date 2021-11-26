@@ -59,7 +59,6 @@ public class DAOBlog {
     }
 
     public void addBlog(Blog blog) {
-        Log.d("test", "addBlog: " + blog);
         databaseReference.child(String.valueOf(blog.getId())).setValue(blog).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {

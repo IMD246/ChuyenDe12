@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,10 +20,17 @@ import com.example.EnglishBeginner.DTO.Blog;
 import com.example.EnglishBeginner.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 public class AddBlogActivity extends AppCompatActivity implements View.OnClickListener{
     private EditText edt_title,edt_description;
@@ -31,6 +39,7 @@ public class AddBlogActivity extends AppCompatActivity implements View.OnClickLi
     private FirebaseUser user;
     private Boolean [] booleans = new Boolean[3];
     private DAOBlog daoBlog;
+    private List<Blog>blogList;
     private DAOImageStorage daoImageStorage;
 
     @Override
@@ -38,8 +47,32 @@ public class AddBlogActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_add_blog);
         setControl();
+        getDataRealTime();
         setEvent();
     }
+
+    private void getDataRealTime() {
+        DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("listblog");
+        blogList = new ArrayList<>();
+        databaseReference1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                blogList.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren())
+                {
+                    Blog blog1 = dataSnapshot.getValue(Blog.class);
+                    blogList.add(blog1);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     private void setEvent() {
         img_thumnail.setOnClickListener(this);
         edt_description.addTextChangedListener(new TextWatcher() {
@@ -140,9 +173,9 @@ public class AddBlogActivity extends AppCompatActivity implements View.OnClickLi
         if (booleans[0] && booleans [1])
         {
             Blog blog = new Blog();
-            if (daoBlog.getBlogList().size()>0)
+            if (blogList.size()>0)
             {
-                blog.setId(daoBlog.getBlogList().get(daoBlog.getBlogList().size()-1).getId());
+                blog.setId(blogList.get(blogList.size()-1).getId());
             }
             else
             {
