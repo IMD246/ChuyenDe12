@@ -7,33 +7,21 @@
     android:orientation="vertical"
     tools:context=".Blog.BlogFragment">
 
-    <TextView
-        android:text="diễn đàn ngôn ngữ nhóm 9"
-        android:textSize="20dp"
-        android:id="@+id/txt_bigTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </TextView>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_menu"
-        android:layout_marginHorizontal="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_below="@id/txt_bigTitle"
-        android:layout_alignParentStart="true">
-
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="24dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_blog"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/rv_menu"
-        android:layout_marginTop="10dp">
-
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_marginTop="10dp"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnAddBlog"

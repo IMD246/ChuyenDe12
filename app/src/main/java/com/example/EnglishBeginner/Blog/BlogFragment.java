@@ -77,7 +77,7 @@ public class BlogFragment extends Fragment {
 
         if (typeBlog.equalsIgnoreCase(DEFAULTVALUE.MOSTFAVORITE))
         {
-            databaseReference.orderByChild("like").limitToLast(1).addValueEventListener(new ValueEventListener() {
+            databaseReference.orderByChild("like").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     blogList.clear();

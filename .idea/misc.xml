@@ -3,47 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/drawable/bg_tv_auto_complete_all_word.xml" value="0.2361111111111111" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/activity_forget_password.xml" value="0.11980749746707194" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/activity_ietls_management.xml" value="0.24635416666666668" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/activity_learn_question.xml" value="0.22282608695652173" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/activity_level_management.xml" value="0.24635416666666668" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/activity_question_interface.xml" value="0.22282608695652173" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/activity_topic_management.xml" value="0.24635416666666668" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/activity_type_question_management.xml" value="0.24635416666666668" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/activity_user_interface.xml" value="0.24635416666666668" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/addeditanswer.xml" value="0.24635416666666668" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/addeditlevel.xml" value="0.11980749746707194" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/addeditquestion.xml" value="0.24635416666666668" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/addedittopic.xml" value="0.24635416666666668" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/addeditword.xml" value="0.136" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/addquestion.xml" value="0.24635416666666668" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/answeritem.xml" value="0.24635416666666668" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/blog_item.xml" value="0.24635416666666668" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/blog_recyclerview_item.xml" value="0.11980749746707194" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/editlearnquestion.xml" value="0.176" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/fragment_account_user_management.xml" value="0.24635416666666668" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/fragment_add_blog.xml" value="0.11980749746707194" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/fragment_blog.xml" value="0.11980749746707194" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/fragment_blogmanagement.xml" value="0.24635416666666668" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/fragment_detail_question_fragment.xml" value="0.24635416666666668" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/fragment_first.xml" value="0.24635416666666668" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/fragment_learn_management.xml" value="0.24635416666666668" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/fragment_question_management.xml" value="0.22282608695652173" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/fragment_vocabulary_management.xml" value="0.24635416666666668" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/layout_header_nav.xml" value="0.24635416666666668" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/layout_item_learn_management.xml" value="0.11980749746707194" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/layout_item_vocabulary_management.xml" value="0.24635416666666668" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/levelitem.xml" value="0.24635416666666668" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/listoptionitem.xml" value="0.24635416666666668" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/questionitem.xml" value="0.22282608695652173" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/register_user.xml" value="0.11980749746707194" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/toeicietlsitem.xml" value="0.24635416666666668" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/topicitem.xml" value="0.24635416666666668" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/typequestionitem.xml" value="0.24635416666666668" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/useraccountitem.xml" value="0.24635416666666668" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/menu/menu.xml" value="0.20833333333333334" />
-        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/menu/menu_navigation.xml" value="0.15729166666666666" />
+        <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/layout/activity_edit_account.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/layout/fragment_add_blog.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/layout/fragment_blog.xml" value="0.1" />
+        <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/menu/menu_bottom_navigation.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/layout_fragment_test_choose_image.xml" value="0.12158054711246201" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/layout_fragment_test_selection_english.xml" value="0.23369565217391305" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.20208333333333334" />
@@ -59,6 +22,7 @@
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/layout/register_user.xml" value="0.264" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/TestApp2/app/src/main/res/mipmap-anydpi-v26/ic_email.xml" value="0.26205128205128203" />
         <entry key="..\:/chuyende1234/app/src/main/res/layout/activity_toeic_management.xml" value="0.12158054711246201" />
+        <entry key="..\:/chuyende1234/app/src/main/res/layout/alarm_screen.xml" value="0.2318840579710145" />
         <entry key="..\:/chuyende1234/app/src/main/res/layout/answeritem.xml" value="0.14583333333333334" />
         <entry key="..\:/chuyende1234/app/src/main/res/layout/blog_item.xml" value="0.14583333333333334" />
         <entry key="..\:/chuyende1234/app/src/main/res/layout/fragment_analysic_user.xml" value="0.14583333333333334" />
@@ -70,6 +34,10 @@
         <entry key="..\:/chuyende1234/app/src/main/res/layout/listoptionitem.xml" value="0.14583333333333334" />
         <entry key="..\:/chuyende1234/app/src/main/res/layout/login.xml" value="0.2318840579710145" />
         <entry key="..\:/chuyende1234/app/src/main/res/layout/register_user.xml" value="0.2318840579710145" />
+        <entry key="..\:/chuyende1234/app/src/main/res/layout/saveword_item.xml" value="0.12708333333333333" />
+        <entry key="..\:/chuyende1234/app/src/main/res/layout/toeicietlsitem.xml" value="0.23641304347826086" />
+        <entry key="..\:/chuyende1234/app/src/main/res/layout/vocubulary_list_item.xml" value="0.1331521739130435" />
+        <entry key="..\:/chuyende1234/app/src/main/res/layout/vocubulary_screen.xml" value="0.23641304347826086" />
         <entry key="..\:/chuyende1234/app/src/main/res/menu/menu.xml" value="0.25" />
         <entry key="..\:/chuyende1234/app/src/main/res/menu/menu_navigation.xml" value="0.25" />
       </map>
