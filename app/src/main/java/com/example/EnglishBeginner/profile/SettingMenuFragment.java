@@ -74,7 +74,7 @@ public class SettingMenuFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), UserInterfaceActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("currentScreen", "3");
+                bundle.putString("currentScreen", "4");
                 intent.putExtras(bundle);
                 getContext().startActivity(intent);
             }

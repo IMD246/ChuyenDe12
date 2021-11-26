@@ -21,6 +21,10 @@
                     android:icon="@drawable/baseline_settings_black_24dp"
                     android:title="@string/nav_setting" />
                 <item
+                    android:id="@+id/nav_alarm"
+                    android:title="@string/bottom_nav_alarm"
+                    android:icon="@drawable/baseline_alarm_black_24dp"/>
+                <item
                     android:id="@+id/nav_help"
                     android:icon="@drawable/baseline_help_outline_black_24dp"
                     android:title="@string/nav_help" />

@@ -48,7 +48,8 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
         holder.txt_title.setText(listMenu.get(position));
         if (check)
         {
-            holder.ln_menuBlog.setBackgroundColor(Color.BLUE);
+            holder.txt_title.setTextColor(Color.parseColor("#03A9F4"));
+            holder.bdBottom.setVisibility(View.VISIBLE);
             check = false;
         }
         holder.txt_title.setOnClickListener(new View.OnClickListener() {
@@ -58,18 +59,25 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
                 {
                     view = rcl.findViewHolderForAdapterPosition(previousPosition).itemView;
                     holder.ln_menuBlog = view.findViewById(R.id.lnItemMenuBlog);
-                    holder.ln_menuBlog.setBackgroundColor(Color.BLUE);
+                    holder.bdBottom = view.findViewById(R.id.bottom_border);
+                    holder.txt_title = view.findViewById(R.id.txt_menu_item);
+                    holder.txt_title.setTextColor(Color.parseColor("#03A9F4"));
+                    holder.bdBottom.setVisibility(View.VISIBLE);
                     previousPosition = holder.getAdapterPosition();
                 }
                 else
                 {
                     view = rcl.findViewHolderForAdapterPosition(previousPosition).itemView;
-                    holder.ln_menuBlog = view.findViewById(R.id.lnItemMenuBlog);
-                    holder.ln_menuBlog.setBackgroundColor(Color.WHITE);
+                    holder.bdBottom = view.findViewById(R.id.bottom_border);
+                    holder.txt_title = view.findViewById(R.id.txt_menu_item);
+                    holder.txt_title.setTextColor(Color.parseColor("#E1BCBABA"));
+                    holder.bdBottom.setVisibility(View.GONE);
 
                     view = rcl.findViewHolderForAdapterPosition(holder.getAdapterPosition()).itemView;
-                    holder.ln_menuBlog = view.findViewById(R.id.lnItemMenuBlog);
-                    holder.ln_menuBlog.setBackgroundColor(Color.BLUE);
+                    holder.bdBottom = view.findViewById(R.id.bottom_border);
+                    holder.txt_title = view.findViewById(R.id.txt_menu_item);
+                    holder.txt_title.setTextColor(Color.parseColor("#03A9F4"));
+                    holder.bdBottom.setVisibility(View.VISIBLE);
                     previousPosition = holder.getAdapterPosition();
                 }
                 setAdapterOfListBlog.setAdapter(listMenu.get(holder.getAdapterPosition()));
@@ -86,15 +94,14 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-
         TextView txt_title;
-        LinearLayout ln_menuBlog;
+        LinearLayout ln_menuBlog, bdBottom;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
+            bdBottom = itemView.findViewById(R.id.bottom_border);
             txt_title = itemView.findViewById(R.id.txt_menu_item);
             ln_menuBlog = itemView.findViewById(R.id.lnItemMenuBlog);
-
         }
     }
   public interface setAdapterCallBack{

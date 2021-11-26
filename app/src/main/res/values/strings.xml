@@ -16,7 +16,7 @@
 
     <!--tạo chuỗi cho bottom navigation-->
     <string name="bottom_nav_learn">HỌC</string>
-    <string name="bottom_nav_alarm">HẸN GIỜ</string>
+    <string name="bottom_nav_alarm">Hẹn giờ</string>
     <string name="bottom_nav_vocabulary">TỪ VỰNG</string>
     <string name="hoso"><u>Hồ sơ</u></string>
 
@@ -99,7 +99,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cheer">cheer</string>
-    <string name="blog">Blog</string>
+    <string name="blog">DIỄN ĐÀN</string>
     <string name="nh_p_t_kh_a_t_m_ki_m">Nhập từ khóa để tìm kiếm</string>
     <string name="quay_l_i">Quay Lại</string>
     <!--    Array Type Word-->
