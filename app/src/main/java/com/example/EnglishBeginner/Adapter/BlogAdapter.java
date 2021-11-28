@@ -1,6 +1,8 @@
 package com.example.EnglishBeginner.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.EnglishBeginner.Blog.BlogDetailActivity;
 import com.example.EnglishBeginner.DTO.Blog;
 import com.example.EnglishBeginner.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,10 +24,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
-public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.ViewHolder> {
+public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.ViewHolder>{
 
     Context context;
     List<Blog> listBlog;
@@ -83,7 +87,33 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.ViewHolder> {
             }
         });
         holder.ln_detail.setOnClickListener(view -> {
-
+            Intent intent = new Intent(context, BlogDetailActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("id_blog", String.valueOf(temp.getId()));
+            bundle.putString("id_user", temp.getIdUser());
+            intent.putExtras(bundle);
+            context.startActivity(intent);
+        });
+        holder.img_comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, BlogDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("id_blog", String.valueOf(temp.getId()));
+                bundle.putString("id_user", temp.getIdUser());
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
+        holder.img_like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (holder.img_like.isSelected()){
+                    holder.img_like.setSelected(false);
+                }else {
+                    holder.img_like.setSelected(true);
+                }
+            }
         });
     }
 
@@ -96,7 +126,7 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView img_user, img_blog;
+        ImageView img_user, img_blog, img_like, img_comment;
         TextView txt_title, txt_userName, txt_dayOfPost, txt_like, txt_comment, txt_view;
         LinearLayout ln_detail;
 
@@ -104,6 +134,8 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.ViewHolder> {
             super(itemView);
             img_user = itemView.findViewById(R.id.blog_img_avatar);
             img_blog = itemView.findViewById(R.id.blog_img_thumnail);
+            img_like = itemView.findViewById(R.id.img_like);
+            img_comment = itemView.findViewById(R.id.img_comment);
             txt_title = itemView.findViewById(R.id.blog_txt_title);
             txt_userName = itemView.findViewById(R.id.blog_txt_userName);
             txt_dayOfPost = itemView.findViewById(R.id.blog_txt_dayOfPost);

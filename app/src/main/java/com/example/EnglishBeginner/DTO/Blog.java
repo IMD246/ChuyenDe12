@@ -1,6 +1,8 @@
 package com.example.EnglishBeginner.DTO;
 
-public class Blog {
+import java.io.Serializable;
+
+public class Blog implements Serializable {
     int id = -1;
     String idUser;
     String nameUser;
