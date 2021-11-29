@@ -3,6 +3,7 @@ package com.example.EnglishBeginner.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +63,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         }
         holder.tvContent.setText(comment.getContent());
         holder.tvDatePost.setText(comment.getDayOfPost());
-        holder.tvLike.setText(comment.getLike());
+        holder.tvLike.setText(String.valueOf(comment.getLike()));
         holder.tvReply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,10 +86,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        if (listComments.size() > 0) {
-            return listComments.size();
-        }
-        return 0;
+        return listComments.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

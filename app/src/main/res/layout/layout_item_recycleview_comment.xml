@@ -1,70 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="20dp"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@drawable/ct_layout_bottom_line1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
         android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/avatar_user_comment"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
             android:src="@color/black" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:orientation="horizontal">
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_username_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:text="Elizabeth Rek"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_daypost_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="12dp"
+                    android:text="23 March 2019, 10:45 pm"
+                    android:textSize="12sp"
+                    android:textStyle="italic" />
+
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/tv_username_comment"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_comment"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:text="Elizabeth Rek"
+                android:layout_marginTop="8dp"
+                android:text="How can i look for this?"
                 android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tv_daypost_comment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginStart="12dp"
-                android:text="23 March 2019, 10:45 pm"
-                android:textSize="12sp"
-                android:textStyle="italic" />
+                android:textSize="14sp" />
         </LinearLayout>
-    </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_comment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="4dp"
-        android:text="How can i look for this?"
-        android:textColor="@color/black"
-        android:textSize="20sp" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
         android:gravity="end"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/img_like_comment"
-            android:layout_width="wrap_content"
+            android:layout_width="28dp"
             android:layout_height="match_parent"
             android:src="@drawable/ct_like" />
 
@@ -75,7 +92,7 @@
             android:gravity="center_vertical"
             android:text="705"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="13sp" />
 
         <TextView
             android:id="@+id/tv_reply"
@@ -84,7 +101,7 @@
             android:layout_marginStart="12dp"
             android:text="TRẢ LỜI"
             android:textColor="#A8000000"
-            android:textSize="16sp"
+            android:textSize="13sp"
             android:textStyle="bold" />
 
         <TextView
@@ -94,7 +111,7 @@
             android:layout_marginStart="12dp"
             android:text="BÁO CÁO"
             android:textColor="#A8000000"
-            android:textSize="16sp"
+            android:textSize="13sp"
             android:textStyle="bold" />
     </LinearLayout>
 </LinearLayout>

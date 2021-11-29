@@ -162,10 +162,10 @@
                 android:hint="Viết bình luận...">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtCurrentPass"
+                    android:id="@+id/edt_input_comment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPassword" />
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
@@ -174,6 +174,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
             android:gravity="end"
+            android:id="@+id/layout_button"
             android:orientation="horizontal">
 
             <Button
@@ -183,7 +184,7 @@
                 android:text="Đăng" />
 
             <Button
-                android:id="@+id/btn_detroy"
+                android:id="@+id/btn_cancle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
@@ -194,7 +195,7 @@
             android:id="@+id/rcv_comment_blog"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="4dp"/>
-
+            android:layout_marginTop="12dp"
+            />
     </LinearLayout>
 </ScrollView>
