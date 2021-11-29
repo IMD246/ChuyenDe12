@@ -183,10 +183,8 @@ public class BlogDetailActivity extends AppCompatActivity {
                     }
                     comment.setContent(contentComment);
                     comment.setIdBlog(bundle.getString("id_blog"));
-                    comment.setIdUser(bundle.getString("id_user"));
                     comment.setNameUser(fullName);
                     comment.setUrlImage(imageUser);
-                    comment.setIdUser(firebaseUser.getUid());
                     comment.setDayOfPost(getDateTime());
                     databaseReferenceComment.child(String.valueOf(comment.getId())).setValue(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -249,9 +247,7 @@ public class BlogDetailActivity extends AppCompatActivity {
 
                 }
                 adapter.setListComments(arrayList);
-                Log.d("sinh", "onDataChange: " + arrayList.size());
                 recyclerViewComment.setAdapter(adapter);
-                Log.d("comment", "onDataChange: "+snapshot.getChildrenCount());
             }
 
             @Override

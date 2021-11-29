@@ -2,7 +2,7 @@ package com.example.EnglishBeginner.DTO;
 
 public class Comment {
     int id = -1;
-    String idUser, idBlog;
+    String idBlog;
     String nameUser;
     String dayOfPost;
     String content;
@@ -12,9 +12,8 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(int id, String idUser, String idBlog, String nameUser, String dayOfPost, String content, String urlImage, int like) {
+    public Comment(int id, String idBlog, String nameUser, String dayOfPost, String content, String urlImage, int like) {
         this.id = id;
-        this.idUser = idUser;
         this.idBlog = idBlog;
         this.nameUser = nameUser;
         this.dayOfPost = dayOfPost;
@@ -29,14 +28,6 @@ public class Comment {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getIdUser() {
-        return idUser;
-    }
-
-    public void setIdUser(String idUser) {
-        this.idUser = idUser;
     }
 
     public String getIdBlog() {

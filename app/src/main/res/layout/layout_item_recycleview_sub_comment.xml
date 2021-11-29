@@ -19,8 +19,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/avatar_user_comment"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginTop="8dp"
             android:src="@color/black" />
 
@@ -40,11 +40,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:fontFamily="@font/roboto_black"
                     android:text="Elizabeth Rek"
+                    android:fontFamily="@font/roboto_black"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/tv_daypost_comment"
@@ -79,22 +79,6 @@
         android:layout_marginEnd="24dp"
         android:gravity="end"
         android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/img_show_more_comment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ct_bg_show_more_comment" />
-
-        <TextView
-            android:id="@+id/tv_show_more_comment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:text="xem 0 câu trả lời"
-            android:textColor="@color/blue"
-            android:textStyle="bold" />
-
         <ImageView
             android:id="@+id/img_like_comment"
             android:layout_width="28dp"
@@ -130,68 +114,4 @@
             android:textSize="13sp"
             android:textStyle="bold" />
     </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcv_sub_comment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="8dp"
-        android:visibility="gone" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="visible"
-        android:id="@+id/viewgroup_reply">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/img_myavatar"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@color/black" />
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="20dp"
-                android:hint="Viết bình luận...">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edt_input_comment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:gravity="end"
-            android:id="@+id/layout_button"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btn_post"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Đăng" />
-
-            <Button
-                android:id="@+id/btn_cancle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:text="Hủy" />
-        </LinearLayout>
-    </LinearLayout>
-
 </LinearLayout>
