@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.example.EnglishBeginner.Adapter.CommentAdapter;
 import com.example.EnglishBeginner.DTO.Blog;
 import com.example.EnglishBeginner.DTO.Comment;
+import com.example.EnglishBeginner.DTO.Like;
 import com.example.EnglishBeginner.DTO.User;
 import com.example.EnglishBeginner.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -48,13 +49,15 @@ public class BlogDetailActivity extends AppCompatActivity {
     private CommentAdapter adapter;
     private ArrayList<Comment> arrayList;
 
-    private DatabaseReference databaseReferenceBlog, databaseReferenceUser, databaseReferenceComment;
+    private DatabaseReference databaseReferenceBlog, databaseReferenceUser, databaseReferenceComment, databaseReferenceLike;
     private FirebaseUser firebaseUser;
     private Comment comment;
 
     private String fullName, imageUser;
 
     private Bundle bundle;
+
+    private Like like;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,9 +128,9 @@ public class BlogDetailActivity extends AppCompatActivity {
                         for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
                             hashMap.put(dataSnapshot.getKey(), dataSnapshot.getValue());
                         }
-                        if (String.valueOf(hashMap.get("fullname")).trim().isEmpty()){
+                        if (String.valueOf(hashMap.get("fullname")).trim().isEmpty()) {
                             fullName = "Unknown";
-                        }else{
+                        } else {
                             fullName = String.valueOf(hashMap.get("fullname"));
                         }
                         imageUser = String.valueOf(hashMap.get("imageUser"));
@@ -139,6 +142,34 @@ public class BlogDetailActivity extends AppCompatActivity {
             });
         }
 
+        //Lấy dữ liệu cho like
+        databaseReferenceLike = FirebaseDatabase.getInstance().getReference("listLike");
+        databaseReferenceLike.child(bundle.getString("id_blog")).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                tvLikeBlog.setText(String.valueOf(snapshot.getChildrenCount()));
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        databaseReferenceLike.child(bundle.getString("id_blog")+"/"+bundle.getString("id_user")).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    imgLikeBlog.setSelected(true);
+                }else {
+                    imgLikeBlog.setSelected(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         //Ánh xạ
         setControl();
 
@@ -154,7 +185,24 @@ public class BlogDetailActivity extends AppCompatActivity {
         imgLikeBlog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Like like = new Like();
+                if (imgLikeBlog.isSelected()) {
+                    imgLikeBlog.setSelected(false);
+                    databaseReferenceLike.child(bundle.getString("id_blog")+"/"+bundle.getString("id_user")).removeValue().isSuccessful();
+                } else {
+                    imgLikeBlog.setSelected(true);
+                    like.setChecklike(true);
+                    like.setIdBlog(Integer.parseInt(bundle.getString("id_blog")));
+                    like.setIdUser(bundle.getString("id_user"));
+                    DatabaseReference databaseReferenceLike = FirebaseDatabase.getInstance().getReference("listLike");
+                    databaseReferenceLike.child(bundle.get("id_blog").toString()+"/"+bundle.getString("id_user")).setValue(like).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(BlogDetailActivity.this, "like thanh cong", Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
+                }
             }
         });
 
@@ -231,7 +279,7 @@ public class BlogDetailActivity extends AppCompatActivity {
         layoutButton = findViewById(R.id.layout_button);
 
         recyclerViewComment = findViewById(R.id.rcv_comment_blog);
-        LinearLayoutManager manager =  new LinearLayoutManager(BlogDetailActivity.this);
+        LinearLayoutManager manager = new LinearLayoutManager(BlogDetailActivity.this);
         manager.setOrientation(RecyclerView.VERTICAL);
         recyclerViewComment.setLayoutManager(manager);
         adapter = new CommentAdapter(this);

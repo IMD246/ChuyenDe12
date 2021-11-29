@@ -35,7 +35,6 @@ import java.util.HashMap;
 public class EditAccountActivity extends AppCompatActivity implements View.OnClickListener {
     private Button btnBack, btnSave;
     private EditText ipCurrentPass, ipNewPass, ipVerify;
-    private FirebaseUser user;
     private DatabaseReference databaseReference;
     private FirebaseUser firebaseUser;
     private DAOUserProfile daoUserProfile;
@@ -72,7 +71,6 @@ public class EditAccountActivity extends AppCompatActivity implements View.OnCli
         btnBack.setOnClickListener(this);
         btnSave = findViewById(R.id.btn_edit_account_save);
         btnSave.setOnClickListener(this);
-        user = FirebaseAuth.getInstance().getCurrentUser();
         ipCurrentPass = findViewById(R.id.edtCurrentPass);
         ipNewPass = findViewById(R.id.ip_new_pass);
         ipVerify = findViewById(R.id.ip_verify);
@@ -131,13 +129,13 @@ public class EditAccountActivity extends AppCompatActivity implements View.OnCli
                 ipCurrentPass.requestFocus();
             }
             else {
-                user.updatePassword(newPass).addOnSuccessListener(unused -> {
+                firebaseUser.updatePassword(newPass).addOnSuccessListener(unused -> {
                     Toast.makeText(EditAccountActivity.this, "Đổi mật khẩu thành công", Toast.LENGTH_SHORT).show();
                     HashMap<String,Object>hashMap = new HashMap<>();
                     try {
-                        String encryptPass = HashPass.encryptPass(user.getUid(),newPass);
+                        String encryptPass = HashPass.encryptPass(firebaseUser.getUid(),newPass);
                         hashMap.put("passWord",encryptPass);
-                        daoUserProfile.updatePassWordUser(hashMap,user.getUid());
+                        daoUserProfile.updatePassWordUser(hashMap,firebaseUser.getUid());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

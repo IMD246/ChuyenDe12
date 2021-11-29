@@ -22,6 +22,8 @@ import com.bumptech.glide.Glide;
 import com.example.EnglishBeginner.Blog.BlogDetailActivity;
 import com.example.EnglishBeginner.DTO.Blog;
 import com.example.EnglishBeginner.DTO.Comment;
+import com.example.EnglishBeginner.DTO.SubComment;
+import com.example.EnglishBeginner.DTO.User;
 import com.example.EnglishBeginner.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -43,11 +45,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     Context context;
     List<Comment> listComments;
-    List<Comment> listSubComments;
+    List<SubComment> listSubComments;
     FirebaseUser firebaseUser;
+    private String fullName, imgUser;
+
     public CommentAdapter(Context context) {
         this.context = context;
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     }
 
     public void setListComments(List<Comment> listComments) {
@@ -64,6 +67,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Comment comment = listComments.get(position);
+        listSubComments = new ArrayList<>();
         if (comment.getNameUser().trim().isEmpty()) {
             holder.tvUserName.setText("Unknown");
         } else {
@@ -82,6 +86,50 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             @Override
             public void onClick(View v) {
                 holder.viewgroupReply.setVisibility(View.VISIBLE);
+                firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                DatabaseReference databaseReferenceUser = FirebaseDatabase.getInstance().getReference("users");
+                databaseReferenceUser.child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        User user = snapshot.getValue(User.class);
+                        if (user.getFullname().trim().isEmpty()){
+                            fullName = "I don't know";
+                        }else {
+                            fullName = user.getFullname();
+                        }
+                        Log.d("fullname", "onDataChange: " + fullName);
+                        Log.d("image", "onDataChange: " + user.getImageUser());
+                        if (!(user.getImageUser().trim().isEmpty())){
+                            Glide.with(context).load(user.getImageUser()).into(holder.imgMyAvatar);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+//                databaseReferenceUser.child(firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+//                        HashMap<String, Object> hashMap = new HashMap<>();
+//                        if (task.getResult().exists()) {
+//                            for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
+//                                hashMap.put(dataSnapshot.getKey(), dataSnapshot.getValue());
+//                            }
+//                            if (String.valueOf(hashMap.get("fullname")).trim().isEmpty()) {
+//                                fullName = "Unknown";
+//                            }else{
+//                                fullName = String.valueOf(hashMap.get("fullname"));
+//                            }
+//                            if (!(String.valueOf(hashMap.get("imageUser")).trim().isEmpty())) {
+//                                imgUser = String.valueOf(hashMap.get("imageUser"));
+//                                Glide.with(context).load(hashMap.get("imageUser")).into(holder.imgMyAvatar);
+//                            }
+//                        }
+//                    }
+//                });
+
                 //Sự kiện khi nhấn Hủy
                 holder.btnCancle.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -98,7 +146,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                             holder.edtReply.setError("Bạn phải nhập bình luận trước!");
                             holder.edtReply.requestFocus();
                         }else{
-                            Comment subcomment = new Comment();
+                            SubComment subcomment = new SubComment();
                             if (listSubComments.size() > 0) {
                                 subcomment.setId(listSubComments.get(listSubComments.size() - 1).getId() + 1);
                             } else {
@@ -106,29 +154,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                             }
                             subcomment.setContent(holder.edtReply.getText().toString());
                             subcomment.setIdBlog(comment.getIdBlog());
-                            DatabaseReference databaseReferenceUser = FirebaseDatabase.getInstance().getReference("users");
-                            databaseReferenceUser.child(firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                    HashMap<String, Object> hashMap = new HashMap<>();
-                                    if (task.getResult().exists()) {
-                                        for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
-                                            hashMap.put(dataSnapshot.getKey(), dataSnapshot.getValue());
-                                        }
-                                        if (String.valueOf(hashMap.get("fullname")).trim().isEmpty()) {
-                                            subcomment.setNameUser("Unknown");
-                                        } else {
-                                            subcomment.setNameUser(String.valueOf(hashMap.get("fullname")));
-                                        }
-                                        if (!(String.valueOf(hashMap.get("imageUser")).trim().isEmpty())) {
-                                            subcomment.setUrlImage(String.valueOf(hashMap.get("imageUser")));
-                                        }
-                                    }
-                                }
-                            });
+                            subcomment.setIdComment(String.valueOf(comment.getId()));
+                            subcomment.setIdUser(firebaseUser.getUid());
                             subcomment.setDayOfPost(getDateTime());
-                            DatabaseReference databaseReferenceComment = FirebaseDatabase.getInstance().getReference("listcomment");
-                            databaseReferenceComment.child(String.valueOf(comment.getId())).child(String.valueOf(subcomment.getId())).setValue(subcomment).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            DatabaseReference databaseReferenceComment = FirebaseDatabase.getInstance().getReference("listSubComment");
+                            databaseReferenceComment.child(String.valueOf(subcomment.getId())).setValue(subcomment).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     Toast.makeText(context, "Thêm bình luận thành công!", Toast.LENGTH_SHORT).show();
@@ -140,6 +170,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                 });
             }
         });
+
         //Báo cáo bình luận đến admin
         holder.tvReport.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,6 +178,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
             }
         });
+
         //like bình luận
         holder.imglike.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,30 +187,34 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             }
         });
 
+        //Xử lý và đỗ dữ liệu cho recycleview listSubComment
         SubCommentAdapter subCommentAdapter = new SubCommentAdapter(context);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         holder.recyclerView.setLayoutManager(layoutManager);
-        //hiển thị các bình luận con
+        //Sự kiện ấn "xem nhiều bình luận"
         holder.imgShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (holder.imgShow.isSelected()){
                     holder.imgShow.setSelected(false);
+                    holder.tvShow.setText("Xem 0 bình luận" + listSubComments.size());
                 }else{
                     holder.imgShow.setSelected(true);
-                    holder.tvShow.setText("Ẩn 0 bình luận");
+                    holder.tvShow.setText("Ẩn 0 bình luận" +listSubComments.size());
                     holder.recyclerView.setVisibility(View.VISIBLE);
-                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listcomment").child(String.valueOf(comment.getId()));
+                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listSubComment");
                     databaseReference.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             listSubComments.clear();
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                                Comment cmt = dataSnapshot.getValue(Comment.class);
-                                listSubComments.add(cmt);
+                                SubComment subcmt = dataSnapshot.getValue(SubComment.class);
+                                if (subcmt.getIdComment().equalsIgnoreCase(String.valueOf(comment.getId()))){
+                                    listSubComments.add(subcmt);
+                                }
                             }
-                            subCommentAdapter.setListComments(listSubComments);
+                            subCommentAdapter.setListSubComments(listSubComments);
                             holder.recyclerView.setAdapter(subCommentAdapter);
                         }
 
@@ -225,6 +261,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             imgUser = itemView.findViewById(R.id.avatar_user_comment);
             imglike = itemView.findViewById(R.id.img_like_comment);
             imgShow = itemView.findViewById(R.id.img_show_more_comment);
+            imgMyAvatar = itemView.findViewById(R.id.img_myavatar);
             tvContent = itemView.findViewById(R.id.tv_comment);
             tvUserName = itemView.findViewById(R.id.tv_username_comment);
             tvDatePost = itemView.findViewById(R.id.tv_daypost_comment);

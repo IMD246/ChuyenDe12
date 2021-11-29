@@ -10,7 +10,7 @@ public class Blog implements Serializable {
     String title;
     String content;
     String urlImage = "";
-    boolean checkApply;
+    boolean checkApply, checkLike;
     int comment = 0;
     int like = 0;
     int view = 0;

@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.example.EnglishBeginner.Blog.BlogDetailActivity;
 import com.example.EnglishBeginner.DTO.Blog;
 import com.example.EnglishBeginner.DTO.Comment;
+import com.example.EnglishBeginner.DTO.SubComment;
 import com.example.EnglishBeginner.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -30,13 +31,13 @@ import java.util.List;
 public class SubCommentAdapter extends RecyclerView.Adapter<SubCommentAdapter.ViewHolder>{
 
     Context context;
-    List<Comment> listComments;
+    List<SubComment> listComments;
 
     public SubCommentAdapter(Context context) {
         this.context = context;
     }
 
-    public void setListComments(List<Comment> listComments) {
+    public void setListSubComments(List<SubComment> listComments) {
         this.listComments = listComments;
     }
 
@@ -49,20 +50,30 @@ public class SubCommentAdapter extends RecyclerView.Adapter<SubCommentAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Comment comment = listComments.get(position);
-        if (comment.getNameUser().trim().isEmpty()) {
-            holder.tvFullName.setText("Unknown");
-        } else {
-            holder.tvFullName.setText(comment.getNameUser());
-        }
-        if (!(comment.getUrlImage().trim().isEmpty())) {
-            Glide.with(context).load(comment.getUrlImage()).into(holder.imgUser);
-        } else {
-            holder.imgUser.setVisibility(View.GONE);
-        }
-        holder.tvContent.setText(comment.getContent());
-        holder.tvPostDate.setText(comment.getDayOfPost());
-        holder.tvLike.setText(String.valueOf(comment.getLike()));
+        SubComment subComment = listComments.get(position);
+        DatabaseReference databaseReferenceUser = FirebaseDatabase.getInstance().getReference("users");
+        databaseReferenceUser.child(subComment.getIdUser()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                HashMap<String, Object> hashMap = new HashMap<>();
+                if (task.getResult().exists()){
+                    for (DataSnapshot dataSnapshot : task.getResult().getChildren()){
+                        hashMap.put(dataSnapshot.getKey(), dataSnapshot.getValue());
+                    }
+                    if (String.valueOf(hashMap.get("fullname")).trim().isEmpty()){
+                        holder.tvFullName.setText("Unknown");
+                    }else{
+                        holder.tvFullName.setText(String.valueOf(hashMap.get("fullname")));
+                    }
+                    if (!(String.valueOf(hashMap.get("imageUser")).trim().isEmpty())){
+                        Glide.with(context).load(String.valueOf(hashMap.get("imageUser"))).into(holder.imgUser);
+                    }
+                }
+            }
+        });
+        holder.tvContent.setText(subComment.getContent());
+        holder.tvPostDate.setText(subComment.getDayOfPost());
+        holder.tvLike.setText(String.valueOf(subComment.getLike()));
         holder.imgLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

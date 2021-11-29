@@ -20,9 +20,13 @@ import com.example.EnglishBeginner.DTO.Blog;
 import com.example.EnglishBeginner.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -32,7 +36,8 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.ViewHolder>{
 
     Context context;
     List<Blog> listBlog;
-    DatabaseReference databaseReference;
+    DatabaseReference databaseReference, databaseReferenceView;
+    com.example.EnglishBeginner.DTO.View view;
 
     public BlogAdapter(Context context) {
         this.context = context;
@@ -57,6 +62,18 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.ViewHolder>{
         holder.txt_like.setText(String.valueOf(temp.getLike()));
         holder.txt_dayOfPost.setText(temp.getDayOfPost());
         holder.txt_title.setText(temp.getTitle());
+        databaseReferenceView = FirebaseDatabase.getInstance().getReference("listView");
+        databaseReferenceView.child(String.valueOf(temp.getId())).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                holder.txt_view.setText(String.valueOf(snapshot.getChildrenCount()));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         holder.txt_view.setText(String.valueOf(temp.getView()));
         if (!(temp.getUrlImage().trim().isEmpty())) {
             Glide.with(context).load(temp.getUrlImage()).into(holder.img_blog);
@@ -86,17 +103,32 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.ViewHolder>{
                 }
             }
         });
-        holder.ln_detail.setOnClickListener(view -> {
-            Intent intent = new Intent(context, BlogDetailActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putString("id_blog", String.valueOf(temp.getId()));
-            bundle.putString("id_user", temp.getIdUser());
-            intent.putExtras(bundle);
-            context.startActivity(intent);
+        holder.ln_detail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                view = new com.example.EnglishBeginner.DTO.View();
+                view.setCheckView(true);
+                FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                view.setIdUser(firebaseUser.getUid());
+                databaseReferenceView.child((temp.getId())+"/"+ firebaseUser.getUid()).setValue(view).isSuccessful();
+
+                Intent intent = new Intent(context, BlogDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("id_blog", String.valueOf(temp.getId()));
+                bundle.putString("id_user", temp.getIdUser());
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
         });
         holder.img_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                view = new com.example.EnglishBeginner.DTO.View();
+                view.setCheckView(true);
+                FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                view.setIdUser(firebaseUser.getUid());
+                databaseReferenceView.child((temp.getId())+"/"+ firebaseUser.getUid()).setValue(view).isSuccessful();
+
                 Intent intent = new Intent(context, BlogDetailActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("id_blog", String.valueOf(temp.getId()));
