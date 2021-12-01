@@ -32,6 +32,7 @@ public class SubCommentAdapter extends RecyclerView.Adapter<SubCommentAdapter.Vi
 
     Context context;
     List<SubComment> listComments;
+    CallBack callBack;
 
     public SubCommentAdapter(Context context) {
         this.context = context;
@@ -40,7 +41,9 @@ public class SubCommentAdapter extends RecyclerView.Adapter<SubCommentAdapter.Vi
     public void setListSubComments(List<SubComment> listComments) {
         this.listComments = listComments;
     }
-
+    public void setCallBack(CallBack callBack) {
+        this.callBack = callBack;
+    }
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -74,18 +77,23 @@ public class SubCommentAdapter extends RecyclerView.Adapter<SubCommentAdapter.Vi
         holder.tvContent.setText(subComment.getContent());
         holder.tvPostDate.setText(subComment.getDayOfPost());
         holder.tvLike.setText(String.valueOf(subComment.getLike()));
+
+        //like bình luận
         holder.imgLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
+
+        //xử lý trả lời bình luận
         holder.tvReply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                callBack.callBackReply();
             }
         });
+
         holder.tvReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,5 +125,8 @@ public class SubCommentAdapter extends RecyclerView.Adapter<SubCommentAdapter.Vi
             tvReply = itemView.findViewById(R.id.tv_reply);
             tvReport = itemView.findViewById(R.id.tv_report);
         }
+    }
+    public interface CallBack{
+        public void callBackReply();
     }
 }

@@ -148,14 +148,13 @@ public class BlogDetailActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 tvLikeBlog.setText(String.valueOf(snapshot.getChildrenCount()));
-
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
-        databaseReferenceLike.child(bundle.getString("id_blog")+"/"+bundle.getString("id_user")).addValueEventListener(new ValueEventListener() {
+        databaseReferenceLike.child(bundle.getString("id_blog")+"/"+firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
@@ -173,13 +172,13 @@ public class BlogDetailActivity extends AppCompatActivity {
         //Ánh xạ
         setControl();
 
-        //Su
-//        edtInputComment.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                layoutButton.setVisibility(View.VISIBLE);
-//            }
-//        });
+        //Hiển thị layout button khi người dùng viết thêm bình luận
+        edtInputComment.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                layoutButton.setVisibility(View.VISIBLE);
+            }
+        });
 
         //Sự kiện khi ấn like blog
         imgLikeBlog.setOnClickListener(new View.OnClickListener() {
@@ -188,20 +187,13 @@ public class BlogDetailActivity extends AppCompatActivity {
                 Like like = new Like();
                 if (imgLikeBlog.isSelected()) {
                     imgLikeBlog.setSelected(false);
-                    databaseReferenceLike.child(bundle.getString("id_blog")+"/"+bundle.getString("id_user")).removeValue().isSuccessful();
+                    databaseReferenceLike.child(bundle.getString("id_blog")+"/"+firebaseUser.getUid()).removeValue().isSuccessful();
                 } else {
                     imgLikeBlog.setSelected(true);
-                    like.setChecklike(true);
                     like.setIdBlog(Integer.parseInt(bundle.getString("id_blog")));
-                    like.setIdUser(bundle.getString("id_user"));
+                    like.setIdUser(firebaseUser.getUid());
                     DatabaseReference databaseReferenceLike = FirebaseDatabase.getInstance().getReference("listLike");
-                    databaseReferenceLike.child(bundle.get("id_blog").toString()+"/"+bundle.getString("id_user")).setValue(like).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            Toast.makeText(BlogDetailActivity.this, "like thanh cong", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
+                    databaseReferenceLike.child(bundle.get("id_blog").toString()+"/"+firebaseUser.getUid()).setValue(like).isSuccessful();
                 }
             }
         });
@@ -250,7 +242,7 @@ public class BlogDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 edtInputComment.setText("");
-                edtInputComment.requestFocus();
+                layoutButton.setVisibility(View.GONE);
             }
         });
     }
@@ -296,6 +288,7 @@ public class BlogDetailActivity extends AppCompatActivity {
                 }
                 adapter.setListComments(arrayList);
                 recyclerViewComment.setAdapter(adapter);
+                tvCommentBlog.setText(String.valueOf(arrayList.size()));
             }
 
             @Override
@@ -303,7 +296,5 @@ public class BlogDetailActivity extends AppCompatActivity {
                 Toast.makeText(BlogDetailActivity.this, "get data Erro!", Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
 }
