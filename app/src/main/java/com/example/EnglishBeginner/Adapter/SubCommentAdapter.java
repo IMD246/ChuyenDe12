@@ -17,13 +17,18 @@ import com.bumptech.glide.Glide;
 import com.example.EnglishBeginner.Blog.BlogDetailActivity;
 import com.example.EnglishBeginner.DTO.Blog;
 import com.example.EnglishBeginner.DTO.Comment;
+import com.example.EnglishBeginner.DTO.LikeComment;
 import com.example.EnglishBeginner.DTO.SubComment;
 import com.example.EnglishBeginner.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.List;
@@ -79,10 +84,46 @@ public class SubCommentAdapter extends RecyclerView.Adapter<SubCommentAdapter.Vi
         holder.tvLike.setText(String.valueOf(subComment.getLike()));
 
         //like bình luận
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference databaseReferenceLike = FirebaseDatabase.getInstance().getReference("listLikeSubComment");
+        databaseReferenceLike.child(String.valueOf(subComment.getId())).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                holder.tvLike.setText(String.valueOf(snapshot.getChildrenCount()));
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        databaseReferenceLike.child(subComment.getId()+"/"+firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    holder.imgLike.setSelected(true);
+                }else {
+                    holder.imgLike.setSelected(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         holder.imgLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                LikeComment likeComment = new LikeComment();
+                if (holder.imgLike.isSelected()) {
+                    holder.imgLike.setSelected(false);
+                    databaseReferenceLike.child(subComment.getId()+"/"+firebaseUser.getUid()).removeValue().isSuccessful();
+                } else {
+                    holder.imgLike.setSelected(true);
+                    likeComment.setIdComment(subComment.getId());
+                    likeComment.setIdUser(firebaseUser.getUid());
+                    databaseReferenceLike.child(subComment.getId()+"/"+firebaseUser.getUid()).setValue(likeComment).isSuccessful();
+                }
             }
         });
 

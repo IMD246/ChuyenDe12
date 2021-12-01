@@ -23,6 +23,8 @@ import com.bumptech.glide.Glide;
 import com.example.EnglishBeginner.Blog.BlogDetailActivity;
 import com.example.EnglishBeginner.DTO.Blog;
 import com.example.EnglishBeginner.DTO.Comment;
+import com.example.EnglishBeginner.DTO.Like;
+import com.example.EnglishBeginner.DTO.LikeComment;
 import com.example.EnglishBeginner.DTO.SubComment;
 import com.example.EnglishBeginner.DTO.User;
 import com.example.EnglishBeginner.R;
@@ -83,11 +85,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.tvLike.setText(String.valueOf(comment.getLike()));
 
         //Sự kiện khi ấn trả lời
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         holder.tvReply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 holder.viewgroupReply.setVisibility(View.VISIBLE);//hiển thị view nhập comment
-                firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                 DatabaseReference databaseReferenceUser = FirebaseDatabase.getInstance().getReference("users");
                 databaseReferenceUser.child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
                     @Override
@@ -156,10 +158,46 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         });
 
         //like bình luận
+        DatabaseReference databaseReferenceLike = FirebaseDatabase.getInstance().getReference("listLikeComment");
+        databaseReferenceLike.child(String.valueOf(comment.getId())).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                holder.tvLike.setText(String.valueOf(snapshot.getChildrenCount()));
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        databaseReferenceLike.child(comment.getId()+"/"+firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    holder.imglike.setSelected(true);
+                }else {
+                    holder.imglike.setSelected(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        //Ấn like
         holder.imglike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                LikeComment likeComment = new LikeComment();
+                if (holder.imglike.isSelected()) {
+                    holder.imglike.setSelected(false);
+                    databaseReferenceLike.child(comment.getId()+"/"+firebaseUser.getUid()).removeValue().isSuccessful();
+                } else {
+                    holder.imglike.setSelected(true);
+                    likeComment.setIdComment(comment.getId());
+                    likeComment.setIdUser(firebaseUser.getUid());
+                    databaseReferenceLike.child(comment.getId()+"/"+firebaseUser.getUid()).setValue(likeComment).isSuccessful();
+                }
             }
         });
 

@@ -192,7 +192,6 @@ public class BlogDetailActivity extends AppCompatActivity {
                     imgLikeBlog.setSelected(true);
                     like.setIdBlog(Integer.parseInt(bundle.getString("id_blog")));
                     like.setIdUser(firebaseUser.getUid());
-                    DatabaseReference databaseReferenceLike = FirebaseDatabase.getInstance().getReference("listLike");
                     databaseReferenceLike.child(bundle.get("id_blog").toString()+"/"+firebaseUser.getUid()).setValue(like).isSuccessful();
                 }
             }
