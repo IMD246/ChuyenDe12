@@ -1,29 +1,21 @@
 package com.example.EnglishBeginner.Adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
-import com.example.EnglishBeginner.DTO.Level;
 import com.example.EnglishBeginner.DTO.ReviewCourse;
-import com.example.EnglishBeginner.DTO.Topic;
 import com.example.EnglishBeginner.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ReviewCourse_Adapter extends RecyclerView.Adapter<ReviewCourse_Adapter.LearnViewHolder> {
@@ -60,28 +52,37 @@ public class ReviewCourse_Adapter extends RecyclerView.Adapter<ReviewCourse_Adap
         if (reviewCourse == null) {
             return;
         }
-        if (reviewCourse.isCheck()){
+        if (reviewCourse.isCheck()) {
             holder.layoutCorrect.setVisibility(View.GONE);
-        }else{
+        } else {
             holder.linearlayout.setBackgroundColor(Color.parseColor("#ffdfe0"));
             holder.tvAnswer.setTextColor(Color.parseColor("#ea2b2b"));
             holder.tvtitle.setTextColor(Color.parseColor("#ea2b2b"));
             holder.tvCorrectAnswer.setTextColor(Color.parseColor("#ea2b2b"));
         }
-        if (reviewCourse.getTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.LISTEN)){
+        if (reviewCourse.getTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.LISTEN)) {
             holder.layoutAnswer.setVisibility(View.GONE);
             holder.layoutCorrect.setVisibility(View.GONE);
             holder.btnSpeak.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             holder.btnSpeak.setVisibility(View.GONE);
             holder.layoutAnswer.setVisibility(View.VISIBLE);
             holder.layoutCorrect.setVisibility(View.VISIBLE);
+            holder.tvAnswer.setText(reviewCourse.getUserAnswer());
         }
-        holder.tvtitle.setText(reviewCourse.getQuestion()+"");
-        holder.tvAnswer.setText(reviewCourse.getUserAnswer());
+        holder.tvtitle.setText(reviewCourse.getQuestion() + "");
         holder.tvCorrectAnswer.setText(reviewCourse.getCorrectAnswer());
-        holder.btnSpeak.setOnClickListener(v -> interface_course.onClickItemCourse(reviewCourse.getCorrectAnswer()));
+        holder.btnSpeak.setOnClickListener(v ->
+                {
+                    if (reviewCourse.getTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.LISTEN)) {
+                        interface_course.onClickItemCourse(reviewCourse.getQuestion());
+                    } else {
+                        interface_course.onClickItemCourse(reviewCourse.getCorrectAnswer());
+                    }
+                }
+        );
     }
+
     //trả về số phần tử của list
     @Override
     public int getItemCount() {
@@ -90,6 +91,7 @@ public class ReviewCourse_Adapter extends RecyclerView.Adapter<ReviewCourse_Adap
         }
         return 0;
     }
+
     //class ViewHolder
     public static class LearnViewHolder extends RecyclerView.ViewHolder {
         private TextView tvtitle, tvAnswer, tvCorrectAnswer;
@@ -109,6 +111,7 @@ public class ReviewCourse_Adapter extends RecyclerView.Adapter<ReviewCourse_Adap
             layoutAnswer = itemView.findViewById(R.id.layout_answer);
         }
     }
+
     public interface Interface_Course {
         void onClickItemCourse(String corectAnswer);
     }

@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,6 +39,11 @@ import com.example.EnglishBeginner.R;
 import com.example.EnglishBeginner.learn.FinishEnglishFragment;
 import com.example.EnglishBeginner.learn.learning.LearningEnglishFragment;
 import com.example.EnglishBeginner.main_interface.UserInterfaceActivity;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -57,7 +63,7 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
     private int count = 0, countcorrect = 0;
     private int max = 0;
     private int maxTypeQuestion = 3;
-    public String correctQuestion = null, answer = null;
+    public String correctQuestion = null, answer = null,correctQuestionSpeak = null;
     private int randomTypeQuestion = 0;
     private String typeLearn = null;
     private int idTopic;
@@ -69,8 +75,10 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
     private TextToSpeech textToSpeech;
     protected static final int RESULT_SPEECH = 1;
     private String corectAnswer = "";
-    private List<String>typeQuestionList;
-
+    private ArrayList<String>typeQuestionList;
+    private boolean checkTypeQuestion = true;
+    private DatabaseReference databaseReference;
+    private String typeQuestion = null;
     @SuppressWarnings("unchecked")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,8 +87,12 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
         textToSpeech = new TextToSpeech(this, this);
         reviewCourseArrayList = new ArrayList<>();
         daoProcessUser = new DAOProcessUser(this);
+        databaseReference = FirebaseDatabase.getInstance().getReference("listquestion");
         typeQuestionList = new ArrayList<>();
-        typeQuestionList = Arrays.asList(getResources().getStringArray(R.array.typeQuestion));
+        typeQuestionList.add(DEFAULTVALUE.READ);
+        typeQuestionList.add(DEFAULTVALUE.LISTEN);
+        typeQuestionList.add(DEFAULTVALUE.WRITE);
+        typeQuestionList.add(DEFAULTVALUE.IMAGE);
         Intent intent = getIntent();
         if (intent != null) {
             arrayListQuestion = (List<Question>) intent.getSerializableExtra("listQuestion");
@@ -168,13 +180,74 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
         } else {
             fragmentTransaction = getSupportFragmentManager().beginTransaction().setCustomAnimations(R.transition.transisionfragmentlearn, R.transition.transisionfragmentlearn);
         }
+        do {
+            randomTypeQuestion = (int) Math.floor(Math.random() * (typeQuestionList.size()-1 + 1) + 0);
+            if (typeQuestionList.get(randomTypeQuestion).equals(DEFAULTVALUE.READ))
+            {
+                databaseReference.child(question.getId()+"/listanswer").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists())
+                        {
+                            checkTypeQuestion = true;
+                            Log.d("test", "onDataChange: "+typeQuestionList);
+                        }
+                        else
+                        {
+                            checkTypeQuestion = false;
+                            typeQuestionList.remove(DEFAULTVALUE.READ);
+                            Log.d("test", "onDataChange: "+typeQuestionList);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+            else if (typeQuestionList.get(randomTypeQuestion).equals(DEFAULTVALUE.IMAGE))
+            {
+                databaseReference.child(question.getId()+"/listanswer").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists())
+                        {
+                            if (Integer.parseInt(String.valueOf(snapshot.getChildrenCount()))<4)
+                            {
+                                checkTypeQuestion = false;
+                            }
+                            else
+                            {
+                                checkTypeQuestion = true;
+                                typeQuestionList.remove(DEFAULTVALUE.IMAGE);
+                            }
+                        }
+                        else
+                        {
+                            checkTypeQuestion = false;
+                            typeQuestionList.remove(DEFAULTVALUE.IMAGE);
+                        }
+                        Log.d("test", "onDataChange: "+typeQuestionList);
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+            else
+            {
+                checkTypeQuestion = true;
+            }
+        }while (!checkTypeQuestion);
         Bundle bundle = new Bundle();
         bundle.putSerializable("question", question);
-        randomTypeQuestion = (int) Math.floor(Math.random() * (typeQuestionList.size()-1 + 1) + 0);
         correctQuestion = question.getCorrectAnswer();
+        correctQuestionSpeak = question.getTitle();
         if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.TEST)) {
             btnPass.setVisibility(View.VISIBLE);
             if (typeQuestionList.get(randomTypeQuestion).equalsIgnoreCase(DEFAULTVALUE.IMAGE)) {
+                typeQuestion = DEFAULTVALUE.IMAGE;
                 TestChooseImageFragment testChooseImageFragment = new TestChooseImageFragment();
                 testChooseImageFragment.setArguments(bundle);
                 if (count == 0 && countSkip == 0) {
@@ -186,6 +259,7 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
                     fragmentTransaction.replace(R.id.frameLayout_Fragment, testChooseImageFragment).commit();
                 }
             } else if (typeQuestionList.get(randomTypeQuestion).equalsIgnoreCase(DEFAULTVALUE.LISTEN)) {
+                typeQuestion = DEFAULTVALUE.LISTEN;
                 TestListenFragment testListenFragment = new TestListenFragment();
                 testListenFragment.setArguments(bundle);
                 if (count == 0 && countSkip == 0) {
@@ -197,6 +271,7 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
                     fragmentTransaction.replace(R.id.frameLayout_Fragment, testListenFragment).commit();
                 }
             } else if (typeQuestionList.get(randomTypeQuestion).equalsIgnoreCase(DEFAULTVALUE.WRITE)) {
+                typeQuestion = DEFAULTVALUE.WRITE;
                 TestWriteFragment testWriteFragment = new TestWriteFragment();
                 testWriteFragment.setArguments(bundle);
                 if (count == 0 && countSkip == 0) {
@@ -208,6 +283,7 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
                     fragmentTransaction.replace(R.id.frameLayout_Fragment, testWriteFragment).commit();
                 }
             } else if (typeQuestionList.get(randomTypeQuestion).equalsIgnoreCase(DEFAULTVALUE.READ)) {
+                typeQuestion = DEFAULTVALUE.READ;
                 TestSelectionEnglishFragment testSelectionFragment = new TestSelectionEnglishFragment();
                 testSelectionFragment.setArguments(bundle);
                 if (count == 0 && countSkip == 0) {
@@ -317,18 +393,37 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
                 reviewCourse.setCorrectAnswer(question.getCorrectAnswer());
                 reviewCourse.setQuestion(question.getTitle());
                 reviewCourse.setUserAnswer(answer);
-                reviewCourse.setTypeQuestion(typeQuestionList.get(randomTypeQuestion));
+                reviewCourse.setTypeQuestion(typeQuestion);
+                typeQuestionList.clear();
+                typeQuestionList.add(DEFAULTVALUE.READ);
+                typeQuestionList.add(DEFAULTVALUE.LISTEN);
+                typeQuestionList.add(DEFAULTVALUE.WRITE);
+                typeQuestionList.add(DEFAULTVALUE.IMAGE);
                 if (answer == null) {
                     alertDialog("Không chính xác", false, 1);
                     reviewCourse.setCheck(false);
                 } else {
-                    if (answer.trim().equalsIgnoreCase(correctQuestion.trim())) {
-                        alertDialog("Chính xác", true, 1);
-                        countcorrect++;
-                        reviewCourse.setCheck(true);
-                    } else {
-                        alertDialog("Không chính xác", false, 1);
-                        reviewCourse.setCheck(false);
+                    if (typeQuestionList.get(randomTypeQuestion).equals(DEFAULTVALUE.LISTEN))
+                    {
+                        if (answer.trim().equalsIgnoreCase(correctQuestionSpeak.trim())) {
+                            alertDialog("Chính xác", true, 1);
+                            countcorrect++;
+                            reviewCourse.setCheck(true);
+                        }
+                        else {
+                            alertDialog("Không chính xác", false, 1);
+                            reviewCourse.setCheck(false);
+                        }
+                    }
+                    else {
+                        if (answer.trim().equalsIgnoreCase(correctQuestion.trim())) {
+                            alertDialog("Chính xác", true, 1);
+                            countcorrect++;
+                            reviewCourse.setCheck(true);
+                        } else {
+                            alertDialog("Không chính xác", false, 1);
+                            reviewCourse.setCheck(false);
+                        }
                     }
                     answer = "";
                 }
