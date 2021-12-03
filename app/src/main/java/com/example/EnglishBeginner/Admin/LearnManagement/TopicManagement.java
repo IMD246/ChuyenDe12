@@ -63,6 +63,7 @@ public class TopicManagement extends AppCompatActivity {
     }
     private void getDataFirebase() {
         daoTopic.getDataFromRealTimeFirebase(topicAdapter);
+        daoLevel.getDataFromRealTimeToList(null);
         levelList1 = new ArrayList<>();
         List<String>topicList = new ArrayList<>();
         DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("listtopic");
@@ -264,8 +265,8 @@ public class TopicManagement extends AppCompatActivity {
                             break;
                         }
                     }
-                    daoTopic.addDataToFireBase(topic12,edtTopic);
-                    daoImageStorage.uploadFileImageTopic(choice,imgTopic,"Topic", topic12);
+                daoTopic.addDataToFireBase(topic12,edtTopic);
+                daoImageStorage.uploadFileImageTopic(choice,imgTopic,"Topic", topic12);
             });
         }
         dialog.show();

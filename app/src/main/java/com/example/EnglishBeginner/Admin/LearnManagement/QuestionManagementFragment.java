@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -57,11 +58,13 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
     private DAOQuestion daoQuestion;
     private QuestionInterface questionInterface;
     private AutoCompleteTextView atcTopic,svQuestion;
-    String topic = DEFAULTVALUE.TOPIC, typeQuestion = DEFAULTVALUE.TYPEQUESTION;
+    String topic = DEFAULTVALUE.TOPIC;
+    private Uri mUri;
     private QuestionAdapter questionAdapter;
     private DAOImageStorage daoImageStorage;
     private View v;
     private ImageView imgQuestion;
+
     private int check = 0;
 
     public QuestionManagementFragment() {
@@ -342,7 +345,7 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
                         edtMeaning.setText("");
                         edtExampleMeaning.setText("");
                         edtWord.setText("");
-                        Toast.makeText(getContext(), "Thêm thành công", Toast.LENGTH_SHORT).show();
+                        DEFAULTVALUE.alertDialogMessage("Thông báo","Thêm thành công",getContext());
                     }
                 });
             }
