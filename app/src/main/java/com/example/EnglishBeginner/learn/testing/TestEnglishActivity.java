@@ -180,6 +180,11 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
         } else {
             fragmentTransaction = getSupportFragmentManager().beginTransaction().setCustomAnimations(R.transition.transisionfragmentlearn, R.transition.transisionfragmentlearn);
         }
+        typeQuestionList.clear();
+        typeQuestionList.add(DEFAULTVALUE.READ);
+        typeQuestionList.add(DEFAULTVALUE.LISTEN);
+        typeQuestionList.add(DEFAULTVALUE.WRITE);
+        typeQuestionList.add(DEFAULTVALUE.IMAGE);
         do {
             randomTypeQuestion = (int) Math.floor(Math.random() * (typeQuestionList.size()-1 + 1) + 0);
             if (typeQuestionList.get(randomTypeQuestion).equals(DEFAULTVALUE.READ))
@@ -189,14 +194,20 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists())
                         {
-                            checkTypeQuestion = true;
-                            Log.d("test", "onDataChange: "+typeQuestionList);
+                            if (snapshot.getChildrenCount()>0)
+                            {
+                                checkTypeQuestion = true;
+                            }
+                            else
+                            {
+                                checkTypeQuestion = false;
+                                typeQuestionList.remove(DEFAULTVALUE.READ);
+                            }
                         }
                         else
                         {
                             checkTypeQuestion = false;
                             typeQuestionList.remove(DEFAULTVALUE.READ);
-                            Log.d("test", "onDataChange: "+typeQuestionList);
                         }
                     }
                     @Override
@@ -212,7 +223,8 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists())
                         {
-                            if (Integer.parseInt(String.valueOf(snapshot.getChildrenCount()))<4)
+                            String count = String.valueOf(snapshot.getChildrenCount());
+                            if (Integer.parseInt(count.trim())<4)
                             {
                                 checkTypeQuestion = false;
                             }
@@ -227,7 +239,6 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
                             checkTypeQuestion = false;
                             typeQuestionList.remove(DEFAULTVALUE.IMAGE);
                         }
-                        Log.d("test", "onDataChange: "+typeQuestionList);
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
@@ -235,7 +246,7 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
                     }
                 });
             }
-            else
+            else if (DEFAULTVALUE.READ.equals(typeQuestionList.get(randomTypeQuestion)) || typeQuestionList.get(randomTypeQuestion).equals(DEFAULTVALUE.WRITE))
             {
                 checkTypeQuestion = true;
             }
@@ -394,11 +405,6 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
                 reviewCourse.setQuestion(question.getTitle());
                 reviewCourse.setUserAnswer(answer);
                 reviewCourse.setTypeQuestion(typeQuestion);
-                typeQuestionList.clear();
-                typeQuestionList.add(DEFAULTVALUE.READ);
-                typeQuestionList.add(DEFAULTVALUE.LISTEN);
-                typeQuestionList.add(DEFAULTVALUE.WRITE);
-                typeQuestionList.add(DEFAULTVALUE.IMAGE);
                 if (answer == null) {
                     alertDialog("Không chính xác", false, 1);
                     reviewCourse.setCheck(false);

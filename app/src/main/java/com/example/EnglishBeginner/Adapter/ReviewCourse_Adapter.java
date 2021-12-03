@@ -72,14 +72,7 @@ public class ReviewCourse_Adapter extends RecyclerView.Adapter<ReviewCourse_Adap
         }
         holder.tvtitle.setText(reviewCourse.getQuestion() + "");
         holder.tvCorrectAnswer.setText(reviewCourse.getCorrectAnswer());
-        holder.btnSpeak.setOnClickListener(v ->
-                {
-                    if (reviewCourse.getTypeQuestion().equalsIgnoreCase(DEFAULTVALUE.LISTEN)) {
-                        interface_course.onClickItemCourse(reviewCourse.getQuestion());
-                    } else {
-                        interface_course.onClickItemCourse(reviewCourse.getCorrectAnswer());
-                    }
-                }
+        holder.btnSpeak.setOnClickListener(v -> interface_course.onClickItemCourse(reviewCourse.getQuestion())
         );
     }
 
