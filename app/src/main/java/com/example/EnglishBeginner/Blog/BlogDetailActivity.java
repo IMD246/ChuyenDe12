@@ -41,7 +41,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 public class BlogDetailActivity extends AppCompatActivity {
-    private ImageView imgAvatarUserBlog, imgContentBlog, imgLikeBlog, imgCommentBlog, imgMyAvatar;
+    private ImageView imgAvatarUserBlog, imgContentBlog, imgLikeBlog, imgCommentBlog, imgMyAvatar, imgFavorite;
     private TextView tvUserBlog, tvDateBlog, tvContentBlog, tvLikeBlog, tvCommentBlog, tvViewBlog;
     private EditText edtInputComment;
     private Button btnPost, btnCancle;
@@ -246,6 +246,18 @@ public class BlogDetailActivity extends AppCompatActivity {
                 layoutButton.setVisibility(View.GONE);
             }
         });
+
+        //sự kiện ấn yêu thích
+        imgFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (imgFavorite.isSelected()){
+                    imgFavorite.setSelected(false);
+                }else {
+                    imgFavorite.setSelected(true);
+                }
+            }
+        });
     }
 
     private String getDateTime() {
@@ -254,26 +266,13 @@ public class BlogDetailActivity extends AppCompatActivity {
         return currentDateTime;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.three_dots, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.id_favorite){
-            Toast.makeText(this, "sinh sinh sinh", Toast.LENGTH_SHORT).show();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     private void setControl() {
         imgAvatarUserBlog = findViewById(R.id.blog_img_avatar);
         imgContentBlog = findViewById(R.id.blog_img_thumnail);
         imgLikeBlog = findViewById(R.id.img_like);
         imgCommentBlog = findViewById(R.id.img_comment);
         imgMyAvatar = findViewById(R.id.img_myavatar);
+        imgFavorite = findViewById(R.id.img_add_favorite);
         tvUserBlog = findViewById(R.id.blog_txt_userName);
         tvDateBlog = findViewById(R.id.blog_txt_dayOfPost);
         tvContentBlog = findViewById(R.id.blog_txt_content);
