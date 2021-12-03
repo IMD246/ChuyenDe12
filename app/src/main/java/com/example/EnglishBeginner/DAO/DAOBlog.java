@@ -11,6 +11,8 @@ import com.example.EnglishBeginner.DTO.Blog;
 import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,7 +24,8 @@ import java.util.List;
 
 public class DAOBlog {
     private List<Blog> blogList;
-    private DatabaseReference databaseReference;
+    private DatabaseReference databaseReferenceBlog, databaseReferenceFavoriteBlog;
+    private FirebaseUser firebaseUser;
     private Context context;
 
     public List<Blog> getBlogList() {
@@ -32,11 +35,13 @@ public class DAOBlog {
     public DAOBlog(Context context) {
         this.context = context;
         blogList = new ArrayList<>();
-        databaseReference = FirebaseDatabase.getInstance().getReference("listblog");
+        databaseReferenceBlog = FirebaseDatabase.getInstance().getReference("listblog");
+        databaseReferenceFavoriteBlog = FirebaseDatabase.getInstance().getReference("listFavorite");
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     }
 
     public void getDataFromRealTimeFirebase(BlogAdapter blogAdapter) {
-        databaseReference.orderByChild("like").addValueEventListener(new ValueEventListener() {
+        databaseReferenceBlog.orderByChild("like").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (blogList != null) {
@@ -61,7 +66,7 @@ public class DAOBlog {
     }
 
     public void addBlog(Blog blog) {
-        databaseReference.child(String.valueOf(blog.getId())).setValue(blog).addOnCompleteListener(new OnCompleteListener<Void>() {
+        databaseReferenceBlog.child(String.valueOf(blog.getId())).setValue(blog).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 DEFAULTVALUE.alertDialogMessage("Thông báo", "Bài viết của bạn đang được kiểm duyệt", context);

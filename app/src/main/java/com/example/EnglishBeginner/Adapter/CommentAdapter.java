@@ -96,7 +96,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         User user = snapshot.getValue(User.class);
-                        if (!(user.getImageUser().trim().isEmpty())){
+                        if (!(user.getImageUser().trim().isEmpty())) {
                             Glide.with(context).load(user.getImageUser()).into(holder.imgMyAvatar);
                         }
                     }
@@ -120,10 +120,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                 holder.btnPost.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (holder.edtReply.getText().toString().trim().isEmpty()){
+                        if (holder.edtReply.getText().toString().trim().isEmpty()) {
                             holder.edtReply.setError("Bạn phải nhập bình luận trước!");
                             holder.edtReply.requestFocus();
-                        }else{
+                        } else {
                             SubComment subcomment = new SubComment();
                             if (listSubComments.size() > 0) {
                                 subcomment.setId(listSubComments.get(listSubComments.size() - 1).getId() + 1);
@@ -140,21 +140,16 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     Toast.makeText(context, "Thêm bình luận thành công!", Toast.LENGTH_SHORT).show();
+                                    holder.recyclerView.setVisibility(View.VISIBLE);
+                                    List<SubComment> list = new ArrayList<>();
+                                    list.add(subcomment);
+                                    subCommentAdapter.setListSubComments(list);
+                                    subCommentAdapter.notifyDataSetChanged();
+                                    holder.recyclerView.setAdapter(subCommentAdapter);
                                 }
                             });
                             holder.edtReply.setText("");
                             holder.viewgroupReply.setVisibility(View.GONE);
-
-                            holder.recyclerView.setVisibility(View.VISIBLE);
-                            subCommentAdapter = new SubCommentAdapter(context);//khai báo adapter
-                            LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-                            layoutManager.setOrientation(RecyclerView.VERTICAL);
-                            holder.recyclerView.setLayoutManager(layoutManager);//set linearlayoutManager
-                            listSubComments.clear();
-                            listSubComments.add(subcomment);
-                            subCommentAdapter.setListSubComments(listSubComments);
-                            subCommentAdapter.notifyDataSetChanged();
-                            holder.recyclerView.setAdapter(subCommentAdapter);
                         }
                     }
                 });
@@ -176,17 +171,18 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 holder.tvLike.setText(String.valueOf(snapshot.getChildrenCount()));
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
-        databaseReferenceLike.child(comment.getId()+"/"+firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+        databaseReferenceLike.child(comment.getId() + "/" + firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
+                if (snapshot.exists()) {
                     holder.imglike.setSelected(true);
-                }else {
+                } else {
                     holder.imglike.setSelected(false);
                 }
             }
@@ -203,12 +199,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                 LikeComment likeComment = new LikeComment();
                 if (holder.imglike.isSelected()) {
                     holder.imglike.setSelected(false);
-                    databaseReferenceLike.child(comment.getId()+"/"+firebaseUser.getUid()).removeValue().isSuccessful();
+                    databaseReferenceLike.child(comment.getId() + "/" + firebaseUser.getUid()).removeValue().isSuccessful();
                 } else {
                     holder.imglike.setSelected(true);
                     likeComment.setIdComment(comment.getId());
                     likeComment.setIdUser(firebaseUser.getUid());
-                    databaseReferenceLike.child(comment.getId()+"/"+firebaseUser.getUid()).setValue(likeComment).isSuccessful();
+                    databaseReferenceLike.child(comment.getId() + "/" + firebaseUser.getUid()).setValue(likeComment).isSuccessful();
                 }
             }
         });
@@ -227,16 +223,19 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                 listSubComments.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     SubComment subcmt = dataSnapshot.getValue(SubComment.class);
-                    if (subcmt.getIdComment().equalsIgnoreCase(String.valueOf(comment.getId()))){
+                    if (subcmt.getIdComment().equalsIgnoreCase(String.valueOf(comment.getId()))) {
                         listSubComments.add(subcmt);
                     }
                 }
+                subCommentAdapter.setListSubComments(listSubComments);
+                subCommentAdapter.notifyDataSetChanged();
+                holder.recyclerView.setAdapter(subCommentAdapter);
                 //Kiểm tra: không có bình luận con -> ẩn hiển thị bình luận con và ngược lại
-                if (listSubComments.size() == 0){
+                if (listSubComments.size() == 0) {
                     holder.imgShow.setVisibility(View.GONE);
                     holder.tvShow.setVisibility(View.GONE);
-                }else{
-                    holder.tvShow.setText("Xem thêm "+listSubComments.size()+" bình luận");
+                } else {
+                    holder.tvShow.setText("Xem thêm " + listSubComments.size() + " bình luận");
                 }
             }
 
@@ -257,7 +256,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         User user = snapshot.getValue(User.class);
-                        if (!(user.getImageUser().trim().isEmpty())){
+                        if (!(user.getImageUser().trim().isEmpty())) {
                             Glide.with(context).load(user.getImageUser()).into(holder.imgMyAvatar);
                         }
                     }
@@ -281,10 +280,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                 holder.btnPost.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (holder.edtReply.getText().toString().trim().isEmpty()){
+                        if (holder.edtReply.getText().toString().trim().isEmpty()) {
                             holder.edtReply.setError("Bạn phải nhập bình luận trước!");
                             holder.edtReply.requestFocus();
-                        }else{
+                        } else {
                             SubComment subcomment = new SubComment();
                             if (listSubComments.size() > 0) {
                                 subcomment.setId(listSubComments.get(listSubComments.size() - 1).getId() + 1);
@@ -301,10 +300,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     Toast.makeText(context, "Thêm bình luận thành công!", Toast.LENGTH_SHORT).show();
+
                                 }
                             });
                             holder.edtReply.setText("");
                             holder.viewgroupReply.setVisibility(View.GONE);
+
+
                         }
                     }
                 });
@@ -315,11 +317,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.imgShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (holder.imgShow.isSelected()){
+                if (holder.imgShow.isSelected()) {
                     holder.imgShow.setSelected(false);
-                    holder.tvShow.setText("Xem thêm "+listSubComments.size()+" bình luận");
+                    holder.tvShow.setText("Xem thêm " + listSubComments.size() + " bình luận");
                     holder.recyclerView.setVisibility(View.GONE);
-                }else{
+                } else {
                     holder.imgShow.setSelected(true);
                     holder.tvShow.setText("Ẩn tất cả bình luận");
                     holder.recyclerView.setVisibility(View.VISIBLE);
@@ -330,7 +332,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                             listSubComments.clear();
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                                 SubComment subcmt = dataSnapshot.getValue(SubComment.class);
-                                if (subcmt.getIdComment().equalsIgnoreCase(String.valueOf(comment.getId()))){
+                                if (subcmt.getIdComment().equalsIgnoreCase(String.valueOf(comment.getId()))) {
                                     listSubComments.add(subcmt);
                                 }
                             }
@@ -352,22 +354,22 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.tvShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (holder.imgShow.isSelected()){
+                if (holder.imgShow.isSelected()) {
                     holder.imgShow.setSelected(false);
-                    holder.tvShow.setText("Xem thêm "+listSubComments.size()+" bình luận");
+                    holder.tvShow.setText("Xem thêm " + listSubComments.size() + " bình luận");
                     holder.recyclerView.setVisibility(View.GONE);
-                }else{
+                } else {
                     holder.imgShow.setSelected(true);
                     holder.tvShow.setText("Ẩn tất cả bình luận");
                     holder.recyclerView.setVisibility(View.VISIBLE);
                     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listSubComment");
-                    databaseReference.addValueEventListener(new ValueEventListener() {
+                    databaseReference.orderByChild("dayOfPost").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             listSubComments.clear();
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                                 SubComment subcmt = dataSnapshot.getValue(SubComment.class);
-                                if (subcmt.getIdComment().equalsIgnoreCase(String.valueOf(comment.getId()))){
+                                if (subcmt.getIdComment().equalsIgnoreCase(String.valueOf(comment.getId()))) {
                                     listSubComments.add(subcmt);
                                 }
                             }
@@ -384,6 +386,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             }
         });
     }
+
     private String getDateTime() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss a, dd/MM/yyyy");
         String currentDateTime = simpleDateFormat.format(Calendar.getInstance().getTime());

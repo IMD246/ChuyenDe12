@@ -3,9 +3,11 @@ package com.example.EnglishBeginner.Blog;
 import android.content.Intent;
 import android.graphics.Path;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -20,6 +22,8 @@ import com.example.EnglishBeginner.DTO.Blog;
 import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -95,7 +99,7 @@ public class BlogFragment extends Fragment {
                 }
             });
         }else if (typeBlog.equalsIgnoreCase(DEFAULTVALUE.NEW)) {
-            databaseReference.orderByChild("dayOfPost").addValueEventListener(new ValueEventListener() {
+            databaseReference.orderByChild("dayOfPost").limitToFirst(10000).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     blogList.clear();
@@ -113,11 +117,34 @@ public class BlogFragment extends Fragment {
 
                 }
             });
-        }
-        else
+        }else
         {
             blogList.clear();
-            setAdapterc2(blogList);
+            Log.d("test nek", "setDataFollowOption: sinh sim");
+            DatabaseReference databaseReferenceFavoriteBlog = FirebaseDatabase.getInstance().getReference("listFavorite");
+            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+            databaseReferenceFavoriteBlog.child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (blogList != null) {
+                        blogList.clear();
+                    }
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Blog blog = dataSnapshot.getValue(Blog.class);
+                        blogList.add(blog);
+                    }
+
+                    if (blogAdapter != null) {
+                        blogAdapter.notifyDataSetChanged();
+                    }
+                    setAdapterc2(blogList);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+
         }
     }
 

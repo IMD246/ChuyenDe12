@@ -23,6 +23,7 @@ import com.example.EnglishBeginner.Adapter.CommentAdapter;
 import com.example.EnglishBeginner.DTO.Blog;
 import com.example.EnglishBeginner.DTO.Comment;
 import com.example.EnglishBeginner.DTO.Like;
+import com.example.EnglishBeginner.DTO.SubComment;
 import com.example.EnglishBeginner.DTO.User;
 import com.example.EnglishBeginner.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -51,13 +52,14 @@ public class BlogDetailActivity extends AppCompatActivity {
     private CommentAdapter adapter;
     private ArrayList<Comment> arrayList;
 
-    private DatabaseReference databaseReferenceBlog, databaseReferenceUser, databaseReferenceComment, databaseReferenceLike;
+    private DatabaseReference databaseReferenceBlog, databaseReferenceUser, databaseReferenceComment, databaseReferenceLike, getDatabaseReferenceFavoriteBlog;
     private FirebaseUser firebaseUser;
     private Comment comment;
 
     private String fullName, imageUser;
 
     private Bundle bundle;
+    private Blog blog;
 
     private Like like;
 
@@ -70,6 +72,7 @@ public class BlogDetailActivity extends AppCompatActivity {
         if (bundle != null) {
             String idBlog = bundle.getString("id_blog");//get ib_blog
             //lấy dữ liệu từ firebase cho blog
+            blog = new Blog();
             databaseReferenceBlog = FirebaseDatabase.getInstance().getReference("listblog");
             databaseReferenceBlog.child(idBlog).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
@@ -80,15 +83,25 @@ public class BlogDetailActivity extends AppCompatActivity {
                             hashMap.put(dataSnapshot.getKey(), dataSnapshot.getValue());
                         }
                         tvDateBlog.setText(hashMap.get("dayOfPost").toString());
+                        blog.setDayOfPost(hashMap.get("dayOfPost").toString());
                         tvContentBlog.setText(hashMap.get("content").toString());
+                        blog.setContent(hashMap.get("content").toString());
                         if (!(hashMap.get("urlImage").toString().trim().isEmpty())) {
                             Glide.with(BlogDetailActivity.this).load(hashMap.get("urlImage").toString()).into(imgContentBlog);
+                            blog.setUrlImage(hashMap.get("urlImage").toString());
                         } else {
                             imgContentBlog.setVisibility(View.GONE);
                         }
                         tvLikeBlog.setText(String.valueOf(hashMap.get("like")));
+                        blog.setLike(Integer.parseInt(hashMap.get("like").toString()));
                         tvCommentBlog.setText(String.valueOf(hashMap.get("comment")));
+                        blog.setComment(Integer.parseInt(hashMap.get("comment").toString()));
                         tvViewBlog.setText(String.valueOf(hashMap.get("view")));
+                        blog.setIdUser(String.valueOf(hashMap.get("idUser")));
+                        blog.setCheckApply(Boolean.parseBoolean(String.valueOf(hashMap.get("checkApply"))));
+                        blog.setNameUser(String.valueOf(hashMap.get("nameUser")));
+                        blog.setTitle(String.valueOf(hashMap.get("title")));
+                        blog.setId(Integer.parseInt(idBlog));
                     }
                 }
             });
@@ -248,13 +261,31 @@ public class BlogDetailActivity extends AppCompatActivity {
         });
 
         //sự kiện ấn yêu thích
+        getDatabaseReferenceFavoriteBlog = FirebaseDatabase.getInstance().getReference("listFavorite");
+        getDatabaseReferenceFavoriteBlog.child(firebaseUser.getUid()+"/"+bundle.get("id_blog").toString()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    imgFavorite.setSelected(true);
+                }else {
+                    imgFavorite.setSelected(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         imgFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (imgFavorite.isSelected()){
                     imgFavorite.setSelected(false);
+                    getDatabaseReferenceFavoriteBlog.child(firebaseUser.getUid()+"/"+bundle.get("id_blog").toString()).removeValue().isSuccessful();
                 }else {
                     imgFavorite.setSelected(true);
+                    getDatabaseReferenceFavoriteBlog.child(firebaseUser.getUid()+"/"+bundle.get("id_blog").toString()).setValue(blog).isSuccessful();
                 }
             }
         });
@@ -318,6 +349,7 @@ public class BlogDetailActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 tvViewBlog.setText(String.valueOf(snapshot.getChildrenCount()));
+                blog.setView(Integer.parseInt(String.valueOf(snapshot.getChildrenCount())));
             }
 
             @Override
