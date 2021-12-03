@@ -33,6 +33,7 @@ import com.example.EnglishBeginner.Admin.Adapter.AnswerAdapter;
 import com.example.EnglishBeginner.Admin.DAO.DAOAnswer;
 import com.example.EnglishBeginner.Admin.DAO.DAOImageStorage;
 import com.example.EnglishBeginner.Admin.DAO.DAOQuestion;
+import com.example.EnglishBeginner.Admin.DAO.DAOTopic;
 import com.example.EnglishBeginner.Admin.DTO.Answer;
 import com.example.EnglishBeginner.Admin.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.Admin.DTO.Question;
@@ -49,6 +50,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
     private DAOAnswer daoAnswer;
     private AnswerAdapter answerAdapter;
     private QuestionInterface questionInterface;
+    private DAOTopic daoTopic;
     private DAOQuestion daoQuestion;
     private DAOImageStorage daoImageStorage;
     private ImageView imgAnswer, imgQuestion;
@@ -56,10 +58,6 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
     private Question question;
     private TextView tvTitle, tvCorrectAnswer, tvWord, tvMeaningWord, tvExample, tvExampleMeaning, tvGrammar;
     private int idAnswer = 1;
-
-    public DetailQuestionFragment() {
-    }
-
     @SuppressLint({"SetTextI18n", "UseRequireInsteadOfGet"})
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -90,6 +88,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
     @SuppressLint("SetTextI18n")
     private void initUI() {
         questionInterface = (QuestionInterface) getActivity();
+        daoTopic = new DAOTopic(getContext());
         tvTitle = view.findViewById(R.id.tvTitleQuestionDetail);
         tvExample = view.findViewById(R.id.tvExample);
         tvExampleMeaning = view.findViewById(R.id.tvExampleMeaning);
@@ -147,6 +146,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
     private void getDataFromFirebase() {
         daoAnswer.getDataFromFirebase(question.getId(), answerAdapter);
         daoAnswer.getAQuestionFromFirebase(question.getId());
+        daoTopic.getDataFromRealTimeFirebase(null);
     }
 
     private int getSelectedSpinner(Spinner spinner, String word) {
@@ -215,7 +215,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
         Button btnNo = dialog.findViewById(R.id.btnNo);
         btnYes.setText("Sửa");
         tvTitle.setText("Sửa dữ liệu");
-        for (Topic topic : questionInterface.daoTopic.getTopicList()) {
+        for (Topic topic : daoTopic.getTopicList()) {
             listTopic.add(topic.getNameTopic());
         }
         spnTopic.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1,listTopic));
@@ -254,7 +254,7 @@ public class DetailQuestionFragment extends Fragment implements View.OnClickList
             question1.setWordMeaning(edtMeaning.getText().toString());
             question1.setWord(edtWord.getText().toString());
             question1.setNameTopic(spnTopic.getSelectedItem().toString());
-            for (Topic topic : questionInterface.daoTopic.getTopicList()) {
+            for (Topic topic : daoTopic.getTopicList()) {
                 if (question1.getNameTopic().equalsIgnoreCase(topic.getNameTopic())) {
                     question1.setIdTopic(topic.getId());
                     break;

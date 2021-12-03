@@ -11,8 +11,6 @@ import com.example.EnglishBeginner.Admin.DTO.Question;
 import com.example.EnglishBeginner.R;
 
 public class QuestionInterface extends AppCompatActivity {
-    public DAOTopic daoTopic;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,8 +24,6 @@ public class QuestionInterface extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        daoTopic = new DAOTopic(this);
-        daoTopic.getDataFromRealTimeFirebase(null);
     }
 
     private void transactionFragment() {

@@ -23,7 +23,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +37,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.EnglishBeginner.Admin.Adapter.QuestionAdapter;
 import com.example.EnglishBeginner.Admin.DAO.DAOImageStorage;
 import com.example.EnglishBeginner.Admin.DAO.DAOQuestion;
+import com.example.EnglishBeginner.Admin.DAO.DAOTopic;
 import com.example.EnglishBeginner.Admin.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.Admin.DTO.Question;
 import com.example.EnglishBeginner.Admin.DTO.Topic;
@@ -47,6 +47,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,9 +59,10 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
 
     private DAOQuestion daoQuestion;
     private QuestionInterface questionInterface;
-    private AutoCompleteTextView atcTopic,svQuestion;
+    private AutoCompleteTextView atcTopic, svQuestion;
     String topic = DEFAULTVALUE.TOPIC;
     private Uri mUri;
+    private DAOTopic daoTopic;
     private QuestionAdapter questionAdapter;
     private DAOImageStorage daoImageStorage;
     private View v;
@@ -86,9 +89,11 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
         initUI(v);
         getDataFromRealTime();
     }
+
     private void initUI(View v) {
         questionInterface = (QuestionInterface) getActivity();
         daoQuestion = new DAOQuestion(getContext());
+        daoTopic = new DAOTopic(getContext());
         questionAdapter = new QuestionAdapter(getContext());
         daoImageStorage = new DAOImageStorage(getContext());
         RecyclerView rcvQuestion = v.findViewById(R.id.rcvQuestion);
@@ -106,6 +111,7 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
             public void editItem(Question question) {
                 questionInterface.goToDetailQuestionFragment(question);
             }
+
             @Override
             public void deleteItem(Question question) {
                 alertDialog(question);
@@ -167,26 +173,27 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
 
     private void getDataFromRealTime() {
         daoQuestion.getDataFromRealTimeToList(questionAdapter);
-        List<String>titleList = new ArrayList<>();
+        daoTopic.getDataFromRealTimeFirebase(null);
+        List<String> titleList = new ArrayList<>();
         DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("listquestion");
         databaseReference1.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (titleList!=null)
-                {
+                if (titleList != null) {
                     titleList.clear();
                 }
-                for (DataSnapshot dataSnapshot : snapshot.getChildren())
-                {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Question question = dataSnapshot.getValue(Question.class);
                     titleList.add(question.getTitle());
                     titleList.add(question.getWord());
                 }
             }
+
             @Override
-            public void onCancelled(@NonNull DatabaseError error) { }
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
         });
-        svQuestion.setAdapter(new ArrayAdapter<>(getContext(),android.R.layout.simple_list_item_1,titleList));
+        svQuestion.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, titleList));
         List<String> topicList = new ArrayList<>();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listtopic");
         databaseReference.orderByChild("level").addValueEventListener(new ValueEventListener() {
@@ -201,8 +208,9 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
                     Topic topic = dataSnapshot.getValue(Topic.class);
                     topicList.add(topic.getNameTopic());
                 }
-                atcTopic.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1,topicList));
+                atcTopic.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, topicList));
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -217,15 +225,17 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
                 openDialog(Gravity.CENTER);
         }
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100 && resultCode == Activity.RESULT_OK && data !=null && data.getData()!=null)
-        {
+        if (requestCode == 100 && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
             daoImageStorage.setmImgURL(data.getData());
+            mUri = data.getData();
             imgQuestion.setImageURI(daoImageStorage.getmImgURL());
         }
     }
+
     // hàm mở file chọn ảnh trong thiết bị
     public void openFileChoose() {
         Intent intent = new Intent();
@@ -233,6 +243,7 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, 100);
     }
+
     public void openDialog(int center) {
         final Dialog dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -272,7 +283,7 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
         Button btnYes = dialog.findViewById(R.id.btnYes);
         Button btnNo = dialog.findViewById(R.id.btnNo);
         btnYes.setText("Thêm");
-        for (Topic topic : questionInterface.daoTopic.getTopicList()) {
+        for (Topic topic : daoTopic.getTopicList()) {
             listTopic.add(topic.getNameTopic());
         }
         spnTopic.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, listTopic));
@@ -294,7 +305,7 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
             question.setNameTopic(spnTopic.getSelectedItem().toString());
             question.setTypeWord(spnTypeWord.getSelectedItem().toString());
             question.setGrammar(edtGrammar.getText().toString());
-            for (Topic topic : questionInterface.daoTopic.getTopicList()) {
+            for (Topic topic : daoTopic.getTopicList()) {
                 if (question.getNameTopic().equalsIgnoreCase(topic.getNameTopic())) {
                     question.setIdTopic(topic.getId());
                     break;
@@ -313,7 +324,7 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
                     for (Question question1 : daoQuestion.getQuestionList()) {
                         if (question1.getNameTopic().equalsIgnoreCase(question.getNameTopic()) &&
                                 question1.getTitle().equalsIgnoreCase(question.getTitle())
-                        && question1.getWord().equalsIgnoreCase(question.getWord())) {
+                                && question1.getWord().equalsIgnoreCase(question.getWord())) {
                             check[3] = false;
                             break;
                         }
@@ -326,18 +337,17 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
             } else if (!check[1]) {
                 edtCorrectAnswer.setError("Không để trống");
                 edtCorrectAnswer.requestFocus();
-            }
-            else if (!check[2]) {
+            } else if (!check[2]) {
                 edtWord.setError("Không bỏ trống");
                 edtWord.requestFocus();
-            }
-            else if (!check[3]) {
+            } else if (!check[3]) {
                 edtTitleQuestion.setError("Trùng dữ liệu , hãy kiểm tra lại dữ liệu");
                 edtTitleQuestion.requestFocus();
             } else {
                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listquestion");
                 databaseReference.child(String.valueOf(question.getId())).setValue(question).addOnCompleteListener(task -> {
                     if (task.isComplete()) {
+                        daoImageStorage.uploadFileImageToQuestion("Question " + question.getId(), question, imgQuestion, 1);
                         edtCorrectAnswer.setText("");
                         edtExample.setText("");
                         edtTitleQuestion.setText("");
@@ -345,11 +355,33 @@ public class QuestionManagementFragment extends Fragment implements View.OnClick
                         edtMeaning.setText("");
                         edtExampleMeaning.setText("");
                         edtWord.setText("");
-                        DEFAULTVALUE.alertDialogMessage("Thông báo","Thêm thành công",getContext());
+                        DEFAULTVALUE.alertDialogMessage("Thông báo", "Thêm thành công", getContext());
                     }
                 });
+                if (mUri != null) {
+                    StorageReference storageReference = FirebaseStorage.getInstance().getReference("images");
+                    StorageReference fileReference = storageReference.child("Question " + question.getId());
+                    fileReference.putFile(mUri).continueWithTask(task -> {
+                        if (!task.isSuccessful()) {
+                            throw task.getException();
+                        }
+                        return fileReference.getDownloadUrl();
+                    }).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            mUri = task.getResult();
+                            imgQuestion.setImageURI(null);
+
+                            question.setUrlImage(mUri.toString());
+                            DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("listquestion/" + question.getId() + "/urlImage");
+                            databaseReference1.setValue(question.getUrlImage()).addOnCompleteListener(task1 -> {
+                                if (task1.isComplete()) {
+                                }
+                            });
+                        }
+                    });
+                    mUri = null;
+                }
             }
-            daoImageStorage.uploadFileImageToQuestion("Question "+question.getId(),question,imgQuestion,1);
         });
         dialog.show();
     }
