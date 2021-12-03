@@ -4,57 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/login_backrout"
     tools:context=".Login.Login">
+    <EditText
+        android:id="@+id/edtEmail"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="64dp"
+        android:background="@drawable/edit_backrout"
+        android:ems="10"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:hint="Tài khoản"
+        android:inputType="textPersonName"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvLoginLabel" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/mtEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/mtPassWord"
-        app:layout_constraintTop_toBottomOf="@id/tvLoginLabel"
-        >
-        <EditText
-            android:id="@+id/edtEmail"
-            android:layout_width="380dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:drawableStart="@drawable/ic_email"
-            android:layout_marginTop="16dp"
-            android:ems="30"
-            android:background="@drawable/boder"
-            android:padding="10dp"
-            android:hint="Email"
-            android:inputType="text"
-            android:textSize="30sp"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/mtPassWord"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mtEmail"
-        app:passwordToggleEnabled="true"
-        >
 
         <EditText
             android:id="@+id/edtPassword"
-            android:layout_width="380dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="64dp"
             android:layout_marginTop="16dp"
-            android:background="@drawable/boder"
-            android:drawableStart="@drawable/ic_lock"
-            android:ems="30"
-            android:hint="Pass Word"
-            android:inputType="textPassword"
-            android:padding="10dp"
-            android:textSize="30sp" />
-        />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginEnd="64dp"
+            android:background="@drawable/edit_backrout"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="Mật khẩu"
+            android:inputType="textPersonName|textPassword"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edtEmail" />
+
     <ProgressBar
         android:id="@+id/progressBarLogin"
         style="?android:attr/progressBarStyleLarge"
@@ -65,8 +52,10 @@
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/btnLogin"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.07"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mtPassWord"
+        app:layout_constraintTop_toBottomOf="@+id/edtPassword"
+        app:layout_constraintVertical_bias="0.0"
         tools:ignore="MissingConstraints" />
 
     <Button
@@ -84,18 +73,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvForgotPass" />
         />
+
+
     <TextView
         android:id="@+id/tvLoginLabel"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="128dp"
+        android:layout_marginEnd="32dp"
         android:fontFamily="sans-serif-black"
-        android:gravity="center"
-        android:text="@string/ng_nh_p"
-        android:textAlignment="center"
-        android:textSize="30sp"
+        android:text="Đăng Nhập"
+        android:textColor="@android:color/background_light"
+        android:textSize="48sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
     <TextView
@@ -104,34 +97,35 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32sp"
         android:layout_marginEnd="85dp"
-        android:textColor="@color/color"
+        android:textColor="@color/white"
         android:text="@string/forgot_password"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/tvRegister"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mtPassWord" />
+        app:layout_constraintTop_toBottomOf="@+id/edtPassword" />
 
     <TextView
         android:id="@+id/tvRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:textColor="@color/color"
+        android:textColor="@color/white"
         android:text="@string/register"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvForgotPass"
-        app:layout_constraintTop_toBottomOf="@+id/mtPassWord" />
+        app:layout_constraintTop_toBottomOf="@+id/edtPassword" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:fontFamily="sans-serif-black"
         android:text="@string/or_register_with"
-        android:textColor="@color/color"
+        android:textColor="@color/white"
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

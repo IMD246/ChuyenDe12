@@ -37,8 +37,8 @@
             android:id="@+id/imgDelete"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="100dp"
+            android:layout_marginStart="127dp"
+            android:layout_marginLeft="127dp"
             android:layout_toEndOf="@id/tvTitleLevel"
             android:layout_toRightOf="@id/tvTitleLevel"
             android:src="@drawable/ic_delete" />
@@ -47,8 +47,8 @@
             android:id="@+id/imgEdit"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="100dp"
+            android:layout_marginStart="26dp"
+            android:layout_marginLeft="26dp"
             android:layout_toEndOf="@id/imgDelete"
             android:layout_toRightOf="@id/imgDelete"
             android:src="@drawable/ic_edit" />

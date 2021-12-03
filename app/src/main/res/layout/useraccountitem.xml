@@ -10,13 +10,15 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        >
 
         <ImageView
             android:id="@+id/imgBlockUserAccountItem"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/ic_lock"
+            android:src="@drawable/ic_unlock"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

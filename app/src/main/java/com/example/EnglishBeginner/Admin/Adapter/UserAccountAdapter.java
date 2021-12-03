@@ -55,11 +55,11 @@ public class UserAccountAdapter extends RecyclerView.Adapter<UserAccountAdapter.
         }
         if (userAccount.getBlock() == true)
         {
-            holder.imgBlock.setImageResource(R.drawable.ic_unlock);
+            holder.imgBlock.setImageResource(R.drawable.ic_lock);
             s = "Tạm ngưng hoạt động";
         }
         else {
-            holder.imgBlock.setImageResource(R.drawable.ic_lock);
+            holder.imgBlock.setImageResource(R.drawable.ic_unlock);
         }
         holder.tvEmail.setText("Email: " + userAccount.getEmail());
         holder.tvStaticUser.setText("Trạng thái: "+s);

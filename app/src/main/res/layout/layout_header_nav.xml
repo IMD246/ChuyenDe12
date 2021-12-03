@@ -1,23 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="180dp"
-    android:background="@color/yellow"
+    android:layout_height="220dp"
+    android:background="@drawable/background_drawer"
     android:gravity="bottom"
-    android:orientation="horizontal"
-    android:padding="16dp">
+    android:orientation="vertical"
+    android:padding="10dp"
+    >
 
     <ImageView
         android:id="@+id/imgUserAdmin"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:src="@mipmap/ic_launcher" />
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/anhos" ></ImageView>
+
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:padding="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="  Admin"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"></TextView>
 
         <TextView
             android:id="@+id/tvUserNameAdmin"
@@ -25,7 +39,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="8dp"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="13dp"
             android:textStyle="bold" />
 
     </LinearLayout>
