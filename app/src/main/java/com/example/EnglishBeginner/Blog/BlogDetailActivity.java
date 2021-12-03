@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -252,6 +254,20 @@ public class BlogDetailActivity extends AppCompatActivity {
         return currentDateTime;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.three_dots, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.id_favorite){
+            Toast.makeText(this, "sinh sinh sinh", Toast.LENGTH_SHORT).show();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void setControl() {
         imgAvatarUserBlog = findViewById(R.id.blog_img_avatar);
         imgContentBlog = findViewById(R.id.blog_img_thumnail);
@@ -282,8 +298,9 @@ public class BlogDetailActivity extends AppCompatActivity {
                 arrayList.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Comment cmt = dataSnapshot.getValue(Comment.class);
-                    arrayList.add(cmt);
-
+                    if (cmt.getIdBlog().equalsIgnoreCase(bundle.getString("id_blog"))){
+                        arrayList.add(cmt);
+                    }
                 }
                 adapter.setListComments(arrayList);
                 recyclerViewComment.setAdapter(adapter);
@@ -293,6 +310,20 @@ public class BlogDetailActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(BlogDetailActivity.this, "get data Erro!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //get du lieu cho view
+        DatabaseReference databaseReferenceView = FirebaseDatabase.getInstance().getReference("listView");
+        databaseReferenceView.child(String.valueOf(bundle.getString("id_blog"))).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                tvViewBlog.setText(String.valueOf(snapshot.getChildrenCount()));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }

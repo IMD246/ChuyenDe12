@@ -77,6 +77,7 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.ViewHolder>{
 
             }
         });
+
         holder.txt_view.setText(String.valueOf(temp.getView()));
         if (!(temp.getUrlImage().trim().isEmpty())) {
             Glide.with(context).load(temp.getUrlImage()).into(holder.img_blog);
@@ -112,7 +113,9 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.ViewHolder>{
             public void onClick(View v) {
                 view = new com.example.EnglishBeginner.DTO.View();
                 view.setCheckView(true);
+                view.setIdBlog(temp.getId());
                 view.setIdUser(firebaseUser.getUid());
+
                 databaseReferenceView.child((temp.getId())+"/"+ firebaseUser.getUid()).setValue(view).isSuccessful();
 
                 Intent intent = new Intent(context, BlogDetailActivity.class);

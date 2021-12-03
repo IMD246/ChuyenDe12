@@ -49,6 +49,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     private List<Comment> listComments;
     private List<SubComment> listSubComments;
     private FirebaseUser firebaseUser;
+    private SubCommentAdapter subCommentAdapter;
 
     public CommentAdapter(Context context) {
         this.context = context;
@@ -143,6 +144,17 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                             });
                             holder.edtReply.setText("");
                             holder.viewgroupReply.setVisibility(View.GONE);
+
+                            holder.recyclerView.setVisibility(View.VISIBLE);
+                            subCommentAdapter = new SubCommentAdapter(context);//khai báo adapter
+                            LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+                            layoutManager.setOrientation(RecyclerView.VERTICAL);
+                            holder.recyclerView.setLayoutManager(layoutManager);//set linearlayoutManager
+                            listSubComments.clear();
+                            listSubComments.add(subcomment);
+                            subCommentAdapter.setListSubComments(listSubComments);
+                            subCommentAdapter.notifyDataSetChanged();
+                            holder.recyclerView.setAdapter(subCommentAdapter);
                         }
                     }
                 });
@@ -202,7 +214,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         });
 
         //Xử lý và đỗ dữ liệu cho recycleview listSubComment
-        SubCommentAdapter subCommentAdapter = new SubCommentAdapter(context);//khai báo adapter
+        subCommentAdapter = new SubCommentAdapter(context);//khai báo adapter
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
@@ -323,6 +335,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                                 }
                             }
                             subCommentAdapter.setListSubComments(listSubComments);
+                            subCommentAdapter.notifyDataSetChanged();
                             holder.recyclerView.setAdapter(subCommentAdapter);
                         }
 
