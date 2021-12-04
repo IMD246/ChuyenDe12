@@ -44,10 +44,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Chọn loại từ vựng"
+                    android:layout_margin="5dp"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
                 <Spinner
                     android:id="@+id/spnTypeWordItem"
+                    android:layout_margin="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:entries="@array/typeWord"
@@ -62,12 +64,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Chọn thể loại"
+                    android:layout_margin="5dp"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
                 <Spinner
                     android:id="@+id/spnCategoryWord"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
                     android:entries="@array/categoryWord"
                     />
             </LinearLayout>
@@ -100,6 +104,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Chọn topic: "
+                    android:layout_margin="5dp"
                     android:layout_gravity="center"
                     android:textSize="20dp"
                     android:textStyle="bold" />
@@ -109,6 +114,7 @@
                     android:layout_height="48dp"
                     android:layout_gravity="center"
                     android:gravity="center"
+                    android:layout_margin="5dp"
                     tools:ignore="SpeakableTextPresentCheck"
                     />
             </LinearLayout>
@@ -163,11 +169,13 @@
                     android:layout_width="0dp"
                     android:layout_height="120dp"
                     android:layout_weight="1"
+                    android:layout_margin="5dp"
                     android:src="@drawable/ic_search" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btnPickImageQuestion"
                     android:layout_width="0dp"
+                    android:layout_margin="5dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
@@ -184,6 +192,7 @@
                 <Button
                     android:id="@+id/btnYes"
                     android:layout_width="0dp"
+                    android:layout_margin="5dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/bg_yellow_corner_10"
@@ -196,6 +205,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
+                    android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:alpha="0.7"
                     android:background="@drawable/bg_gray_corner_10"

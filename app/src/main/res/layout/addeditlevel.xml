@@ -46,6 +46,7 @@
             <ImageView
                 android:id="@+id/imgaddeditLevel"
                 android:layout_width="180dp"
+                android:layout_margin="10dp"
                 android:layout_height="120dp"
                 android:src="@drawable/ic_search" />
 
@@ -71,6 +72,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_margin="10dp"
                 android:background="@drawable/bg_yellow_corner_10"
                 android:text="@string/c"
                 android:textColor="@color/black"
@@ -83,6 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
+                android:layout_margin="10dp"
                 android:alpha="0.7"
                 android:background="@drawable/bg_gray_corner_10"
                 android:text="@string/kh_ng"

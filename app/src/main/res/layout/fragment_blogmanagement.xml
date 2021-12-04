@@ -17,7 +17,7 @@
             android:layout_height="match_parent"
             android:drawableStart="@drawable/baseline_search_black_24dp"
             android:hint="Nhập từ khóa để tìm kiếm"
-            android:background="@drawable/bg_white_corner_16dp"
+            android:background="@drawable/boder"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
