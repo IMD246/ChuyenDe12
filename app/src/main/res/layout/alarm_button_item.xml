@@ -10,7 +10,6 @@
     app:cardBackgroundColor="#CCBA8D"
     android:innerRadius="0dp"
     android:clickable="true"
-
     android:layout_height="wrap_content">
 
     <Button
