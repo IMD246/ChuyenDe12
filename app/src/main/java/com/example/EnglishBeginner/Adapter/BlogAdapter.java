@@ -134,8 +134,9 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.ViewHolder>{
                 int dem = 0;
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Comment cmt = dataSnapshot.getValue(Comment.class);
-                    dem++;
-
+                    if (cmt.getIdBlog().equalsIgnoreCase(String.valueOf(temp.getId()))){
+                        dem++;
+                    }
                 }
                 holder.txt_comment.setText(""+dem);
             }
