@@ -5,9 +5,14 @@
       <map>
         <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/drawable-v24/bg_bottomborder_blue.xml" value="0.14635416666666667" />
         <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/drawable-v24/ct_layout_bottom_line2.xml" value="0.2703125" />
+        <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/drawable-v24/ct_layout_button2.xml" value="0.2703125" />
+        <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/drawable-v24/ct_layout_button4.xml" value="0.2703125" />
         <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/drawable/ct_bg_favorite.xml" value="0.2703125" />
         <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/drawable/ct_bg_show_more_comment.xml" value="0.2703125" />
         <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/drawable/ct_layout_bottom_line1.xml" value="0.2703125" />
+        <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/drawable/ct_layout_button1.xml" value="0.2703125" />
+        <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/drawable/ct_layout_button3.xml" value="0.2703125" />
+        <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/drawable/ct_layout_button5.xml" value="0.2703125" />
         <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/drawable/ct_like.xml" value="0.2703125" />
         <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/drawable/ic_expand_less_black_24dp.xml" value="0.2703125" />
         <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/drawable/ic_expand_more_black_24dp.xml" value="0.2703125" />
@@ -16,8 +21,10 @@
         <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/drawable/ic_message_black_24dp.xml" value="0.2703125" />
         <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/layout/activity_blog_detail.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/layout/activity_edit_account.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/layout/alarm_button_item.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/layout/alarm_screen.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/layout/blog_details.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/layout/blog_recyclerview_item.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/layout/blogmenu_item.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/layout/dialog_numberpicker_alarm.xml" value="0.25416666666666665" />
@@ -28,6 +35,11 @@
         <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/layout/layout_item_recycleview_comment.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/layout/layout_item_recycleview_sub_comment.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/layout/layout_notify_answer_correct.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/layout/layout_popup_dialog.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/layout/layout_popup_dialog_level.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/layout/word_item.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/layout/word_item_detail.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/layout/word_screen.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/menu/menu_bottom_navigation.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/menu/menu_navigation.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/WIN 10/didong2/EnglishForBeginner/app/src/main/res/menu/three_dots.xml" value="0.25416666666666665" />

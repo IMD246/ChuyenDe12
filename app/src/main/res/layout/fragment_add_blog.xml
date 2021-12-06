@@ -2,89 +2,102 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="12dp"
     android:orientation="vertical">
+
     <TextView
-        android:gravity="center"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        android:textColor="#401B1B"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="trang thêm blog">
+        android:gravity="center"
+        android:text="Tạo bài viết"
+        android:textColor="#401B1B"
+        android:textSize="20sp"
+        android:textStyle="bold">
 
     </TextView>
-    <EditText
-        android:id="@+id/edt_Title"
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
-        android:hint="nhập vào title blog"></EditText>
+        android:layout_weight="1"
+        android:hint="Nhập tiêu đề bài viết...">
 
-    <EditText
-        android:id="@+id/edt_description"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_Title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="text"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="9"
-        android:gravity="start"
-        android:hint="nhập vào nội dung của blog"></EditText>
+        android:hint="Nhập nội dung bài viết...">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_description"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="text"
+            android:textSize="16sp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
-        android:gravity="left">
+        android:layout_weight="3"
+        android:orientation="vertical">
 
         <TextView
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="20dp"
-            android:backgroundTint="#477C18"
-            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="chọn ảnh nền:">
-
-        </TextView>
+            android:textSize="16sp"
+            android:text="chọn ảnh nền"/>
 
         <ImageView
-            android:clickable="true"
             android:id="@+id/img_thumnailBlog"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_facebook"
-            android:layout_marginHorizontal="20dp"
-            android:backgroundTint="#C12323"
-            android:text="Hủy">
-
-        </ImageView>
-
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:clickable="true"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:src="@drawable/ic_facebook"/>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
-        android:gravity="right">
+        android:layout_weight="1.2"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btn_PostBlog"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="20dp"
-            android:backgroundTint="#477C18"
-
-            android:text="Đăng">
-
-        </Button>
-
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_cancelPostBlog"
-            android:layout_width="100dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="20dp"
-            android:backgroundTint="#C12323"
-            android:text="Hủy">
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/ct_layout_button2"
+            android:text="quay lại"
+            android:textColor="@color/white" />
 
-        </Button>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_PostBlog"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/ct_layout_button3"
+            android:text="Đăng"
+            android:textColor="@color/white" />
 
     </LinearLayout>
 </LinearLayout>
