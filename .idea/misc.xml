@@ -3,69 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/ChuyenDe12/app/src/main/res/drawable-v24/custom_google_button.xml" value="0.25925925925925924" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.25925925925925924" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/drawable/bg_gray_corner_10.xml" value="0.25925925925925924" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/drawable/bg_tv_auto_complete_all_word.xml" value="0.25925925925925924" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/drawable/bg_white_corner_10_border_gray.xml" value="0.25925925925925924" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/drawable/bg_white_corner_16dp.xml" value="0.25925925925925924" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/drawable/bg_yellow_corner_10.xml" value="0.25925925925925924" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/drawable/bg_yellow_corner_16_top_left_top_right.xml" value="0.262037037037037" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/drawable/boder.xml" value="0.262037037037037" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/drawable/ct_select_icon_password.xml" value="0.25925925925925924" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/drawable/custom_fb_button.xml" value="0.25925925925925924" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/drawable/edit_backrout.xml" value="0.262037037037037" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/drawable/ic_add.xml" value="0.25925925925925924" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/drawable/ic_add2.xml" value="0.25925925925925924" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/drawable/ic_arrow_back.xml" value="0.25925925925925924" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/drawable/ic_comment_blog.xml" value="0.25925925925925924" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/drawable/ic_delete.xml" value="0.25925925925925924" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/drawable/ic_edit.xml" value="0.262037037037037" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/drawable/ic_email.xml" value="0.25925925925925924" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/drawable/ic_facebook.xml" value="0.25925925925925924" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/drawable/ic_launcher_background.xml" value="0.25925925925925924" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/drawable/ic_lock.xml" value="0.262037037037037" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/drawable/ic_logout.xml" value="0.262037037037037" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/drawable/ic_password.xml" value="0.262037037037037" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/drawable/ic_search.xml" value="0.262037037037037" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/drawable/login_backrout.xml" value="0.262037037037037" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/layout/activity_admin_interface.xml" value="0.2" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/layout/activity_change_password.xml" value="0.21422101449275363" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/layout/activity_forget_password.xml" value="0.21422101449275363" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/layout/activity_level_management.xml" value="0.21422101449275363" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/layout/activity_question_interface.xml" value="0.21422101449275363" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/layout/activity_topic_management.xml" value="0.21422101449275363" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/layout/addeditanswer.xml" value="0.21422101449275363" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/layout/addeditlevel.xml" value="0.20969202898550723" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/layout/addeditquestion.xml" value="0.21422101449275363" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/layout/addedittopic.xml" value="0.264" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/layout/answeritem.xml" value="0.20969202898550723" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/layout/blog_item.xml" value="0.20969202898550723" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/layout/fragment_account_user_management.xml" value="0.20969202898550723" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/layout/fragment_blogmanagement.xml" value="0.20969202898550723" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/layout/fragment_detail_question_fragment.xml" value="0.264" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/layout/fragment_learn_management.xml" value="0.21422101449275363" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/layout/fragment_question_management.xml" value="0.21422101449275363" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/layout/fragment_vocabulary_management.xml" value="0.20969202898550723" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/layout/layout_header_nav.xml" value="0.20969202898550723" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/layout/layout_item_learn_management.xml" value="0.20969202898550723" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/layout/layout_item_vocabulary_management.xml" value="0.20969202898550723" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/layout/levelitem.xml" value="0.20969202898550723" />
         <entry key="..\:/ChuyenDe12/app/src/main/res/layout/login.xml" value="0.264" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/layout/questionitem.xml" value="0.39065108514190316" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/layout/register_user.xml" value="0.21422101449275363" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/layout/topicitem.xml" value="0.20969202898550723" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/layout/useraccountitem.xml" value="0.20969202898550723" />
-        <entry key="..\:/ChuyenDe12/app/src/main/res/menu/menu_navigation.xml" value="0.275" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/activity_learn_question.xml" value="0.22282608695652173" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/activity_question_interface.xml" value="0.22282608695652173" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/activity_topic_management.xml" value="0.24635416666666668" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/addeditanswer.xml" value="0.24635416666666668" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/addeditquestion.xml" value="0.25" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/addeditword.xml" value="0.136" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/addquestion.xml" value="0.24635416666666668" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/editlearnquestion.xml" value="0.176" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/fragment_question_management.xml" value="0.22282608695652173" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/listoptionitem.xml" value="0.24635416666666668" />
+        <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/login.xml" value="0.12158054711246201" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe/app/src/main/res/layout/questionitem.xml" value="0.22282608695652173" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/drawable-v24/bg_tv_auto_complete_all_word.xml" value="0.2351851851851852" />
         <entry key="..\:/Users/tduy2/AndroidStudioProjects/ChuyenDe12/app/src/main/res/layout/activity_ietls_management.xml" value="0.2" />
