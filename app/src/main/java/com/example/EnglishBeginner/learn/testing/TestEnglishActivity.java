@@ -76,7 +76,6 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
     protected static final int RESULT_SPEECH = 1;
     private String corectAnswer = "";
     private ArrayList<String>typeQuestionList;
-    private boolean checkTypeQuestion = true;
     private DatabaseReference databaseReference;
     private String typeQuestion = null;
     @SuppressWarnings("unchecked")
@@ -171,7 +170,6 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
             }
         }
     }
-
     @SuppressLint("ResourceType")
     private void transactionFragment() {
         FragmentTransaction fragmentTransaction;
@@ -180,77 +178,6 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
         } else {
             fragmentTransaction = getSupportFragmentManager().beginTransaction().setCustomAnimations(R.transition.transisionfragmentlearn, R.transition.transisionfragmentlearn);
         }
-        typeQuestionList.clear();
-        typeQuestionList.add(DEFAULTVALUE.READ);
-        typeQuestionList.add(DEFAULTVALUE.LISTEN);
-        typeQuestionList.add(DEFAULTVALUE.WRITE);
-        typeQuestionList.add(DEFAULTVALUE.IMAGE);
-        do {
-            randomTypeQuestion = (int) Math.floor(Math.random() * (typeQuestionList.size()-1 + 1) + 0);
-            if (typeQuestionList.get(randomTypeQuestion).equals(DEFAULTVALUE.READ))
-            {
-                databaseReference.child(question.getId()+"/listanswer").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists())
-                        {
-                            if (snapshot.getChildrenCount()>0)
-                            {
-                                checkTypeQuestion = true;
-                            }
-                            else
-                            {
-                                checkTypeQuestion = false;
-                                typeQuestionList.remove(DEFAULTVALUE.READ);
-                            }
-                        }
-                        else
-                        {
-                            checkTypeQuestion = false;
-                            typeQuestionList.remove(DEFAULTVALUE.READ);
-                        }
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-            }
-            else if (typeQuestionList.get(randomTypeQuestion).equals(DEFAULTVALUE.IMAGE))
-            {
-                databaseReference.child(question.getId()+"/listanswer").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists())
-                        {
-                            String count = String.valueOf(snapshot.getChildrenCount());
-                            if (Integer.parseInt(count.trim())<4)
-                            {
-                                checkTypeQuestion = false;
-                            }
-                            else
-                            {
-                                checkTypeQuestion = true;
-                                typeQuestionList.remove(DEFAULTVALUE.IMAGE);
-                            }
-                        }
-                        else
-                        {
-                            checkTypeQuestion = false;
-                            typeQuestionList.remove(DEFAULTVALUE.IMAGE);
-                        }
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-            }
-            else if (DEFAULTVALUE.READ.equals(typeQuestionList.get(randomTypeQuestion)) || typeQuestionList.get(randomTypeQuestion).equals(DEFAULTVALUE.WRITE))
-            {
-                checkTypeQuestion = true;
-            }
-        }while (!checkTypeQuestion);
         Bundle bundle = new Bundle();
         bundle.putSerializable("question", question);
         correctQuestion = question.getCorrectAnswer();
