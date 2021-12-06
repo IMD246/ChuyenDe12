@@ -37,7 +37,7 @@ public class AddBlogActivity extends AppCompatActivity implements View.OnClickLi
     private ImageView img_thumnail;
     private Button btn_add,btn_cancel;
     private FirebaseUser user;
-    private Boolean [] booleans = new Boolean[3];
+    private Boolean [] booleans = new Boolean[2];
     private DAOBlog daoBlog;
     private List<Blog>blogList;
     private DAOImageStorage daoImageStorage;
@@ -127,7 +127,7 @@ public class AddBlogActivity extends AppCompatActivity implements View.OnClickLi
         });
     }
     private void setControl() {
-        Arrays.fill(booleans,true);
+        Arrays.fill(booleans,false);
         user = FirebaseAuth.getInstance().getCurrentUser();
         daoImageStorage = new DAOImageStorage(this);
         daoBlog = new DAOBlog(this);
