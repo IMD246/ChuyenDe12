@@ -188,6 +188,15 @@ public class AddBlogActivity extends AppCompatActivity implements View.OnClickLi
             blog.setContent(content);
             daoBlog.addBlog(blog);
             daoImageStorage.uploadImageBlog(img_thumnail,"Blog",blog);
+        }else {
+            if (title.trim().isEmpty()){
+                edt_title.setError("Hãy nhập vào gì đó");
+                edt_title.requestFocus();
+            }
+            if (content.trim().isEmpty()){
+                edt_description.setError("Hãy nhập vào gì đó");
+                edt_description.requestFocus();
+            }
         }
     }
     private String getDateTime()

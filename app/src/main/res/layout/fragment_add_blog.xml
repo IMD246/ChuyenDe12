@@ -59,16 +59,16 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textSize="16sp"
-            android:text="chọn ảnh nền"/>
+            android:text="chọn ảnh"/>
 
         <ImageView
             android:id="@+id/img_thumnailBlog"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:clickable="true"
             android:layout_gravity="center"
             android:gravity="center"
-            android:src="@drawable/ic_facebook"/>
+            android:src="@drawable/ic_add_photo_alternate_black_24dp"/>
     </LinearLayout>
 
     <LinearLayout
