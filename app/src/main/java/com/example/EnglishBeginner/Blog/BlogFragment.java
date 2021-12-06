@@ -1,5 +1,7 @@
 package com.example.EnglishBeginner.Blog;
 
+import static java.util.Collections.*;
+
 import android.content.Intent;
 import android.graphics.Path;
 import android.os.Bundle;
@@ -109,6 +111,7 @@ public class BlogFragment extends Fragment {
                             blogList.add(blog);
                         }
                     }
+                    reverse(blogList);
                     setAdapterc2(blogList);
                 }
 
