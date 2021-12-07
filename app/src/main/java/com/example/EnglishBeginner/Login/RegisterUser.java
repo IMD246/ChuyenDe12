@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,17 +21,25 @@ import com.example.EnglishBeginner.DAO.DAOTopic;
 import com.example.EnglishBeginner.DTO.DEFAULTVALUE;
 import com.example.EnglishBeginner.DTO.HashPass;
 import com.example.EnglishBeginner.DTO.ProcessTopicItem;
+import com.example.EnglishBeginner.DTO.Topic;
 import com.example.EnglishBeginner.DTO.User;
 import com.example.EnglishBeginner.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 public class RegisterUser extends AppCompatActivity implements View.OnClickListener {
@@ -38,14 +48,11 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
     private ProgressBar progressBar;
     private FirebaseAuth mAuth;
     private FirebaseFirestore firestore;
-    private DAOTopic daoTopic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_user);
-        daoTopic = new DAOTopic(this);
-        daoTopic.getDataFromRealTimeFirebase();
         mAuth = FirebaseAuth.getInstance();
         TextView registerUser = (Button) findViewById(R.id.btnRegister);
         registerUser.setOnClickListener(this);
@@ -107,9 +114,9 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                 }
             } else {
                 FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                User us = new User("",email,"other",0, 0, 0, 0, "", true);
+                User us = new User("", email, "other", 0, 0, 0, 0, "", true);
                 try {
-                    us.setPassWord(HashPass.encryptPass(firebaseUser.getUid(),edtPassword.getText().toString()));
+                    us.setPassWord(HashPass.encryptPass(firebaseUser.getUid(), edtPassword.getText().toString()));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -117,24 +124,43 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                         .addOnCompleteListener(task1 -> {
                             if (task1.isSuccessful()) {
                                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                                Toast.makeText(RegisterUser.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-                                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listProcessUser/"+user.getUid()+"/listtopic");
-                                for (int i=0;i<daoTopic.getTopicList().size();i++)
-                                {
-                                    for (int j=1;j<=2;j++) {
-                                        ProcessTopicItem processTopicItem = new ProcessTopicItem(j,0,daoTopic.getTopicList().get(i).getId());
-                                        databaseReference.child(daoTopic.getTopicList().get(i).getId()+"/listProcess/"+processTopicItem.getProcess()).setValue(processTopicItem).isComplete();
+                                List<Topic> topicList = new ArrayList<>();
+                                DatabaseReference databaseReferenceTopic = FirebaseDatabase.getInstance().getReference("listtopic");
+                                databaseReferenceTopic.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        topicList.clear();
+                                        FirebaseUser user1 = FirebaseAuth.getInstance().getCurrentUser();
+                                        DatabaseReference databaseReferenceProcessUser = FirebaseDatabase.getInstance().getReference("listProcessUser/"+user1.getUid()+"/listTopic");
+                                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                            Topic topic = dataSnapshot.getValue(Topic.class);
+                                            topicList.add(topic);
+                                        }
+                                        for (int i=0;i<topicList.size();i++)
+                                        {
+                                            for (int j=1;j<=2;j++) {
+                                                ProcessTopicItem processTopicItem = new ProcessTopicItem(j,0,topicList.get(i).getId());
+                                                databaseReferenceProcessUser.child(topicList.get(i).getId()+"/listProcess/"+processTopicItem.getProcess()).
+                                                        setValue(processTopicItem).addOnCompleteListener(task2 -> {
+                                                        });
+                                            }
+                                        }
+                                        DEFAULTVALUE.alertDialogMessage("Thông báo","Đăng ký thành công",RegisterUser.this);
+                                        DocumentReference df = firestore.collection("users").document(user.getUid());
+                                        HashMap<String, Object> authenticateUser = new HashMap<>();
+                                        authenticateUser.put("email", us.getEmail());
+                                        authenticateUser.put("authenticate", DEFAULTVALUE.USER);
+                                        authenticateUser.put("isBlock", false);
+                                        authenticateUser.put("isOnline", false);
+                                        df.set(authenticateUser);
+                                        progressBar.setVisibility(View.VISIBLE);
+                                        startActivity(new Intent(RegisterUser.this, Login.class));
                                     }
-                                }
-                                DocumentReference df = firestore.collection("users").document(user.getUid());
-                                HashMap<String,Object> authenticateUser = new HashMap<>();
-                                authenticateUser.put("email",us.getEmail());
-                                authenticateUser.put("authenticate", DEFAULTVALUE.USER);
-                                authenticateUser.put("isBlock",false);
-                                authenticateUser.put("isOnline",false);
-                                df.set(authenticateUser);
-                                progressBar.setVisibility(View.VISIBLE);
-                                startActivity(new Intent(RegisterUser.this, Login.class));
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        Toast.makeText(RegisterUser.this, "Get list Topic failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             } else {
                                 Toast.makeText(RegisterUser.this, "Đăng ký thất bại , Hãy thử lại", Toast.LENGTH_SHORT).show();
                                 progressBar.setVisibility(View.GONE);

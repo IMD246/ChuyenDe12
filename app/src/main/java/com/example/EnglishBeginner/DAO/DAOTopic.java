@@ -29,23 +29,6 @@ public class DAOTopic {
     }
     public void getDataFromRealTimeFirebase()
     {
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (topicList!=null)
-                {
-                    topicList.clear();
-                }
-                for (DataSnapshot dataSnapshot : snapshot.getChildren())
-                {
-                    Topic topic = dataSnapshot.getValue(Topic.class);
-                    topicList.add(topic);
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(context, "Get list Topic failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+
     }
 }

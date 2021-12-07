@@ -350,23 +350,30 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    userProfile = snapshot.getValue(User.class);
-                    try {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            assert userProfile != null;
-                            firebaseAuth.signInWithEmailAndPassword(userProfile.getEmail(),
-                                    HashPass.decryptPass(userProfile.getPassWord(), current.getUid())).addOnCompleteListener(task -> {
-                                if (current.isEmailVerified()) {
-                                    dem++;
-                                    checkAuthenticate(current.getUid(), dem);
-                                } else {
-                                    current.sendEmailVerification();
-                                    DEFAULTVALUE.alertDialogMessage("Thông báo", "Hãy xác thực email của bạn!", Login.this);
-                                }
-                            });
+                    if (snapshot.exists()) {
+                        userProfile = snapshot.getValue(User.class);
+                        try {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                assert userProfile != null;
+                                firebaseAuth.signInWithEmailAndPassword(userProfile.getEmail(),
+                                        HashPass.decryptPass(userProfile.getPassWord(), current.getUid())).addOnCompleteListener(task -> {
+                                    if (current.isEmailVerified()) {
+                                        dem++;
+                                        checkAuthenticate(current.getUid(), dem);
+                                    } else {
+                                        current.sendEmailVerification();
+                                        progressBar.setVisibility(View.GONE);
+                                        DEFAULTVALUE.alertDialogMessage("Thông báo", "Hãy xác thực email của bạn!", Login.this);
+                                    }
+                                });
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    }
+                    else
+                    {
+                        progressBar.setVisibility(View.GONE);
                     }
                 }
 
