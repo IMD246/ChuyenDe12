@@ -118,7 +118,7 @@ public class RegisterUser extends AppCompatActivity implements View.OnClickListe
                             if (task1.isSuccessful()) {
                                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                                 Toast.makeText(RegisterUser.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-                                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listProcessUser/"+user.getUid()+"/listTopic");
+                                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("listProcessUser/"+user.getUid()+"/listtopic");
                                 for (int i=0;i<daoTopic.getTopicList().size();i++)
                                 {
                                     for (int j=1;j<=2;j++) {
