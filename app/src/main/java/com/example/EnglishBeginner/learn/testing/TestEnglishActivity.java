@@ -358,8 +358,10 @@ public class TestEnglishActivity extends AppCompatActivity implements View.OnCli
                             reviewCourse.setCheck(false);
                         }
                     }
-                    answer = "";
+                    Log.d("testAnswerCorrect", "submitResult: "+correctQuestion);
+                    Log.d("testAnswer", "submitResult: "+answer);
                 }
+                answer = "";
                 reviewCourseArrayList.add(reviewCourse);
             } else if (typeLearn.equalsIgnoreCase(DEFAULTVALUE.LEARN)) {
                 countcorrect++;
